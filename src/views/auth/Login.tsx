@@ -40,7 +40,7 @@ export default function LoginView() {
 
                         <div className="flex flex-col items-center justify-center gap-2 mt-4 w-75">
                             {/* Create Account */}
-                            <Button className="cursor-pointer" onClick={() => setLocation("/dashboard")}>
+                            <Button className="cursor-pointer" onClick={() => setLocation("/")}>
                                 Sign in
                             </Button>
 

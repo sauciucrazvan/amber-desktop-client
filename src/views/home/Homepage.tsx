@@ -7,6 +7,7 @@ export default function Homepage() {
     return (
         <>
             <Button onClick={() => setLocation("/login")}>Login</Button>
+            <Button onClick={() => setLocation("/settings")}>Settings</Button>
         </>
     )
 }

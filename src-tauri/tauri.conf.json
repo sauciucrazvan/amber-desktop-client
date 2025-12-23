@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "amber",
+  "productName": "Amber",
   "version": "0.1.0",
   "identifier": "dev.razvansauciuc.amber",
   "build": {
@@ -12,8 +12,8 @@
   "app": {
     "windows": [
       {
-        "title": "amber",
-        "width": 800,
+        "title": "Amber",
+        "width": 900,
         "height": 600
       }
     ],

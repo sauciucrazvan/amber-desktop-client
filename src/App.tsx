@@ -1,10 +1,8 @@
-import "./App.css";
-
 export default function App() {
 
   return (
-    <main className="container">
-      <h1>Hello world</h1>
+    <main>
+      <h1 className="text-green-500">OK</h1>
     </main>
   );
 }

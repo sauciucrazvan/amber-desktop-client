@@ -20,12 +20,17 @@ export default function AppearanceTab() {
         []
     );
 
+    const [sidebarPos, setSidebarPos] = useState<string>(() => localStorage.getItem("sidebarPos") ?? "left");
     const [fontScale, setFontScale] = useState<string>(() => localStorage.getItem("fontScale") ?? "100");
 
     useEffect(() => {
         document.documentElement.style.fontSize = `${fontScale}%`;
         localStorage.setItem("fontScale", fontScale);
     }, [fontScale]);
+
+    useEffect(() => {
+        localStorage.setItem("sidebarPos", sidebarPos);
+    }, [sidebarPos]);
 
     return (
         <>
@@ -70,6 +75,27 @@ export default function AppearanceTab() {
                                     {opt.label}
                                 </SelectItem>
                             ))}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
+
+            {/* Sidebar position */}
+            <div className="flex flex-row items-center justify-between gap-1 mt-2">
+                <div>
+                    <h3 className="text-md text-primary">Sidebar Position</h3>
+                    <p className="text-xs text-muted-foreground">Change the sidebar position</p>
+                </div>
+
+                <Select value={sidebarPos} onValueChange={(value) => (setSidebarPos(value), window.location.reload())}>
+                    <SelectTrigger className="w-45">
+                        <SelectValue placeholder="Left" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Positions</SelectLabel>
+                            <SelectItem value={"left"}>Left</SelectItem>
+                            <SelectItem value={"right"}>Right</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>

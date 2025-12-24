@@ -13,9 +13,12 @@ export default function AppSidebar() {
         "Lego man",
     ];
 
+    const storedSidebarPos = localStorage.getItem("sidebarPos");
+    const sidebarSide: "left" | "right" = storedSidebarPos === "right" ? "right" : "left";
+
     return (
         <>
-            <Sidebar>
+            <Sidebar side={sidebarSide}>
                 <SidebarContent>
                     <SidebarGroup>
                         <SidebarGroupLabel>Contacts</SidebarGroupLabel>

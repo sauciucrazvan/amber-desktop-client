@@ -13,10 +13,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark")
   const [fontScale] = useState<string>(() => localStorage.getItem("fontScale") ?? "100");
 
-    useEffect(() => {
-        document.documentElement.style.fontSize = `${fontScale}%`;
-        localStorage.setItem("fontScale", fontScale);
-    }, [fontScale]);
+  useEffect(() => {
+      document.documentElement.style.fontSize = `${fontScale}%`;
+      localStorage.setItem("fontScale", fontScale);
+  }, [fontScale]);
 
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null

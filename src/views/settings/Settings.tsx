@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SettingsIcon } from "lucide-react";
 import AppearanceTab from "./tabs/AppearanceTab";
+import AccountTab from "./tabs/AccountTab";
+import GeneralTab from "./tabs/GeneralTab";
 
 export default function Settings() {
     return (
@@ -10,7 +12,7 @@ export default function Settings() {
             <Dialog>
                 <form>
                     <DialogTrigger asChild>
-                        <Button variant="outline"><SettingsIcon /></Button>
+                        <Button variant="ghost" className="cursor-pointer"><SettingsIcon /></Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-106.25 min-h-100 max-h-100 flex flex-col items-start justify-start">
                         <DialogHeader>
@@ -24,12 +26,14 @@ export default function Settings() {
                                 <TabsTrigger value="account">Account</TabsTrigger>
                             </TabsList>
                             <TabsContent value="general">
-                                Modify things about the application itself.
+                                <GeneralTab />
                             </TabsContent>
                             <TabsContent value="appearance">
                                 <AppearanceTab />
                             </TabsContent>
-                            <TabsContent value="account">Make changes to your account here.</TabsContent>
+                            <TabsContent value="account">
+                                <AccountTab />
+                            </TabsContent>
                         </Tabs>
                     </DialogContent>
                 </form>

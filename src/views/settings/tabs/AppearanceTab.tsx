@@ -40,11 +40,11 @@ export default function AppearanceTab() {
 
                 <Tabs defaultValue={theme}>
                     <TabsList>
-                        <TabsTrigger value="dark" onClick={() => { setTheme("dark"); localStorage.setItem("theme", "dark"); }}>
+                        <TabsTrigger className="cursor-pointer" value="dark" onClick={() => { setTheme("dark"); localStorage.setItem("theme", "dark"); }}>
                             <Moon className="text-purple-400" size="12" />
                         </TabsTrigger>
 
-                        <TabsTrigger value="light" onClick={() => { setTheme("light"); localStorage.setItem("theme", "light"); }}>
+                        <TabsTrigger className="cursor-pointer" value="light" onClick={() => { setTheme("light"); localStorage.setItem("theme", "light"); }}>
                             <Sun className="text-yellow-400" size="12" />
                         </TabsTrigger>
                     </TabsList>

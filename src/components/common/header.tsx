@@ -23,9 +23,7 @@ export default function Header({ extra } : HeaderProps) {
                     <Button variant="ghost" onClick={() => setLocation("/")}><Home /></Button>
                     <Separator orientation="vertical" />
                 </section>
-                <section id="right" className="flex flex-row items-center gap-2 h-5">
-                    <Button variant="outline" className="cursor-pointer" onClick={() => setLocation("/login")}>Login</Button>
-                    
+                <section id="right" className="flex flex-row items-center gap-2 h-5">                    
                     <Separator orientation="vertical" />
                     <Settings />
                     {sidebarSide == "left" ? null : extra}

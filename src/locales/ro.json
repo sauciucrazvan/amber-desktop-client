@@ -1,0 +1,12 @@
+{
+  "login": {
+    "registerPrompt": "Nu ai cont?",
+    "registerLink": "Înregistrează-te",
+    "title": "Autentifică-te în contul tău",
+    "subtitle": "Introdu datele de mai jos pentru autentificare",
+    "emailPlaceholder": "Adresa ta de email",
+    "passwordPlaceholder": "Parola ta",
+    "signIn": "Autentificare",
+    "forgotPassword": "Ai uitat parola?"
+  }
+}

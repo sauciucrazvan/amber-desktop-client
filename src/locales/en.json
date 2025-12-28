@@ -1,0 +1,12 @@
+{
+  "login": {
+    "registerPrompt": "Don't have an account?",
+    "registerLink": "Register",
+    "title": "Login into your account",
+    "subtitle": "Enter your credentials below to login",
+    "emailPlaceholder": "Your email address",
+    "passwordPlaceholder": "Your password",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot password?"
+  }
+}

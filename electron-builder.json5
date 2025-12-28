@@ -20,13 +20,13 @@
   "win": {
     "target": [
       {
-        "target": "nsis",
+        "target": "msi",
         "arch": [
           "x64"
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "artifactName": "${productName}-${version}-win-setup.${ext}"
   },
   "nsis": {
     "oneClick": false,

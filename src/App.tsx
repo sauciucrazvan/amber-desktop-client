@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Button } from './components/ui/button'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -7,7 +8,7 @@ function App() {
     <>
       <main className="min-h-screen min-w-screen flex flex-col gap-1 items-center justify-center">
         <h1 className="text-gray-500">Count: {count}</h1>
-        <button onClick={() => setCount(count + 1)}>Click me!</button>
+        <Button onClick={() => setCount(count + 1)} className="cursor-pointer">Click me!</Button>
       </main>
     </>
   )

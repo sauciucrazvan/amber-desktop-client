@@ -32,6 +32,36 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win: BrowserWindow | null
 let splash: BrowserWindow | null
 
+function focusMainWindow() {
+  if (win && !win.isDestroyed()) {
+    if (win.isMinimized()) win.restore()
+    win.show()
+    win.focus()
+    return
+  }
+
+  if (app.isReady()) {
+    createWindow()
+  } else {
+    app.whenReady().then(() => {
+      createWindow()
+    })
+  }
+}
+
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', () => {
+    if (splash && !splash.isDestroyed()) {
+      splash.close()
+    }
+    focusMainWindow()
+  })
+}
+
 function createSplashWindow() {
   splash = new BrowserWindow({
     width: 420,

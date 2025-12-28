@@ -55,7 +55,7 @@ export default function GeneralTab() {
                     <p className="text-xs text-muted-foreground">{t("settings.general.help.description")}</p>
                 </div>
 
-                <Button className="cursor-pointer" onClick={() => open("https://github.com/sauciucrazvan/amber")}>
+                <Button size="sm" className="cursor-pointer" onClick={() => open("https://github.com/sauciucrazvan/amber")}>
                     {t("settings.general.help.action")}
                 </Button>
             </div>
@@ -66,7 +66,7 @@ export default function GeneralTab() {
                     <p className="text-xs text-muted-foreground">{t("settings.general.feedback.description")}</p>
                 </div>
 
-                <Button className="cursor-pointer" onClick={() => open("https://github.com/sauciucrazvan/amber/issues")}>
+                <Button size="sm" className="cursor-pointer" onClick={() => open("https://github.com/sauciucrazvan/amber/issues")}>
                     {t("settings.general.feedback.action")}
                 </Button>
             </div>

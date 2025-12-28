@@ -83,7 +83,21 @@
       }
     },
     "account": {
-      "signOut": "Sign out"
+      "signOut": {
+        "title": "Sign out",
+        "description": "You'll be redirected to the login page.",
+        "action": "Sign out"
+      },
+      "delete": {
+        "title": "Delete your account",
+        "description": "This action can NOT be reversed!",
+        "action": "Delete"
+      },
+      "data": {
+        "title": "Personal data",
+        "description": "Request all the data we have about you",
+        "action": "Request"
+      }
     }
   }
 }

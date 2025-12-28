@@ -1,0 +1,89 @@
+{
+  "common": {
+    "help": "ヘルプ",
+    "info": "情報"
+  },
+  "login": {
+    "registerPrompt": "アカウントをお持ちでないですか？",
+    "registerLink": "登録",
+    "title": "アカウントにログイン",
+    "subtitle": "ログインするには認証情報を入力してください",
+    "emailPlaceholder": "メールアドレス",
+    "passwordPlaceholder": "パスワード",
+    "signIn": "ログイン",
+    "forgotPassword": "パスワードをお忘れですか？"
+  },
+  "register": {
+    "loginPrompt": "すでにアカウントをお持ちですか？",
+    "loginLink": "ログイン",
+    "title": "アカウントを作成",
+    "subtitle": "アカウント作成のために情報を入力してください",
+    "usernamePlaceholder": "一意のユーザー名",
+    "usernameHint": "使用できるのは英数字のみです。",
+    "emailPlaceholder": "メールアドレス",
+    "emailHint": "本人確認に使用します",
+    "passwordPlaceholder": "パスワードを入力",
+    "passwordHint": "パスワードは8文字以上である必要があります",
+    "createAccount": "アカウントを作成",
+    "terms": "続行すると、<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意したものとみなされます。"
+  },
+  "settings": {
+    "title": "設定",
+    "description": "アプリの設定",
+    "tabs": {
+      "general": "一般",
+      "appearance": "外観",
+      "account": "アカウント"
+    },
+    "general": {
+      "language": {
+        "title": "言語",
+        "description": "アプリの言語を選択してください",
+        "options": {
+          "en": "英語",
+          "ro": "ルーマニア語",
+          "de": "ドイツ語",
+          "fr": "フランス語",
+          "es": "スペイン語",
+          "zh": "中国語",
+          "ja": "日本語",
+          "it": "イタリア語"
+        }
+      },
+      "help": {
+        "title": "ヘルプ",
+        "description": "不具合を見つけた、または助けが必要ですか？",
+        "action": "サポート"
+      },
+      "feedback": {
+        "title": "フィードバック",
+        "description": "改善にご協力ください",
+        "action": "フィードバック"
+      }
+    },
+    "appearance": {
+      "theme": {
+        "title": "テーマ",
+        "description": "アプリ全体のテーマを変更します。"
+      },
+      "scaling": {
+        "title": "スケーリング",
+        "description": "画面により多くの内容を表示します。",
+        "label": "スケーリング",
+        "defaultSuffix": "（既定）"
+      },
+      "sidebarPosition": {
+        "title": "サイドバーの位置",
+        "description": "サイドバーの位置を変更します",
+        "label": "位置",
+        "options": {
+          "left": "左",
+          "right": "右"
+        }
+      }
+    },
+    "account": {
+      "signOut": "サインアウト"
+    }
+  }
+}

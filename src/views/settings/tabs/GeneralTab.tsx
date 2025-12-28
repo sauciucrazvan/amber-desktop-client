@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { changeAppLanguage, getInitialLanguage, type SupportedLanguage } from "@/i18n";
+import { changeAppLanguage, getInitialLanguage, supportedLanguages, type SupportedLanguage } from "@/i18n";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function GeneralTab() {
     const [language, setLanguage] = useState<SupportedLanguage>(getInitialLanguage());
     const { t } = useTranslation();
+
+    const languageOptions = supportedLanguages
+        .map((code) => ({
+            code,
+            label: t(`settings.general.language.options.${code}`),
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label, undefined, { sensitivity: "base" }));
 
     return (
         <>
@@ -22,7 +29,9 @@ export default function GeneralTab() {
                 <Select
                     value={language}
                     onValueChange={(value) => {
-                        const next = value === "ro" ? "ro" : "en";
+                        const next = supportedLanguages.includes(value as SupportedLanguage)
+                            ? (value as SupportedLanguage)
+                            : "en";
                         setLanguage(next);
                         void changeAppLanguage(next);
                     }}
@@ -31,8 +40,11 @@ export default function GeneralTab() {
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="en">{t("settings.general.language.options.en")}</SelectItem>
-                        <SelectItem value="ro">{t("settings.general.language.options.ro")}</SelectItem>
+                        {languageOptions.map((opt) => (
+                            <SelectItem key={opt.code} value={opt.code}>
+                                {opt.label}
+                            </SelectItem>
+                        ))}
                     </SelectContent>
                 </Select>
             </div>

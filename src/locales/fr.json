@@ -1,0 +1,89 @@
+{
+  "common": {
+    "help": "Aide",
+    "info": "Info"
+  },
+  "login": {
+    "registerPrompt": "Vous n'avez pas de compte ?",
+    "registerLink": "S'inscrire",
+    "title": "Connectez-vous à votre compte",
+    "subtitle": "Saisissez vos identifiants ci-dessous pour vous connecter",
+    "emailPlaceholder": "Votre adresse e-mail",
+    "passwordPlaceholder": "Votre mot de passe",
+    "signIn": "Se connecter",
+    "forgotPassword": "Mot de passe oublié ?"
+  },
+  "register": {
+    "loginPrompt": "Vous avez déjà un compte ?",
+    "loginLink": "Se connecter",
+    "title": "Créer un compte",
+    "subtitle": "Saisissez vos informations ci-dessous pour créer votre compte",
+    "usernamePlaceholder": "Nom d'utilisateur unique",
+    "usernameHint": "Seules les lettres et les chiffres sont autorisés.",
+    "emailPlaceholder": "Votre adresse e-mail",
+    "emailHint": "Nous l'utiliserons pour vous vérifier",
+    "passwordPlaceholder": "Saisir le mot de passe",
+    "passwordHint": "Le mot de passe doit contenir au moins 8 caractères",
+    "createAccount": "Créer votre compte",
+    "terms": "En continuant, vous acceptez nos <terms>Conditions d'utilisation</terms> et notre <privacy>Politique de confidentialité</privacy>."
+  },
+  "settings": {
+    "title": "Paramètres",
+    "description": "Paramètres de l'application",
+    "tabs": {
+      "general": "Général",
+      "appearance": "Apparence",
+      "account": "Compte"
+    },
+    "general": {
+      "language": {
+        "title": "Langue",
+        "description": "Choisissez la langue de l'application",
+        "options": {
+          "en": "Anglais",
+          "ro": "Roumain",
+          "de": "Allemand",
+          "fr": "Français",
+          "es": "Espagnol",
+          "zh": "Chinois",
+          "ja": "Japonais",
+          "it": "Italien"
+        }
+      },
+      "help": {
+        "title": "Aide",
+        "description": "Vous avez trouvé un problème ou besoin d'aide ?",
+        "action": "Support"
+      },
+      "feedback": {
+        "title": "Retour",
+        "description": "Aidez-nous à nous améliorer",
+        "action": "Retour"
+      }
+    },
+    "appearance": {
+      "theme": {
+        "title": "Thème",
+        "description": "Cela modifie le thème de toute l'application."
+      },
+      "scaling": {
+        "title": "Échelle",
+        "description": "Affichez plus de contenu à l'écran.",
+        "label": "Échelle",
+        "defaultSuffix": "(par défaut)"
+      },
+      "sidebarPosition": {
+        "title": "Position de la barre latérale",
+        "description": "Modifier la position de la barre latérale",
+        "label": "Positions",
+        "options": {
+          "left": "Gauche",
+          "right": "Droite"
+        }
+      }
+    },
+    "account": {
+      "signOut": "Se déconnecter"
+    }
+  }
+}

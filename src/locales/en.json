@@ -41,7 +41,13 @@
         "description": "Choose the application language",
         "options": {
           "en": "English",
-          "ro": "Romanian"
+          "ro": "Romanian",
+          "de": "German",
+          "fr": "French",
+          "es": "Spanish",
+          "zh": "Chinese",
+          "ja": "Japanese",
+          "it": "Italian"
         }
       },
       "help": {

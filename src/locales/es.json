@@ -1,0 +1,89 @@
+{
+  "common": {
+    "help": "Ayuda",
+    "info": "Información"
+  },
+  "login": {
+    "registerPrompt": "¿No tienes una cuenta?",
+    "registerLink": "Registrarse",
+    "title": "Inicia sesión en tu cuenta",
+    "subtitle": "Introduce tus credenciales para iniciar sesión",
+    "emailPlaceholder": "Tu correo electrónico",
+    "passwordPlaceholder": "Tu contraseña",
+    "signIn": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "register": {
+    "loginPrompt": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "title": "Crear una cuenta",
+    "subtitle": "Introduce tu información para crear tu cuenta",
+    "usernamePlaceholder": "Nombre de usuario único",
+    "usernameHint": "Solo se permiten letras y números.",
+    "emailPlaceholder": "Tu correo electrónico",
+    "emailHint": "Lo usaremos para verificarte",
+    "passwordPlaceholder": "Introduce la contraseña",
+    "passwordHint": "La contraseña debe tener al menos 8 caracteres",
+    "createAccount": "Crear tu cuenta",
+    "terms": "Al continuar, aceptas nuestros <terms>Términos de servicio</terms> y nuestra <privacy>Política de privacidad</privacy>."
+  },
+  "settings": {
+    "title": "Ajustes",
+    "description": "Ajustes de la aplicación",
+    "tabs": {
+      "general": "General",
+      "appearance": "Apariencia",
+      "account": "Cuenta"
+    },
+    "general": {
+      "language": {
+        "title": "Idioma",
+        "description": "Elige el idioma de la aplicación",
+        "options": {
+          "en": "Inglés",
+          "ro": "Rumano",
+          "de": "Alemán",
+          "fr": "Francés",
+          "es": "Español",
+          "zh": "Chino",
+          "ja": "Japonés",
+          "it": "Italiano"
+        }
+      },
+      "help": {
+        "title": "Ayuda",
+        "description": "¿Encontraste un problema o necesitas ayuda?",
+        "action": "Soporte"
+      },
+      "feedback": {
+        "title": "Comentarios",
+        "description": "Ayúdanos a mejorar",
+        "action": "Comentarios"
+      }
+    },
+    "appearance": {
+      "theme": {
+        "title": "Tema",
+        "description": "Esto cambia el tema de toda la aplicación."
+      },
+      "scaling": {
+        "title": "Escala",
+        "description": "Muestra más contenido en tu pantalla.",
+        "label": "Escala",
+        "defaultSuffix": "(predeterminado)"
+      },
+      "sidebarPosition": {
+        "title": "Posición de la barra lateral",
+        "description": "Cambiar la posición de la barra lateral",
+        "label": "Posiciones",
+        "options": {
+          "left": "Izquierda",
+          "right": "Derecha"
+        }
+      }
+    },
+    "account": {
+      "signOut": "Cerrar sesión"
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "common": {
+    "help": "Aiuto",
+    "info": "Informazioni"
+  },
+  "login": {
+    "registerPrompt": "Non hai un account?",
+    "registerLink": "Registrati",
+    "title": "Accedi al tuo account",
+    "subtitle": "Inserisci le credenziali qui sotto per accedere",
+    "emailPlaceholder": "Il tuo indirizzo email",
+    "passwordPlaceholder": "La tua password",
+    "signIn": "Accedi",
+    "forgotPassword": "Password dimenticata?"
+  },
+  "register": {
+    "loginPrompt": "Hai già un account?",
+    "loginLink": "Accedi",
+    "title": "Crea un account",
+    "subtitle": "Inserisci i tuoi dati qui sotto per creare l'account",
+    "usernamePlaceholder": "Nome utente univoco",
+    "usernameHint": "Sono consentite solo lettere e numeri.",
+    "emailPlaceholder": "Il tuo indirizzo email",
+    "emailHint": "Lo useremo per verificarti",
+    "passwordPlaceholder": "Inserisci la password",
+    "passwordHint": "La password deve contenere almeno 8 caratteri",
+    "createAccount": "Crea il tuo account",
+    "terms": "Continuando, accetti i nostri <terms>Termini di servizio</terms> e la nostra <privacy>Informativa sulla privacy</privacy>."
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "description": "Impostazioni dell'applicazione",
+    "tabs": {
+      "general": "Generale",
+      "appearance": "Aspetto",
+      "account": "Account"
+    },
+    "general": {
+      "language": {
+        "title": "Lingua",
+        "description": "Scegli la lingua dell'applicazione",
+        "options": {
+          "en": "Inglese",
+          "ro": "Rumeno",
+          "de": "Tedesco",
+          "fr": "Francese",
+          "es": "Spagnolo",
+          "zh": "Cinese",
+          "ja": "Giapponese",
+          "it": "Italiano"
+        }
+      },
+      "help": {
+        "title": "Aiuto",
+        "description": "Hai trovato un problema o hai bisogno di aiuto?",
+        "action": "Supporto"
+      },
+      "feedback": {
+        "title": "Feedback",
+        "description": "Aiutaci a migliorare",
+        "action": "Feedback"
+      }
+    },
+    "appearance": {
+      "theme": {
+        "title": "Tema",
+        "description": "Questo cambia il tema dell'intera applicazione."
+      },
+      "scaling": {
+        "title": "Ridimensionamento",
+        "description": "Adatta più contenuti sullo schermo.",
+        "label": "Ridimensionamento",
+        "defaultSuffix": "(predefinito)"
+      },
+      "sidebarPosition": {
+        "title": "Posizione barra laterale",
+        "description": "Cambia la posizione della barra laterale",
+        "label": "Posizioni",
+        "options": {
+          "left": "Sinistra",
+          "right": "Destra"
+        }
+      }
+    },
+    "account": {
+      "signOut": "Disconnetti"
+    }
+  }
+}

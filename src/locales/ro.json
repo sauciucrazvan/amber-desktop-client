@@ -41,7 +41,13 @@
         "description": "Alege limba aplicației",
         "options": {
           "en": "Engleză",
-          "ro": "Română"
+          "ro": "Română",
+          "de": "Germană",
+          "fr": "Franceză",
+          "es": "Spaniolă",
+          "zh": "Chineză",
+          "ja": "Japoneză",
+          "it": "Italiană"
         }
       },
       "help": {

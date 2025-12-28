@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
+import Settings from "../settings/Settings";
 
 export default function LoginView() {
     const [, setLocation] = useLocation();
@@ -48,6 +49,11 @@ export default function LoginView() {
 
                             <p data-slot="field-description" className="text-muted-foreground text-sm leading-normal font-normal [[data-variant=legend]+&amp;]:-mt-1.5 [&amp;&gt;a:hover]:text-primary [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 px-6 text-center"><a href="#">{t("login.forgotPassword")}</a></p>
                         </div>
+                    </div>
+
+                    {/* Settings */}
+                    <div className="text-muted-foreground flex w-full justify-end items-center gap-1">
+                        <Settings minimalViews={true} />
                     </div>
 
                 </section>

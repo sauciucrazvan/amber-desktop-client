@@ -37,7 +37,7 @@ export default function Header({ extra } : HeaderProps) {
 
                 <section id="right" className="flex flex-row items-center gap-2 h-5">                    
                     <Separator orientation="vertical" />
-                    <Settings />
+                    <Settings minimalViews={false} />
                     {sidebarSide == "left" ? null : extra}
                 </section>
             </header>

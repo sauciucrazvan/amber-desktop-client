@@ -7,7 +7,11 @@ import AppearanceTab from "./tabs/AppearanceTab";
 import AccountTab from "./tabs/AccountTab";
 import GeneralTab from "./tabs/GeneralTab";
 
-export default function Settings() {
+interface SettingsProps {
+    minimalViews: boolean,
+}
+
+export default function Settings(props : SettingsProps) {
     const { t } = useTranslation();
 
     return (
@@ -27,7 +31,7 @@ export default function Settings() {
                             <TabsList>
                                 <TabsTrigger value="general">{t("settings.tabs.general")}</TabsTrigger>
                                 <TabsTrigger value="appearance">{t("settings.tabs.appearance")}</TabsTrigger>
-                                <TabsTrigger value="account">{t("settings.tabs.account")}</TabsTrigger>
+                                <TabsTrigger value="account" disabled={props.minimalViews}>{t("settings.tabs.account")}</TabsTrigger>
                             </TabsList>
                             <TabsContent value="general">
                                 <GeneralTab />

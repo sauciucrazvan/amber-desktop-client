@@ -4,6 +4,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { AtSign, HelpCircle, InfoIcon } from "lucide-react";
 import { Trans, useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
+import Settings from "../settings/Settings";
 
 export default function RegisterView() {
     const [, setLocation] = useLocation();
@@ -115,6 +116,11 @@ export default function RegisterView() {
                                 />
                             </p>
                         </div>
+                    </div>
+
+                    {/* Settings */}
+                    <div className="text-muted-foreground flex w-full justify-end items-center gap-1">
+                        <Settings minimalViews={true} />
                     </div>
 
                 </section>

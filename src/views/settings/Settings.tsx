@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SettingsIcon } from "lucide-react";
 import AppearanceTab from "./tabs/AppearanceTab";
@@ -17,6 +17,7 @@ export default function Settings() {
                     <DialogContent className="sm:max-w-106.25 min-h-100 max-h-100 flex flex-col items-start justify-start">
                         <DialogHeader>
                             <DialogTitle>Settings</DialogTitle>
+                            <DialogDescription className="sr-only">Application settings</DialogDescription>
                         </DialogHeader>
                         {/* content */}
                         <Tabs defaultValue="general" className="min-w-full">

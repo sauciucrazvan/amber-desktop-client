@@ -22,6 +22,11 @@ export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 
+if (VITE_DEV_SERVER_URL) {
+  process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+  app.disableHardwareAcceleration()
+}
+
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
 
 let win: BrowserWindow | null
@@ -43,10 +48,6 @@ function createWindow() {
 
   win.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
     console.error('[renderer] did-fail-load', { errorCode, errorDescription, validatedURL })
-  })
-
-  win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
-    console.log(`[renderer console:${level}] ${message} (${sourceId}:${line})`)
   })
 
   win.webContents.on('render-process-gone', (_event, details) => {

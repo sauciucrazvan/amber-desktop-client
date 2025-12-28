@@ -27,7 +27,7 @@ export default function AppSidebar() {
                         </SidebarGroupAction>
                         <SidebarMenu className="">
                             {contacts.map((contact) => (
-                                <SidebarMenuItem>
+                                <SidebarMenuItem key={contact}>
                                     <Contact username={contact} />
                                 </SidebarMenuItem>
                             ))}

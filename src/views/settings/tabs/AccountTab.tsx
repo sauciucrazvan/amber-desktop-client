@@ -10,7 +10,7 @@ export default function AccountTab() {
             <Separator />
 
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
-                <Button variant="outline" className="cursor-pointer" onClick={() => setLocation("/login")}>Logout (debug)</Button>
+                <Button size="sm" variant="destructive" className="cursor-pointer hover:text-white/80" onClick={() => setLocation("/login")}>Sign out</Button>
             </div>
         </>
     );

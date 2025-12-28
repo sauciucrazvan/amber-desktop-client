@@ -30,10 +30,46 @@ if (VITE_DEV_SERVER_URL) {
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
 
 let win: BrowserWindow | null
+let splash: BrowserWindow | null
+
+function createSplashWindow() {
+  splash = new BrowserWindow({
+    width: 420,
+    height: 220,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    movable: true,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    show: false,
+    backgroundColor: '#00000000',
+    webPreferences: {
+      sandbox: true,
+    },
+  })
+
+  splash.on('closed', () => {
+    splash = null
+  })
+
+  splash.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+    console.error('[splash] did-fail-load', { errorCode, errorDescription, validatedURL })
+  })
+
+  const splashPath = path.join(process.env.VITE_PUBLIC, 'splash.html')
+  splash.loadFile(splashPath)
+  splash.once('ready-to-show', () => {
+    splash?.show()
+  })
+}
 
 function createWindow() {
   win = new BrowserWindow({
+    width: 900,
+    height: 600,
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
@@ -57,6 +93,13 @@ function createWindow() {
   // if (process.env.DEBUG_PROD === '1') {
   //   win.webContents.openDevTools({ mode: 'detach' })
   // }
+
+  win.once('ready-to-show', () => {
+    win?.show()
+    if (splash && !splash.isDestroyed()) {
+      splash.close()
+    }
+  })
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
@@ -84,4 +127,7 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  createSplashWindow()
+  createWindow()
+})

@@ -3,9 +3,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Separator } from "@/components/ui/separator";
 import { changeAppLanguage, getInitialLanguage, type SupportedLanguage } from "@/i18n";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function GeneralTab() {
     const [language, setLanguage] = useState<SupportedLanguage>(getInitialLanguage());
+    const { t } = useTranslation();
 
     return (
         <>
@@ -13,8 +15,8 @@ export default function GeneralTab() {
 
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
                 <div>
-                    <h3 className="text-md text-primary">Language</h3>
-                    <p className="text-xs text-muted-foreground">Choose the application language</p>
+                    <h3 className="text-md text-primary">{t("settings.general.language.title")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("settings.general.language.description")}</p>
                 </div>
 
                 <Select
@@ -29,31 +31,31 @@ export default function GeneralTab() {
                         <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="en">English</SelectItem>
-                        <SelectItem value="ro">Română</SelectItem>
+                        <SelectItem value="en">{t("settings.general.language.options.en")}</SelectItem>
+                        <SelectItem value="ro">{t("settings.general.language.options.ro")}</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
 
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
                 <div>
-                    <h3 className="text-md text-primary">Help</h3>
-                    <p className="text-xs text-muted-foreground">Found an issue or need help with something?</p>
+                    <h3 className="text-md text-primary">{t("settings.general.help.title")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("settings.general.help.description")}</p>
                 </div>
 
                 <Button className="cursor-pointer">
-                    Support
+                    {t("settings.general.help.action")}
                 </Button>
             </div>
 
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
                 <div>
-                    <h3 className="text-md text-primary">Feedback</h3>
-                    <p className="text-xs text-muted-foreground">Help us improve</p>
+                    <h3 className="text-md text-primary">{t("settings.general.feedback.title")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("settings.general.feedback.description")}</p>
                 </div>
 
                 <Button className="cursor-pointer">
-                    Feedback
+                    {t("settings.general.feedback.action")}
                 </Button>
             </div>
         </>

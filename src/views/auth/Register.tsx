@@ -2,10 +2,12 @@ import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupInput, InputGroupAddon, InputGroupButton } from "@/components/ui/input-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { AtSign, HelpCircle, InfoIcon } from "lucide-react";
+import { Trans, useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 
 export default function RegisterView() {
     const [, setLocation] = useLocation();
+    const { t } = useTranslation();
     
     return (
         <>
@@ -20,35 +22,35 @@ export default function RegisterView() {
                     
                     {/* Login */}
                     <div className="text-muted-foreground flex w-full justify-end items-center gap-1">
-                        Already have an account?
+                        {t("register.loginPrompt")}
                         <a className="text-primary hover:underline cursor-pointer" onClick={() => setLocation("/login")}>
-                            Login
+                            {t("register.loginLink")}
                         </a>
                     </div>
 
                     {/* Register */}
                     <div className="flex flex-col w-full h-full justify-center items-center">
-                        <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
-                        <p className="text-muted-foreground text-sm">Enter your info below to create your account</p>
+                        <h1 className="text-2xl font-semibold tracking-tight">{t("register.title")}</h1>
+                        <p className="text-muted-foreground text-sm">{t("register.subtitle")}</p>
 
                         <div className="w-75 mt-4 flex flex-col gap-2">
 
                             {/* Username */}
                             <InputGroup>
-                                <InputGroupInput id="username" placeholder="Unique username" />
+                                <InputGroupInput id="username" placeholder={t("register.usernamePlaceholder")} />
                                 <InputGroupAddon>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
                                         <InputGroupButton
                                             variant="ghost"
-                                            aria-label="Help"
+                                            aria-label={t("common.help")}
                                             size="icon-xs"
                                         >
                                             <AtSign />
                                         </InputGroupButton>
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                        <p>Only letters and numbers are allowed.</p>
+                                        <p>{t("register.usernameHint")}</p>
                                         </TooltipContent>
                                     </Tooltip>
                                 </InputGroupAddon>
@@ -56,20 +58,20 @@ export default function RegisterView() {
 
                             {/* Email */}
                             <InputGroup>
-                                <InputGroupInput placeholder="Your email address" />
+                                <InputGroupInput placeholder={t("register.emailPlaceholder")} />
                                 <InputGroupAddon align="inline-end">
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                     <InputGroupButton
                                         variant="ghost"
-                                        aria-label="Help"
+                                        aria-label={t("common.help")}
                                         size="icon-xs"
                                     >
                                         <HelpCircle />
                                     </InputGroupButton>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                    <p>We&apos;ll use this to verify you</p>
+                                    <p>{t("register.emailHint")}</p>
                                     </TooltipContent>
                                 </Tooltip>
                                 </InputGroupAddon>
@@ -77,20 +79,20 @@ export default function RegisterView() {
 
                             {/* Password */}
                             <InputGroup>
-                                <InputGroupInput placeholder="Enter password" type="password" />
+                                <InputGroupInput placeholder={t("register.passwordPlaceholder")} type="password" />
                                 <InputGroupAddon align="inline-end">
                                 <Tooltip>
                                     <TooltipTrigger asChild>
                                     <InputGroupButton
                                         variant="ghost"
-                                        aria-label="Info"
+                                        aria-label={t("common.info")}
                                         size="icon-xs"
                                     >
                                         <InfoIcon />
                                     </InputGroupButton>
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                    <p>Password must be at least 8 characters</p>
+                                    <p>{t("register.passwordHint")}</p>
                                     </TooltipContent>
                                 </Tooltip>
                                 </InputGroupAddon>
@@ -100,10 +102,18 @@ export default function RegisterView() {
                         <div className="flex flex-col items-center justify-center gap-2 mt-4 w-75">
                             {/* Create Account */}
                             <Button className="cursor-pointer" onClick={() => setLocation("/")}>
-                                Create your account
+                                {t("register.createAccount")}
                             </Button>
 
-                            <p data-slot="field-description" className="text-muted-foreground text-sm leading-normal font-normal [[data-variant=legend]+&amp;]:-mt-1.5 [&amp;&gt;a:hover]:text-primary [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 px-6 text-center">By clicking continue, you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>.</p>
+                            <p data-slot="field-description" className="text-muted-foreground text-sm leading-normal font-normal [[data-variant=legend]+&amp;]:-mt-1.5 [&amp;&gt;a:hover]:text-primary [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 px-6 text-center">
+                                <Trans
+                                    i18nKey="register.terms"
+                                    components={{
+                                        terms: <a href="/terms" />,
+                                        privacy: <a href="/privacy" />,
+                                    }}
+                                />
+                            </p>
                         </div>
                     </div>
 

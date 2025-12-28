@@ -4,20 +4,22 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function AppearanceTab() {
     const { theme, setTheme } = useTheme();
+    const { t } = useTranslation();
 
     const fontOptions = useMemo(
         () => [
             { value: "80", label: "0.8x" },
             { value: "90", label: "0.9x" },
-            { value: "100", label: "1.0x (default)" },
+            { value: "100", label: `1.0x ${t("settings.appearance.scaling.defaultSuffix")}` },
             { value: "120", label: "1.2x" },
             { value: "150", label: "1.5x" },
             { value: "200", label: "2x" },
         ],
-        []
+        [t]
     );
 
     const [sidebarPos, setSidebarPos] = useState<string>(() => localStorage.getItem("sidebarPos") ?? "left");
@@ -39,8 +41,8 @@ export default function AppearanceTab() {
             {/* Theme */}
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
                 <div>
-                    <h3 className="text-md text-primary">Theme</h3>
-                    <p className="text-xs text-muted-foreground">This changes the entire application theme.</p>
+                    <h3 className="text-md text-primary">{t("settings.appearance.theme.title")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("settings.appearance.theme.description")}</p>
                 </div>
 
                 <Tabs defaultValue={theme}>
@@ -59,8 +61,8 @@ export default function AppearanceTab() {
             {/* Scaling */}
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
                 <div>
-                    <h3 className="text-md text-primary">Scaling</h3>
-                    <p className="text-xs text-muted-foreground">Fit more content on your screen.</p>
+                    <h3 className="text-md text-primary">{t("settings.appearance.scaling.title")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("settings.appearance.scaling.description")}</p>
                 </div>
 
                 <Select value={fontScale} onValueChange={setFontScale}>
@@ -69,7 +71,7 @@ export default function AppearanceTab() {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectLabel>Scaling</SelectLabel>
+                            <SelectLabel>{t("settings.appearance.scaling.label")}</SelectLabel>
                             {fontOptions.map((opt) => (
                                 <SelectItem key={opt.value} value={opt.value}>
                                     {opt.label}
@@ -83,19 +85,19 @@ export default function AppearanceTab() {
             {/* Sidebar position */}
             <div className="flex flex-row items-center justify-between gap-1 mt-2">
                 <div>
-                    <h3 className="text-md text-primary">Sidebar Position</h3>
-                    <p className="text-xs text-muted-foreground">Change the sidebar position</p>
+                    <h3 className="text-md text-primary">{t("settings.appearance.sidebarPosition.title")}</h3>
+                    <p className="text-xs text-muted-foreground">{t("settings.appearance.sidebarPosition.description")}</p>
                 </div>
 
                 <Select value={sidebarPos} onValueChange={(value) => (setSidebarPos(value), window.location.reload())}>
                     <SelectTrigger className="w-45">
-                        <SelectValue placeholder="Left" />
+                        <SelectValue placeholder={t("settings.appearance.sidebarPosition.options.left")} />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectLabel>Positions</SelectLabel>
-                            <SelectItem value={"left"}>Left</SelectItem>
-                            <SelectItem value={"right"}>Right</SelectItem>
+                            <SelectLabel>{t("settings.appearance.sidebarPosition.label")}</SelectLabel>
+                            <SelectItem value={"left"}>{t("settings.appearance.sidebarPosition.options.left")}</SelectItem>
+                            <SelectItem value={"right"}>{t("settings.appearance.sidebarPosition.options.right")}</SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>

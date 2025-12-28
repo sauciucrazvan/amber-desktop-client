@@ -2,11 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SettingsIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import AppearanceTab from "./tabs/AppearanceTab";
 import AccountTab from "./tabs/AccountTab";
 import GeneralTab from "./tabs/GeneralTab";
 
 export default function Settings() {
+    const { t } = useTranslation();
+
     return (
         <>
             <Dialog>
@@ -16,15 +19,15 @@ export default function Settings() {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-106.25 min-h-100 max-h-100 flex flex-col items-start justify-start">
                         <DialogHeader>
-                            <DialogTitle>Settings</DialogTitle>
-                            <DialogDescription className="sr-only">Application settings</DialogDescription>
+                            <DialogTitle>{t("settings.title")}</DialogTitle>
+                            <DialogDescription className="sr-only">{t("settings.description")}</DialogDescription>
                         </DialogHeader>
                         {/* content */}
                         <Tabs defaultValue="general" className="min-w-full">
                             <TabsList>
-                                <TabsTrigger value="general">General</TabsTrigger>
-                                <TabsTrigger value="appearance">Appearance</TabsTrigger>
-                                <TabsTrigger value="account">Account</TabsTrigger>
+                                <TabsTrigger value="general">{t("settings.tabs.general")}</TabsTrigger>
+                                <TabsTrigger value="appearance">{t("settings.tabs.appearance")}</TabsTrigger>
+                                <TabsTrigger value="account">{t("settings.tabs.account")}</TabsTrigger>
                             </TabsList>
                             <TabsContent value="general">
                                 <GeneralTab />

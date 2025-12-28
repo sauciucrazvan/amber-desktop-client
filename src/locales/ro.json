@@ -1,4 +1,8 @@
 {
+  "common": {
+    "help": "Ajutor",
+    "info": "Informații"
+  },
   "login": {
     "registerPrompt": "Nu ai cont?",
     "registerLink": "Înregistrează-te",
@@ -8,5 +12,72 @@
     "passwordPlaceholder": "Parola ta",
     "signIn": "Autentificare",
     "forgotPassword": "Ai uitat parola?"
+  },
+  "register": {
+    "loginPrompt": "Ai deja cont?",
+    "loginLink": "Autentifică-te",
+    "title": "Creează un cont",
+    "subtitle": "Introdu datele de mai jos pentru a crea contul",
+    "usernamePlaceholder": "Nume de utilizator unic",
+    "usernameHint": "Sunt permise doar litere și cifre.",
+    "emailPlaceholder": "Adresa ta de email",
+    "emailHint": "Vom folosi asta pentru a-ți verifica contul",
+    "passwordPlaceholder": "Introdu parola",
+    "passwordHint": "Parola trebuie să aibă cel puțin 8 caractere",
+    "createAccount": "Creează contul",
+    "terms": "Continuând, ești de acord cu <terms>Termenii de utilizare</terms> și <privacy>Politica de confidențialitate</privacy>."
+  },
+  "settings": {
+    "title": "Setări",
+    "description": "Setările aplicației",
+    "tabs": {
+      "general": "General",
+      "appearance": "Aspect",
+      "account": "Cont"
+    },
+    "general": {
+      "language": {
+        "title": "Limbă",
+        "description": "Alege limba aplicației",
+        "options": {
+          "en": "Engleză",
+          "ro": "Română"
+        }
+      },
+      "help": {
+        "title": "Ajutor",
+        "description": "Ai găsit o problemă sau ai nevoie de ajutor?",
+        "action": "Suport"
+      },
+      "feedback": {
+        "title": "Feedback",
+        "description": "Ajută-ne să îmbunătățim",
+        "action": "Feedback"
+      }
+    },
+    "appearance": {
+      "theme": {
+        "title": "Temă",
+        "description": "Schimbă tema întregii aplicații."
+      },
+      "scaling": {
+        "title": "Scalare",
+        "description": "Afișează mai mult conținut pe ecran.",
+        "label": "Scalare",
+        "defaultSuffix": "(implicit)"
+      },
+      "sidebarPosition": {
+        "title": "Poziția barei laterale",
+        "description": "Schimbă poziția barei laterale",
+        "label": "Poziții",
+        "options": {
+          "left": "Stânga",
+          "right": "Dreapta"
+        }
+      }
+    },
+    "account": {
+      "signOut": "Deconectare"
+    }
   }
 }

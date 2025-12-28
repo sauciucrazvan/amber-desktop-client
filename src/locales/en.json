@@ -1,4 +1,8 @@
 {
+  "common": {
+    "help": "Help",
+    "info": "Info"
+  },
   "login": {
     "registerPrompt": "Don't have an account?",
     "registerLink": "Register",
@@ -8,5 +12,72 @@
     "passwordPlaceholder": "Your password",
     "signIn": "Sign in",
     "forgotPassword": "Forgot password?"
+  },
+  "register": {
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Login",
+    "title": "Create an account",
+    "subtitle": "Enter your info below to create your account",
+    "usernamePlaceholder": "Unique username",
+    "usernameHint": "Only letters and numbers are allowed.",
+    "emailPlaceholder": "Your email address",
+    "emailHint": "We'll use this to verify you",
+    "passwordPlaceholder": "Enter password",
+    "passwordHint": "Password must be at least 8 characters",
+    "createAccount": "Create your account",
+    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Application settings",
+    "tabs": {
+      "general": "General",
+      "appearance": "Appearance",
+      "account": "Account"
+    },
+    "general": {
+      "language": {
+        "title": "Language",
+        "description": "Choose the application language",
+        "options": {
+          "en": "English",
+          "ro": "Romanian"
+        }
+      },
+      "help": {
+        "title": "Help",
+        "description": "Found an issue or need help with something?",
+        "action": "Support"
+      },
+      "feedback": {
+        "title": "Feedback",
+        "description": "Help us improve",
+        "action": "Feedback"
+      }
+    },
+    "appearance": {
+      "theme": {
+        "title": "Theme",
+        "description": "This changes the entire application theme."
+      },
+      "scaling": {
+        "title": "Scaling",
+        "description": "Fit more content on your screen.",
+        "label": "Scaling",
+        "defaultSuffix": "(default)"
+      },
+      "sidebarPosition": {
+        "title": "Sidebar Position",
+        "description": "Change the sidebar position",
+        "label": "Positions",
+        "options": {
+          "left": "Left",
+          "right": "Right"
+        }
+      }
+    },
+    "account": {
+      "signOut": "Sign out"
+    }
   }
 }

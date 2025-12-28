@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Electron production loads the renderer via file://, so absolute /asset URLs break.
+  // Using a relative base ensures scripts/styles resolve correctly from dist/index.html.
+  base: './',
   plugins: [
     react(),
     tailwindcss(),

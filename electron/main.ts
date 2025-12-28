@@ -41,6 +41,22 @@ function createWindow() {
     win?.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
+  win.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+    console.error('[renderer] did-fail-load', { errorCode, errorDescription, validatedURL })
+  })
+
+  win.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+    console.log(`[renderer console:${level}] ${message} (${sourceId}:${line})`)
+  })
+
+  win.webContents.on('render-process-gone', (_event, details) => {
+    console.error('[renderer] render-process-gone', details)
+  })
+
+  // if (process.env.DEBUG_PROD === '1') {
+  //   win.webContents.openDevTools({ mode: 'detach' })
+  // }
+
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
   } else {

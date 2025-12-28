@@ -7,6 +7,7 @@ function App() {
     <>
       <main className="min-h-screen min-w-screen flex flex-col gap-1 items-center justify-center">
         <h1 className="text-gray-500">Count: {count}</h1>
+        <button onClick={() => setCount(count + 1)}>Click me!</button>
       </main>
     </>
   )

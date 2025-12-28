@@ -1,7 +1,9 @@
 {
   "name": "amber-desktop-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "author": "Razvan Sauciuc",
+  "description": "The last communication app you'll ever need.",
   "type": "module",
   "scripts": {
     "dev": "vite",

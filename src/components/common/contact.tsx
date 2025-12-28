@@ -2,7 +2,7 @@ import { ShieldBan, Trash } from "lucide-react";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "../ui/context-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 
-export default function Contact({username} : {username : String}) {
+export default function Contact({username} : {username : string}) {
     return (
         <>
             <ContextMenu>

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SettingsIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AppearanceTab from "./tabs/AppearanceTab";
 import AccountTab from "./tabs/AccountTab";
@@ -13,10 +14,34 @@ interface SettingsProps {
 
 export default function Settings(props : SettingsProps) {
     const { t } = useTranslation();
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (!event.ctrlKey) return;
+            if (event.key !== ",") return;
+            if (event.repeat) return;
+
+            const target = event.target as HTMLElement | null;
+            const tagName = target?.tagName?.toLowerCase();
+            const isTypingTarget =
+                tagName === "input" ||
+                tagName === "textarea" ||
+                (target instanceof HTMLElement && target.isContentEditable);
+
+            if (isTypingTarget) return;
+
+            event.preventDefault();
+            setOpen(true);
+        };
+
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, []);
 
     return (
         <>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
                 <form>
                     <DialogTrigger asChild>
                         <Button variant="ghost" className="cursor-pointer"><SettingsIcon /></Button>

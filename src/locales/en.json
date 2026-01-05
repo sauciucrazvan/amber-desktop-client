@@ -103,7 +103,7 @@
         "toast": "Logged out succesfully"
       },
       "delete": {
-        "title": "Delete your account",
+        "title": "Delete account",
         "description": "This action can NOT be reversed!",
         "action": "Delete"
       },

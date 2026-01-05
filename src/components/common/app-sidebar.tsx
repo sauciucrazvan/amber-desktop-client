@@ -18,7 +18,6 @@ import useSWR from "swr";
 type AccountMe = {
   username: string;
   full_name?: string | null;
-  fullName?: string | null;
 };
 
 function initialsFromName(name: string) {
@@ -68,10 +67,8 @@ export default function AppSidebar() {
           <section className="flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
             <Avatar>
               <AvatarFallback>
-                {account?.full_name || account?.fullName
-                  ? initialsFromName(
-                      String(account.full_name ?? account.fullName)
-                    )
+                {account?.full_name
+                  ? initialsFromName(String(account.full_name))
                   : account?.username
                   ? initialsFromName(account.username)
                   : isLoading
@@ -85,7 +82,7 @@ export default function AppSidebar() {
                   ? "Failed to load"
                   : isLoading
                   ? "Loading…"
-                  : (account?.full_name ?? account?.fullName ?? "") || ""}
+                  : (account?.full_name ?? "") || ""}
               </h3>
               <p className="text-muted-foreground text-xs">
                 {error

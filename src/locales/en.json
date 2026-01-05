@@ -8,7 +8,7 @@
     "registerLink": "Register",
     "title": "Login into your account",
     "subtitle": "Enter your credentials below to login",
-    "emailPlaceholder": "Your email address",
+    "usernamePlaceholder": "Your username",
     "passwordPlaceholder": "Your password",
     "signIn": "Sign in",
     "forgotPassword": "Forgot password?"
@@ -20,6 +20,7 @@
     "subtitle": "Enter your info below to create your account",
     "usernamePlaceholder": "Unique username",
     "usernameHint": "Only letters and numbers are allowed.",
+    "fullnamePlaceholder": "Display name",
     "emailPlaceholder": "Your email address",
     "emailHint": "We'll use this to verify you",
     "passwordPlaceholder": "Enter password",

@@ -13,7 +13,8 @@
     "signIn": "Sign in",
     "forgotPassword": "Forgot password?",
     "fillInput": "Fill in the input fields",
-    "incorrectCredentials": "Incorrect username or password."
+    "incorrectCredentials": "Incorrect username or password.",
+    "greeting": "Welcome back!"
   },
   "register": {
     "loginPrompt": "Already have an account?",
@@ -36,7 +37,8 @@
     "invalidName": "Full name must contain your first and last name.",
     "invalidEmail": "Invalid email.",
     "emailTaken": "Email already registered!",
-    "usernameTaken": "Username already taken."
+    "usernameTaken": "Username already taken.",
+    "greeting": "Welcome to Amber!"
   },
   "settings": {
     "title": "Settings",

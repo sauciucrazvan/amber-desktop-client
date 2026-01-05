@@ -17,6 +17,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import Settings from "../settings/Settings";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 export default function RegisterView() {
   const [, setLocation] = useLocation();
@@ -40,6 +41,7 @@ export default function RegisterView() {
         email: email.trim() ? email.trim() : undefined,
       });
       setLocation("/");
+      toast.success(t("register.greeting"));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Registration failed");
     } finally {

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import Settings from "../settings/Settings";
+import { toast } from "sonner";
 
 export default function LoginView() {
   const [, setLocation] = useLocation();
@@ -25,6 +26,7 @@ export default function LoginView() {
     try {
       await login(username, password);
       setLocation("/");
+      toast.success(t("login.greeting"));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Login failed");
     } finally {

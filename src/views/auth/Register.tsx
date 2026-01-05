@@ -10,14 +10,42 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { AtSign, HelpCircle, InfoIcon } from "lucide-react";
+import { useAuth } from "@/auth/AuthContext";
+import { AtSign } from "lucide-react";
+import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import Settings from "../settings/Settings";
+import { Input } from "@/components/ui/input";
 
 export default function RegisterView() {
   const [, setLocation] = useLocation();
   const { t } = useTranslation();
+  const { register } = useAuth();
+  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async () => {
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await register({
+        username,
+        password,
+        fullName,
+        email: email.trim() ? email.trim() : undefined,
+      });
+      setLocation("/");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Registration failed");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -54,6 +82,8 @@ export default function RegisterView() {
                 <InputGroupInput
                   id="username"
                   placeholder={t("register.usernamePlaceholder")}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
                 <InputGroupAddon>
                   <Tooltip>
@@ -74,66 +104,43 @@ export default function RegisterView() {
               </InputGroup>
 
               {/* Full Name */}
-              <InputGroup>
-                <InputGroupInput
-                  placeholder={t("register.fullnamePlaceholder")}
-                />
-              </InputGroup>
+              <Input
+                placeholder={t("register.fullnamePlaceholder")}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
 
               {/* Email */}
-              <InputGroup>
-                <InputGroupInput placeholder={t("register.emailPlaceholder")} />
-                <InputGroupAddon align="inline-end">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <InputGroupButton
-                        variant="ghost"
-                        aria-label={t("common.help")}
-                        size="icon-xs"
-                      >
-                        <HelpCircle />
-                      </InputGroupButton>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{t("register.emailHint")}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </InputGroupAddon>
-              </InputGroup>
+              <Input
+                placeholder={t("register.emailPlaceholder")}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
               {/* Password */}
-              <InputGroup>
-                <InputGroupInput
-                  placeholder={t("register.passwordPlaceholder")}
-                  type="password"
-                />
-                <InputGroupAddon align="inline-end">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <InputGroupButton
-                        variant="ghost"
-                        aria-label={t("common.info")}
-                        size="icon-xs"
-                      >
-                        <InfoIcon />
-                      </InputGroupButton>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{t("register.passwordHint")}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </InputGroupAddon>
-              </InputGroup>
+              <Input
+                placeholder={t("register.passwordPlaceholder")}
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <div className="flex flex-col items-center justify-center gap-2 mt-4 w-75">
               {/* Create Account */}
               <Button
                 className="cursor-pointer"
-                onClick={() => setLocation("/")}
+                onClick={onSubmit}
+                disabled={isSubmitting}
               >
                 {t("register.createAccount")}
               </Button>
+
+              {error ? (
+                <p className="text-destructive text-sm px-6 text-center">
+                  {t(error)}
+                </p>
+              ) : null}
 
               <p
                 data-slot="field-description"

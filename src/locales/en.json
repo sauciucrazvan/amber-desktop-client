@@ -11,7 +11,9 @@
     "usernamePlaceholder": "Your username",
     "passwordPlaceholder": "Your password",
     "signIn": "Sign in",
-    "forgotPassword": "Forgot password?"
+    "forgotPassword": "Forgot password?",
+    "fillInput": "Fill in the input fields",
+    "incorrectCredentials": "Incorrect username or password."
   },
   "register": {
     "loginPrompt": "Already have an account?",
@@ -26,7 +28,15 @@
     "passwordPlaceholder": "Enter password",
     "passwordHint": "Password must be at least 8 characters",
     "createAccount": "Create your account",
-    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>."
+    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "fillInput": "Fill in the input fields",
+    "invalidUsername": "Invalid username. Must contain no spaces or special characters. Maximum length is 16.",
+    "invalidPassword": "Invalid password. Must be at least 8 characters long, have at least one lowercase letter, one uppercase letter and one digit.",
+    "nameRequired": "Full name required.",
+    "invalidName": "Full name must contain your first and last name.",
+    "invalidEmail": "Invalid email.",
+    "emailTaken": "Email already registered!",
+    "usernameTaken": "Username already taken."
   },
   "settings": {
     "title": "Settings",

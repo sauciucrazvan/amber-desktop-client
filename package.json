@@ -1,7 +1,7 @@
 {
   "name": "amber-desktop-app",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Răzvan Sauciuc",
   "description": "The last communication app you'll ever need.",
   "type": "module",
@@ -28,6 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^16.5.0",
+    "swr": "^2.3.8",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18",
     "wouter": "^3.9.0"

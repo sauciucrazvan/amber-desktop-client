@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/auth/AuthContext";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import Settings from "../settings/Settings";
@@ -7,6 +9,28 @@ import Settings from "../settings/Settings";
 export default function LoginView() {
   const [, setLocation] = useLocation();
   const { t } = useTranslation();
+  const { login, isAuthenticated } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) setLocation("/");
+  }, [isAuthenticated, setLocation]);
+
+  const onSubmit = async () => {
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      await login(username, password);
+      setLocation("/");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Login failed");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -39,12 +63,18 @@ export default function LoginView() {
 
             <div className="w-75 mt-4 flex flex-col gap-2">
               {/* Username */}
-              <Input placeholder={t("login.usernamePlaceholder")} />
+              <Input
+                placeholder={t("login.usernamePlaceholder")}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
 
               {/* Password */}
               <Input
                 placeholder={t("login.passwordPlaceholder")}
                 type={"password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -52,10 +82,17 @@ export default function LoginView() {
               {/* Create Account */}
               <Button
                 className="cursor-pointer"
-                onClick={() => setLocation("/")}
+                onClick={onSubmit}
+                disabled={isSubmitting}
               >
                 {t("login.signIn")}
               </Button>
+
+              {error ? (
+                <p className="text-destructive text-sm px-6 text-center">
+                  {t(error)}
+                </p>
+              ) : null}
 
               <p
                 data-slot="field-description"

@@ -139,9 +139,7 @@ function createWindow() {
     console.error("[renderer] render-process-gone", details);
   });
 
-  // if (process.env.DEBUG_PROD === '1') {
-  //   win.webContents.openDevTools({ mode: 'detach' })
-  // }
+  win.webContents.openDevTools({ mode: "detach" });
 
   win.once("ready-to-show", () => {
     win?.show();

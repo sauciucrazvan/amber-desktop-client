@@ -97,7 +97,8 @@
       "signOut": {
         "title": "Sign out",
         "description": "You'll be redirected to the login page.",
-        "action": "Sign out"
+        "action": "Sign out",
+        "toast": "Logged out succesfully"
       },
       "delete": {
         "title": "Delete your account",

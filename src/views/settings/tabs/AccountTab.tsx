@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LogOut, Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { useLocation } from "wouter";
 
 export default function AccountTab() {
@@ -46,6 +47,7 @@ export default function AccountTab() {
           onClick={() => {
             logout();
             setLocation("/login");
+            toast.success(t("settings.account.signOut.toast"));
           }}
         >
           <LogOut /> {t("settings.account.signOut.action")}

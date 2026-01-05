@@ -2,7 +2,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, Trash } from "lucide-react";
+import { LogOut, Shield, Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -95,7 +95,7 @@ export default function AccountTab() {
         <Button
           size="sm"
           variant="outline"
-          className="cursor-pointer hover:text-white/80"
+          className="cursor-pointer hover:text-white/80 w-[30%]"
           onClick={() => {
             logout();
             setLocation("/login");
@@ -119,7 +119,7 @@ export default function AccountTab() {
         <Button
           size="sm"
           variant="outline"
-          className="cursor-pointer hover:text-white/80"
+          className="cursor-pointer hover:text-white/80 w-[30%]"
           onClick={() => {
             logout();
             setLocation("/login");
@@ -127,6 +127,26 @@ export default function AccountTab() {
           }}
         >
           <Trash /> {t("settings.account.delete.action")}
+        </Button>
+      </div>
+
+      <div className="flex flex-row items-center justify-between gap-1 mt-2">
+        <div>
+          <h3 className="text-md text-primary">
+            {t("settings.account.data.title")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t("settings.account.data.description")}
+          </p>
+        </div>
+
+        <Button
+          size="sm"
+          variant="outline"
+          className="cursor-pointer hover:text-white/80 w-[30%]"
+          onClick={() => {}}
+        >
+          <Shield /> {t("settings.account.data.action")}
         </Button>
       </div>
     </>

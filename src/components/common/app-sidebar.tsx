@@ -12,13 +12,38 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import Contact from "./contact";
+import { useAuth } from "@/auth/AuthContext";
+import useSWR from "swr";
+
+type AccountMe = {
+  username: string;
+  full_name?: string | null;
+  fullName?: string | null;
+};
+
+function initialsFromName(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  const first = parts[0]?.[0] ?? "";
+  const last = parts.length > 1 ? parts[parts.length - 1]?.[0] ?? "" : "";
+  const initials = (first + last).toUpperCase();
+  return initials || "?";
+}
 
 export default function AppSidebar() {
+  const { isAuthenticated } = useAuth();
+  const {
+    data: account,
+    error,
+    isLoading,
+  } = useSWR<AccountMe>(isAuthenticated ? "/account/me" : null);
+
   const contacts = ["Michael J.", "John Steel", "Freddie Mercury", "Lego man"];
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =
     storedSidebarPos === "right" ? "right" : "left";
+
+  if (!isAuthenticated) return <>Unauthorized.</>;
 
   return (
     <>
@@ -42,11 +67,35 @@ export default function AppSidebar() {
           <Separator />
           <section className="flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
             <Avatar>
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>
+                {account?.full_name || account?.fullName
+                  ? initialsFromName(
+                      String(account.full_name ?? account.fullName)
+                    )
+                  : account?.username
+                  ? initialsFromName(account.username)
+                  : isLoading
+                  ? "…"
+                  : "?"}
+              </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start gap-1">
-              <h3 className="text-md leading-tight">John Doe</h3>
-              <p className="text-muted-foreground text-xs">Busy</p>
+              <h3 className="text-md leading-tight">
+                {error
+                  ? "Failed to load"
+                  : isLoading
+                  ? "Loading…"
+                  : (account?.full_name ?? account?.fullName ?? "") || ""}
+              </h3>
+              <p className="text-muted-foreground text-xs">
+                {error
+                  ? ""
+                  : isLoading
+                  ? ""
+                  : account?.username
+                  ? `@${account.username}`
+                  : ""}
+              </p>
             </div>
           </section>
         </SidebarFooter>

@@ -1,54 +1,62 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react"
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 
-type Theme = "dark" | "light"
+type Theme = "dark" | "light";
 
 type ThemeContextType = {
-  theme: Theme
-  setTheme: (theme: Theme) => void
-}
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+};
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark")
-  const [fontScale] = useState<string>(() => localStorage.getItem("fontScale") ?? "100");
+  const [theme, setThemeState] = useState<Theme>("dark");
+  const [fontScale] = useState<string>(
+    () => localStorage.getItem("amber.fontScale") ?? "100"
+  );
 
   useEffect(() => {
-      document.documentElement.style.fontSize = `${fontScale}%`;
-      localStorage.setItem("fontScale", fontScale);
+    document.documentElement.style.fontSize = `${fontScale}%`;
+    localStorage.setItem("amber.fontScale", fontScale);
   }, [fontScale]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null
+    const stored = localStorage.getItem("theme") as Theme | null;
     if (stored && (stored === "dark" || stored === "light")) {
-      setThemeState(stored)
+      setThemeState(stored);
     } else {
-      setThemeState("dark")
+      setThemeState("dark");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.remove("light", "dark")
-    root.classList.add(theme)
-    localStorage.setItem("theme", theme)
-  }, [theme])
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    localStorage.setItem("amber.theme", theme);
+  }, [theme]);
 
   const setTheme = (newTheme: Theme) => {
-    setThemeState(newTheme)
-  }
+    setThemeState(newTheme);
+  };
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
     </ThemeContext.Provider>
-  )
+  );
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext)
+  const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider")
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
-  return context
+  return context;
 }

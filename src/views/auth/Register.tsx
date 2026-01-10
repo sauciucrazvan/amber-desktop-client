@@ -86,6 +86,11 @@ export default function RegisterView() {
                   placeholder={t("register.usernamePlaceholder")}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      onSubmit();
+                    }
+                  }}
                 />
                 <InputGroupAddon>
                   <Tooltip>
@@ -110,6 +115,11 @@ export default function RegisterView() {
                 placeholder={t("register.fullnamePlaceholder")}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
 
               {/* Email */}
@@ -117,6 +127,11 @@ export default function RegisterView() {
                 placeholder={t("register.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
 
               {/* Password */}
@@ -125,6 +140,11 @@ export default function RegisterView() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
             </div>
 

@@ -69,6 +69,11 @@ export default function LoginView() {
                 placeholder={t("login.usernamePlaceholder")}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
 
               {/* Password */}
@@ -77,6 +82,11 @@ export default function LoginView() {
                 type={"password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
             </div>
 

@@ -9,6 +9,7 @@ import { useLocation } from "wouter";
 import ChangeName from "./dialogs/ChangeName";
 import HiddenComponent from "@/components/ui/hidden-component";
 import ChangePassword from "./dialogs/ChangePassword";
+import ChangeEmail from "./dialogs/ChangeEmail";
 
 type AccountMe = {
   username: string;
@@ -87,11 +88,7 @@ export default function AccountTab() {
       <section className="w-full inline-flex items-start justify-center gap-1">
         <div className="flex flex-col items-start">
           <ChangeName />
-
-          <Button variant="link" className="cursor-pointer" onClick={() => {}}>
-            {t("settings.account.email.title")}
-          </Button>
-
+          <ChangeEmail />
           <ChangePassword />
         </div>
         <div className="flex flex-col items-end">

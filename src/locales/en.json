@@ -127,7 +127,10 @@
         "new_password_confirmation": "New password confirmation"
       },
       "email": {
-        "title": "Change Email"
+        "title": "Change Email",
+        "description": "Change your account's email. Make sure it is valid.",
+        "same": "You can't change your email to your current one.",
+        "updated": "Successfully updated your email address!"
       },
       "name": {
         "title": "Change Display Name",

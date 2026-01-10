@@ -79,6 +79,11 @@ export default function DeleteAccount() {
               type="password"
               onChange={(e) => setPassword(e.target.value)}
               disabled={isSubmitting}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSubmit();
+                }
+              }}
             />
 
             {error && <p className="text-red-500">{t(error)}</p>}

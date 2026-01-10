@@ -97,6 +97,11 @@ export default function ChangeName() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               disabled={isSubmitting}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSubmit();
+                }
+              }}
             />
 
             {error && (

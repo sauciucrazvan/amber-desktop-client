@@ -111,7 +111,8 @@
       "delete": {
         "title": "Delete Account",
         "description": "Permanently erase all of your data. Enter your current password below to complete this action. Make sure, as this can't be reversed!",
-        "action": "Delete"
+        "action": "Delete",
+        "toast": "Succesfully deleted your account"
       },
       "data": {
         "title": "Request Personal Data",

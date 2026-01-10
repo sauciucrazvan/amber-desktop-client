@@ -83,6 +83,11 @@ export default function ChangePassword() {
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
 
               <Input
@@ -90,6 +95,11 @@ export default function ChangePassword() {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
 
               <Input
@@ -99,6 +109,11 @@ export default function ChangePassword() {
                 type="password"
                 value={newPasswordConfirmation}
                 onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
               />
             </section>
 

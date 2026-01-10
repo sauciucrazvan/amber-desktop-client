@@ -1,7 +1,11 @@
 {
   "common": {
     "help": "Aide",
-    "info": "Info"
+    "info": "Info",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "submit": "Envoyer",
+    "cancel": "Annuler"
   },
   "login": {
     "registerPrompt": "Vous n'avez pas de compte ?",
@@ -12,9 +16,10 @@
     "passwordPlaceholder": "Votre mot de passe",
     "signIn": "Se connecter",
     "forgotPassword": "Mot de passe oublié ?",
-    "fillInput": "Remplissez les champs de saisie",
+    "fillInput": "Remplissez les champs",
     "incorrectCredentials": "Nom d'utilisateur ou mot de passe incorrect.",
-    "greeting": "Bon retour !"
+    "greeting": "Bon retour !",
+    "account_disabled": "Ce compte a été supprimé."
   },
   "register": {
     "loginPrompt": "Vous avez déjà un compte ?",
@@ -30,10 +35,11 @@
     "passwordHint": "Le mot de passe doit contenir au moins 8 caractères",
     "createAccount": "Créer votre compte",
     "terms": "En continuant, vous acceptez nos <terms>Conditions d'utilisation</terms> et notre <privacy>Politique de confidentialité</privacy>.",
-    "fillInput": "Remplissez les champs de saisie",
+    "fillInput": "Remplissez les champs",
     "invalidUsername": "Nom d'utilisateur invalide. Aucun espace ni caractère spécial. Longueur maximale : 16.",
     "invalidPassword": "Mot de passe invalide. Il doit contenir au moins 8 caractères, au moins une minuscule, une majuscule et un chiffre.",
     "nameRequired": "Nom complet requis.",
+    "emailRequired": "L'e-mail est requis",
     "invalidName": "Le nom complet doit contenir votre prénom et votre nom.",
     "invalidEmail": "E-mail invalide.",
     "emailTaken": "E-mail déjà enregistré !",
@@ -98,32 +104,43 @@
     "account": {
       "signOut": {
         "title": "Se déconnecter",
-        "description": "Vous serez redirigé vers la page de connexion.",
+        "description": "Voulez-vous vraiment vous déconnecter ? Vous serez redirigé vers la page de connexion.",
         "action": "Se déconnecter",
         "toast": "Déconnexion réussie"
       },
       "delete": {
         "title": "Supprimer le compte",
-        "description": "Cette action ne peut PAS être annulée !",
-        "action": "Supprimer"
+        "description": "Supprime définitivement toutes vos données. Cette action ne peut pas être annulée par le support.",
+        "action": "Supprimer",
+        "toast": "Compte supprimé avec succès"
       },
       "data": {
-        "title": "Données personnelles",
+        "title": "Demander des données personnelles",
         "description": "Demandez toutes les données que nous avons sur vous",
         "action": "Demander"
       },
       "password": {
-        "title": "Mot de passe",
-        "description": "Modifiez votre mot de passe",
+        "title": "Changer le mot de passe",
+        "description": "Modifiez votre mot de passe. N'oubliez pas : au moins une minuscule, une majuscule, un chiffre et un caractère spécial.",
         "action": "Changer",
         "different": "Les mots de passe ne correspondent pas.",
-        "updated": "Votre mot de passe a été mis à jour avec succès."
+        "updated": "Votre mot de passe a été mis à jour avec succès.",
+        "current_password": "Mot de passe actuel",
+        "new_password": "Nouveau mot de passe",
+        "new_password_confirmation": "Confirmation du nouveau mot de passe"
+      },
+      "email": {
+        "title": "Changer l'e-mail",
+        "description": "Modifiez l'e-mail de votre compte. Assurez-vous qu'il est valide.",
+        "same": "Vous ne pouvez pas remplacer votre e-mail par votre e-mail actuel.",
+        "updated": "Adresse e-mail mise à jour avec succès !"
       },
       "name": {
-        "title": "Modifier votre nom complet",
-        "description": "Cette action n'est disponible qu'une fois par an. Si vous avez fait une erreur, contactez le support.",
-        "same": "Votre nouveau nom complet est identique à votre nom actuel.",
-        "updated": "Nom mis à jour avec succès. Prochaine modification disponible dans un an.",
+        "title": "Changer le nom d'affichage",
+        "description": "Cette action n'est disponible qu'une fois par semaine.",
+        "action": "Changer",
+        "same": "Impossible de mettre à jour le nom complet avec celui actuel.",
+        "updated": "Nom complet mis à jour avec succès. Prochaine modification disponible dans une semaine.",
         "tooSoon": "Vous avez atteint votre limite de modification. Vous pourrez modifier votre nom dans <time>{{days}}</time> jours."
       }
     }

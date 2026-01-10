@@ -1,7 +1,11 @@
 {
   "common": {
     "help": "Hilfe",
-    "info": "Info"
+    "info": "Info",
+    "show": "Anzeigen",
+    "hide": "Ausblenden",
+    "submit": "Senden",
+    "cancel": "Abbrechen"
   },
   "login": {
     "registerPrompt": "Noch kein Konto?",
@@ -14,7 +18,8 @@
     "forgotPassword": "Passwort vergessen?",
     "fillInput": "Fülle die Eingabefelder aus",
     "incorrectCredentials": "Falscher Benutzername oder Passwort.",
-    "greeting": "Willkommen zurück!"
+    "greeting": "Willkommen zurück!",
+    "account_disabled": "Dieses Konto wurde gelöscht."
   },
   "register": {
     "loginPrompt": "Schon ein Konto?",
@@ -28,12 +33,13 @@
     "emailHint": "Wir verwenden dies, um dich zu verifizieren",
     "passwordPlaceholder": "Passwort eingeben",
     "passwordHint": "Das Passwort muss mindestens 8 Zeichen lang sein",
-    "createAccount": "Konto erstellen",
+    "createAccount": "Erstelle dein Konto",
     "terms": "Wenn du fortfährst, stimmst du unseren <terms>Nutzungsbedingungen</terms> und unserer <privacy>Datenschutzerklärung</privacy> zu.",
     "fillInput": "Fülle die Eingabefelder aus",
     "invalidUsername": "Ungültiger Benutzername. Keine Leerzeichen oder Sonderzeichen. Maximale Länge ist 16.",
     "invalidPassword": "Ungültiges Passwort. Mindestens 8 Zeichen, mindestens ein Kleinbuchstabe, ein Großbuchstabe und eine Ziffer.",
     "nameRequired": "Vollständiger Name erforderlich.",
+    "emailRequired": "E-Mail ist erforderlich",
     "invalidName": "Der vollständige Name muss Vor- und Nachname enthalten.",
     "invalidEmail": "Ungültige E-Mail.",
     "emailTaken": "E-Mail bereits registriert!",
@@ -65,7 +71,7 @@
       },
       "help": {
         "title": "Hilfe",
-        "description": "Problem gefunden oder brauchst du Hilfe?",
+        "description": "Problem gefunden oder brauchst du Hilfe bei etwas?",
         "action": "Support"
       },
       "feedback": {
@@ -98,32 +104,43 @@
     "account": {
       "signOut": {
         "title": "Abmelden",
-        "description": "Du wirst zur Login-Seite weitergeleitet.",
+        "description": "Möchtest du dich wirklich abmelden? Du wirst zur Login-Seite weitergeleitet.",
         "action": "Abmelden",
         "toast": "Erfolgreich abgemeldet"
       },
       "delete": {
         "title": "Konto löschen",
-        "description": "Diese Aktion kann NICHT rückgängig gemacht werden!",
-        "action": "Löschen"
+        "description": "Löscht dauerhaft alle deine Daten. Diese Aktion kann vom Support nicht rückgängig gemacht werden.",
+        "action": "Löschen",
+        "toast": "Konto erfolgreich gelöscht"
       },
       "data": {
-        "title": "Persönliche Daten",
+        "title": "Persönliche Daten anfordern",
         "description": "Fordere alle Daten an, die wir über dich haben",
         "action": "Anfordern"
       },
       "password": {
-        "title": "Passwort",
-        "description": "Ändere dein Passwort",
+        "title": "Passwort ändern",
+        "description": "Ändere dein Passwort. Denk daran: mindestens ein Klein- und ein Großbuchstabe, eine Zahl und ein Sonderzeichen.",
         "action": "Ändern",
         "different": "Die Passwörter stimmen nicht überein.",
-        "updated": "Passwort erfolgreich aktualisiert."
+        "updated": "Passwort erfolgreich aktualisiert.",
+        "current_password": "Aktuelles Passwort",
+        "new_password": "Neues Passwort",
+        "new_password_confirmation": "Neues Passwort bestätigen"
+      },
+      "email": {
+        "title": "E-Mail ändern",
+        "description": "Ändere die E-Mail-Adresse deines Kontos. Stelle sicher, dass sie gültig ist.",
+        "same": "Du kannst deine E-Mail nicht auf deine aktuelle ändern.",
+        "updated": "Deine E-Mail-Adresse wurde erfolgreich aktualisiert!"
       },
       "name": {
-        "title": "Vollständigen Namen ändern",
-        "description": "Diese Aktion ist nur einmal pro Jahr verfügbar. Wenn du einen Fehler gemacht hast, kontaktiere den Support.",
-        "same": "Dein neuer vollständiger Name ist derselbe wie dein aktueller.",
-        "updated": "Name erfolgreich aktualisiert. Nächste Änderung in einem Jahr möglich.",
+        "title": "Anzeigenamen ändern",
+        "description": "Diese Aktion ist nur einmal pro Woche verfügbar.",
+        "action": "Ändern",
+        "same": "Du kannst deinen vollständigen Namen nicht auf deinen aktuellen ändern.",
+        "updated": "Vollständiger Name erfolgreich aktualisiert. Nächste Änderung in einer Woche möglich.",
         "tooSoon": "Du hast dein Änderungslimit erreicht. Du kannst deinen Namen in <time>{{days}}</time> Tagen wieder ändern."
       }
     }

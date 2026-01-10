@@ -1,7 +1,11 @@
 {
   "common": {
     "help": "帮助",
-    "info": "信息"
+    "info": "信息",
+    "show": "显示",
+    "hide": "隐藏",
+    "submit": "提交",
+    "cancel": "取消"
   },
   "login": {
     "registerPrompt": "还没有账号？",
@@ -14,7 +18,8 @@
     "forgotPassword": "忘记密码？",
     "fillInput": "请填写输入框",
     "incorrectCredentials": "用户名或密码不正确。",
-    "greeting": "欢迎回来！"
+    "greeting": "欢迎回来！",
+    "account_disabled": "该账号已被删除。"
   },
   "register": {
     "loginPrompt": "已经有账号？",
@@ -34,6 +39,7 @@
     "invalidUsername": "用户名无效。不得包含空格或特殊字符。最大长度为 16。",
     "invalidPassword": "密码无效。至少 8 个字符，且至少包含 1 个小写字母、1 个大写字母和 1 个数字。",
     "nameRequired": "必须填写全名。",
+    "emailRequired": "邮箱是必填项",
     "invalidName": "全名必须包含名和姓。",
     "invalidEmail": "邮箱格式不正确。",
     "emailTaken": "该邮箱已被注册！",
@@ -65,7 +71,7 @@
       },
       "help": {
         "title": "帮助",
-        "description": "遇到问题或需要帮助？",
+        "description": "遇到问题或需要帮助处理某些事情？",
         "action": "支持"
       },
       "feedback": {
@@ -98,33 +104,44 @@
     "account": {
       "signOut": {
         "title": "退出登录",
-        "description": "你将被重定向到登录页面。",
+        "description": "确定要退出登录吗？你将被重定向到登录页面。",
         "action": "退出登录",
         "toast": "已成功退出登录"
       },
       "delete": {
         "title": "删除账号",
-        "description": "此操作无法撤销！",
-        "action": "删除"
+        "description": "将永久删除你的所有数据。此操作无法由支持撤销。",
+        "action": "删除",
+        "toast": "账号已成功删除"
       },
       "data": {
-        "title": "个人数据",
+        "title": "请求个人数据",
         "description": "请求我们所保存的所有关于你的数据",
         "action": "请求"
       },
       "password": {
-        "title": "密码",
-        "description": "修改你的密码",
+        "title": "更改密码",
+        "description": "修改你的密码。请注意：至少包含一个小写字母、一个大写字母、一个数字和一个特殊字符。",
         "action": "更改",
         "different": "两次输入的密码不一致。",
-        "updated": "密码已成功更新。"
+        "updated": "密码已成功更新。",
+        "current_password": "当前密码",
+        "new_password": "新密码",
+        "new_password_confirmation": "确认新密码"
+      },
+      "email": {
+        "title": "更改邮箱",
+        "description": "更改你账号的邮箱。请确保邮箱有效。",
+        "same": "你不能将邮箱更改为当前邮箱。",
+        "updated": "邮箱地址已成功更新！"
       },
       "name": {
-        "title": "更改你的全名",
-        "description": "此操作每年仅可使用一次。如有错误，请联系支持。",
-        "same": "你的新全名与当前全名相同。",
-        "updated": "全名已成功更新。下一次可在一年后更改。",
-        "tooSoon": "你已达到更改次数上限。你可以在 <time>{{days}}</time> 天后再次修改姓名。"
+        "title": "更改显示名称",
+        "description": "此操作每周仅可使用一次。",
+        "action": "更改",
+        "same": "无法将全名更新为当前全名。",
+        "updated": "显示名称已成功更新。下一次可在一周后更改。",
+        "tooSoon": "你已达到更改次数上限。你可以在 <time>{{days}}</time> 天后修改姓名。"
       }
     }
   }

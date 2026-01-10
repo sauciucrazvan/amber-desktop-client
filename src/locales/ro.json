@@ -1,26 +1,31 @@
 {
   "common": {
     "help": "Ajutor",
-    "info": "Informații"
+    "info": "Informații",
+    "show": "Afișează",
+    "hide": "Ascunde",
+    "submit": "Trimite",
+    "cancel": "Anulează"
   },
   "login": {
     "registerPrompt": "Nu ai cont?",
     "registerLink": "Înregistrează-te",
     "title": "Autentifică-te în contul tău",
-    "subtitle": "Introdu datele de mai jos pentru autentificare",
+    "subtitle": "Introdu datele de mai jos pentru a te autentifica",
     "usernamePlaceholder": "Numele tău de utilizator",
     "passwordPlaceholder": "Parola ta",
     "signIn": "Autentificare",
     "forgotPassword": "Ai uitat parola?",
-    "fillInput": "Completează câmpurile de intrare",
+    "fillInput": "Completează câmpurile",
     "incorrectCredentials": "Nume de utilizator sau parolă incorecte.",
-    "greeting": "Bine ai revenit!"
+    "greeting": "Bine ai revenit!",
+    "account_disabled": "Acest cont a fost șters."
   },
   "register": {
     "loginPrompt": "Ai deja cont?",
     "loginLink": "Autentifică-te",
     "title": "Creează un cont",
-    "subtitle": "Introdu datele de mai jos pentru a crea contul",
+    "subtitle": "Introdu datele de mai jos pentru a-ți crea contul",
     "usernamePlaceholder": "Nume de utilizator unic",
     "usernameHint": "Sunt permise doar litere și cifre.",
     "fullnamePlaceholder": "Nume afișat",
@@ -28,12 +33,13 @@
     "emailHint": "Vom folosi asta pentru a-ți verifica contul",
     "passwordPlaceholder": "Introdu parola",
     "passwordHint": "Parola trebuie să aibă cel puțin 8 caractere",
-    "createAccount": "Creează contul",
+    "createAccount": "Creează-ți contul",
     "terms": "Continuând, ești de acord cu <terms>Termenii de utilizare</terms> și <privacy>Politica de confidențialitate</privacy>.",
-    "fillInput": "Completează câmpurile de intrare",
+    "fillInput": "Completează câmpurile",
     "invalidUsername": "Nume de utilizator invalid. Nu trebuie să conțină spații sau caractere speciale. Lungimea maximă este 16.",
     "invalidPassword": "Parolă invalidă. Trebuie să aibă cel puțin 8 caractere, cel puțin o literă mică, o literă mare și o cifră.",
     "nameRequired": "Numele complet este obligatoriu.",
+    "emailRequired": "Emailul este obligatoriu",
     "invalidName": "Numele complet trebuie să conțină prenumele și numele de familie.",
     "invalidEmail": "Email invalid.",
     "emailTaken": "Email deja înregistrat!",
@@ -65,7 +71,7 @@
       },
       "help": {
         "title": "Ajutor",
-        "description": "Ai găsit o problemă sau ai nevoie de ajutor?",
+        "description": "Ai găsit o problemă sau ai nevoie de ajutor cu ceva?",
         "action": "Suport"
       },
       "feedback": {
@@ -98,32 +104,43 @@
     "account": {
       "signOut": {
         "title": "Deconectare",
-        "description": "Vei fi redirecționat către pagina de autentificare.",
+        "description": "Ești sigur că vrei să te deconectezi? Vei fi redirecționat către pagina de autentificare.",
         "action": "Deconectare",
         "toast": "Te-ai deconectat cu succes"
       },
       "delete": {
         "title": "Șterge contul",
-        "description": "Această acțiune NU poate fi anulată!",
-        "action": "Șterge"
+        "description": "Îți șterge permanent toate datele. Această acțiune nu poate fi anulată de suport.",
+        "action": "Șterge",
+        "toast": "Ți-ai șters contul cu succes"
       },
       "data": {
-        "title": "Date personale",
+        "title": "Solicită date personale",
         "description": "Solicită toate datele pe care le avem despre tine",
         "action": "Solicită"
       },
       "password": {
-        "title": "Parolă",
-        "description": "Modifică parola",
+        "title": "Schimbă parola",
+        "description": "Modifică parola. Reține: trebuie să folosești cel puțin o literă mică și una mare, un număr și un caracter special.",
         "action": "Schimbă",
         "different": "Parolele nu se potrivesc.",
-        "updated": "Parola a fost actualizată cu succes."
+        "updated": "Parola a fost actualizată cu succes.",
+        "current_password": "Parola curentă",
+        "new_password": "Parola nouă",
+        "new_password_confirmation": "Confirmare parolă nouă"
+      },
+      "email": {
+        "title": "Schimbă emailul",
+        "description": "Schimbă emailul contului tău. Asigură-te că este valid.",
+        "same": "Nu poți schimba emailul în cel curent.",
+        "updated": "Adresa de email a fost actualizată cu succes!"
       },
       "name": {
-        "title": "Schimbă numele complet",
-        "description": "Această acțiune este disponibilă doar o dată pe an. Dacă ai făcut o greșeală, contactează suportul.",
-        "same": "Noul tău nume este același cu cel curent.",
-        "updated": "Numele a fost actualizat cu succes. Următoarea schimbare este disponibilă peste un an.",
+        "title": "Schimbă numele afișat",
+        "description": "Această acțiune este disponibilă doar o dată pe săptămână.",
+        "action": "Schimbă",
+        "same": "Nu poți actualiza numele complet cu cel curent.",
+        "updated": "Numele complet a fost actualizat cu succes. Următoarea schimbare este disponibilă peste o săptămână.",
         "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time>{{days}}</time> zile."
       }
     }

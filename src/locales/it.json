@@ -1,7 +1,11 @@
 {
   "common": {
     "help": "Aiuto",
-    "info": "Informazioni"
+    "info": "Informazioni",
+    "show": "Mostra",
+    "hide": "Nascondi",
+    "submit": "Invia",
+    "cancel": "Annulla"
   },
   "login": {
     "registerPrompt": "Non hai un account?",
@@ -12,15 +16,16 @@
     "passwordPlaceholder": "La tua password",
     "signIn": "Accedi",
     "forgotPassword": "Password dimenticata?",
-    "fillInput": "Compila i campi di input",
+    "fillInput": "Compila i campi",
     "incorrectCredentials": "Nome utente o password non corretti.",
-    "greeting": "Bentornato!"
+    "greeting": "Bentornato!",
+    "account_disabled": "Questo account è stato eliminato."
   },
   "register": {
     "loginPrompt": "Hai già un account?",
     "loginLink": "Accedi",
     "title": "Crea un account",
-    "subtitle": "Inserisci i tuoi dati qui sotto per creare l'account",
+    "subtitle": "Inserisci i tuoi dati qui sotto per creare il tuo account",
     "usernamePlaceholder": "Nome utente univoco",
     "usernameHint": "Sono consentite solo lettere e numeri.",
     "fullnamePlaceholder": "Nome visualizzato",
@@ -30,10 +35,11 @@
     "passwordHint": "La password deve contenere almeno 8 caratteri",
     "createAccount": "Crea il tuo account",
     "terms": "Continuando, accetti i nostri <terms>Termini di servizio</terms> e la nostra <privacy>Informativa sulla privacy</privacy>.",
-    "fillInput": "Compila i campi di input",
+    "fillInput": "Compila i campi",
     "invalidUsername": "Nome utente non valido. Non deve contenere spazi o caratteri speciali. La lunghezza massima è 16.",
     "invalidPassword": "Password non valida. Deve essere lunga almeno 8 caratteri, contenere almeno una lettera minuscola, una maiuscola e una cifra.",
     "nameRequired": "Nome completo richiesto.",
+    "emailRequired": "L'email è obbligatoria",
     "invalidName": "Il nome completo deve contenere nome e cognome.",
     "invalidEmail": "Email non valida.",
     "emailTaken": "Email già registrata!",
@@ -65,7 +71,7 @@
       },
       "help": {
         "title": "Aiuto",
-        "description": "Hai trovato un problema o hai bisogno di aiuto?",
+        "description": "Hai trovato un problema o hai bisogno di aiuto con qualcosa?",
         "action": "Supporto"
       },
       "feedback": {
@@ -98,32 +104,43 @@
     "account": {
       "signOut": {
         "title": "Disconnetti",
-        "description": "Verrai reindirizzato alla pagina di accesso.",
+        "description": "Sei sicuro di voler uscire? Verrai reindirizzato alla pagina di accesso.",
         "action": "Disconnetti",
         "toast": "Disconnessione avvenuta con successo"
       },
       "delete": {
         "title": "Elimina account",
-        "description": "Questa azione NON può essere annullata!",
-        "action": "Elimina"
+        "description": "Elimina definitivamente tutti i tuoi dati. Questa azione non può essere annullata dal supporto.",
+        "action": "Elimina",
+        "toast": "Account eliminato con successo"
       },
       "data": {
-        "title": "Dati personali",
+        "title": "Richiedi dati personali",
         "description": "Richiedi tutti i dati che abbiamo su di te",
         "action": "Richiedi"
       },
       "password": {
-        "title": "Password",
-        "description": "Modifica la tua password",
+        "title": "Cambia password",
+        "description": "Modifica la tua password. Ricorda: devi usare almeno una lettera minuscola e una maiuscola, un numero e un carattere speciale.",
         "action": "Cambia",
         "different": "Le password non corrispondono.",
-        "updated": "Password aggiornata con successo."
+        "updated": "Password aggiornata con successo.",
+        "current_password": "Password attuale",
+        "new_password": "Nuova password",
+        "new_password_confirmation": "Conferma nuova password"
+      },
+      "email": {
+        "title": "Cambia email",
+        "description": "Cambia l'email del tuo account. Assicurati che sia valida.",
+        "same": "Non puoi cambiare l'email con quella attuale.",
+        "updated": "Indirizzo email aggiornato con successo!"
       },
       "name": {
-        "title": "Cambia il tuo nome completo",
-        "description": "Questa azione è disponibile solo una volta all'anno. Se hai commesso un errore, contatta il supporto.",
-        "same": "Il tuo nuovo nome completo è uguale a quello attuale.",
-        "updated": "Nome aggiornato con successo. La prossima modifica sarà disponibile tra un anno.",
+        "title": "Cambia nome visualizzato",
+        "description": "Questa azione è disponibile solo una volta alla settimana.",
+        "action": "Cambia",
+        "same": "Non puoi aggiornare il nome completo con quello attuale.",
+        "updated": "Nome completo aggiornato con successo. La prossima modifica sarà disponibile tra una settimana.",
         "tooSoon": "Hai raggiunto il limite di modifiche. Potrai modificare il tuo nome tra <time>{{days}}</time> giorni."
       }
     }

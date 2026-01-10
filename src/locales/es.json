@@ -1,7 +1,11 @@
 {
   "common": {
     "help": "Ayuda",
-    "info": "Información"
+    "info": "Información",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "submit": "Enviar",
+    "cancel": "Cancelar"
   },
   "login": {
     "registerPrompt": "¿No tienes una cuenta?",
@@ -12,9 +16,10 @@
     "passwordPlaceholder": "Tu contraseña",
     "signIn": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "fillInput": "Rellena los campos de entrada",
+    "fillInput": "Rellena los campos",
     "incorrectCredentials": "Nombre de usuario o contraseña incorrectos.",
-    "greeting": "¡Bienvenido de nuevo!"
+    "greeting": "¡Bienvenido de nuevo!",
+    "account_disabled": "Esta cuenta ha sido eliminada."
   },
   "register": {
     "loginPrompt": "¿Ya tienes una cuenta?",
@@ -30,10 +35,11 @@
     "passwordHint": "La contraseña debe tener al menos 8 caracteres",
     "createAccount": "Crear tu cuenta",
     "terms": "Al continuar, aceptas nuestros <terms>Términos de servicio</terms> y nuestra <privacy>Política de privacidad</privacy>.",
-    "fillInput": "Rellena los campos de entrada",
+    "fillInput": "Rellena los campos",
     "invalidUsername": "Nombre de usuario no válido. No debe contener espacios ni caracteres especiales. La longitud máxima es 16.",
     "invalidPassword": "Contraseña no válida. Debe tener al menos 8 caracteres, al menos una letra minúscula, una mayúscula y un dígito.",
     "nameRequired": "Se requiere el nombre completo.",
+    "emailRequired": "El correo electrónico es obligatorio",
     "invalidName": "El nombre completo debe contener tu nombre y apellido.",
     "invalidEmail": "Correo electrónico no válido.",
     "emailTaken": "¡El correo electrónico ya está registrado!",
@@ -65,7 +71,7 @@
       },
       "help": {
         "title": "Ayuda",
-        "description": "¿Encontraste un problema o necesitas ayuda?",
+        "description": "¿Encontraste un problema o necesitas ayuda con algo?",
         "action": "Soporte"
       },
       "feedback": {
@@ -98,32 +104,43 @@
     "account": {
       "signOut": {
         "title": "Cerrar sesión",
-        "description": "Serás redirigido a la página de inicio de sesión.",
+        "description": "¿Seguro que quieres cerrar sesión? Serás redirigido a la página de inicio de sesión.",
         "action": "Cerrar sesión",
         "toast": "Sesión cerrada correctamente"
       },
       "delete": {
         "title": "Eliminar cuenta",
-        "description": "¡Esta acción NO se puede deshacer!",
-        "action": "Eliminar"
+        "description": "Elimina permanentemente todos tus datos. Esta acción no puede ser revertida por soporte.",
+        "action": "Eliminar",
+        "toast": "Cuenta eliminada correctamente"
       },
       "data": {
-        "title": "Datos personales",
+        "title": "Solicitar datos personales",
         "description": "Solicita todos los datos que tenemos sobre ti",
         "action": "Solicitar"
       },
       "password": {
-        "title": "Contraseña",
-        "description": "Modifica tu contraseña",
+        "title": "Cambiar contraseña",
+        "description": "Modifica tu contraseña. Recuerda: debes usar al menos una letra minúscula y una mayúscula, un número y un carácter especial.",
         "action": "Cambiar",
         "different": "Las contraseñas no coinciden.",
-        "updated": "Tu contraseña se actualizó correctamente."
+        "updated": "Tu contraseña se actualizó correctamente.",
+        "current_password": "Contraseña actual",
+        "new_password": "Nueva contraseña",
+        "new_password_confirmation": "Confirmación de la nueva contraseña"
+      },
+      "email": {
+        "title": "Cambiar correo electrónico",
+        "description": "Cambia el correo electrónico de tu cuenta. Asegúrate de que sea válido.",
+        "same": "No puedes cambiar tu correo electrónico por el actual.",
+        "updated": "¡Correo electrónico actualizado correctamente!"
       },
       "name": {
-        "title": "Cambia tu nombre completo",
-        "description": "Esta acción solo está disponible una vez al año. Si cometiste un error, contacta con soporte.",
-        "same": "Tu nuevo nombre completo es el mismo que el actual.",
-        "updated": "Nombre actualizado correctamente. El próximo cambio estará disponible en un año.",
+        "title": "Cambiar nombre para mostrar",
+        "description": "Esta acción solo está disponible una vez por semana.",
+        "action": "Cambiar",
+        "same": "No puedes actualizar el nombre completo al actual.",
+        "updated": "Nombre completo actualizado correctamente. El próximo cambio estará disponible en una semana.",
         "tooSoon": "Has alcanzado tu límite de cambios. Podrás modificar tu nombre en <time>{{days}}</time> días."
       }
     }

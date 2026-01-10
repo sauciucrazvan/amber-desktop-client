@@ -14,10 +14,12 @@ import { Edit } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useSWRConfig } from "swr";
 
 export default function ChangeName() {
   const { t, i18n } = useTranslation();
-  const { accessToken } = useAuth();
+  const { accessToken, isAuthenticated } = useAuth();
+  const { mutate } = useSWRConfig();
 
   const [open, setOpen] = useState(false);
 
@@ -63,6 +65,7 @@ export default function ChangeName() {
       }
 
       toast.success(t("settings.account.name.updated"));
+      await mutate("/account/me");
       setOpen(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occured");
@@ -70,6 +73,8 @@ export default function ChangeName() {
       setIsSubmitting(false);
     }
   };
+
+  if (!isAuthenticated) return <>Unauthorized.</>;
 
   return (
     <>
@@ -80,7 +85,7 @@ export default function ChangeName() {
               <Edit />
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-106.25 min-h-50 max-h-60 flex flex-col items-start justify-start">
+          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col items-start justify-start">
             <DialogHeader>
               <DialogTitle>{t("settings.account.name.title")}</DialogTitle>
               <DialogDescription>

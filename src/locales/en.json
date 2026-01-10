@@ -105,24 +105,27 @@
         "toast": "Logged out succesfully"
       },
       "delete": {
-        "title": "Delete account",
+        "title": "Delete Account",
         "description": "This action can NOT be reversed!",
         "action": "Delete"
       },
       "data": {
-        "title": "Personal data",
+        "title": "Request Personal Data",
         "description": "Request all the data we have about you",
         "action": "Request"
       },
       "password": {
-        "title": "Password",
+        "title": "Change Password",
         "description": "Modify your password",
         "action": "Change",
         "different": "The passwords do not match.",
         "updated": "Successfully updated your password."
       },
+      "email": {
+        "title": "Change Email"
+      },
       "name": {
-        "title": "Change your full name",
+        "title": "Change Display Name",
         "description": "This action is available only once every week.",
         "action": "Change",
         "same": "Can't update full name to your current one.",

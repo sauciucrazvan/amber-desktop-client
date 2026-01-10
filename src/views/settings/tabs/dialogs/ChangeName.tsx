@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
-import { Edit } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -82,7 +81,7 @@ export default function ChangeName() {
         <form>
           <DialogTrigger asChild>
             <Button variant="link" className="cursor-pointer">
-              <Edit />
+              {t("settings.account.name.title")}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col items-start justify-start">

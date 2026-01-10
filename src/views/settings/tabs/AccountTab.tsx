@@ -2,7 +2,6 @@ import { useAuth } from "@/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, Shield, Trash } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -69,7 +68,6 @@ export default function AccountTab() {
               ? `@${account.username}`
               : ""}
             )
-            <ChangeName />
           </h3>
           <p className="text-muted-foreground text-xs">
             {error ? (
@@ -85,32 +83,50 @@ export default function AccountTab() {
         </div>
       </section>
 
-      <Separator />
+      <section className="w-full inline-flex items-start justify-center gap-1">
+        <div className="flex flex-col items-start">
+          <ChangeName />
 
-      <div className="flex flex-row items-center justify-between gap-1 mt-2">
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.account.signOut.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("settings.account.signOut.description")}
-          </p>
+          <Button variant="link" className="cursor-pointer" onClick={() => {}}>
+            {t("settings.account.email.title")}
+          </Button>
+
+          <Button variant="link" className="cursor-pointer" onClick={() => {}}>
+            {t("settings.account.password.title")}
+          </Button>
         </div>
+        <div className="flex flex-col items-end">
+          <Button variant="link" className="cursor-pointer" onClick={() => {}}>
+            {t("settings.account.data.title")}
+          </Button>
 
-        <Button
-          size="sm"
-          variant="outline"
-          className="cursor-pointer hover:text-white/80 w-[30%]"
-          onClick={() => {
-            logout();
-            setLocation("/login");
-            toast.success(t("settings.account.signOut.toast"));
-          }}
-        >
-          <LogOut /> {t("settings.account.signOut.action")}
-        </Button>
-      </div>
+          <Button
+            variant="link"
+            className="cursor-pointer"
+            onClick={() => {
+              logout();
+              setLocation("/login");
+              toast.success(t("settings.account.signOut.toast"));
+            }}
+          >
+            {t("settings.account.signOut.title")}
+          </Button>
 
+          <Button
+            variant="link"
+            className="cursor-pointer"
+            onClick={() => {
+              logout();
+              setLocation("/login");
+              toast.success(t("settings.account.delete.toast"));
+            }}
+          >
+            {t("settings.account.delete.title")}
+          </Button>
+        </div>
+      </section>
+
+      {/* 
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
           <h3 className="text-md text-primary">
@@ -153,7 +169,7 @@ export default function AccountTab() {
         >
           <Shield /> {t("settings.account.data.action")}
         </Button>
-      </div>
+      </div> */}
     </>
   );
 }

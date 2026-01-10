@@ -111,6 +111,20 @@
         "title": "Personal data",
         "description": "Request all the data we have about you",
         "action": "Request"
+      },
+      "password": {
+        "title": "Password",
+        "description": "Modify your password",
+        "action": "Change",
+        "different": "The passwords do not match.",
+        "updated": "Successfully updated your password."
+      },
+      "name": {
+        "title": "Change your full name",
+        "description": "This action is available only once every year. If you made a mistake, contact support.",
+        "same": "Your new full name is the same as your current one.",
+        "updated": "Successfully updated your full name. Next change available in a year.",
+        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time></time> days."
       }
     }
   }

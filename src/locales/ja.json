@@ -8,10 +8,13 @@
     "registerLink": "登録",
     "title": "アカウントにログイン",
     "subtitle": "ログインするには認証情報を入力してください",
-    "emailPlaceholder": "メールアドレス",
+    "usernamePlaceholder": "ユーザー名",
     "passwordPlaceholder": "パスワード",
     "signIn": "ログイン",
-    "forgotPassword": "パスワードをお忘れですか？"
+    "forgotPassword": "パスワードをお忘れですか？",
+    "fillInput": "入力欄を埋めてください",
+    "incorrectCredentials": "ユーザー名またはパスワードが正しくありません。",
+    "greeting": "おかえりなさい！"
   },
   "register": {
     "loginPrompt": "すでにアカウントをお持ちですか？",
@@ -20,12 +23,22 @@
     "subtitle": "アカウント作成のために情報を入力してください",
     "usernamePlaceholder": "一意のユーザー名",
     "usernameHint": "使用できるのは英数字のみです。",
+    "fullnamePlaceholder": "表示名",
     "emailPlaceholder": "メールアドレス",
     "emailHint": "本人確認に使用します",
     "passwordPlaceholder": "パスワードを入力",
     "passwordHint": "パスワードは8文字以上である必要があります",
     "createAccount": "アカウントを作成",
-    "terms": "続行すると、<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意したものとみなされます。"
+    "terms": "続行すると、<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意したものとみなされます。",
+    "fillInput": "入力欄を埋めてください",
+    "invalidUsername": "無効なユーザー名です。空白や特殊文字は使用できません。最大長は16です。",
+    "invalidPassword": "無効なパスワードです。8文字以上で、小文字1つ、大文字1つ、数字1つ以上が必要です。",
+    "nameRequired": "氏名は必須です。",
+    "invalidName": "氏名には名と姓を含めてください。",
+    "invalidEmail": "無効なメールアドレスです。",
+    "emailTaken": "メールアドレスは既に登録されています！",
+    "usernameTaken": "ユーザー名は既に使用されています。",
+    "greeting": "Amberへようこそ！"
   },
   "settings": {
     "title": "設定",
@@ -83,7 +96,36 @@
       }
     },
     "account": {
-      "signOut": "サインアウト"
+      "signOut": {
+        "title": "サインアウト",
+        "description": "ログインページにリダイレクトされます。",
+        "action": "サインアウト",
+        "toast": "ログアウトしました"
+      },
+      "delete": {
+        "title": "アカウントを削除",
+        "description": "この操作は元に戻せません！",
+        "action": "削除"
+      },
+      "data": {
+        "title": "個人データ",
+        "description": "あなたに関する当社保有データをすべてリクエストします",
+        "action": "リクエスト"
+      },
+      "password": {
+        "title": "パスワード",
+        "description": "パスワードを変更します",
+        "action": "変更",
+        "different": "パスワードが一致しません。",
+        "updated": "パスワードを更新しました。"
+      },
+      "name": {
+        "title": "氏名を変更",
+        "description": "この操作は年に1回のみ利用できます。間違えた場合はサポートに連絡してください。",
+        "same": "新しい氏名が現在の氏名と同じです。",
+        "updated": "氏名を更新しました。次回の変更は1年後に可能です。",
+        "tooSoon": "変更回数の上限に達しました。<time></time>日後に氏名を変更できます。"
+      }
     }
   }
 }

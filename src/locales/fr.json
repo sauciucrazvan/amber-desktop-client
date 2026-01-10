@@ -8,10 +8,13 @@
     "registerLink": "S'inscrire",
     "title": "Connectez-vous à votre compte",
     "subtitle": "Saisissez vos identifiants ci-dessous pour vous connecter",
-    "emailPlaceholder": "Votre adresse e-mail",
+    "usernamePlaceholder": "Votre nom d'utilisateur",
     "passwordPlaceholder": "Votre mot de passe",
     "signIn": "Se connecter",
-    "forgotPassword": "Mot de passe oublié ?"
+    "forgotPassword": "Mot de passe oublié ?",
+    "fillInput": "Remplissez les champs de saisie",
+    "incorrectCredentials": "Nom d'utilisateur ou mot de passe incorrect.",
+    "greeting": "Bon retour !"
   },
   "register": {
     "loginPrompt": "Vous avez déjà un compte ?",
@@ -20,12 +23,22 @@
     "subtitle": "Saisissez vos informations ci-dessous pour créer votre compte",
     "usernamePlaceholder": "Nom d'utilisateur unique",
     "usernameHint": "Seules les lettres et les chiffres sont autorisés.",
+    "fullnamePlaceholder": "Nom d'affichage",
     "emailPlaceholder": "Votre adresse e-mail",
     "emailHint": "Nous l'utiliserons pour vous vérifier",
     "passwordPlaceholder": "Saisir le mot de passe",
     "passwordHint": "Le mot de passe doit contenir au moins 8 caractères",
     "createAccount": "Créer votre compte",
-    "terms": "En continuant, vous acceptez nos <terms>Conditions d'utilisation</terms> et notre <privacy>Politique de confidentialité</privacy>."
+    "terms": "En continuant, vous acceptez nos <terms>Conditions d'utilisation</terms> et notre <privacy>Politique de confidentialité</privacy>.",
+    "fillInput": "Remplissez les champs de saisie",
+    "invalidUsername": "Nom d'utilisateur invalide. Aucun espace ni caractère spécial. Longueur maximale : 16.",
+    "invalidPassword": "Mot de passe invalide. Il doit contenir au moins 8 caractères, au moins une minuscule, une majuscule et un chiffre.",
+    "nameRequired": "Nom complet requis.",
+    "invalidName": "Le nom complet doit contenir votre prénom et votre nom.",
+    "invalidEmail": "E-mail invalide.",
+    "emailTaken": "E-mail déjà enregistré !",
+    "usernameTaken": "Nom d'utilisateur déjà pris.",
+    "greeting": "Bienvenue sur Amber !"
   },
   "settings": {
     "title": "Paramètres",
@@ -83,7 +96,36 @@
       }
     },
     "account": {
-      "signOut": "Se déconnecter"
+      "signOut": {
+        "title": "Se déconnecter",
+        "description": "Vous serez redirigé vers la page de connexion.",
+        "action": "Se déconnecter",
+        "toast": "Déconnexion réussie"
+      },
+      "delete": {
+        "title": "Supprimer le compte",
+        "description": "Cette action ne peut PAS être annulée !",
+        "action": "Supprimer"
+      },
+      "data": {
+        "title": "Données personnelles",
+        "description": "Demandez toutes les données que nous avons sur vous",
+        "action": "Demander"
+      },
+      "password": {
+        "title": "Mot de passe",
+        "description": "Modifiez votre mot de passe",
+        "action": "Changer",
+        "different": "Les mots de passe ne correspondent pas.",
+        "updated": "Votre mot de passe a été mis à jour avec succès."
+      },
+      "name": {
+        "title": "Modifier votre nom complet",
+        "description": "Cette action n'est disponible qu'une fois par an. Si vous avez fait une erreur, contactez le support.",
+        "same": "Votre nouveau nom complet est identique à votre nom actuel.",
+        "updated": "Nom mis à jour avec succès. Prochaine modification disponible dans un an.",
+        "tooSoon": "Vous avez atteint votre limite de modification. Vous pourrez modifier votre nom dans <time></time> jours."
+      }
     }
   }
 }

@@ -8,10 +8,13 @@
     "registerLink": "Registrarse",
     "title": "Inicia sesión en tu cuenta",
     "subtitle": "Introduce tus credenciales para iniciar sesión",
-    "emailPlaceholder": "Tu correo electrónico",
+    "usernamePlaceholder": "Tu nombre de usuario",
     "passwordPlaceholder": "Tu contraseña",
     "signIn": "Iniciar sesión",
-    "forgotPassword": "¿Olvidaste tu contraseña?"
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "fillInput": "Rellena los campos de entrada",
+    "incorrectCredentials": "Nombre de usuario o contraseña incorrectos.",
+    "greeting": "¡Bienvenido de nuevo!"
   },
   "register": {
     "loginPrompt": "¿Ya tienes una cuenta?",
@@ -20,12 +23,22 @@
     "subtitle": "Introduce tu información para crear tu cuenta",
     "usernamePlaceholder": "Nombre de usuario único",
     "usernameHint": "Solo se permiten letras y números.",
+    "fullnamePlaceholder": "Nombre para mostrar",
     "emailPlaceholder": "Tu correo electrónico",
     "emailHint": "Lo usaremos para verificarte",
     "passwordPlaceholder": "Introduce la contraseña",
     "passwordHint": "La contraseña debe tener al menos 8 caracteres",
     "createAccount": "Crear tu cuenta",
-    "terms": "Al continuar, aceptas nuestros <terms>Términos de servicio</terms> y nuestra <privacy>Política de privacidad</privacy>."
+    "terms": "Al continuar, aceptas nuestros <terms>Términos de servicio</terms> y nuestra <privacy>Política de privacidad</privacy>.",
+    "fillInput": "Rellena los campos de entrada",
+    "invalidUsername": "Nombre de usuario no válido. No debe contener espacios ni caracteres especiales. La longitud máxima es 16.",
+    "invalidPassword": "Contraseña no válida. Debe tener al menos 8 caracteres, al menos una letra minúscula, una mayúscula y un dígito.",
+    "nameRequired": "Se requiere el nombre completo.",
+    "invalidName": "El nombre completo debe contener tu nombre y apellido.",
+    "invalidEmail": "Correo electrónico no válido.",
+    "emailTaken": "¡El correo electrónico ya está registrado!",
+    "usernameTaken": "El nombre de usuario ya está en uso.",
+    "greeting": "¡Bienvenido a Amber!"
   },
   "settings": {
     "title": "Ajustes",
@@ -83,7 +96,36 @@
       }
     },
     "account": {
-      "signOut": "Cerrar sesión"
+      "signOut": {
+        "title": "Cerrar sesión",
+        "description": "Serás redirigido a la página de inicio de sesión.",
+        "action": "Cerrar sesión",
+        "toast": "Sesión cerrada correctamente"
+      },
+      "delete": {
+        "title": "Eliminar cuenta",
+        "description": "¡Esta acción NO se puede deshacer!",
+        "action": "Eliminar"
+      },
+      "data": {
+        "title": "Datos personales",
+        "description": "Solicita todos los datos que tenemos sobre ti",
+        "action": "Solicitar"
+      },
+      "password": {
+        "title": "Contraseña",
+        "description": "Modifica tu contraseña",
+        "action": "Cambiar",
+        "different": "Las contraseñas no coinciden.",
+        "updated": "Tu contraseña se actualizó correctamente."
+      },
+      "name": {
+        "title": "Cambia tu nombre completo",
+        "description": "Esta acción solo está disponible una vez al año. Si cometiste un error, contacta con soporte.",
+        "same": "Tu nuevo nombre completo es el mismo que el actual.",
+        "updated": "Nombre actualizado correctamente. El próximo cambio estará disponible en un año.",
+        "tooSoon": "Has alcanzado tu límite de cambios. Podrás modificar tu nombre en <time></time> días."
+      }
     }
   }
 }

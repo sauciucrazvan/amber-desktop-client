@@ -8,10 +8,13 @@
     "registerLink": "Înregistrează-te",
     "title": "Autentifică-te în contul tău",
     "subtitle": "Introdu datele de mai jos pentru autentificare",
-    "emailPlaceholder": "Adresa ta de email",
+    "usernamePlaceholder": "Numele tău de utilizator",
     "passwordPlaceholder": "Parola ta",
     "signIn": "Autentificare",
-    "forgotPassword": "Ai uitat parola?"
+    "forgotPassword": "Ai uitat parola?",
+    "fillInput": "Completează câmpurile de intrare",
+    "incorrectCredentials": "Nume de utilizator sau parolă incorecte.",
+    "greeting": "Bine ai revenit!"
   },
   "register": {
     "loginPrompt": "Ai deja cont?",
@@ -20,12 +23,22 @@
     "subtitle": "Introdu datele de mai jos pentru a crea contul",
     "usernamePlaceholder": "Nume de utilizator unic",
     "usernameHint": "Sunt permise doar litere și cifre.",
+    "fullnamePlaceholder": "Nume afișat",
     "emailPlaceholder": "Adresa ta de email",
     "emailHint": "Vom folosi asta pentru a-ți verifica contul",
     "passwordPlaceholder": "Introdu parola",
     "passwordHint": "Parola trebuie să aibă cel puțin 8 caractere",
     "createAccount": "Creează contul",
-    "terms": "Continuând, ești de acord cu <terms>Termenii de utilizare</terms> și <privacy>Politica de confidențialitate</privacy>."
+    "terms": "Continuând, ești de acord cu <terms>Termenii de utilizare</terms> și <privacy>Politica de confidențialitate</privacy>.",
+    "fillInput": "Completează câmpurile de intrare",
+    "invalidUsername": "Nume de utilizator invalid. Nu trebuie să conțină spații sau caractere speciale. Lungimea maximă este 16.",
+    "invalidPassword": "Parolă invalidă. Trebuie să aibă cel puțin 8 caractere, cel puțin o literă mică, o literă mare și o cifră.",
+    "nameRequired": "Numele complet este obligatoriu.",
+    "invalidName": "Numele complet trebuie să conțină prenumele și numele de familie.",
+    "invalidEmail": "Email invalid.",
+    "emailTaken": "Email deja înregistrat!",
+    "usernameTaken": "Numele de utilizator este deja folosit.",
+    "greeting": "Bun venit în Amber!"
   },
   "settings": {
     "title": "Setări",
@@ -57,7 +70,7 @@
       },
       "feedback": {
         "title": "Feedback",
-        "description": "Ajută-ne să îmbunătățim",
+        "description": "Ajută-ne să ne îmbunătățim",
         "action": "Feedback"
       }
     },
@@ -83,7 +96,36 @@
       }
     },
     "account": {
-      "signOut": "Deconectare"
+      "signOut": {
+        "title": "Deconectare",
+        "description": "Vei fi redirecționat către pagina de autentificare.",
+        "action": "Deconectare",
+        "toast": "Te-ai deconectat cu succes"
+      },
+      "delete": {
+        "title": "Șterge contul",
+        "description": "Această acțiune NU poate fi anulată!",
+        "action": "Șterge"
+      },
+      "data": {
+        "title": "Date personale",
+        "description": "Solicită toate datele pe care le avem despre tine",
+        "action": "Solicită"
+      },
+      "password": {
+        "title": "Parolă",
+        "description": "Modifică parola",
+        "action": "Schimbă",
+        "different": "Parolele nu se potrivesc.",
+        "updated": "Parola a fost actualizată cu succes."
+      },
+      "name": {
+        "title": "Schimbă numele complet",
+        "description": "Această acțiune este disponibilă doar o dată pe an. Dacă ai făcut o greșeală, contactează suportul.",
+        "same": "Noul tău nume este același cu cel curent.",
+        "updated": "Numele a fost actualizat cu succes. Următoarea schimbare este disponibilă peste un an.",
+        "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time></time> zile."
+      }
     }
   }
 }

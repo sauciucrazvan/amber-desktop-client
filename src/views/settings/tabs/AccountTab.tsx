@@ -3,14 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import useSWR from "swr";
-import { useLocation } from "wouter";
 import ChangeName from "./dialogs/ChangeName";
 import HiddenComponent from "@/components/ui/hidden-component";
 import ChangePassword from "./dialogs/ChangePassword";
 import ChangeEmail from "./dialogs/ChangeEmail";
 import SignOut from "./dialogs/SignOut";
+import DeleteAccount from "./dialogs/DeleteAccount";
 
 type AccountMe = {
   username: string;
@@ -27,10 +26,9 @@ function initialsFromName(name: string) {
 }
 
 export default function AccountTab() {
-  const [, setLocation] = useLocation();
   const { t } = useTranslation();
 
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const {
     data: account,
     error,
@@ -98,18 +96,7 @@ export default function AccountTab() {
           </Button>
 
           <SignOut />
-
-          <Button
-            variant="link"
-            className="cursor-pointer"
-            onClick={() => {
-              logout();
-              setLocation("/login");
-              toast.success(t("settings.account.delete.toast"));
-            }}
-          >
-            {t("settings.account.delete.title")}
-          </Button>
+          <DeleteAccount />
         </div>
       </section>
     </>

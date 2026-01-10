@@ -18,7 +18,8 @@
     "forgotPassword": "Forgot password?",
     "fillInput": "Fill in the input fields",
     "incorrectCredentials": "Incorrect username or password.",
-    "greeting": "Welcome back!"
+    "greeting": "Welcome back!",
+    "account_disabled": "This account has been deleted."
   },
   "register": {
     "loginPrompt": "Already have an account?",
@@ -38,6 +39,7 @@
     "invalidUsername": "Invalid username. Must contain no spaces or special characters. Maximum length is 16.",
     "invalidPassword": "Invalid password. Must be at least 8 characters long, have at least one lowercase letter, one uppercase letter and one digit.",
     "nameRequired": "Full name required.",
+    "emailRequired": "Email is required",
     "invalidName": "Full name must contain your first and last name.",
     "invalidEmail": "Invalid email.",
     "emailTaken": "Email already registered!",
@@ -108,7 +110,7 @@
       },
       "delete": {
         "title": "Delete Account",
-        "description": "This action can NOT be reversed!",
+        "description": "Permanently erase all of your data. Enter your current password below to complete this action. Make sure, as this can't be reversed!",
         "action": "Delete"
       },
       "data": {

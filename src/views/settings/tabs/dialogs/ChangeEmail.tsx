@@ -83,7 +83,7 @@ export default function ChangeEmail() {
               disabled={isSubmitting}
             />
 
-            {error && <p className="text-red-500">error</p>}
+            {error && <p className="text-red-500">{t(error)}</p>}
 
             <div className="w-full inline-flex justify-end gap-1">
               <Button

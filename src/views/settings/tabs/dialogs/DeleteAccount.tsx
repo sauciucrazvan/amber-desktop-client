@@ -14,15 +14,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function ChangePassword() {
+export default function DeleteAccount() {
   const { t } = useTranslation();
-  const { accessToken, isAuthenticated } = useAuth();
-
+  const { accessToken, isAuthenticated, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,16 +28,14 @@ export default function ChangePassword() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(API_BASE_URL + "/account/modify/password", {
+      const res = await fetch(API_BASE_URL + "/account/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          current_password: currentPassword,
-          new_password: newPassword,
-          new_password_confirmation: newPasswordConfirmation,
+          password: password,
         }),
       });
 
@@ -48,8 +43,9 @@ export default function ChangePassword() {
       setError(data?.detail);
 
       if (res.ok) {
-        toast.success(t("settings.account.password.updated"));
+        toast.success(t("settings.account.delete.toast"));
         setOpen(false);
+        logout();
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occured");
@@ -66,41 +62,24 @@ export default function ChangePassword() {
         <form>
           <DialogTrigger asChild>
             <Button variant="link" className="cursor-pointer">
-              {t("settings.account.password.title")}
+              {t("settings.account.delete.title")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-50 max-h-100 flex flex-col items-start justify-start">
+          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col items-start justify-start">
             <DialogHeader>
-              <DialogTitle>{t("settings.account.password.title")}</DialogTitle>
+              <DialogTitle>{t("settings.account.delete.title")}</DialogTitle>
               <DialogDescription>
-                {t("settings.account.password.description")}
+                {t("settings.account.delete.description")}
               </DialogDescription>
             </DialogHeader>
             {/* content */}
-            <section className="flex flex-col items-start justify-start gap-2 w-full">
-              <Input
-                placeholder={t("settings.account.password.current_password")}
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              />
-
-              <Input
-                placeholder={t("settings.account.password.new_password")}
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-
-              <Input
-                placeholder={t(
-                  "settings.account.password.new_password_confirmation"
-                )}
-                type="password"
-                value={newPasswordConfirmation}
-                onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-              />
-            </section>
+            <Input
+              placeholder={t("register.passwordPlaceholder")}
+              value={password}
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isSubmitting}
+            />
 
             {error && <p className="text-red-500">{t(error)}</p>}
 
@@ -114,13 +93,13 @@ export default function ChangePassword() {
                 {t("common.cancel")}
               </Button>
               <Button
-                variant="default"
+                variant="destructive"
                 className="cursor-pointer"
                 disabled={isSubmitting}
                 type="button"
                 onClick={onSubmit}
               >
-                {t("common.submit")}
+                {t("settings.account.delete.action")}
               </Button>
             </div>
           </DialogContent>

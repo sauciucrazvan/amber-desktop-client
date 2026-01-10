@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import useSWR from "swr";
 import { useLocation } from "wouter";
 import ChangeName from "./dialogs/ChangeName";
+import HiddenComponent from "@/components/ui/hidden-component";
 
 type AccountMe = {
   username: string;
@@ -71,13 +72,15 @@ export default function AccountTab() {
             <ChangeName />
           </h3>
           <p className="text-muted-foreground text-xs">
-            {error
-              ? ""
-              : isLoading
-              ? ""
-              : account?.email
-              ? `${account.email}`
-              : ""}
+            {error ? (
+              ""
+            ) : isLoading ? (
+              ""
+            ) : account?.email ? (
+              <HiddenComponent text={account?.email} />
+            ) : (
+              ""
+            )}
           </p>
         </div>
       </section>

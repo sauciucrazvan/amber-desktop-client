@@ -1,7 +1,9 @@
 {
   "common": {
     "help": "Help",
-    "info": "Info"
+    "info": "Info",
+    "show": "Show",
+    "hide": "Hide"
   },
   "login": {
     "registerPrompt": "Don't have an account?",

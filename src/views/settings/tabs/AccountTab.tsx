@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR from "swr";
 import { useLocation } from "wouter";
+import ChangeName from "./dialogs/ChangeName";
 
 type AccountMe = {
   username: string;
@@ -67,6 +68,7 @@ export default function AccountTab() {
               ? `@${account.username}`
               : ""}
             )
+            <ChangeName />
           </h3>
           <p className="text-muted-foreground text-xs">
             {error

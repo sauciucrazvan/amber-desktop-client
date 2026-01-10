@@ -124,7 +124,7 @@
         "description": "Diese Aktion ist nur einmal pro Jahr verfügbar. Wenn du einen Fehler gemacht hast, kontaktiere den Support.",
         "same": "Dein neuer vollständiger Name ist derselbe wie dein aktueller.",
         "updated": "Name erfolgreich aktualisiert. Nächste Änderung in einem Jahr möglich.",
-        "tooSoon": "Du hast dein Änderungslimit erreicht. Du kannst deinen Namen in <time></time> Tagen wieder ändern."
+        "tooSoon": "Du hast dein Änderungslimit erreicht. Du kannst deinen Namen in <time>{{days}}</time> Tagen wieder ändern."
       }
     }
   }

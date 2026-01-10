@@ -124,7 +124,7 @@
         "description": "Cette action n'est disponible qu'une fois par an. Si vous avez fait une erreur, contactez le support.",
         "same": "Votre nouveau nom complet est identique à votre nom actuel.",
         "updated": "Nom mis à jour avec succès. Prochaine modification disponible dans un an.",
-        "tooSoon": "Vous avez atteint votre limite de modification. Vous pourrez modifier votre nom dans <time></time> jours."
+        "tooSoon": "Vous avez atteint votre limite de modification. Vous pourrez modifier votre nom dans <time>{{days}}</time> jours."
       }
     }
   }

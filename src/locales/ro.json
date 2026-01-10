@@ -124,7 +124,7 @@
         "description": "Această acțiune este disponibilă doar o dată pe an. Dacă ai făcut o greșeală, contactează suportul.",
         "same": "Noul tău nume este același cu cel curent.",
         "updated": "Numele a fost actualizat cu succes. Următoarea schimbare este disponibilă peste un an.",
-        "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time></time> zile."
+        "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time>{{days}}</time> zile."
       }
     }
   }

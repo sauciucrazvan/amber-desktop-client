@@ -122,9 +122,10 @@
       "name": {
         "title": "Change your full name",
         "description": "This action is available only once every year. If you made a mistake, contact support.",
+        "action": "Change",
         "same": "Your new full name is the same as your current one.",
         "updated": "Successfully updated your full name. Next change available in a year.",
-        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time></time> days."
+        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
       }
     }
   }

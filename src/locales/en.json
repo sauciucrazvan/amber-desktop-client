@@ -3,7 +3,9 @@
     "help": "Help",
     "info": "Info",
     "show": "Show",
-    "hide": "Hide"
+    "hide": "Hide",
+    "submit": "Submit",
+    "cancel": "Cancel"
   },
   "login": {
     "registerPrompt": "Don't have an account?",
@@ -116,10 +118,13 @@
       },
       "password": {
         "title": "Change Password",
-        "description": "Modify your password",
+        "description": "Modify your password. Remember, you have to use at least a lower-case and an upper-case character, a number and a special character.",
         "action": "Change",
         "different": "The passwords do not match.",
-        "updated": "Successfully updated your password."
+        "updated": "Successfully updated your password.",
+        "current_password": "Current password",
+        "new_password": "New password",
+        "new_password_confirmation": "New password confirmation"
       },
       "email": {
         "title": "Change Email"

@@ -11,20 +11,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
 import { useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
 
-export default function ChangeName() {
-  const { t, i18n } = useTranslation();
+export default function ChangePassword() {
+  const { t } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
-  const { mutate } = useSWRConfig();
 
   const [open, setOpen] = useState(false);
 
-  const [fullName, setFullName] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [remainingDays, setRemainingDays] = useState<number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async () => {
@@ -32,40 +31,27 @@ export default function ChangeName() {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(API_BASE_URL + "/account/modify/fullname", {
+      const res = await fetch(API_BASE_URL + "/account/modify/password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          new_full_name: fullName,
+          current_password: currentPassword,
+          new_password: newPassword,
+          new_password_confirmation: newPasswordConfirmation,
         }),
       });
 
       const data = await res.json().catch(() => null);
 
-      if (!res.ok) {
-        const detail = data?.detail;
+      setError(data?.detail);
 
-        if (typeof detail === "string") {
-          throw new Error(detail);
-        }
-
-        if (detail && typeof detail === "object") {
-          const message = (detail as { message?: unknown }).message;
-          const rd = (detail as { remaining_days?: unknown }).remaining_days;
-
-          if (typeof rd === "number") setRemainingDays(rd);
-          if (typeof message === "string") throw new Error(message);
-        }
-
-        throw new Error(`Request failed (${res.status})`);
+      if (res.ok) {
+        toast.success(t("settings.account.password.updated"));
+        setOpen(false);
       }
-
-      toast.success(t("settings.account.name.updated"));
-      await mutate("/account/me");
-      setOpen(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occured");
     } finally {
@@ -81,39 +67,43 @@ export default function ChangeName() {
         <form>
           <DialogTrigger asChild>
             <Button variant="link" className="cursor-pointer">
-              {t("settings.account.name.title")}
+              {t("settings.account.password.title")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col items-start justify-start">
+          <DialogContent className="sm:max-w-125 min-h-50 max-h-100 flex flex-col items-start justify-start">
             <DialogHeader>
-              <DialogTitle>{t("settings.account.name.title")}</DialogTitle>
+              <DialogTitle>{t("settings.account.password.title")}</DialogTitle>
               <DialogDescription>
-                {t("settings.account.name.description")}
+                {t("settings.account.password.description")}
               </DialogDescription>
             </DialogHeader>
             {/* content */}
-            <Input
-              placeholder={t("register.fullnamePlaceholder")}
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              disabled={isSubmitting}
-            />
+            <section className="flex flex-col items-start justify-start gap-2 w-full">
+              <Input
+                placeholder={t("settings.account.password.current_password")}
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
 
-            {error && (
-              <p className="text-red-500">
-                {i18n.exists(error) ? (
-                  <Trans
-                    i18nKey={error}
-                    values={{ days: remainingDays ?? 0 }}
-                    components={{ time: <span /> }}
-                  />
-                ) : remainingDays !== null ? (
-                  `${error} (${remainingDays} days)`
-                ) : (
-                  error
+              <Input
+                placeholder={t("settings.account.password.new_password")}
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <Input
+                placeholder={t(
+                  "settings.account.password.new_password_confirmation"
                 )}
-              </p>
-            )}
+                type="password"
+                value={newPasswordConfirmation}
+                onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+              />
+            </section>
+
+            {error && <p className="text-red-500">{t(error)}</p>}
 
             <div className="w-full inline-flex justify-end gap-1">
               <Button

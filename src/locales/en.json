@@ -102,7 +102,7 @@
     "account": {
       "signOut": {
         "title": "Sign out",
-        "description": "You'll be redirected to the login page.",
+        "description": "Are you sure you want to sign out? You'll be redirected to the login page.",
         "action": "Sign out",
         "toast": "Logged out succesfully"
       },

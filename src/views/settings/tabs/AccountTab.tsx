@@ -10,6 +10,7 @@ import ChangeName from "./dialogs/ChangeName";
 import HiddenComponent from "@/components/ui/hidden-component";
 import ChangePassword from "./dialogs/ChangePassword";
 import ChangeEmail from "./dialogs/ChangeEmail";
+import SignOut from "./dialogs/SignOut";
 
 type AccountMe = {
   username: string;
@@ -96,17 +97,7 @@ export default function AccountTab() {
             {t("settings.account.data.title")}
           </Button>
 
-          <Button
-            variant="link"
-            className="cursor-pointer"
-            onClick={() => {
-              logout();
-              setLocation("/login");
-              toast.success(t("settings.account.signOut.toast"));
-            }}
-          >
-            {t("settings.account.signOut.title")}
-          </Button>
+          <SignOut />
 
           <Button
             variant="link"
@@ -121,51 +112,6 @@ export default function AccountTab() {
           </Button>
         </div>
       </section>
-
-      {/* 
-      <div className="flex flex-row items-center justify-between gap-1 mt-2">
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.account.delete.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("settings.account.delete.description")}
-          </p>
-        </div>
-
-        <Button
-          size="sm"
-          variant="outline"
-          className="cursor-pointer hover:text-white/80 w-[30%]"
-          onClick={() => {
-            logout();
-            setLocation("/login");
-            toast.success(t("settings.account.delete.toast"));
-          }}
-        >
-          <Trash /> {t("settings.account.delete.action")}
-        </Button>
-      </div>
-
-      <div className="flex flex-row items-center justify-between gap-1 mt-2">
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.account.data.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("settings.account.data.description")}
-          </p>
-        </div>
-
-        <Button
-          size="sm"
-          variant="outline"
-          className="cursor-pointer hover:text-white/80 w-[30%]"
-          onClick={() => {}}
-        >
-          <Shield /> {t("settings.account.data.action")}
-        </Button>
-      </div> */}
     </>
   );
 }

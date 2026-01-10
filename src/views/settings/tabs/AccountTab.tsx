@@ -70,7 +70,7 @@ export default function AccountTab() {
               : ""}
             )
           </h3>
-          <p className="text-muted-foreground text-xs">
+          <div className="text-muted-foreground text-xs">
             {error ? (
               ""
             ) : isLoading ? (
@@ -80,7 +80,7 @@ export default function AccountTab() {
             ) : (
               ""
             )}
-          </p>
+          </div>
         </div>
       </section>
 

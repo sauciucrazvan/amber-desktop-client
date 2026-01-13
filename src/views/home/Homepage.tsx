@@ -18,7 +18,7 @@ export default function Homepage() {
             extra={<SidebarTrigger variant={"ghost"} className="p-4" />}
           />
 
-          <div className="px-4">
+          {/* <div className="px-4">
             <div className="w-full min-h-122 bg-border/50 rounded-md p-4 flex flex-col justify-between">
               <h1>Messages with Michael J.</h1>
               <div className="inline-flex items-start gap-1">
@@ -28,7 +28,7 @@ export default function Homepage() {
                 </Button>
               </div>
             </div>
-          </div>
+          </div> */}
         </main>
         {sidebarSide == "left" ? null : <AppSidebar />}
       </SidebarProvider>

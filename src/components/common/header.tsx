@@ -30,7 +30,7 @@ export default function Header({ extra }: HeaderProps) {
         </section>
 
         <section id="center" className="w-full inline-flex items-center gap-1">
-          {openedConversation && (
+          {/* {openedConversation && (
             <div className="w-full px-3 py-0.5 bg-border/50 text-sm rounded-t-md inline-flex items-center justify-between gap-2">
               <div className="inline-flex items-center justify-center gap-1">
                 <div className="relative w-fit">
@@ -55,7 +55,7 @@ export default function Header({ extra }: HeaderProps) {
                 </Button>
               </p>
             </div>
-          )}
+          )} */}
         </section>
 
         <section id="right" className="flex flex-row items-center gap-2 h-5">

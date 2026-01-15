@@ -133,7 +133,9 @@
       "data": {
         "title": "Request Personal Data",
         "description": "Request all the data we have about you",
-        "action": "Request"
+        "action": "Request",
+        "too_soon": "You can request your data every week.",
+        "sent": "Your requested data has been sent to your email. Please check your inbox (spam too!)"
       },
       "password": {
         "title": "Change Password",

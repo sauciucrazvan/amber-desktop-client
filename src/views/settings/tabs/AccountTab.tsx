@@ -10,6 +10,7 @@ import ChangePassword from "./dialogs/ChangePassword";
 import ChangeEmail from "./dialogs/ChangeEmail";
 import SignOut from "./dialogs/SignOut";
 import DeleteAccount from "./dialogs/DeleteAccount";
+import RequestData from "./dialogs/RequestData";
 
 type AccountMe = {
   username: string;
@@ -91,10 +92,7 @@ export default function AccountTab() {
           <ChangePassword />
         </div>
         <div className="flex flex-col items-end">
-          <Button variant="link" className="cursor-pointer" onClick={() => {}}>
-            {t("settings.account.data.title")}
-          </Button>
-
+          <RequestData />
           <SignOut />
           <DeleteAccount />
         </div>

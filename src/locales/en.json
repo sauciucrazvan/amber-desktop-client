@@ -19,7 +19,16 @@
     "fillInput": "Fill in the input fields",
     "incorrectCredentials": "Incorrect username or password.",
     "greeting": "Welcome back!",
-    "account_disabled": "This account has been deleted."
+    "account_disabled": "This account has been deleted.",
+    "recovery": {
+      "invalid_username": "Invalid username",
+      "invalid_code": "The code you entered either expired or is invalid.",
+      "invalid_password": "Invalid password",
+      "too_soon": "You can request a password change every 30 minutes.",
+      "too_late": "The code you used already expired. Request a new password change.",
+      "different_passwords": "The passwords do not match.",
+      "success": "You've succesfully changed your password. Please log in."
+    }
   },
   "register": {
     "loginPrompt": "Already have an account?",

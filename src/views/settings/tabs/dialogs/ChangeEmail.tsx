@@ -23,6 +23,7 @@ export default function ChangeEmail() {
   const [open, setOpen] = useState(false);
 
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -39,6 +40,7 @@ export default function ChangeEmail() {
         },
         body: JSON.stringify({
           new_email: email,
+          password: password,
         }),
       });
 
@@ -48,6 +50,8 @@ export default function ChangeEmail() {
       if (res.ok) {
         toast.success(t("settings.account.email.updated"));
         await mutate("/account/me");
+        setEmail("");
+        setPassword("");
         setOpen(false);
       }
     } catch (e) {
@@ -80,6 +84,19 @@ export default function ChangeEmail() {
               placeholder={t("register.emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isSubmitting}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSubmit();
+                }
+              }}
+            />
+
+            <Input
+              placeholder={t("login.passwordPlaceholder")}
+              type={"password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               disabled={isSubmitting}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {

@@ -20,6 +20,22 @@ type AccountMe = {
   full_name?: string | null;
 };
 
+// Source - https://stackoverflow.com/a
+// Posted by Joe Freeman, modified by community. See post 'Timeline' for change history
+// Retrieved 2026-01-15, License - CC BY-SA 4.0
+const stringToColor = (str: string) => {
+  let hash = 0;
+  str.split("").forEach((char) => {
+    hash = char.charCodeAt(0) + ((hash << 5) - hash);
+  });
+  let colour = "#";
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    colour += value.toString(16).padStart(2, "0");
+  }
+  return colour;
+};
+
 function initialsFromName(name: string) {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   const first = parts[0]?.[0] ?? "";
@@ -66,7 +82,17 @@ export default function AppSidebar() {
           <Separator />
           <section className="flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
             <Avatar>
-              <AvatarFallback>
+              <AvatarFallback
+                style={
+                  account?.full_name
+                    ? {
+                        backgroundColor: stringToColor(
+                          account.full_name ?? "unknown"
+                        ),
+                      }
+                    : undefined
+                }
+              >
                 {account?.full_name
                   ? initialsFromName(String(account.full_name))
                   : account?.username

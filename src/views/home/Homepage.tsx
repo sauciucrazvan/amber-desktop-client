@@ -1,9 +1,6 @@
 import AppSidebar from "@/components/common/app-sidebar";
 import Header from "@/components/common/header";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Send } from "lucide-react";
 export default function Homepage() {
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =

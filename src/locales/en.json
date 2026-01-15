@@ -5,7 +5,10 @@
     "show": "Show",
     "hide": "Hide",
     "submit": "Submit",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "errors": {
+      "too_many_requests": "Too many requests! Slow it down!"
+    }
   },
   "login": {
     "registerPrompt": "Don't have an account?",
@@ -21,12 +24,16 @@
     "greeting": "Welcome back!",
     "account_disabled": "This account has been deleted.",
     "recovery": {
+      "title": "Recover your password",
+      "description": "You can make a request every 30 minutes.",
+      "code": "Recovery code",
       "invalid_username": "Invalid username",
       "invalid_code": "The code you entered either expired or is invalid.",
       "invalid_password": "Invalid password",
       "too_soon": "You can request a password change every 30 minutes.",
       "too_late": "The code you used already expired. Request a new password change.",
       "different_passwords": "The passwords do not match.",
+      "sent": "The recovery code has been sent to your email. Please check your inbox (spam too!)",
       "success": "You've succesfully changed your password. Please log in."
     }
   },

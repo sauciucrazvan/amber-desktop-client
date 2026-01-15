@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "wouter";
 import Settings from "../settings/Settings";
 import { toast } from "sonner";
+import ForgotPassword from "./dialogs/ForgotPassword";
 
 export default function LoginView() {
   const [, setLocation] = useLocation();
@@ -105,14 +106,9 @@ export default function LoginView() {
                   {t(error)}
                 </p>
               ) : null}
-
-              <p
-                data-slot="field-description"
-                className="text-muted-foreground text-sm leading-normal font-normal [[data-variant=legend]+&amp;]:-mt-1.5 [&amp;&gt;a:hover]:text-primary [&amp;&gt;a]:underline [&amp;&gt;a]:underline-offset-4 px-6 text-center"
-              >
-                <a href="#">{t("login.forgotPassword")}</a>
-              </p>
             </div>
+
+            <ForgotPassword />
           </div>
 
           {/* Settings */}

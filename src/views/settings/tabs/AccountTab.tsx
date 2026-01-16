@@ -1,8 +1,6 @@
 import { useAuth } from "@/auth/AuthContext";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useTranslation } from "react-i18next";
 import useSWR from "swr";
 import ChangeName from "./dialogs/ChangeName";
 import HiddenComponent from "@/components/ui/hidden-component";
@@ -27,8 +25,6 @@ function initialsFromName(name: string) {
 }
 
 export default function AccountTab() {
-  const { t } = useTranslation();
-
   const { isAuthenticated } = useAuth();
   const {
     data: account,

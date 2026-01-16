@@ -1,10 +1,9 @@
 import Settings from "@/views/settings/Settings";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import { Home, X } from "lucide-react";
+import { Home } from "lucide-react";
 import { useLocation } from "wouter";
-import { ReactNode, useState } from "react";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { ReactNode } from "react";
 
 interface HeaderProps {
   extra?: ReactNode;
@@ -12,7 +11,6 @@ interface HeaderProps {
 
 export default function Header({ extra }: HeaderProps) {
   const [, setLocation] = useLocation();
-  const [openedConversation, setOpenedConversation] = useState(true);
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =

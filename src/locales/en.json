@@ -26,7 +26,9 @@
     "recovery": {
       "title": "Recover your password",
       "description": "You can make a request every 30 minutes.",
+      "username": "Username",
       "code": "Recovery code",
+      "password": "New Password",
       "invalid_username": "Invalid username",
       "invalid_code": "The code you entered either expired or is invalid.",
       "invalid_password": "Invalid password",
@@ -34,7 +36,12 @@
       "too_late": "The code you used already expired. Request a new password change.",
       "different_passwords": "The passwords do not match.",
       "sent": "The recovery code has been sent to your email. Please check your inbox (spam too!)",
-      "success": "You've succesfully changed your password. Please log in."
+      "success": "You've succesfully changed your password. Please log in.",
+      "action": {
+        "next": "Next",
+        "finish": "Finish",
+        "back": "Back"
+      }
     }
   },
   "register": {

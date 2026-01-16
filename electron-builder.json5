@@ -28,6 +28,9 @@
     ],
     "artifactName": "${productName}-${version}-win-setup.${ext}"
   },
+  "msi": {
+    "warningsAsErrors": false
+  },
   "nsis": {
     "oneClick": false,
     "perMachine": false,

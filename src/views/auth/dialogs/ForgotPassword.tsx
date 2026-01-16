@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { API_BASE_URL } from "@/config";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,77 +22,89 @@ export default function ForgotPassword() {
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
-  const [sent, setSent] = useState(false);
+  const [stage, setStage] = useState(0);
   const { t } = useTranslation();
 
   const onSubmit = async () => {
     setError(null);
     setIsSubmitting(true);
 
-    if (!sent) {
-      try {
-        const res = await fetch(API_BASE_URL + "/account/recovery/request", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: username,
-          }),
-        });
+    try {
+      switch (stage) {
+        case 0: {
+          const res = await fetch(API_BASE_URL + "/account/recovery/request", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: username,
+            }),
+          });
 
-        const data = await res.json().catch(() => null);
+          const data = await res.json().catch(() => null);
 
-        if (!res.ok) {
-          if (res.status === 429) {
-            throw new Error("common.errors.too_many_requests");
+          if (!res.ok) {
+            if (res.status === 429) {
+              throw new Error("common.errors.too_many_requests");
+            }
+
+            const detail = data?.detail;
+            throw new Error(detail);
           }
 
-          const detail = data?.detail;
-          throw new Error(detail);
+          toast.success(t("login.recovery.sent"));
+          setStage(1);
+          break;
         }
+        case 1: {
+          setStage(2);
+          break;
+        }
+        case 2: {
+          const res = await fetch(API_BASE_URL + "/account/recovery/reset", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: username,
+              code: code,
+              new_password: newPassword,
+              new_password_confirmation: newPasswordConfirmation,
+            }),
+          });
 
-        toast.success(t("login.recovery.sent"));
-        setSent(true);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "An error occured");
-      } finally {
-        setIsSubmitting(false);
-      }
-    } else {
-      try {
-        const res = await fetch(API_BASE_URL + "/account/recovery/reset", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: username,
-            code: code,
-            new_password: newPassword,
-            new_password_confirmation: newPasswordConfirmation,
-          }),
-        });
+          const data = await res.json().catch(() => null);
 
-        const data = await res.json().catch(() => null);
+          if (!res.ok) {
+            if (res.status === 429) {
+              throw new Error("common.errors.too_many_requests");
+            }
 
-        if (!res.ok) {
-          if (res.status === 429) {
-            throw new Error("common.errors.too_many_requests");
+            const detail = data?.detail;
+            throw new Error(detail);
           }
 
-          const detail = data?.detail;
-          throw new Error(detail);
-        }
+          toast.success(t("login.recovery.success"));
+          setOpen(false);
+          setStage(0);
 
-        toast.success(t("login.recovery.success"));
-        setOpen(false);
-        setSent(false);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "An error occured");
-      } finally {
-        setIsSubmitting(false);
+          setUsername("");
+          setNewPassword("");
+          setNewPasswordConfirmation("");
+          setCode("");
+          break;
+        }
+        default: {
+          setStage(0);
+          break;
+        }
       }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "An error occured");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -116,20 +129,26 @@ export default function ForgotPassword() {
               </DialogDescription>
             </DialogHeader>
             {/* content */}
-            <Input
-              placeholder={t("login.usernamePlaceholder")}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              disabled={isSubmitting}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  onSubmit();
-                }
-              }}
-            />
-
-            {sent && (
+            {stage == 0 && (
               <>
+                <Label>{t("login.recovery.username")}</Label>
+                <Input
+                  placeholder={t("login.usernamePlaceholder")}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  disabled={isSubmitting}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      onSubmit();
+                    }
+                  }}
+                />
+              </>
+            )}
+
+            {stage == 1 && (
+              <>
+                <Label>{t("login.recovery.code")}</Label>
                 <Input
                   placeholder={t("login.recovery.code")}
                   value={code}
@@ -141,7 +160,11 @@ export default function ForgotPassword() {
                     }
                   }}
                 />
-
+              </>
+            )}
+            {stage == 2 && (
+              <>
+                <Label>{t("login.recovery.password")}</Label>
                 <Input
                   placeholder={t("settings.account.password.new_password")}
                   type={"password"}
@@ -174,25 +197,55 @@ export default function ForgotPassword() {
 
             {error && <p className="text-red-500">{t(error)}</p>}
 
-            <div className="w-full inline-flex justify-end gap-1">
-              <Button
-                variant="outline"
-                className="cursor-pointer"
-                type="button"
-                onClick={() => setOpen(false)}
-              >
-                {t("common.cancel")}
-              </Button>
-              <Button
-                variant="default"
-                className="cursor-pointer"
-                disabled={isSubmitting}
-                type="button"
-                onClick={onSubmit}
-              >
-                {t("common.submit")}
-              </Button>
-            </div>
+            <section className="w-full inline-flex items-center justify-between gap-1">
+              <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground select-none">
+                <div className={stage >= 0 ? "text-foreground" : undefined}>
+                  •
+                </div>
+                <div className={stage >= 1 ? "text-foreground" : undefined}>
+                  •
+                </div>
+                <div className={stage >= 2 ? "text-foreground" : undefined}>
+                  •
+                </div>
+              </div>
+              <div className="w-full inline-flex justify-end gap-1">
+                {stage == 0 ||
+                  (stage == 1 && (
+                    <Button
+                      variant="outline"
+                      className="cursor-pointer"
+                      type="button"
+                      onClick={() => setOpen(false)}
+                    >
+                      {t("common.cancel")}
+                    </Button>
+                  ))}
+                {stage > 1 && (
+                  <>
+                    <Button
+                      variant="outline"
+                      className="cursor-pointer"
+                      type="button"
+                      onClick={() => setStage(Math.max(1, stage - 1))}
+                    >
+                      {t("login.recovery.action.back")}
+                    </Button>
+                  </>
+                )}
+                <Button
+                  variant="default"
+                  className="cursor-pointer"
+                  disabled={isSubmitting}
+                  type="button"
+                  onClick={onSubmit}
+                >
+                  {stage == 2
+                    ? t("login.recovery.action.finish")
+                    : t("login.recovery.action.next")}
+                </Button>
+              </div>
+            </section>
           </DialogContent>
         </form>
       </Dialog>

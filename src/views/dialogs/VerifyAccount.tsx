@@ -113,7 +113,7 @@ export default function VerifyAccount() {
             <DialogTrigger asChild>
               <Button
                 variant="ghost"
-                className="cursor-pointer text-yellow-500"
+                className="cursor-pointer text-yellow-500 h-full"
               >
                 <BadgeAlert />
               </Button>
@@ -176,7 +176,7 @@ export default function VerifyAccount() {
                     variant="outline"
                     className="cursor-pointer"
                     type="button"
-                    onClick={() => setStage(Math.max(1, stage - 1))}
+                    onClick={() => setStage(Math.max(0, stage - 1))}
                   >
                     {t("register.verify.action.back")}
                   </Button>

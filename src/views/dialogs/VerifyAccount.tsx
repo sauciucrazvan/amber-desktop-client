@@ -10,11 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { API_BASE_URL } from "@/config";
 import { BadgeAlert } from "lucide-react";
 import { useState } from "react";
@@ -22,7 +17,11 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 
-export default function VerifyAccount() {
+interface VerifyAccountProps {
+  trigger_type: "button" | "text";
+}
+
+export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -105,24 +104,22 @@ export default function VerifyAccount() {
 
   if (!isAuthenticated) return <>Unauthorized.</>;
 
+  const triggerButton =
+    trigger_type == "button" ? (
+      <Button variant="ghost" className="cursor-pointer text-yellow-500 h-full">
+        <BadgeAlert />
+      </Button>
+    ) : (
+      <a className="cursor-pointer hover:underline">
+        <b>{t("register.verify.verify_now")}</b>
+      </a>
+    );
+
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button
-                variant="ghost"
-                className="cursor-pointer text-yellow-500 h-full"
-              >
-                <BadgeAlert />
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{t("register.verify.not_verified")}</p>
-          </TooltipContent>
-        </Tooltip>
+        <DialogTrigger asChild>{triggerButton}</DialogTrigger>
+
         <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
           <DialogHeader>
             <DialogTitle>{t("register.verify.title")}</DialogTitle>

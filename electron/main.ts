@@ -96,7 +96,7 @@ function createSplashWindow() {
         errorDescription,
         validatedURL,
       });
-    }
+    },
   );
 
   const splashPath = path.join(process.env.VITE_PUBLIC, "splash.html");
@@ -132,7 +132,7 @@ function createWindow() {
         errorDescription,
         validatedURL,
       });
-    }
+    },
   );
 
   win.webContents.on("render-process-gone", (_event, details) => {
@@ -169,7 +169,7 @@ function createTray() {
 
   const iconPath = path.join(
     process.env.VITE_PUBLIC,
-    process.platform === "win32" ? "amber.ico" : "amber.png"
+    process.platform === "win32" ? "amber.ico" : "amber.png",
   );
 
   const image = nativeImage.createFromPath(iconPath);

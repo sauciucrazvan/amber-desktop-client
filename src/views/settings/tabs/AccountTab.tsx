@@ -9,17 +9,21 @@ import ChangeEmail from "./dialogs/ChangeEmail";
 import SignOut from "./dialogs/SignOut";
 import DeleteAccount from "./dialogs/DeleteAccount";
 import RequestData from "./dialogs/RequestData";
+import VerifyAccount from "@/views/dialogs/VerifyAccount";
+import { useTranslation } from "react-i18next";
+import { BadgeAlert } from "lucide-react";
 
 type AccountMe = {
   username: string;
   full_name?: string | null;
   email?: string | null;
+  verified?: boolean | null;
 };
 
 function initialsFromName(name: string) {
   const parts = name.trim().split(" ");
   const first = parts[0]?.[0] ?? "";
-  const last = parts.length > 1 ? parts[parts.length - 1]?.[0] ?? "" : "";
+  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? "") : "";
   const initials = (first + last).toUpperCase();
   return initials || "?";
 }
@@ -34,6 +38,8 @@ export default function AccountTab() {
 
   if (!isAuthenticated) return <>Unauthorized.</>;
 
+  const { t } = useTranslation();
+
   return (
     <>
       <Separator />
@@ -44,10 +50,10 @@ export default function AccountTab() {
             {account?.full_name
               ? initialsFromName(String(account.full_name))
               : account?.username
-              ? initialsFromName(account.username)
-              : isLoading
-              ? "…"
-              : "?"}
+                ? initialsFromName(account.username)
+                : isLoading
+                  ? "…"
+                  : "?"}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-center gap-0">
@@ -55,16 +61,16 @@ export default function AccountTab() {
             {error
               ? "Failed to load"
               : isLoading
-              ? "Loading…"
-              : (account?.full_name ?? "") || ""}{" "}
+                ? "Loading…"
+                : (account?.full_name ?? "") || ""}{" "}
             (
             {error
               ? ""
               : isLoading
-              ? ""
-              : account?.username
-              ? `@${account.username}`
-              : ""}
+                ? ""
+                : account?.username
+                  ? `@${account.username}`
+                  : ""}
             )
           </h3>
           <div className="text-muted-foreground text-xs">
@@ -93,6 +99,14 @@ export default function AccountTab() {
           <DeleteAccount />
         </div>
       </section>
+
+      {!account?.verified && (
+        <section className="text-yellow-500 mt-2 w-full inline-flex items-center justify-center gap-1">
+          <BadgeAlert />
+          <p>{t("register.verify.not_verified")}</p>
+          <VerifyAccount trigger_type={"text"} />
+        </section>
+      )}
     </>
   );
 }

@@ -124,11 +124,7 @@ export default function AppSidebar() {
                 </p>
               </div>
             </section>
-            {!account?.verified && (
-              <>
-                <VerifyAccount />
-              </>
-            )}
+            {!account?.verified && <VerifyAccount trigger_type={"button"} />}
           </div>
         </SidebarFooter>
       </Sidebar>

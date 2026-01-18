@@ -180,7 +180,7 @@ export default function ForgotPassword() {
 
                 <Input
                   placeholder={t(
-                    "settings.account.password.new_password_confirmation"
+                    "settings.account.password.new_password_confirmation",
                   )}
                   type={"password"}
                   value={newPasswordConfirmation}

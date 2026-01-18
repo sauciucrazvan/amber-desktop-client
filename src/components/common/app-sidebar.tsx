@@ -1,4 +1,4 @@
-import { BadgeAlert, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import {
@@ -14,9 +14,7 @@ import {
 import Contact from "./contact";
 import { useAuth } from "@/auth/AuthContext";
 import useSWR from "swr";
-import { Button } from "../ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { useTranslation } from "react-i18next";
+import VerifyAccount from "@/views/dialogs/VerifyAccount";
 
 type AccountMe = {
   username: string;
@@ -62,8 +60,6 @@ export default function AppSidebar() {
   const sidebarSide: "left" | "right" =
     storedSidebarPos === "right" ? "right" : "left";
 
-  const { t } = useTranslation();
-
   if (!isAuthenticated) return <>Unauthorized.</>;
 
   return (
@@ -86,8 +82,8 @@ export default function AppSidebar() {
         </SidebarContent>
         <SidebarFooter className="mb-2 mr-2 mt-0 ml-0 w-full">
           <Separator />
-          <div className="inline-flex items-center justify-between">
-            <section className="flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
+          <div className="inline-flex items-center justify-between w-full">
+            <section className="w-full flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
               <Avatar>
                 <AvatarFallback
                   style={
@@ -130,19 +126,7 @@ export default function AppSidebar() {
             </section>
             {!account?.verified && (
               <>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Button
-                      variant="ghost"
-                      className="cursor-pointer text-yellow-500"
-                    >
-                      <BadgeAlert />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{t("register.verify.not_verified")}</p>
-                  </TooltipContent>
-                </Tooltip>
+                <VerifyAccount />
               </>
             )}
           </div>

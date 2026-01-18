@@ -69,13 +69,20 @@
     "usernameTaken": "Username already taken.",
     "greeting": "Welcome to Amber!",
     "verify": {
+      "title": "Verify Your Account",
+      "description": "We'll send an email with a verification code.",
       "not_verified": "Your account is not verified",
       "already_verified": "You are already verified",
       "too_soon": "A verification email has been already sent. Retry in 30 minutes.",
       "email_sent": "A verification email has been sent. Please check your inbox (spam too!)",
       "invalid_code": "The code you provided is invalid",
       "too_late": "Your verification code has already expired, please retry.",
-      "success": "Your account is verified. It might take a moment to update."
+      "success": "Your account is verified. It might take a moment to update.",
+      "action": {
+        "back": "Back",
+        "finish": "Verify",
+        "next": "Send"
+      }
     }
   },
   "settings": {

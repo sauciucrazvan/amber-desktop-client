@@ -5,7 +5,10 @@
     "show": "Afficher",
     "hide": "Masquer",
     "submit": "Envoyer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "errors": {
+      "too_many_requests": "Trop de requêtes ! Ralentis !"
+    }
   },
   "login": {
     "registerPrompt": "Vous n'avez pas de compte ?",
@@ -19,7 +22,27 @@
     "fillInput": "Remplissez les champs",
     "incorrectCredentials": "Nom d'utilisateur ou mot de passe incorrect.",
     "greeting": "Bon retour !",
-    "account_disabled": "Ce compte a été supprimé."
+    "account_disabled": "Ce compte a été supprimé.",
+    "recovery": {
+      "title": "Récupérez votre mot de passe",
+      "description": "Vous pouvez faire une demande toutes les 30 minutes.",
+      "username": "Nom d'utilisateur",
+      "code": "Code de récupération",
+      "password": "Nouveau mot de passe",
+      "invalid_username": "Nom d'utilisateur invalide",
+      "invalid_code": "Le code que vous avez saisi a expiré ou est invalide.",
+      "invalid_password": "Mot de passe invalide",
+      "too_soon": "Vous pouvez demander un changement de mot de passe toutes les 30 minutes.",
+      "too_late": "Le code que vous avez utilisé a déjà expiré. Demandez un nouveau changement de mot de passe.",
+      "different_passwords": "Les mots de passe ne correspondent pas.",
+      "sent": "Le code de récupération a été envoyé à votre e-mail. Veuillez consulter votre boîte de réception (spam aussi !).",
+      "success": "Vous avez changé votre mot de passe avec succès. Veuillez vous connecter.",
+      "action": {
+        "next": "Suivant",
+        "finish": "Terminer",
+        "back": "Retour"
+      }
+    }
   },
   "register": {
     "loginPrompt": "Vous avez déjà un compte ?",
@@ -44,7 +67,24 @@
     "invalidEmail": "E-mail invalide.",
     "emailTaken": "E-mail déjà enregistré !",
     "usernameTaken": "Nom d'utilisateur déjà pris.",
-    "greeting": "Bienvenue sur Amber !"
+    "greeting": "Bienvenue sur Amber !",
+    "verify": {
+      "title": "Vérifiez votre compte",
+      "description": "Nous vous enverrons un e-mail avec un code de vérification.",
+      "not_verified": "Votre compte n'est pas vérifié.",
+      "verify_now": "Vérifier maintenant",
+      "already_verified": "Vous êtes déjà vérifié",
+      "too_soon": "Un e-mail de vérification a déjà été envoyé. Réessayez dans 30 minutes.",
+      "email_sent": "Un e-mail de vérification a été envoyé. Veuillez consulter votre boîte de réception (spam aussi !).",
+      "invalid_code": "Le code que vous avez fourni est invalide",
+      "too_late": "Votre code de vérification a expiré, veuillez réessayer.",
+      "success": "Votre compte est vérifié. Cela peut prendre un moment à mettre à jour.",
+      "action": {
+        "back": "Retour",
+        "finish": "Vérifier",
+        "next": "Envoyer"
+      }
+    }
   },
   "settings": {
     "title": "Paramètres",
@@ -117,7 +157,9 @@
       "data": {
         "title": "Demander des données personnelles",
         "description": "Demandez toutes les données que nous avons sur vous",
-        "action": "Demander"
+        "action": "Demander",
+        "too_soon": "Vous pouvez demander vos données chaque semaine.",
+        "toast": "Vos données demandées ont été envoyées à votre e-mail. Veuillez consulter votre boîte de réception (spam aussi !)"
       },
       "password": {
         "title": "Changer le mot de passe",

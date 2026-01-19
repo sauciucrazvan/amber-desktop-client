@@ -5,7 +5,10 @@
     "show": "显示",
     "hide": "隐藏",
     "submit": "提交",
-    "cancel": "取消"
+    "cancel": "取消",
+    "errors": {
+      "too_many_requests": "请求过多！请减速！"
+    }
   },
   "login": {
     "registerPrompt": "还没有账号？",
@@ -19,7 +22,27 @@
     "fillInput": "请填写输入框",
     "incorrectCredentials": "用户名或密码不正确。",
     "greeting": "欢迎回来！",
-    "account_disabled": "该账号已被删除。"
+    "account_disabled": "该账号已被删除。",
+    "recovery": {
+      "title": "恢复你的密码",
+      "description": "你可以每 30 分钟进行一次请求。",
+      "username": "用户名",
+      "code": "恢复代码",
+      "password": "新密码",
+      "invalid_username": "无效的用户名",
+      "invalid_code": "你输入的代码已过期或无效。",
+      "invalid_password": "无效的密码",
+      "too_soon": "你可以每 30 分钟请求一次密码更改。",
+      "too_late": "你使用的代码已经过期。请请求新的密码更改。",
+      "different_passwords": "密码不匹配。",
+      "sent": "恢复代码已发送至你的邮箱。请检查收件箱（包括垃圾邮件！）。",
+      "success": "你已成功更改密码。请登录。",
+      "action": {
+        "next": "下一步",
+        "finish": "完成",
+        "back": "返回"
+      }
+    }
   },
   "register": {
     "loginPrompt": "已经有账号？",
@@ -44,7 +67,24 @@
     "invalidEmail": "邮箱格式不正确。",
     "emailTaken": "该邮箱已被注册！",
     "usernameTaken": "该用户名已被占用。",
-    "greeting": "欢迎使用 Amber！"
+    "greeting": "欢迎使用 Amber！",
+    "verify": {
+      "title": "验证你的账号",
+      "description": "我们会发送一封包含验证码的邮件。",
+      "not_verified": "你的账号未被验证。",
+      "verify_now": "立即验证",
+      "already_verified": "你已被验证",
+      "too_soon": "验证邮件已发送。请在 30 分钟后重试。",
+      "email_sent": "验证邮件已发送。请检查收件箱（包括垃圾邮件！）。",
+      "invalid_code": "你提供的代码无效",
+      "too_late": "你的验证码已过期，请重试。",
+      "success": "你的账号已被验证。可能需要一些时间才能更新。",
+      "action": {
+        "back": "返回",
+        "finish": "验证",
+        "next": "发送"
+      }
+    }
   },
   "settings": {
     "title": "设置",
@@ -117,7 +157,9 @@
       "data": {
         "title": "请求个人数据",
         "description": "请求我们所保存的所有关于你的数据",
-        "action": "请求"
+        "action": "请求",
+        "too_soon": "你可以每周请求一次你的数据。",
+        "toast": "你请求的数据已发送到你的邮箱。请检查收件箱（包括垃圾邮件！）。"
       },
       "password": {
         "title": "更改密码",

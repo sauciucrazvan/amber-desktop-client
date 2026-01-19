@@ -5,7 +5,10 @@
     "show": "Mostrar",
     "hide": "Ocultar",
     "submit": "Enviar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "errors": {
+      "too_many_requests": "¡Demasiadas solicitudes! ¡Ralentízate!"
+    }
   },
   "login": {
     "registerPrompt": "¿No tienes una cuenta?",
@@ -19,7 +22,27 @@
     "fillInput": "Rellena los campos",
     "incorrectCredentials": "Nombre de usuario o contraseña incorrectos.",
     "greeting": "¡Bienvenido de nuevo!",
-    "account_disabled": "Esta cuenta ha sido eliminada."
+    "account_disabled": "Esta cuenta ha sido eliminada.",
+    "recovery": {
+      "title": "Recupera tu contraseña",
+      "description": "Puedes hacer una solicitud cada 30 minutos.",
+      "username": "Nombre de usuario",
+      "code": "Código de recuperación",
+      "password": "Nueva contraseña",
+      "invalid_username": "Nombre de usuario inválido",
+      "invalid_code": "El código que ingresaste ha expirado o es inválido.",
+      "invalid_password": "Contraseña inválida",
+      "too_soon": "Puedes solicitar un cambio de contraseña cada 30 minutos.",
+      "too_late": "El código que usaste ya expiró. Solicita un nuevo cambio de contraseña.",
+      "different_passwords": "Las contraseñas no coinciden.",
+      "sent": "El código de recuperación ha sido enviado a tu correo. Por favor, revisa tu bandeja de entrada (¡incluso spam!).",
+      "success": "Has cambiado tu contraseña exitosamente. Por favor, inicia sesión.",
+      "action": {
+        "next": "Siguiente",
+        "finish": "Finalizar",
+        "back": "Atrás"
+      }
+    }
   },
   "register": {
     "loginPrompt": "¿Ya tienes una cuenta?",
@@ -44,7 +67,24 @@
     "invalidEmail": "Correo electrónico no válido.",
     "emailTaken": "¡El correo electrónico ya está registrado!",
     "usernameTaken": "El nombre de usuario ya está en uso.",
-    "greeting": "¡Bienvenido a Amber!"
+    "greeting": "¡Bienvenido a Amber!",
+    "verify": {
+      "title": "Verifica tu cuenta",
+      "description": "Te enviaremos un correo electrónico con un código de verificación.",
+      "not_verified": "Tu cuenta no está verificada.",
+      "verify_now": "Verificar ahora",
+      "already_verified": "Ya estás verificado",
+      "too_soon": "Ya se ha enviado un correo de verificación. Reintenta en 30 minutos.",
+      "email_sent": "Se ha enviado un correo de verificación. Por favor, revisa tu bandeja de entrada (¡incluso spam!).",
+      "invalid_code": "El código que proporcionaste es inválido",
+      "too_late": "Tu código de verificación ya ha expirado, por favor reintenta.",
+      "success": "Tu cuenta está verificada. Podría tomar un momento actualizarse.",
+      "action": {
+        "back": "Atrás",
+        "finish": "Verificar",
+        "next": "Enviar"
+      }
+    }
   },
   "settings": {
     "title": "Ajustes",
@@ -117,7 +157,9 @@
       "data": {
         "title": "Solicitar datos personales",
         "description": "Solicita todos los datos que tenemos sobre ti",
-        "action": "Solicitar"
+        "action": "Solicitar",
+        "too_soon": "Puedes solicitar tus datos cada semana.",
+        "toast": "Tus datos solicitados han sido enviados a tu correo electrónico. Por favor, revisa tu bandeja de entrada (¡incluso spam!)"
       },
       "password": {
         "title": "Cambiar contraseña",

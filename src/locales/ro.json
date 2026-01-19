@@ -5,7 +5,10 @@
     "show": "Afișează",
     "hide": "Ascunde",
     "submit": "Trimite",
-    "cancel": "Anulează"
+    "cancel": "Anulează",
+    "errors": {
+      "too_many_requests": "Prea multe cereri! Încetinește!"
+    }
   },
   "login": {
     "registerPrompt": "Nu ai cont?",
@@ -19,7 +22,27 @@
     "fillInput": "Completează câmpurile",
     "incorrectCredentials": "Nume de utilizator sau parolă incorecte.",
     "greeting": "Bine ai revenit!",
-    "account_disabled": "Acest cont a fost șters."
+    "account_disabled": "Acest cont a fost șters.",
+    "recovery": {
+      "title": "Recuperează-ți parola",
+      "description": "Poți face o cerere la fiecare 30 de minute.",
+      "username": "Nume de utilizator",
+      "code": "Cod de recuperare",
+      "password": "Parola nouă",
+      "invalid_username": "Nume de utilizator invalid",
+      "invalid_code": "Codul pe care l-ai introdus a expirat sau este invalid.",
+      "invalid_password": "Parolă invalidă",
+      "too_soon": "Poți cere o schimbare de parolă la fiecare 30 de minute.",
+      "too_late": "Codul pe care l-ai folosit a expirat deja. Cere o nouă schimbare de parolă.",
+      "different_passwords": "Parolele nu se potrivesc.",
+      "sent": "Codul de recuperare a fost trimis la e-mailul tău. Te rog să-ți verifica inboxul (și spam!).",
+      "success": "Ți-ai schimbat cu succes parola. Te rog să te autentifici.",
+      "action": {
+        "next": "Înainte",
+        "finish": "Gata",
+        "back": "Înapoi"
+      }
+    }
   },
   "register": {
     "loginPrompt": "Ai deja cont?",
@@ -44,7 +67,24 @@
     "invalidEmail": "Email invalid.",
     "emailTaken": "Email deja înregistrat!",
     "usernameTaken": "Numele de utilizator este deja folosit.",
-    "greeting": "Bun venit în Amber!"
+    "greeting": "Bun venit în Amber!",
+    "verify": {
+      "title": "Verifică-ți contul",
+      "description": "Îți vom trimite un e-mail cu un cod de verificare.",
+      "not_verified": "Contul tău nu este verificat.",
+      "verify_now": "Verifică acum",
+      "already_verified": "Ești deja verificat",
+      "too_soon": "Un e-mail de verificare a fost deja trimis. Încearcă din nou în 30 de minute.",
+      "email_sent": "Un e-mail de verificare a fost trimis. Te rog să-ți verifica inboxul (și spam!).",
+      "invalid_code": "Codul pe care l-ai furnizat este invalid",
+      "too_late": "Codul tău de verificare a expirat, încearcă din nou.",
+      "success": "Contul tău este verificat. Ar putea dura puțin timp pentru a se actualiza.",
+      "action": {
+        "back": "Înapoi",
+        "finish": "Verifică",
+        "next": "Trimite"
+      }
+    }
   },
   "settings": {
     "title": "Setări",
@@ -117,7 +157,9 @@
       "data": {
         "title": "Solicită date personale",
         "description": "Solicită toate datele pe care le avem despre tine",
-        "action": "Solicită"
+        "action": "Solicită",
+        "too_soon": "Poți solicita datele tale în fiecare săptămână.",
+        "toast": "Datele pe care le-ai solicitat au fost trimise la e-mailul tău. Te rog să-ți verifica inboxul (și spam!)"
       },
       "password": {
         "title": "Schimbă parola",

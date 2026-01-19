@@ -5,7 +5,10 @@
     "show": "Anzeigen",
     "hide": "Ausblenden",
     "submit": "Senden",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "errors": {
+      "too_many_requests": "Zu viele Anfragen! Verlangsam dich!"
+    }
   },
   "login": {
     "registerPrompt": "Noch kein Konto?",
@@ -19,7 +22,27 @@
     "fillInput": "Fülle die Eingabefelder aus",
     "incorrectCredentials": "Falscher Benutzername oder Passwort.",
     "greeting": "Willkommen zurück!",
-    "account_disabled": "Dieses Konto wurde gelöscht."
+    "account_disabled": "Dieses Konto wurde gelöscht.",
+    "recovery": {
+      "title": "Stelle dein Passwort wieder her",
+      "description": "Du kannst alle 30 Minuten eine Anfrage stellen.",
+      "username": "Benutzername",
+      "code": "Wiederherstellungscode",
+      "password": "Neues Passwort",
+      "invalid_username": "Ungültiger Benutzername",
+      "invalid_code": "Der Code, den du eingegeben hast, ist abgelaufen oder ungültig.",
+      "invalid_password": "Ungültiges Passwort",
+      "too_soon": "Du kannst ein Passwort-Reset alle 30 Minuten anfordern.",
+      "too_late": "Der Code, den du verwendet hast, ist bereits abgelaufen. Fordere eine neue Passwort-Änderung an.",
+      "different_passwords": "Die Passwörter stimmen nicht überein.",
+      "sent": "Der Wiederherstellungscode wurde an deine E-Mail gesendet. Bitte überprüfe deinen Posteingang (auch Spam!).",
+      "success": "Du hast dein Passwort erfolgreich geändert. Bitte melde dich an.",
+      "action": {
+        "next": "Weiter",
+        "finish": "Fertig",
+        "back": "Zurück"
+      }
+    }
   },
   "register": {
     "loginPrompt": "Schon ein Konto?",
@@ -44,7 +67,24 @@
     "invalidEmail": "Ungültige E-Mail.",
     "emailTaken": "E-Mail bereits registriert!",
     "usernameTaken": "Benutzername bereits vergeben.",
-    "greeting": "Willkommen bei Amber!"
+    "greeting": "Willkommen bei Amber!",
+    "verify": {
+      "title": "Verifiziere dein Konto",
+      "description": "Wir senden dir eine E-Mail mit einem Bestätigungscode.",
+      "not_verified": "Dein Konto ist nicht verifiziert.",
+      "verify_now": "Jetzt verifizieren",
+      "already_verified": "Du bist bereits verifiziert",
+      "too_soon": "Es wurde bereits eine Bestätigungs-E-Mail gesendet. Versuche es in 30 Minuten erneut.",
+      "email_sent": "Eine Bestätigungs-E-Mail wurde gesendet. Bitte überprüfe deinen Posteingang (auch Spam!).",
+      "invalid_code": "Der Code, den du eingegeben hast, ist ungültig",
+      "too_late": "Dein Bestätigungscode ist abgelaufen. Versuche es bitte erneut.",
+      "success": "Dein Konto ist verifiziert. Es kann einen Moment dauern, bis es aktualisiert wird.",
+      "action": {
+        "back": "Zurück",
+        "finish": "Verifizieren",
+        "next": "Senden"
+      }
+    }
   },
   "settings": {
     "title": "Einstellungen",
@@ -117,7 +157,9 @@
       "data": {
         "title": "Persönliche Daten anfordern",
         "description": "Fordere alle Daten an, die wir über dich haben",
-        "action": "Anfordern"
+        "action": "Anfordern",
+        "too_soon": "Du kannst deine Daten jede Woche anfordern.",
+        "toast": "Deine angeforderten Daten wurden an deine E-Mail gesendet. Bitte überprüfe deinen Posteingang (auch Spam!)"
       },
       "password": {
         "title": "Passwort ändern",

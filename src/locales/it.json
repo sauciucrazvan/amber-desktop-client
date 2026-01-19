@@ -5,7 +5,10 @@
     "show": "Mostra",
     "hide": "Nascondi",
     "submit": "Invia",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "errors": {
+      "too_many_requests": "Troppe richieste! Rallenta!"
+    }
   },
   "login": {
     "registerPrompt": "Non hai un account?",
@@ -19,7 +22,27 @@
     "fillInput": "Compila i campi",
     "incorrectCredentials": "Nome utente o password non corretti.",
     "greeting": "Bentornato!",
-    "account_disabled": "Questo account è stato eliminato."
+    "account_disabled": "Questo account è stato eliminato.",
+    "recovery": {
+      "title": "Recupera la tua password",
+      "description": "Puoi fare una richiesta ogni 30 minuti.",
+      "username": "Nome utente",
+      "code": "Codice di recupero",
+      "password": "Nuova password",
+      "invalid_username": "Nome utente non valido",
+      "invalid_code": "Il codice che hai inserito è scaduto o non valido.",
+      "invalid_password": "Password non valida",
+      "too_soon": "Puoi richiedere un cambio di password ogni 30 minuti.",
+      "too_late": "Il codice che hai utilizzato è già scaduto. Richiedi un nuovo cambio di password.",
+      "different_passwords": "Le password non corrispondono.",
+      "sent": "Il codice di recupero è stato inviato alla tua email. Controlla la tua casella di posta (incluso lo spam!).",
+      "success": "Hai cambiato con successo la tua password. Per favore, accedi.",
+      "action": {
+        "next": "Avanti",
+        "finish": "Fine",
+        "back": "Indietro"
+      }
+    }
   },
   "register": {
     "loginPrompt": "Hai già un account?",
@@ -44,7 +67,24 @@
     "invalidEmail": "Email non valida.",
     "emailTaken": "Email già registrata!",
     "usernameTaken": "Nome utente già in uso.",
-    "greeting": "Benvenuto su Amber!"
+    "greeting": "Benvenuto su Amber!",
+    "verify": {
+      "title": "Verifica il tuo account",
+      "description": "Ti manderemo un'email con un codice di verifica.",
+      "not_verified": "Il tuo account non è verificato.",
+      "verify_now": "Verifica ora",
+      "already_verified": "Sei già verificato",
+      "too_soon": "Un'email di verifica è già stata inviata. Riprova tra 30 minuti.",
+      "email_sent": "Un'email di verifica è stata inviata. Controlla la tua casella di posta (incluso lo spam!).",
+      "invalid_code": "Il codice che hai fornito non è valido",
+      "too_late": "Il tuo codice di verifica è scaduto, riprova.",
+      "success": "Il tuo account è verificato. Potrebbe volerci un momento per aggiornare.",
+      "action": {
+        "back": "Indietro",
+        "finish": "Verifica",
+        "next": "Invia"
+      }
+    }
   },
   "settings": {
     "title": "Impostazioni",
@@ -117,7 +157,9 @@
       "data": {
         "title": "Richiedi dati personali",
         "description": "Richiedi tutti i dati che abbiamo su di te",
-        "action": "Richiedi"
+        "action": "Richiedi",
+        "too_soon": "Puoi richiedere i tuoi dati ogni settimana.",
+        "toast": "I dati richiesti sono stati inviati alla tua email. Controlla la tua casella di posta (incluso lo spam!)"
       },
       "password": {
         "title": "Cambia password",

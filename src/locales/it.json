@@ -174,7 +174,18 @@
       "email": {
         "title": "Cambia email",
         "description": "Cambia l'email del tuo account. Assicurati che sia valida.",
+        "request_description": "Inserisci la tua nuova email e la password. Ti invieremo codici di verifica per confermare e completare la modifica.",
+        "confirm_description": "Inserisci il codice di conferma per continuare.",
+        "verify_description": "Inserisci il codice di verifica per completare il cambio email.",
+        "confirm_code": "Codice di conferma",
+        "verify_code": "Codice di verifica",
         "same": "Non puoi cambiare l'email con quella attuale.",
+        "no_pending": "Non c'è nessuna richiesta di cambio email in sospeso.",
+        "not_confirmed": "Il cambio email non è stato ancora confermato.",
+        "already_confirmed": "Il cambio email è già stato confermato.",
+        "too_late": "Il tuo codice di verifica è scaduto. Per favore riprova.",
+        "invalid_code": "Codice di verifica non valido.",
+        "verify_sent": "Un codice di verifica è stato inviato alla tua email. Controlla la tua casella di posta (incluso lo spam!)",
         "updated": "Indirizzo email aggiornato con successo!"
       },
       "name": {

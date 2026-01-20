@@ -174,7 +174,18 @@
       "email": {
         "title": "Schimbă emailul",
         "description": "Schimbă emailul contului tău. Asigură-te că este valid.",
+        "request_description": "Introdu noul email și parola. Îți vom trimite coduri de verificare pentru a confirma și finaliza schimbarea.",
+        "confirm_description": "Introdu codul de confirmare pentru a continua.",
+        "verify_description": "Introdu codul de verificare pentru a finaliza schimbarea emailului.",
+        "confirm_code": "Cod de confirmare",
+        "verify_code": "Cod de verificare",
         "same": "Nu poți schimba emailul în cel curent.",
+        "no_pending": "Nu există o cerere de schimbare a emailului în așteptare.",
+        "not_confirmed": "Schimbarea emailului nu a fost încă confirmată.",
+        "already_confirmed": "Schimbarea emailului a fost deja confirmată.",
+        "too_late": "Codul de verificare a expirat. Te rog încearcă din nou.",
+        "invalid_code": "Cod de verificare invalid.",
+        "verify_sent": "Un cod de verificare a fost trimis la emailul tău. Te rog să-ți verifica inboxul (și spam!)",
         "updated": "Adresa de email a fost actualizată cu succes!"
       },
       "name": {

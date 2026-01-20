@@ -174,7 +174,18 @@
       "email": {
         "title": "E-Mail ändern",
         "description": "Ändere die E-Mail-Adresse deines Kontos. Stelle sicher, dass sie gültig ist.",
+        "request_description": "Gib deine neue E-Mail und dein Passwort ein. Wir senden dir Bestätigungscodes, um die Änderung zu bestätigen und abzuschließen.",
+        "confirm_description": "Gib den Bestätigungscode ein, um fortzufahren.",
+        "verify_description": "Gib den Verifizierungscode ein, um die E-Mail-Änderung abzuschließen.",
+        "confirm_code": "Bestätigungscode",
+        "verify_code": "Verifizierungscode",
         "same": "Du kannst deine E-Mail nicht auf deine aktuelle ändern.",
+        "no_pending": "Es gibt keine ausstehende E-Mail-Änderungsanfrage.",
+        "not_confirmed": "Die E-Mail-Änderung wurde noch nicht bestätigt.",
+        "already_confirmed": "Die E-Mail-Änderung wurde bereits bestätigt.",
+        "too_late": "Dein Verifizierungscode ist abgelaufen. Bitte erneut starten.",
+        "invalid_code": "Ungültiger Verifizierungscode.",
+        "verify_sent": "Ein Verifizierungscode wurde an deine E-Mail gesendet. Bitte überprüfe deinen Posteingang (auch Spam!).",
         "updated": "Deine E-Mail-Adresse wurde erfolgreich aktualisiert!"
       },
       "name": {

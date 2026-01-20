@@ -174,7 +174,18 @@
       "email": {
         "title": "更改邮箱",
         "description": "更改你账号的邮箱。请确保邮箱有效。",
+        "request_description": "请输入新邮箱和密码。我们会发送验证码用于确认并完成更改。",
+        "confirm_description": "请输入确认验证码以继续。",
+        "verify_description": "请输入验证验证码以完成邮箱更改。",
+        "confirm_code": "确认验证码",
+        "verify_code": "验证码",
         "same": "你不能将邮箱更改为当前邮箱。",
+        "no_pending": "没有待处理的邮箱更改请求。",
+        "not_confirmed": "邮箱更改尚未确认。",
+        "already_confirmed": "邮箱更改已确认。",
+        "too_late": "验证码已过期。请重新开始。",
+        "invalid_code": "验证码无效。",
+        "verify_sent": "验证码已发送到你的邮箱。请检查收件箱（包括垃圾邮件！）。",
         "updated": "邮箱地址已成功更新！"
       },
       "name": {

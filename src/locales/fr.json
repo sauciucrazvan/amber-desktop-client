@@ -174,7 +174,18 @@
       "email": {
         "title": "Changer l'e-mail",
         "description": "Modifiez l'e-mail de votre compte. Assurez-vous qu'il est valide.",
+        "request_description": "Saisissez votre nouvel e-mail et votre mot de passe. Nous vous enverrons des codes de vérification pour confirmer et finaliser le changement.",
+        "confirm_description": "Saisissez le code de confirmation pour continuer.",
+        "verify_description": "Saisissez le code de vérification pour finaliser le changement d'e-mail.",
+        "confirm_code": "Code de confirmation",
+        "verify_code": "Code de vérification",
         "same": "Vous ne pouvez pas remplacer votre e-mail par votre e-mail actuel.",
+        "no_pending": "Il n'y a aucune demande de changement d'e-mail en attente.",
+        "not_confirmed": "Le changement d'e-mail n'a pas encore été confirmé.",
+        "already_confirmed": "Le changement d'e-mail a déjà été confirmé.",
+        "too_late": "Votre code de vérification a expiré. Veuillez recommencer.",
+        "invalid_code": "Code de vérification invalide.",
+        "verify_sent": "Un code de vérification a été envoyé à votre e-mail. Veuillez vérifier votre boîte de réception (spam aussi !)",
         "updated": "Adresse e-mail mise à jour avec succès !"
       },
       "name": {

@@ -174,7 +174,18 @@
       "email": {
         "title": "Cambiar correo electrónico",
         "description": "Cambia el correo electrónico de tu cuenta. Asegúrate de que sea válido.",
+        "request_description": "Introduce tu nuevo correo y contraseña. Te enviaremos códigos de verificación para confirmar y finalizar el cambio.",
+        "confirm_description": "Introduce el código de confirmación para continuar.",
+        "verify_description": "Introduce el código de verificación para finalizar el cambio de correo.",
+        "confirm_code": "Código de confirmación",
+        "verify_code": "Código de verificación",
         "same": "No puedes cambiar tu correo electrónico por el actual.",
+        "no_pending": "No hay una solicitud de cambio de correo pendiente.",
+        "not_confirmed": "El cambio de correo aún no está confirmado.",
+        "already_confirmed": "El cambio de correo ya está confirmado.",
+        "too_late": "Tu código de verificación ha caducado. Por favor, vuelve a intentarlo.",
+        "invalid_code": "Código de verificación inválido.",
+        "verify_sent": "Se envió un código de verificación a tu correo. Revisa tu bandeja de entrada (¡también spam!).",
         "updated": "¡Correo electrónico actualizado correctamente!"
       },
       "name": {

@@ -51,8 +51,34 @@ export default function Contact({
         }),
       });
 
+      const data = await res.json().catch(() => null);
+
       if (res.ok) {
-        toast.success(t("contacts.blocked"));
+        toast.success(t(data.message));
+        await mutate("/account/contacts/list");
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "An error occured");
+    }
+  };
+
+  const onRemove = async () => {
+    try {
+      const res = await fetch(API_BASE_URL + "/account/contacts/remove", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (res.ok) {
+        toast.success(t(data.message));
         await mutate("/account/contacts/list");
       }
     } catch (e) {
@@ -90,7 +116,7 @@ export default function Contact({
           <ContextMenuItem onClick={onBlock}>
             <ShieldBan /> {t("contacts.block")}
           </ContextMenuItem>
-          <ContextMenuItem>
+          <ContextMenuItem onClick={onRemove}>
             <Trash /> {t("contacts.remove")}
           </ContextMenuItem>
         </ContextMenuContent>

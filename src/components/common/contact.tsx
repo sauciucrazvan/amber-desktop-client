@@ -6,6 +6,7 @@ import {
   ContextMenuTrigger,
 } from "../ui/context-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
+import { useTranslation } from "react-i18next";
 
 // Source - https://stackoverflow.com/a
 // Posted by Joe Freeman, modified by community. See post 'Timeline' for change history
@@ -30,6 +31,8 @@ export default function Contact({
   username: string;
   full_name: string;
 }) {
+  const { t } = useTranslation();
+
   return (
     <>
       <ContextMenu>
@@ -58,10 +61,10 @@ export default function Contact({
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuItem>
-            <ShieldBan /> Block
+            <ShieldBan /> {t("contacts.block")}
           </ContextMenuItem>
           <ContextMenuItem>
-            <Trash /> Remove
+            <Trash /> {t("contacts.remove")}
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>

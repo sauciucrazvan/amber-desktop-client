@@ -202,6 +202,8 @@
   "contacts": {
     "title": "Contacts",
     "none": "No contacts yet",
-    "failed_loading": "Failed to load contacts"
+    "failed_loading": "Failed to load contacts",
+    "block": "Block",
+    "remove": "Remove"
   }
 }

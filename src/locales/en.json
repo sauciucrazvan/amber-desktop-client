@@ -198,5 +198,10 @@
         "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
       }
     }
+  },
+  "contacts": {
+    "title": "Contacts",
+    "none": "No contacts yet",
+    "failed_loading": "Failed to load contacts"
   }
 }

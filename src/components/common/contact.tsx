@@ -23,7 +23,13 @@ const stringToColor = (str: string) => {
   return colour;
 };
 
-export default function Contact({ username }: { username: string }) {
+export default function Contact({
+  username,
+  full_name,
+}: {
+  username: string;
+  full_name: string;
+}) {
   return (
     <>
       <ContextMenu>
@@ -32,26 +38,29 @@ export default function Contact({ username }: { username: string }) {
             <Avatar className="w-6 h-6 text-xs">
               <AvatarFallback
                 style={
-                  username
+                  full_name
                     ? {
-                        backgroundColor: stringToColor(username),
+                        backgroundColor: stringToColor(full_name),
                       }
                     : undefined
                 }
               >
-                {username.slice(0, 2)}
+                {full_name.slice(0, 2)}
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-row items-center gap-1">
-              <h3 className="text-sm leading-tight">{username}</h3>
+              <h3 className="text-sm leading-tight">
+                {full_name}{" "}
+                <p className="text-xs text-muted-foreground">@{username}</p>
+              </h3>
             </div>
           </section>
         </ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem className="hover:text-red-500">
+          <ContextMenuItem>
             <ShieldBan /> Block
           </ContextMenuItem>
-          <ContextMenuItem className="hover:text-red-500">
+          <ContextMenuItem>
             <Trash /> Remove
           </ContextMenuItem>
         </ContextMenuContent>

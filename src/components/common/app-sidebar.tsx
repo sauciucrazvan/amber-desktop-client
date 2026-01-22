@@ -15,11 +15,22 @@ import Contact from "./contact";
 import { useAuth } from "@/auth/AuthContext";
 import useSWR from "swr";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
+import { useTranslation } from "react-i18next";
+import { Spinner } from "../ui/spinner";
 
 type AccountMe = {
   username: string;
   full_name?: string | null;
-  verified?: string | null;
+  verified?: boolean | null;
+};
+
+type ContactListItem = {
+  user: {
+    id: number;
+    username: string;
+    full_name: string;
+  };
+  created_at: string;
 };
 
 // Source - https://stackoverflow.com/a
@@ -53,8 +64,15 @@ export default function AppSidebar() {
     error,
     isLoading,
   } = useSWR<AccountMe>(isAuthenticated ? "/account/me" : null);
+  const { t } = useTranslation();
 
-  const contacts = ["Michael J.", "John Steel", "Freddie Mercury", "Lego man"];
+  const {
+    data: contacts,
+    error: contactsError,
+    isLoading: isContactsLoading,
+  } = useSWR<ContactListItem[]>(
+    isAuthenticated ? "/account/contacts/list" : null,
+  );
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =
@@ -67,16 +85,41 @@ export default function AppSidebar() {
       <Sidebar side={sidebarSide}>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Contacts</SidebarGroupLabel>
+            <SidebarGroupLabel>{t("contacts.title")}</SidebarGroupLabel>
             <SidebarGroupAction title="Add Contact" className="cursor-pointer">
               <Plus /> <span className="sr-only">Add Contact</span>
             </SidebarGroupAction>
             <SidebarMenu className="">
-              {contacts.map((contact) => (
-                <SidebarMenuItem key={contact}>
-                  <Contact username={contact} />
+              {contactsError ? (
+                <SidebarMenuItem>
+                  <span className="px-1 text-xs text-muted-foreground">
+                    {t("contacts.failed_loading")}
+                  </span>
                 </SidebarMenuItem>
-              ))}
+              ) : isContactsLoading ? (
+                <SidebarMenuItem>
+                  <span className="px-1 text-xs text-muted-foreground">
+                    <Spinner />
+                  </span>
+                </SidebarMenuItem>
+              ) : contacts && contacts.length > 0 ? (
+                contacts.map((contact) => (
+                  <SidebarMenuItem
+                    key={`${contact.user.id}-${contact.created_at}`}
+                  >
+                    <Contact
+                      username={contact.user.username}
+                      full_name={contact.user.full_name}
+                    />
+                  </SidebarMenuItem>
+                ))
+              ) : (
+                <SidebarMenuItem>
+                  <span className="mx-1 px-1 text-xs text-muted-foreground">
+                    {t("contacts.none")}
+                  </span>
+                </SidebarMenuItem>
+              )}
             </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>

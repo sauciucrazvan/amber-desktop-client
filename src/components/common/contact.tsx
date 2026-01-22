@@ -7,6 +7,10 @@ import {
 } from "../ui/context-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
+import { API_BASE_URL } from "@/config";
+import { useAuth } from "@/auth/AuthContext";
+import { mutate } from "swr";
 
 // Source - https://stackoverflow.com/a
 // Posted by Joe Freeman, modified by community. See post 'Timeline' for change history
@@ -32,6 +36,29 @@ export default function Contact({
   full_name: string;
 }) {
   const { t } = useTranslation();
+  const { accessToken } = useAuth();
+
+  const onBlock = async () => {
+    try {
+      const res = await fetch(API_BASE_URL + "/account/contacts/block", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success(t("contacts.blocked"));
+        await mutate("/account/contacts/list");
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "An error occured");
+    }
+  };
 
   return (
     <>
@@ -53,14 +80,14 @@ export default function Contact({
             </Avatar>
             <div className="flex flex-row items-center gap-1">
               <h3 className="text-sm leading-tight">
-                {full_name}{" "}
+                {full_name}
                 <p className="text-xs text-muted-foreground">@{username}</p>
               </h3>
             </div>
           </section>
         </ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem>
+          <ContextMenuItem onClick={onBlock}>
             <ShieldBan /> {t("contacts.block")}
           </ContextMenuItem>
           <ContextMenuItem>

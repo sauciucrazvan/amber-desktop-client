@@ -85,12 +85,12 @@ export default function AppSidebar() {
     <>
       <Sidebar side={sidebarSide}>
         <SidebarContent>
-          <SidebarGroup>
+          <SidebarGroup className="flex-1 min-h-0">
             <SidebarGroupLabel>{t("contacts.title")}</SidebarGroupLabel>
             <SidebarGroupAction className="cursor-pointer">
               <AddContact />
             </SidebarGroupAction>
-            <SidebarMenu className="">
+            <SidebarMenu className="flex-1 min-h-0 overflow-y-auto pr-1">
               {contactsError ? (
                 <SidebarMenuItem>
                   <span className="px-1 text-xs text-muted-foreground">
@@ -169,7 +169,7 @@ export default function AppSidebar() {
               </div>
             </section>
             {!account?.verified && <VerifyAccount trigger_type={"button"} />}
-            <ContactRequests />
+            {account?.verified && <ContactRequests />}
           </div>
         </SidebarFooter>
       </Sidebar>

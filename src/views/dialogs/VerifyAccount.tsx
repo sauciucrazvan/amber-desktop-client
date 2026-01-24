@@ -106,7 +106,10 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
 
   const triggerButton =
     trigger_type == "button" ? (
-      <Button variant="ghost" className="cursor-pointer text-yellow-500 h-full">
+      <Button
+        variant="outline"
+        className="cursor-pointer text-yellow-500 h-full"
+      >
         <BadgeAlert />
       </Button>
     ) : (

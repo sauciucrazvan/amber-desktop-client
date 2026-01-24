@@ -81,7 +81,7 @@ export default function AddContact() {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
-            size="icon-lg"
+            size="icon-sm"
             variant="outline"
             className="cursor-pointer h-full"
           >

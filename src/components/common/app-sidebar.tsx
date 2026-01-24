@@ -17,6 +17,7 @@ import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui/spinner";
 import AddContact from "@/views/dialogs/AddContact";
+import ContactRequests from "@/views/dialogs/ContactRequests";
 
 type AccountMe = {
   username: string;
@@ -86,7 +87,7 @@ export default function AppSidebar() {
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>{t("contacts.title")}</SidebarGroupLabel>
-            <SidebarGroupAction title="Add Contact" className="cursor-pointer">
+            <SidebarGroupAction className="cursor-pointer">
               <AddContact />
             </SidebarGroupAction>
             <SidebarMenu className="">
@@ -125,7 +126,7 @@ export default function AppSidebar() {
         </SidebarContent>
         <SidebarFooter className="mb-2 mr-2 mt-0 ml-0 w-full">
           <Separator />
-          <div className="inline-flex items-center justify-between w-full">
+          <div className="inline-flex items-center justify-between w-full h-full gap-1">
             <section className="w-full flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
               <Avatar>
                 <AvatarFallback
@@ -168,6 +169,7 @@ export default function AppSidebar() {
               </div>
             </section>
             {!account?.verified && <VerifyAccount trigger_type={"button"} />}
+            <ContactRequests />
           </div>
         </SidebarFooter>
       </Sidebar>

@@ -12,7 +12,7 @@ import {
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
-import { Plus } from "lucide-react";
+import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -80,8 +80,12 @@ export default function AddContact() {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button size="icon-sm" className="cursor-pointer h-full">
-            <Plus />
+          <Button
+            size="icon-lg"
+            variant="outline"
+            className="cursor-pointer h-full"
+          >
+            <UserRoundPlus />
           </Button>
         </DialogTrigger>
 

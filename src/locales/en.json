@@ -223,6 +223,11 @@
       "description": "You can add contacts with their Amber username.",
       "action": "Add",
       "username": "Username"
+    },
+    "requests": {
+      "title": "Requests",
+      "description": "Accept or decline any friendship requests you've received.",
+      "none": "No requests received at this moment"
     }
   }
 }

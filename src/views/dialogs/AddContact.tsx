@@ -14,23 +14,31 @@ import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 export default function AddContact() {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [username, setUsername] = useState("");
+  const [submittedUsername, setSubmittedUsername] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const { t } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
 
   const onSubmit = async () => {
+    const requestedUsername = username.trim();
+
     setError(null);
     setIsSubmitting(true);
+    setSubmittedUsername(requestedUsername);
 
     try {
+      if (requestedUsername === "") {
+        return;
+      }
+
       const res = await fetch(API_BASE_URL + "/account/contacts/request", {
         method: "POST",
         headers: {
@@ -38,7 +46,7 @@ export default function AddContact() {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          username: username,
+          username: requestedUsername,
         }),
       });
 
@@ -54,8 +62,11 @@ export default function AddContact() {
       }
 
       setOpen(false);
-      toast.success(t("contacts.requested").replace("{{user}}", username));
+      toast.success(
+        t("contacts.requested").replace("{{user}}", requestedUsername),
+      );
       setUsername("");
+      setSubmittedUsername("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occured");
     } finally {
@@ -106,7 +117,11 @@ export default function AddContact() {
             </ButtonGroup>
           </Field>
 
-          {error && <p className="text-red-500">{t(error)}</p>}
+          {error && (
+            <p className="text-red-500">
+              <Trans i18nKey={error} values={{ user: submittedUsername }} />
+            </p>
+          )}
         </DialogContent>
       </Dialog>
     </>

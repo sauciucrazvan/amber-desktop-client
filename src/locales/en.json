@@ -205,18 +205,24 @@
     "failed_loading": "Failed to load contacts",
     "block": "Block",
     "remove": "Remove",
-    "invalid_user": "Invalid user. Make sure you typed it correctly.",
+    "invalid_user": "Couldn't find a match for your query.",
     "not_found": "Could not find contact.",
     "removed": "Successfully removed contact.",
     "yourself": "You can not perfom this action on yourself.",
-    "blocked": "You've blocked this user.",
+    "blocked": "This user is unreachable. Check if you've blocked them.",
     "not_blocked": "This user is not blocked.",
     "unblocked": "Succesfully unblocked user.",
     "already_added": "This contact is already on your list.",
     "already_requested": "Already sent a request to this user.",
-    "requested": "You've sent a request to the user.",
+    "requested": "Success! Your request to befriend {{user}} has been sent.",
     "no_request": "You did not send a request to this user.",
     "accepted": "You've accepted the request.",
-    "declined": "You've declined the request."
+    "declined": "You've declined the request.",
+    "add": {
+      "title": "Add a Contact",
+      "description": "You can add contacts with their Amber username.",
+      "action": "Add",
+      "username": "Username"
+    }
   }
 }

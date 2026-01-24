@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import {
@@ -17,6 +16,7 @@ import useSWR from "swr";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui/spinner";
+import AddContact from "@/views/dialogs/AddContact";
 
 type AccountMe = {
   username: string;
@@ -87,7 +87,7 @@ export default function AppSidebar() {
           <SidebarGroup>
             <SidebarGroupLabel>{t("contacts.title")}</SidebarGroupLabel>
             <SidebarGroupAction title="Add Contact" className="cursor-pointer">
-              <Plus /> <span className="sr-only">Add Contact</span>
+              <AddContact />
             </SidebarGroupAction>
             <SidebarMenu className="">
               {contactsError ? (

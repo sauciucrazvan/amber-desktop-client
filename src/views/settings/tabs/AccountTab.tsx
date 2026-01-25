@@ -12,6 +12,7 @@ import RequestData from "./dialogs/RequestData";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
 import { BadgeAlert } from "lucide-react";
+import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
 
 type AccountMe = {
   username: string;
@@ -105,6 +106,11 @@ export default function AccountTab() {
           <BadgeAlert />
           <p>{t("register.verify.not_verified")}</p>
           <VerifyAccount trigger_type={"text"} />
+        </section>
+      )}
+      {account?.verified && (
+        <section className="w-full inline-flex items-center justify-center">
+          <BlockedAccounts />
         </section>
       )}
     </>

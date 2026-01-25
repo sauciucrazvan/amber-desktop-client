@@ -54,7 +54,7 @@ export default function Contact({
       const data = await res.json().catch(() => null);
 
       if (res.ok) {
-        toast.success(t(data.message));
+        toast.success(t(data.message).replace("{{user}}", username));
         await mutate("/account/contacts/list");
       }
     } catch (e) {
@@ -78,7 +78,7 @@ export default function Contact({
       const data = await res.json().catch(() => null);
 
       if (res.ok) {
-        toast.success(t(data.message));
+        toast.success(t(data.message).replace("{{user}}", username));
         await mutate("/account/contacts/list");
       }
     } catch (e) {

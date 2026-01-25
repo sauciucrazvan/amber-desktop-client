@@ -210,8 +210,8 @@
     "not_found": "Could not find contact.",
     "removed": "Successfully removed contact.",
     "yourself": "You can not perfom this action on yourself.",
-    "blocked": "This user is unreachable. Check if you've blocked them.",
     "not_blocked": "This user is not blocked.",
+    "unblock": "Unblock",
     "unblocked": "Succesfully unblocked {{user}}.",
     "already_added": "This contact is already on your list.",
     "already_requested": "Already sent a request to this user.",
@@ -229,6 +229,14 @@
       "title": "Requests",
       "description": "Accept or decline any friendship requests you've received.",
       "none": "No requests received at this moment"
+    },
+    "blocked": {
+      "unreachable": "This user is unreachable. Check if you've blocked them.",
+      "trigger": "Manage blocked contacts",
+      "title": "Blocked contacts",
+      "description": "Manage the contacts you've blocked.",
+      "none": "No blocked contacts",
+      "success": "Successfully blocked {{user}}."
     }
   }
 }

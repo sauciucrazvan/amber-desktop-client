@@ -116,7 +116,7 @@ export default function ContactRequests() {
             ? "contacts.accepted"
             : "contacts.declined";
 
-      toast.success(t(messageKey));
+      toast.success(t(messageKey).replace("{{user}}", target.username));
       await mutate("/account/contacts/requests");
       if (action === "accept") {
         await mutate("/account/contacts/list");

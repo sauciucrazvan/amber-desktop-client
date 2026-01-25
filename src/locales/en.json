@@ -217,8 +217,8 @@
     "already_requested": "Already sent a request to this user.",
     "requested": "Success! Your request to befriend {{user}} has been sent.",
     "no_request": "You did not send a request to {{user}}.",
-    "accepted": "You've accepted the request.",
-    "declined": "You've declined the request.",
+    "accepted": "You're now friends with {{user}}.",
+    "declined": "You've declined {{user}}'s request.",
     "add": {
       "title": "Add a Contact",
       "description": "You can add contacts with their Amber username.",

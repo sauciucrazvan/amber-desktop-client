@@ -240,5 +240,14 @@
       "none": "No blocked contacts",
       "success": "Successfully blocked {{user}}."
     }
+  },
+  "homepage": {
+    "conversation": {
+      "title": "Start a conversation",
+      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking on the button on the right and entering their Amber username.",
+      "select": "Select your desired contact on the sidebar and click on him. This will open the conversation view.",
+      "message": "You can message him by typing your message in the input field and pressing 'Send'."
+    },
+    "file": "Send a file"
   }
 }

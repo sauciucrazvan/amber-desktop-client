@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { API_BASE_URL } from "@/config";
 import { useAuth } from "@/auth/AuthContext";
 import { mutate } from "swr";
+import { cn } from "@/lib/utils";
 
 // Source - https://stackoverflow.com/a
 // Posted by Joe Freeman, modified by community. See post 'Timeline' for change history
@@ -31,12 +32,16 @@ const stringToColor = (str: string) => {
 export default function Contact({
   username,
   full_name,
+  online,
 }: {
   username: string;
   full_name: string;
+  online?: boolean;
 }) {
   const { t } = useTranslation();
   const { accessToken } = useAuth();
+
+  const isOnline = Boolean(online);
 
   const onBlock = async () => {
     try {
@@ -91,19 +96,29 @@ export default function Contact({
       <ContextMenu>
         <ContextMenuTrigger>
           <section className="flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-1 transition ease-in-out duration-300">
-            <Avatar className="w-6 h-6 text-xs">
-              <AvatarFallback
-                style={
-                  full_name
-                    ? {
-                        backgroundColor: stringToColor(full_name),
-                      }
-                    : undefined
-                }
-              >
-                {full_name.slice(0, 2)}
-              </AvatarFallback>
-            </Avatar>
+            <div className="relative">
+              <Avatar className="w-6 h-6 text-xs">
+                <AvatarFallback
+                  style={
+                    full_name
+                      ? {
+                          backgroundColor: stringToColor(full_name),
+                        }
+                      : undefined
+                  }
+                >
+                  {full_name.slice(0, 2)}
+                </AvatarFallback>
+              </Avatar>
+              <span
+                aria-label={isOnline ? "Online" : "Offline"}
+                title={isOnline ? "Online" : "Offline"}
+                className={cn(
+                  "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background",
+                  isOnline ? "bg-emerald-500" : "bg-red-500",
+                )}
+              />
+            </div>
             <div className="flex flex-row items-center gap-1">
               <h3 className="text-sm leading-tight">
                 {full_name}

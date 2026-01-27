@@ -30,6 +30,7 @@ type ContactListItem = {
     id: number;
     username: string;
     full_name: string;
+    online?: boolean;
   };
   created_at: string;
 };
@@ -111,6 +112,7 @@ export default function AppSidebar() {
                     <Contact
                       username={contact.user.username}
                       full_name={contact.user.full_name}
+                      online={contact.user.online}
                     />
                   </SidebarMenuItem>
                 ))

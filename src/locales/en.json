@@ -9,7 +9,9 @@
     "unverified": "Please verify your account first!",
     "errors": {
       "too_many_requests": "Too many requests! Slow it down!"
-    }
+    },
+    "online": "Online",
+    "offline": "Offline"
   },
   "login": {
     "registerPrompt": "Don't have an account?",

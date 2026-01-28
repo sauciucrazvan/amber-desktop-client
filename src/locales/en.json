@@ -211,10 +211,10 @@
     "invalid_user": "Couldn't find a match for {{user}}.",
     "not_found": "Could not find contact.",
     "removed": "Successfully removed contact.",
-    "yourself": "You can not perfom this action on yourself.",
+    "yourself": "You cannot perform this action on yourself.",
     "not_blocked": "This user is not blocked.",
     "unblock": "Unblock",
-    "unblocked": "Succesfully unblocked {{user}}.",
+    "unblocked": "Successfully unblocked {{user}}.",
     "already_added": "{{user}} is already on your list.",
     "already_requested": "Already sent a request to {{user}}.",
     "requested": "Success! Your request to befriend {{user}} has been sent.",
@@ -230,7 +230,7 @@
     "requests": {
       "title": "Requests",
       "description": "Accept or decline any friendship requests you've received.",
-      "none": "No requests received at this moment"
+      "none": "No requests received at the moment"
     },
     "blocked": {
       "unreachable": "This user is unreachable. Check if you've blocked them.",
@@ -244,9 +244,9 @@
   "homepage": {
     "conversation": {
       "title": "Start a conversation",
-      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking on the button on the right and entering their Amber username.",
-      "select": "Select your desired contact on the sidebar and click on him. This will open the conversation view.",
-      "message": "You can message him by typing your message in the input field and pressing 'Send'."
+      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking the button on the right and entering their Amber username.",
+      "select": "Select a contact in the sidebar and click their name. This will open the conversation view.",
+      "message": "You can message them by typing your message in the input field and pressing Send."
     },
     "file": "Send a file"
   }

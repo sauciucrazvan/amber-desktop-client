@@ -6,9 +6,12 @@
     "hide": "隐藏",
     "submit": "提交",
     "cancel": "取消",
+    "unverified": "请先验证你的账号！",
     "errors": {
       "too_many_requests": "请求过多！请减速！"
-    }
+    },
+    "online": "在线",
+    "offline": "离线"
   },
   "login": {
     "registerPrompt": "还没有账号？",
@@ -184,6 +187,7 @@
         "not_confirmed": "邮箱更改尚未确认。",
         "already_confirmed": "邮箱更改已确认。",
         "too_late": "验证码已过期。请重新开始。",
+        "too_soon": "你可以每半小时请求一次新的邮箱更改。",
         "invalid_code": "验证码无效。",
         "verify_sent": "验证码已发送到你的邮箱。请检查收件箱（包括垃圾邮件！）。",
         "updated": "邮箱地址已成功更新！"
@@ -197,5 +201,53 @@
         "tooSoon": "你已达到更改次数上限。你可以在 <time>{{days}}</time> 天后修改姓名。"
       }
     }
+  },
+  "contacts": {
+    "title": "联系人",
+    "none": "暂无联系人",
+    "failed_loading": "加载联系人失败",
+    "block": "拉黑",
+    "remove": "移除",
+    "invalid_user": "未找到与 {{user}} 匹配的用户。",
+    "not_found": "未找到联系人。",
+    "removed": "已成功移除联系人。",
+    "yourself": "你不能对自己执行此操作。",
+    "not_blocked": "该用户未被拉黑。",
+    "unblock": "取消拉黑",
+    "unblocked": "已成功取消拉黑 {{user}}。",
+    "already_added": "{{user}} 已在你的列表中。",
+    "already_requested": "已向 {{user}} 发送过请求。",
+    "requested": "成功！已向 {{user}} 发送好友请求。",
+    "no_request": "你没有向 {{user}} 发送请求。",
+    "accepted": "你已与 {{user}} 成为好友。",
+    "declined": "你已拒绝 {{user}} 的请求。",
+    "add": {
+      "title": "添加联系人",
+      "description": "你可以使用对方的 Amber 用户名添加联系人。",
+      "action": "添加",
+      "username": "用户名"
+    },
+    "requests": {
+      "title": "请求",
+      "description": "接受或拒绝你收到的好友请求。",
+      "none": "目前没有收到请求"
+    },
+    "blocked": {
+      "unreachable": "该用户无法联系。请检查你是否已将其拉黑。",
+      "trigger": "管理已拉黑联系人",
+      "title": "已拉黑联系人",
+      "description": "管理你已拉黑的联系人。",
+      "none": "暂无已拉黑联系人",
+      "success": "已成功拉黑 {{user}}。"
+    }
+  },
+  "homepage": {
+    "conversation": {
+      "title": "开始对话",
+      "add_contacts": "让我们先添加你的朋友。你可以点击右侧按钮并输入对方的 Amber 用户名，轻松完成添加。",
+      "select": "在侧边栏中选择一个联系人并点击其名称。这将打开对话视图。",
+      "message": "你可以在输入框中输入消息并点击发送来与他们聊天。"
+    },
+    "file": "发送文件"
   }
 }

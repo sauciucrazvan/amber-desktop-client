@@ -6,9 +6,12 @@
     "hide": "Nascondi",
     "submit": "Invia",
     "cancel": "Annulla",
+    "unverified": "Verifica prima il tuo account!",
     "errors": {
       "too_many_requests": "Troppe richieste! Rallenta!"
-    }
+    },
+    "online": "Online",
+    "offline": "Offline"
   },
   "login": {
     "registerPrompt": "Non hai un account?",
@@ -184,6 +187,7 @@
         "not_confirmed": "Il cambio email non è stato ancora confermato.",
         "already_confirmed": "Il cambio email è già stato confermato.",
         "too_late": "Il tuo codice di verifica è scaduto. Per favore riprova.",
+        "too_soon": "Puoi richiedere un nuovo cambio email ogni mezz'ora.",
         "invalid_code": "Codice di verifica non valido.",
         "verify_sent": "Un codice di verifica è stato inviato alla tua email. Controlla la tua casella di posta (incluso lo spam!)",
         "updated": "Indirizzo email aggiornato con successo!"
@@ -197,5 +201,53 @@
         "tooSoon": "Hai raggiunto il limite di modifiche. Potrai modificare il tuo nome tra <time>{{days}}</time> giorni."
       }
     }
+  },
+  "contacts": {
+    "title": "Contatti",
+    "none": "Nessun contatto",
+    "failed_loading": "Impossibile caricare i contatti",
+    "block": "Blocca",
+    "remove": "Rimuovi",
+    "invalid_user": "Nessuna corrispondenza trovata per {{user}}.",
+    "not_found": "Impossibile trovare il contatto.",
+    "removed": "Contatto rimosso con successo.",
+    "yourself": "Non puoi eseguire questa azione su te stesso.",
+    "not_blocked": "Questo utente non è bloccato.",
+    "unblock": "Sblocca",
+    "unblocked": "{{user}} è stato sbloccato con successo.",
+    "already_added": "{{user}} è già nella tua lista.",
+    "already_requested": "Hai già inviato una richiesta a {{user}}.",
+    "requested": "Fatto! La tua richiesta di amicizia a {{user}} è stata inviata.",
+    "no_request": "Non hai inviato una richiesta a {{user}}.",
+    "accepted": "Ora sei amico di {{user}}.",
+    "declined": "Hai rifiutato la richiesta di {{user}}.",
+    "add": {
+      "title": "Aggiungi un contatto",
+      "description": "Puoi aggiungere contatti usando il loro nome utente Amber.",
+      "action": "Aggiungi",
+      "username": "Nome utente"
+    },
+    "requests": {
+      "title": "Richieste",
+      "description": "Accetta o rifiuta le richieste di amicizia che hai ricevuto.",
+      "none": "Nessuna richiesta ricevuta al momento"
+    },
+    "blocked": {
+      "unreachable": "Questo utente non è raggiungibile. Controlla se lo hai bloccato.",
+      "trigger": "Gestisci i contatti bloccati",
+      "title": "Contatti bloccati",
+      "description": "Gestisci i contatti che hai bloccato.",
+      "none": "Nessun contatto bloccato",
+      "success": "{{user}} è stato bloccato con successo."
+    }
+  },
+  "homepage": {
+    "conversation": {
+      "title": "Avvia una conversazione",
+      "add_contacts": "Iniziamo aggiungendo i tuoi amici. Puoi aggiungerli facilmente cliccando sul pulsante a destra e inserendo il loro nome utente Amber.",
+      "select": "Seleziona un contatto nella barra laterale e clicca sul suo nome. Questo aprirà la vista della conversazione.",
+      "message": "Puoi inviare loro un messaggio digitandolo nel campo di testo e premendo Invia."
+    },
+    "file": "Invia un file"
   }
 }

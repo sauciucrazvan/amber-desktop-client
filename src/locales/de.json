@@ -6,9 +6,12 @@
     "hide": "Ausblenden",
     "submit": "Senden",
     "cancel": "Abbrechen",
+    "unverified": "Bitte verifiziere zuerst dein Konto!",
     "errors": {
       "too_many_requests": "Zu viele Anfragen! Verlangsam dich!"
-    }
+    },
+    "online": "Online",
+    "offline": "Offline"
   },
   "login": {
     "registerPrompt": "Noch kein Konto?",
@@ -184,6 +187,7 @@
         "not_confirmed": "Die E-Mail-Änderung wurde noch nicht bestätigt.",
         "already_confirmed": "Die E-Mail-Änderung wurde bereits bestätigt.",
         "too_late": "Dein Verifizierungscode ist abgelaufen. Bitte erneut starten.",
+        "too_soon": "Du kannst alle halbe Stunde eine neue E-Mail-Änderung anfordern.",
         "invalid_code": "Ungültiger Verifizierungscode.",
         "verify_sent": "Ein Verifizierungscode wurde an deine E-Mail gesendet. Bitte überprüfe deinen Posteingang (auch Spam!).",
         "updated": "Deine E-Mail-Adresse wurde erfolgreich aktualisiert!"
@@ -197,5 +201,53 @@
         "tooSoon": "Du hast dein Änderungslimit erreicht. Du kannst deinen Namen in <time>{{days}}</time> Tagen wieder ändern."
       }
     }
+  },
+  "contacts": {
+    "title": "Kontakte",
+    "none": "Noch keine Kontakte",
+    "failed_loading": "Kontakte konnten nicht geladen werden",
+    "block": "Blockieren",
+    "remove": "Entfernen",
+    "invalid_user": "Kein Treffer für {{user}} gefunden.",
+    "not_found": "Kontakt konnte nicht gefunden werden.",
+    "removed": "Kontakt erfolgreich entfernt.",
+    "yourself": "Du kannst diese Aktion nicht bei dir selbst ausführen.",
+    "not_blocked": "Dieser Benutzer ist nicht blockiert.",
+    "unblock": "Entblocken",
+    "unblocked": "Blockierung für {{user}} erfolgreich aufgehoben.",
+    "already_added": "{{user}} ist bereits in deiner Liste.",
+    "already_requested": "Du hast bereits eine Anfrage an {{user}} gesendet.",
+    "requested": "Erfolg! Deine Freundschaftsanfrage an {{user}} wurde gesendet.",
+    "no_request": "Du hast keine Anfrage an {{user}} gesendet.",
+    "accepted": "Du bist jetzt mit {{user}} befreundet.",
+    "declined": "Du hast die Anfrage von {{user}} abgelehnt.",
+    "add": {
+      "title": "Kontakt hinzufügen",
+      "description": "Du kannst Kontakte über ihren Amber-Benutzernamen hinzufügen.",
+      "action": "Hinzufügen",
+      "username": "Benutzername"
+    },
+    "requests": {
+      "title": "Anfragen",
+      "description": "Akzeptiere oder lehne Freundschaftsanfragen ab, die du erhalten hast.",
+      "none": "Derzeit keine Anfragen erhalten"
+    },
+    "blocked": {
+      "unreachable": "Dieser Benutzer ist nicht erreichbar. Prüfe, ob du ihn blockiert hast.",
+      "trigger": "Blockierte Kontakte verwalten",
+      "title": "Blockierte Kontakte",
+      "description": "Verwalte die Kontakte, die du blockiert hast.",
+      "none": "Keine blockierten Kontakte",
+      "success": "{{user}} wurde erfolgreich blockiert."
+    }
+  },
+  "homepage": {
+    "conversation": {
+      "title": "Starte eine Unterhaltung",
+      "add_contacts": "Lass uns anfangen, indem du deine Freunde hinzufügst. Du kannst sie ganz einfach hinzufügen, indem du rechts auf die Schaltfläche klickst und ihren Amber-Benutzernamen eingibst.",
+      "select": "Wähle einen Kontakt in der Seitenleiste aus und klicke auf den Namen. Dadurch wird die Unterhaltungsansicht geöffnet.",
+      "message": "Du kannst ihnen schreiben, indem du deine Nachricht in das Eingabefeld eingibst und auf Senden drückst."
+    },
+    "file": "Datei senden"
   }
 }

@@ -6,9 +6,12 @@
     "hide": "Ascunde",
     "submit": "Trimite",
     "cancel": "Anulează",
+    "unverified": "Te rugăm să-ți verifici mai întâi contul!",
     "errors": {
       "too_many_requests": "Prea multe cereri! Încetinește!"
-    }
+    },
+    "online": "Online",
+    "offline": "Offline"
   },
   "login": {
     "registerPrompt": "Nu ai cont?",
@@ -184,6 +187,7 @@
         "not_confirmed": "Schimbarea emailului nu a fost încă confirmată.",
         "already_confirmed": "Schimbarea emailului a fost deja confirmată.",
         "too_late": "Codul de verificare a expirat. Te rog încearcă din nou.",
+        "too_soon": "Poți solicita o nouă schimbare de email la fiecare jumătate de oră.",
         "invalid_code": "Cod de verificare invalid.",
         "verify_sent": "Un cod de verificare a fost trimis la emailul tău. Te rog să-ți verifica inboxul (și spam!)",
         "updated": "Adresa de email a fost actualizată cu succes!"
@@ -197,5 +201,53 @@
         "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time>{{days}}</time> zile."
       }
     }
+  },
+  "contacts": {
+    "title": "Contacte",
+    "none": "Nu ai încă contacte",
+    "failed_loading": "Nu s-au putut încărca contactele",
+    "block": "Blochează",
+    "remove": "Elimină",
+    "invalid_user": "Nu am găsit nicio potrivire pentru {{user}}.",
+    "not_found": "Nu am putut găsi contactul.",
+    "removed": "Contact eliminat cu succes.",
+    "yourself": "Nu poți efectua această acțiune asupra ta.",
+    "not_blocked": "Acest utilizator nu este blocat.",
+    "unblock": "Deblochează",
+    "unblocked": "L-ai deblocat cu succes pe {{user}}.",
+    "already_added": "{{user}} este deja în lista ta.",
+    "already_requested": "Ai trimis deja o cerere către {{user}}.",
+    "requested": "Succes! Cererea ta de prietenie către {{user}} a fost trimisă.",
+    "no_request": "Nu ai trimis o cerere către {{user}}.",
+    "accepted": "Acum ești prieten cu {{user}}.",
+    "declined": "Ai refuzat cererea lui {{user}}.",
+    "add": {
+      "title": "Adaugă un contact",
+      "description": "Poți adăuga contacte folosind numele lor de utilizator Amber.",
+      "action": "Adaugă",
+      "username": "Nume de utilizator"
+    },
+    "requests": {
+      "title": "Cereri",
+      "description": "Acceptă sau refuză cererile de prietenie pe care le-ai primit.",
+      "none": "Nu ai primit cereri în acest moment"
+    },
+    "blocked": {
+      "unreachable": "Acest utilizator nu poate fi contactat. Verifică dacă l-ai blocat.",
+      "trigger": "Gestionează contactele blocate",
+      "title": "Contacte blocate",
+      "description": "Gestionează contactele pe care le-ai blocat.",
+      "none": "Nu ai contacte blocate",
+      "success": "L-ai blocat cu succes pe {{user}}."
+    }
+  },
+  "homepage": {
+    "conversation": {
+      "title": "Începe o conversație",
+      "add_contacts": "Să începem prin a-ți adăuga prietenii. Îi poți adăuga ușor făcând clic pe butonul din dreapta și introducând numele lor de utilizator Amber.",
+      "select": "Selectează un contact din bara laterală și fă clic pe numele lui. Se va deschide vizualizarea conversației.",
+      "message": "Le poți trimite un mesaj tastându-l în câmpul de text și apăsând Trimite."
+    },
+    "file": "Trimite un fișier"
   }
 }

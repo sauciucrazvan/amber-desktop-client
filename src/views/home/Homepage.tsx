@@ -34,7 +34,7 @@ export default function Homepage() {
           </section>
           <section className="w-full inline-flex items-center justify-center ">
             <img
-              src="./public/amber.png"
+              src="/amber.png"
               alt="Amber logo"
               height={64}
               width={64}

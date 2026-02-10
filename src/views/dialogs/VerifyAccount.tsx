@@ -77,11 +77,12 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
           const data = await res.json().catch(() => null);
 
           if (!res.ok) {
-            if (res.status === 429) {
+            const detail = data?.detail;
+
+            if (res.status === 429 && !detail) {
               throw new Error("common.errors.too_many_requests");
             }
 
-            const detail = data?.detail;
             throw new Error(detail);
           }
 
@@ -133,9 +134,9 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
           {/* content */}
           {stage == 1 && (
             <>
-              <Label>{t("login.recovery.code")}</Label>
+              <Label>{t("register.verify.code")}</Label>
               <Input
-                placeholder={t("login.recovery.code")}
+                placeholder={t("register.verify.code")}
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 disabled={isSubmitting}

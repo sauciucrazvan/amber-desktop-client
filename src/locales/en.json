@@ -8,7 +8,7 @@
     "cancel": "Cancel",
     "unverified": "Please verify your account first!",
     "errors": {
-      "too_many_requests": "Too many requests! Slow it down!"
+      "too_many_requests": "Too many requests! Please try again later."
     },
     "online": "Online",
     "offline": "Offline"
@@ -74,6 +74,7 @@
     "verify": {
       "title": "Verify Your Account",
       "description": "We'll send an email with a verification code.",
+      "code": "Verify code",
       "not_verified": "Your account is not verified.",
       "verify_now": "Verify now",
       "already_verified": "You are already verified",

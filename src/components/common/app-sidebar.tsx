@@ -18,9 +18,6 @@ import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui/spinner";
 import AddContact from "@/views/dialogs/AddContact";
 import ContactRequests from "@/views/dialogs/ContactRequests";
-import { usePresence } from "@/hooks/usePresence";
-import { mutate } from "swr";
-import { useCallback, useMemo } from "react";
 
 type AccountMe = {
   username: string;
@@ -63,7 +60,7 @@ function initialsFromName(name: string) {
 }
 
 export default function AppSidebar() {
-  const { isAuthenticated, accessToken } = useAuth();
+  const { isAuthenticated } = useAuth();
   const {
     data: account,
     error,
@@ -78,48 +75,6 @@ export default function AppSidebar() {
   } = useSWR<ContactListItem[]>(
     isAuthenticated ? "/account/contacts/list" : null,
   );
-
-  const contactUserIds = useMemo(
-    () => (contacts ? contacts.map((c) => c.user.id) : []),
-    [contacts],
-  );
-
-  const applyPresenceStatuses = useCallback(
-    (statuses: Map<number, boolean>) => {
-      mutate(
-        "/account/contacts/list",
-        (current?: ContactListItem[]) => {
-          if (!current) return current;
-
-          let changed = false;
-          const next = current.map((item) => {
-            const nextOnline = statuses.get(item.user.id);
-            if (nextOnline === undefined) return item;
-            if (item.user.online === nextOnline) return item;
-            changed = true;
-            return {
-              ...item,
-              user: {
-                ...item.user,
-                online: nextOnline,
-              },
-            };
-          });
-
-          return changed ? next : current;
-        },
-        { revalidate: false },
-      );
-    },
-    [],
-  );
-
-  usePresence({
-    enabled: isAuthenticated,
-    accessToken,
-    userIds: contactUserIds,
-    onStatuses: applyPresenceStatuses,
-  });
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =

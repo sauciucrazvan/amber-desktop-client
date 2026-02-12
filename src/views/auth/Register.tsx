@@ -69,7 +69,7 @@ export default function RegisterView() {
         <section className="w-[50%] bg-primary/5 flex flex-col items-center justify-center border-border border-r">
           <Carousel
             plugins={[plugin.current]}
-            className="w-full max-w-40 sm:max-w-xs"
+            className="w-full max-w-40 md:max-w-xs"
             onMouseEnter={plugin.current.stop}
             onMouseLeave={plugin.current.reset}
           >

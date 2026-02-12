@@ -7,6 +7,15 @@ import { useLocation } from "wouter";
 import Settings from "../settings/Settings";
 import { toast } from "sonner";
 import ForgotPassword from "./dialogs/ForgotPassword";
+import React from "react";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 export default function LoginView() {
   const [, setLocation] = useLocation();
@@ -35,13 +44,36 @@ export default function LoginView() {
     }
   };
 
+  const plugin = React.useRef(
+    Autoplay({ delay: 2000, stopOnInteraction: true }),
+  );
+
   return (
     <>
       <section className="flex gap-0 w-full min-h-screen">
         {/* Application Info */}
         <section className="w-[50%] bg-primary/5 flex flex-col items-center justify-center border-border border-r">
-          {/* TODO: Replace this with a carousel of the finished application */}
-          <img src="amber.svg" width={64} height={64} />
+          <Carousel
+            plugins={[plugin.current]}
+            className="w-full max-w-40 sm:max-w-xs"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
+          >
+            <CarouselContent>
+              {Array.from({ length: 4 }).map((_, index) => (
+                <CarouselItem key={index}>
+                  <div className="p-1">
+                    <img
+                      src={"slides/" + index + ".png"}
+                      className="rounded-[2px]"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
         </section>
         <section className="w-[50%] bg-background flex flex-col items-start justify-start p-4 border-border">
           {/* Register */}

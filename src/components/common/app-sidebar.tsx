@@ -18,6 +18,8 @@ import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui/spinner";
 import AddContact from "@/views/dialogs/AddContact";
 import ContactRequests from "@/views/dialogs/ContactRequests";
+import UserProfile from "@/views/dialogs/UserProfile";
+import { stringToColor } from "@/lib/utils";
 
 type AccountMe = {
   username: string;
@@ -33,22 +35,6 @@ type ContactListItem = {
     online?: boolean;
   };
   created_at: string;
-};
-
-// Source - https://stackoverflow.com/a
-// Posted by Joe Freeman, modified by community. See post 'Timeline' for change history
-// Retrieved 2026-01-15, License - CC BY-SA 4.0
-const stringToColor = (str: string) => {
-  let hash = 0;
-  str.split("").forEach((char) => {
-    hash = char.charCodeAt(0) + ((hash << 5) - hash);
-  });
-  let colour = "#";
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff;
-    colour += value.toString(16).padStart(2, "0");
-  }
-  return colour;
 };
 
 function initialsFromName(name: string) {
@@ -109,11 +95,16 @@ export default function AppSidebar() {
                   <SidebarMenuItem
                     key={`${contact.user.id}-${contact.created_at}`}
                   >
-                    <Contact
+                    <UserProfile
                       username={contact.user.username}
-                      full_name={contact.user.full_name}
-                      online={contact.user.online}
-                    />
+                      trigger={
+                        <Contact
+                          username={contact.user.username}
+                          full_name={contact.user.full_name}
+                          online={contact.user.online}
+                        />
+                      }
+                    ></UserProfile>
                   </SidebarMenuItem>
                 ))
               ) : (

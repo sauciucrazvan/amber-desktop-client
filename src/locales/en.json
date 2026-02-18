@@ -6,6 +6,7 @@
     "hide": "Hide",
     "submit": "Submit",
     "cancel": "Cancel",
+    "verified": "Verified",
     "unverified": "Please verify your account first!",
     "errors": {
       "too_many_requests": "Too many requests! Please try again later."
@@ -217,6 +218,7 @@
     "unblock": "Unblock",
     "unblocked": "Successfully unblocked {{user}}.",
     "already_added": "{{user}} is already on your list.",
+    "not_added": "{{user}} is not in your contacts list.",
     "already_requested": "Already sent a request to {{user}}.",
     "requested": "Success! Your request to befriend {{user}} has been sent.",
     "no_request": "You did not send a request to {{user}}.",

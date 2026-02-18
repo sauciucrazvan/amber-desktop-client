@@ -38,7 +38,7 @@ type AuthContextValue = {
   logout: () => void;
   authFetch: (
     input: RequestInfo | URL,
-    init?: RequestInit
+    init?: RequestInit,
   ) => Promise<Response>;
 };
 
@@ -141,7 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         refreshToken: data.refresh_token,
       });
     },
-    [loginMutation, persistTokens]
+    [loginMutation, persistTokens],
   );
 
   const register = useCallback(
@@ -149,7 +149,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await registerMutation.trigger(req);
       await login(req.username, req.password);
     },
-    [login, registerMutation]
+    [login, registerMutation],
   );
 
   const refreshAccessToken = useCallback(async () => {
@@ -203,7 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       res = await doFetch(retryHeaders);
       return res;
     },
-    [refreshAccessToken, tokens.accessToken]
+    [refreshAccessToken, tokens.accessToken],
   );
 
   const swrFetcher = useCallback(
@@ -212,7 +212,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!res.ok) throw new Error(await readErrorMessage(res));
       return res.json();
     },
-    [authFetch]
+    [authFetch],
   );
 
   const value = useMemo<AuthContextValue>(
@@ -232,7 +232,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       register,
       tokens.accessToken,
       tokens.refreshToken,
-    ]
+    ],
   );
 
   return (

@@ -11,33 +11,22 @@ import { toast } from "sonner";
 import { API_BASE_URL } from "@/config";
 import { useAuth } from "@/auth/AuthContext";
 import { mutate } from "swr";
-import { cn } from "@/lib/utils";
+import { cn, stringToColor } from "@/lib/utils";
+import { ComponentPropsWithoutRef } from "react";
 
-// Source - https://stackoverflow.com/a
-// Posted by Joe Freeman, modified by community. See post 'Timeline' for change history
-// Retrieved 2026-01-15, License - CC BY-SA 4.0
-const stringToColor = (str: string) => {
-  let hash = 0;
-  str.split("").forEach((char) => {
-    hash = char.charCodeAt(0) + ((hash << 5) - hash);
-  });
-  let colour = "#";
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff;
-    colour += value.toString(16).padStart(2, "0");
-  }
-  return colour;
-};
+type ContactProps = {
+  username: string;
+  full_name: string;
+  online?: boolean;
+} & ComponentPropsWithoutRef<"section">;
 
 export default function Contact({
   username,
   full_name,
   online,
-}: {
-  username: string;
-  full_name: string;
-  online?: boolean;
-}) {
+  className,
+  ...props
+}: ContactProps) {
   const { t } = useTranslation();
   const { accessToken } = useAuth();
 
@@ -94,8 +83,14 @@ export default function Contact({
   return (
     <>
       <ContextMenu>
-        <ContextMenuTrigger>
-          <section className="flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-1 transition ease-in-out duration-300">
+        <ContextMenuTrigger asChild>
+          <section
+            className={cn(
+              "flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-1 transition ease-in-out duration-300",
+              className,
+            )}
+            {...props}
+          >
             <div className="relative">
               <Avatar className="w-6 h-6 text-xs">
                 <AvatarFallback

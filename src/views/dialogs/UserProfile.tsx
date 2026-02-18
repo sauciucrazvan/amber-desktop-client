@@ -1,7 +1,6 @@
 import { useAuth } from "@/auth/AuthContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -101,13 +100,13 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-        <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start select-none">
+        <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
           {!isLoading && (
             <>
-              <DialogHeader>
-                <DialogTitle className="flex flex-row items-center gap-2">
+              <DialogHeader className="w-full">
+                <DialogTitle className="w-full flex flex-col items-center justify-center gap-2 text-center">
                   <div className="relative">
-                    <Avatar className="w-8 h-8 text-xs">
+                    <Avatar className="w-20 h-20 text-3xl">
                       <AvatarFallback
                         style={
                           user!.full_name
@@ -124,14 +123,14 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                       aria-label={user!.online ? "Online" : "Offline"}
                       title={user!.online ? "Online" : "Offline"}
                       className={cn(
-                        "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background",
+                        "absolute -bottom-0.5 -right-0.5 h-6 w-6 rounded-full border-2 border-background",
                         user!.online ? "bg-emerald-500" : "bg-red-500",
                       )}
                     />
                   </div>
                   <div className="flex flex-row items-start justify-start gap-1">
                     <div className="flex flex-row items-center gap-1">
-                      <h3 className="text-md leading-tight">
+                      <h3 className="text-lg leading-tight">
                         {user!.full_name}
                         <p className="text-sm text-muted-foreground">
                           @{user!.username}
@@ -140,7 +139,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                     </div>
                   </div>
                 </DialogTitle>
-                <DialogDescription className="inline-flex items-center gap-1">
+                <DialogDescription className="inline-flex items-center justify-center gap-1">
                   {user!.verified && (
                     <Badge className="rounded-md bg-blue-500 text-foreground">
                       <Verified size="16" /> {t("common.verified")}
@@ -150,24 +149,20 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
               </DialogHeader>
 
               {/* content */}
-              <section className="inline-flex items-center gap-2">
-                <Button
-                  variant="destructive"
+              <section className="w-full inline-flex items-center justify-center gap-2">
+                <a
                   onClick={onBlock}
-                  size="sm"
-                  className="cursor-pointer hover:bg-destructive/20"
+                  className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
                 >
                   <ShieldBan /> {t("contacts.block")}
-                </Button>
+                </a>
 
-                <Button
-                  variant="destructive"
+                <a
                   onClick={onRemove}
-                  size="sm"
-                  className="cursor-pointer hover:bg-destructive/20"
+                  className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
                 >
                   <Trash /> {t("contacts.remove")}
-                </Button>
+                </a>
               </section>
             </>
           )}

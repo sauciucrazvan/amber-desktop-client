@@ -1,4 +1,4 @@
-import { ShieldBan, Trash } from "lucide-react";
+import { User, UserMinus, UserX } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -13,6 +13,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { mutate } from "swr";
 import { cn, stringToColor } from "@/lib/utils";
 import { ComponentPropsWithoutRef } from "react";
+import UserProfile from "@/views/dialogs/UserProfile";
 
 type ContactProps = {
   username: string;
@@ -123,11 +124,19 @@ export default function Contact({
           </section>
         </ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem onClick={onBlock}>
-            <ShieldBan /> {t("contacts.block")}
-          </ContextMenuItem>
+          <UserProfile
+            username={username}
+            trigger={
+              <ContextMenuItem onSelect={(e) => e.preventDefault()}>
+                <User /> {t("contacts.profile")}
+              </ContextMenuItem>
+            }
+          />
           <ContextMenuItem onClick={onRemove}>
-            <Trash /> {t("contacts.remove")}
+            <UserMinus /> {t("contacts.remove")}
+          </ContextMenuItem>
+          <ContextMenuItem onClick={onBlock}>
+            <UserX /> {t("contacts.block")}
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>

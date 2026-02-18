@@ -208,6 +208,7 @@
     "title": "Contacts",
     "none": "No contacts yet",
     "failed_loading": "Failed to load contacts",
+    "profile": "Profile",
     "block": "Block",
     "remove": "Remove",
     "invalid_user": "Couldn't find a match for {{user}}.",

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { API_BASE_URL } from "@/config";
 import { cn, stringToColor } from "@/lib/utils";
-import { ShieldBan, Trash, Verified } from "lucide-react";
+import { UserMinus, UserX, Verified } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -151,17 +151,17 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
               {/* content */}
               <section className="w-full inline-flex items-center justify-center gap-2">
                 <a
-                  onClick={onBlock}
-                  className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
-                >
-                  <ShieldBan /> {t("contacts.block")}
-                </a>
-
-                <a
                   onClick={onRemove}
                   className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
                 >
-                  <Trash /> {t("contacts.remove")}
+                  <UserMinus /> {t("contacts.remove")}
+                </a>
+
+                <a
+                  onClick={onBlock}
+                  className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
+                >
+                  <UserX /> {t("contacts.block")}
                 </a>
               </section>
             </>

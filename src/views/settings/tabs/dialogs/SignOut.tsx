@@ -30,15 +30,16 @@ export default function SignOut() {
             {t("settings.account.signOut.title")}
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-125 min-h-40 max-h-40 flex flex-col items-start justify-start">
-          <DialogHeader>
-            <DialogTitle>{t("settings.account.signOut.title")}</DialogTitle>
-            <DialogDescription>
-              {t("settings.account.signOut.description")}
-            </DialogDescription>
-          </DialogHeader>
-          {/* content */}
-          <div className="w-full inline-flex justify-end gap-1">
+        <DialogContent className="sm:max-w-125 min-h-40 max-h-60 flex flex-col gap-4 p-0">
+          <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+            <DialogHeader>
+              <DialogTitle>{t("settings.account.signOut.title")}</DialogTitle>
+              <DialogDescription>
+                {t("settings.account.signOut.description")}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <section className="mt-auto w-full flex items-center justify-end gap-1 border-t bg-muted/50 px-6 py-4">
             <Button
               variant="outline"
               className="cursor-pointer"
@@ -59,7 +60,7 @@ export default function SignOut() {
             >
               {t("settings.account.signOut.action")}
             </Button>
-          </div>
+          </section>
         </DialogContent>
       </form>
     </Dialog>

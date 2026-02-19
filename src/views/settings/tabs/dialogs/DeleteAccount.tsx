@@ -65,30 +65,32 @@ export default function DeleteAccount() {
               {t("settings.account.delete.title")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col items-start justify-start">
-            <DialogHeader>
-              <DialogTitle>{t("settings.account.delete.title")}</DialogTitle>
-              <DialogDescription>
-                {t("settings.account.delete.description")}
-              </DialogDescription>
-            </DialogHeader>
-            {/* content */}
-            <Input
-              placeholder={t("register.passwordPlaceholder")}
-              value={password}
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={isSubmitting}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  onSubmit();
-                }
-              }}
-            />
+          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col gap-4 p-0">
+            <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+              <DialogHeader>
+                <DialogTitle>{t("settings.account.delete.title")}</DialogTitle>
+                <DialogDescription>
+                  {t("settings.account.delete.description")}
+                </DialogDescription>
+              </DialogHeader>
+              {/* content */}
+              <Input
+                placeholder={t("register.passwordPlaceholder")}
+                value={password}
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={isSubmitting}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
+              />
 
-            {error && <p className="text-red-500">{t(error)}</p>}
+              {error && <p className="text-red-500">{t(error)}</p>}
+            </div>
 
-            <div className="w-full inline-flex justify-end gap-1">
+            <section className="mt-auto w-full flex items-center justify-end gap-1 border-t bg-muted/50 px-6 py-4">
               <Button
                 variant="outline"
                 className="cursor-pointer"
@@ -106,7 +108,7 @@ export default function DeleteAccount() {
               >
                 {t("settings.account.delete.action")}
               </Button>
-            </div>
+            </section>
           </DialogContent>
         </form>
       </Dialog>

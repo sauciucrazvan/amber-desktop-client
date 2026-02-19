@@ -63,17 +63,19 @@ export default function RequestData() {
               {t("settings.account.data.title")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-25 max-h-75 flex flex-col items-start justify-start">
-            <DialogHeader>
-              <DialogTitle>{t("settings.account.delete.title")}</DialogTitle>
-              <DialogDescription>
-                {t("settings.account.data.description")}
-              </DialogDescription>
-            </DialogHeader>
-            {/* content */}
-            {error && <p className="text-red-500">{t(error)}</p>}
+          <DialogContent className="sm:max-w-125 min-h-25 max-h-75 flex flex-col gap-4 p-0">
+            <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+              <DialogHeader>
+                <DialogTitle>{t("settings.account.data.title")}</DialogTitle>
+                <DialogDescription>
+                  {t("settings.account.data.description")}
+                </DialogDescription>
+              </DialogHeader>
+              {/* content */}
+              {error && <p className="text-red-500">{t(error)}</p>}
+            </div>
 
-            <div className="w-full inline-flex justify-end gap-1">
+            <section className="mt-auto w-full flex items-center justify-end gap-1 border-t bg-muted/50 px-6 py-4">
               <Button
                 variant="outline"
                 className="cursor-pointer"
@@ -91,7 +93,7 @@ export default function RequestData() {
               >
                 {t("settings.account.data.action")}
               </Button>
-            </div>
+            </section>
           </DialogContent>
         </form>
       </Dialog>

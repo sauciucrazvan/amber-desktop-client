@@ -84,43 +84,45 @@ export default function ChangeName() {
               {t("settings.account.name.title")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col items-start justify-start">
-            <DialogHeader>
-              <DialogTitle>{t("settings.account.name.title")}</DialogTitle>
-              <DialogDescription>
-                {t("settings.account.name.description")}
-              </DialogDescription>
-            </DialogHeader>
-            {/* content */}
-            <Input
-              placeholder={t("register.fullnamePlaceholder")}
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              disabled={isSubmitting}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  onSubmit();
-                }
-              }}
-            />
+          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col gap-4 p-0">
+            <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+              <DialogHeader>
+                <DialogTitle>{t("settings.account.name.title")}</DialogTitle>
+                <DialogDescription>
+                  {t("settings.account.name.description")}
+                </DialogDescription>
+              </DialogHeader>
+              {/* content */}
+              <Input
+                placeholder={t("register.fullnamePlaceholder")}
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                disabled={isSubmitting}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit();
+                  }
+                }}
+              />
 
-            {error && (
-              <p className="text-red-500">
-                {i18n.exists(error) ? (
-                  <Trans
-                    i18nKey={error}
-                    values={{ days: remainingDays ?? 0 }}
-                    components={{ time: <span /> }}
-                  />
-                ) : remainingDays !== null ? (
-                  `${error} (${remainingDays} days)`
-                ) : (
-                  error
-                )}
-              </p>
-            )}
+              {error && (
+                <p className="text-red-500">
+                  {i18n.exists(error) ? (
+                    <Trans
+                      i18nKey={error}
+                      values={{ days: remainingDays ?? 0 }}
+                      components={{ time: <span /> }}
+                    />
+                  ) : remainingDays !== null ? (
+                    `${error} (${remainingDays} days)`
+                  ) : (
+                    error
+                  )}
+                </p>
+              )}
+            </div>
 
-            <div className="w-full inline-flex justify-end gap-1">
+            <section className="mt-auto w-full flex items-center justify-end gap-1 border-t bg-muted/50 px-6 py-4">
               <Button
                 variant="outline"
                 className="cursor-pointer"
@@ -138,7 +140,7 @@ export default function ChangeName() {
               >
                 {t("common.submit")}
               </Button>
-            </div>
+            </section>
           </DialogContent>
         </form>
       </Dialog>

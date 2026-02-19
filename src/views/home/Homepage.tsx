@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import ConversationDialog from "./dialogs/ConversationDialog";
 export default function Homepage() {
   const { t } = useTranslation();
+  const amberLogoSrc = `${import.meta.env.BASE_URL}amber.png`;
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =
@@ -18,7 +19,12 @@ export default function Homepage() {
         {sidebarSide == "left" ? <AppSidebar /> : null}
         <main className="w-full">
           <Header
-            extra={<SidebarTrigger variant={"ghost"} className="p-4" />}
+            extra={
+              <SidebarTrigger
+                variant={"ghost"}
+                className="p-4 cursor-pointer"
+              />
+            }
           />
 
           <section className="flex flex-row items-center justify-center h-[75%] w-full gap-2 text-muted-foreground">
@@ -32,12 +38,13 @@ export default function Homepage() {
               {t("homepage.file")}
             </Button>
           </section>
-          <section className="w-full inline-flex items-center justify-center ">
+          <section className="w-full inline-flex items-center justify-center select-none">
             <img
-              src="/amber.png"
+              src={amberLogoSrc}
               alt="Amber logo"
               height={64}
               width={64}
+              draggable={false}
               className="grayscale-100 opacity-25"
             />
           </section>

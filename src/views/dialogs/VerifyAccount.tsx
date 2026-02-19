@@ -8,8 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { Separator } from "@/components/ui/separator";
 import { API_BASE_URL } from "@/config";
 import { BadgeAlert } from "lucide-react";
 import { useState } from "react";
@@ -124,34 +129,50 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{triggerButton}</DialogTrigger>
 
-        <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
-          <DialogHeader>
-            <DialogTitle>{t("register.verify.title")}</DialogTitle>
-            <DialogDescription>
-              {t("register.verify.description")}
-            </DialogDescription>
-          </DialogHeader>
-          {/* content */}
-          {stage == 1 && (
-            <>
-              <Label>{t("register.verify.code")}</Label>
-              <Input
-                placeholder={t("register.verify.code")}
+        <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col gap-4 p-0">
+          <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+            <DialogHeader>
+              <DialogTitle>{t("register.verify.title")}</DialogTitle>
+              <DialogDescription>
+                {t(
+                  stage == 0
+                    ? "register.verify.description.step_one"
+                    : "register.verify.description.step_two",
+                )}
+              </DialogDescription>
+            </DialogHeader>
+            {/* content */}
+            {stage == 1 && (
+              <InputOTP
+                maxLength={6}
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={setCode}
                 disabled={isSubmitting}
+                inputMode="numeric"
                 onKeyDown={(event) => {
                   if (event.key === "Enter") {
                     onSubmit();
                   }
                 }}
-              />
-            </>
-          )}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+            )}
 
-          {error && <p className="text-red-500">{t(error)}</p>}
+            {error && <p className="text-red-500">{t(error)}</p>}
+          </div>
 
-          <section className="w-full inline-flex items-center justify-between gap-1">
+          <section className="mt-auto w-full flex items-center justify-between gap-4 border-t bg-muted/50 px-6 py-4">
             <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground select-none">
               <div className={stage >= 0 ? "text-foreground" : undefined}>
                 •
@@ -160,6 +181,7 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
                 •
               </div>
             </div>
+            <Separator orientation="vertical" className="h-6" />
             <div className="w-full inline-flex justify-end gap-1">
               {stage == 0 && (
                 <Button

@@ -74,8 +74,10 @@
     "greeting": "Welcome to Amber!",
     "verify": {
       "title": "Verify Your Account",
-      "description": "We'll send an email with a verification code.",
-      "code": "Verify code",
+      "description": {
+        "step_one": "We'll send an email with a verification code.",
+        "step_two": "Please enter the code we sent to your email."
+      },
       "not_verified": "Your account is not verified.",
       "verify_now": "Verify now",
       "already_verified": "You are already verified",

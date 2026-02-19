@@ -5,15 +5,15 @@ import {
   ContextMenuItem,
   ContextMenuTrigger,
 } from "../ui/context-menu";
-import { Avatar, AvatarFallback } from "../ui/avatar";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { API_BASE_URL } from "@/config";
 import { useAuth } from "@/auth/AuthContext";
 import { mutate } from "swr";
-import { cn, stringToColor } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { ComponentPropsWithoutRef } from "react";
 import UserProfile from "@/views/dialogs/UserProfile";
+import UserAvatar from "./user-avatar";
 
 type ContactProps = {
   username: string;
@@ -92,29 +92,11 @@ export default function Contact({
             )}
             {...props}
           >
-            <div className="relative">
-              <Avatar className="w-6 h-6 text-xs">
-                <AvatarFallback
-                  style={
-                    full_name
-                      ? {
-                          backgroundColor: stringToColor(full_name),
-                        }
-                      : undefined
-                  }
-                >
-                  {full_name.slice(0, 2)}
-                </AvatarFallback>
-              </Avatar>
-              <span
-                aria-label={isOnline ? "Online" : "Offline"}
-                title={isOnline ? "Online" : "Offline"}
-                className={cn(
-                  "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background",
-                  isOnline ? "bg-emerald-500" : "bg-red-500",
-                )}
-              />
-            </div>
+            <UserAvatar
+              full_name={full_name}
+              username={username}
+              isOnline={isOnline}
+            />
             <div className="flex flex-row items-center gap-1">
               <h3 className="text-sm leading-tight">
                 {full_name}

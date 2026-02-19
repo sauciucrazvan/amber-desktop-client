@@ -1,6 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import useSWR from "swr";
 import ChangeName from "./dialogs/ChangeName";
 import HiddenComponent from "@/components/ui/hidden-component";
@@ -13,6 +12,7 @@ import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
 import { BadgeAlert } from "lucide-react";
 import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
+import UserAvatar from "@/components/common/user-avatar";
 
 type AccountMe = {
   username: string;
@@ -20,14 +20,6 @@ type AccountMe = {
   email?: string | null;
   verified?: boolean | null;
 };
-
-function initialsFromName(name: string) {
-  const parts = name.trim().split(" ");
-  const first = parts[0]?.[0] ?? "";
-  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? "") : "";
-  const initials = (first + last).toUpperCase();
-  return initials || "?";
-}
 
 export default function AccountTab() {
   const { isAuthenticated } = useAuth();
@@ -46,17 +38,11 @@ export default function AccountTab() {
       <Separator />
 
       <section className="py-4 flex flex-col justify-center items-center gap-2 rounded-md p-2 transition ease-in-out duration-300">
-        <Avatar className="w-12 h-12 text-xl">
-          <AvatarFallback>
-            {account?.full_name
-              ? initialsFromName(String(account.full_name))
-              : account?.username
-                ? initialsFromName(account.username)
-                : isLoading
-                  ? "…"
-                  : "?"}
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar
+          full_name={account?.full_name}
+          username={account?.username}
+          size="lg"
+        />
         <div className="flex flex-col items-center gap-0">
           <h3 className="text-md leading-tight">
             {error

@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Separator } from "../ui/separator";
 import {
   Sidebar,
@@ -19,7 +18,7 @@ import { Spinner } from "../ui/spinner";
 import AddContact from "@/views/dialogs/AddContact";
 import ContactRequests from "@/views/dialogs/ContactRequests";
 import UserProfile from "@/views/dialogs/UserProfile";
-import { stringToColor } from "@/lib/utils";
+import UserAvatar from "./user-avatar";
 
 type AccountMe = {
   username: string;
@@ -36,14 +35,6 @@ type ContactListItem = {
   };
   created_at: string;
 };
-
-function initialsFromName(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  const first = parts[0]?.[0] ?? "";
-  const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? "") : "";
-  const initials = (first + last).toUpperCase();
-  return initials || "?";
-}
 
 export default function AppSidebar() {
   const { isAuthenticated } = useAuth();
@@ -121,27 +112,12 @@ export default function AppSidebar() {
           <Separator />
           <div className="inline-flex items-center justify-between w-full h-full gap-1">
             <section className="w-full flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
-              <Avatar>
-                <AvatarFallback
-                  style={
-                    account?.full_name
-                      ? {
-                          backgroundColor: stringToColor(
-                            account.full_name ?? "unknown",
-                          ),
-                        }
-                      : undefined
-                  }
-                >
-                  {account?.full_name
-                    ? initialsFromName(String(account.full_name))
-                    : account?.username
-                      ? initialsFromName(account.username)
-                      : isLoading
-                        ? "…"
-                        : "?"}
-                </AvatarFallback>
-              </Avatar>
+              <UserAvatar
+                full_name={account?.full_name}
+                username={account?.username}
+                isLoading={isLoading}
+                size="sm"
+              />
               <div className="flex flex-col items-start gap-1">
                 <h3 className="text-md leading-tight">
                   {error

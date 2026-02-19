@@ -1,5 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import UserAvatar from "@/components/common/user-avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { API_BASE_URL } from "@/config";
-import { cn, stringToColor } from "@/lib/utils";
 import { UserMinus, UserX, Verified } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -105,29 +104,12 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
             <>
               <DialogHeader className="w-full">
                 <DialogTitle className="w-full flex flex-col items-center justify-center gap-2 text-center">
-                  <div className="relative">
-                    <Avatar className="w-20 h-20 text-3xl">
-                      <AvatarFallback
-                        style={
-                          user!.full_name
-                            ? {
-                                backgroundColor: stringToColor(user!.full_name),
-                              }
-                            : undefined
-                        }
-                      >
-                        {user!.full_name.slice(0, 2)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span
-                      aria-label={user!.online ? "Online" : "Offline"}
-                      title={user!.online ? "Online" : "Offline"}
-                      className={cn(
-                        "absolute -bottom-0.5 -right-0.5 h-6 w-6 rounded-full border-2 border-background",
-                        user!.online ? "bg-emerald-500" : "bg-red-500",
-                      )}
-                    />
-                  </div>
+                  <UserAvatar
+                    full_name={user!.full_name}
+                    username={user!.username}
+                    isOnline={user!.online}
+                    size="xl"
+                  />
                   <div className="flex flex-row items-start justify-start gap-1">
                     <div className="flex flex-row items-center gap-1">
                       <h3 className="text-lg leading-tight">

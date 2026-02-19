@@ -2,6 +2,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -57,6 +58,17 @@ function resolveApiUrl(key: string) {
   if (key.startsWith("/")) return `${API_BASE_URL}${key}`;
   return `${API_BASE_URL}/${key}`;
 }
+
+function resolveWsUrl(path: string, accessToken: string) {
+  const wsUrl = new URL(resolveApiUrl(path).replace("/api", ""));
+  wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
+  wsUrl.searchParams.set("token", accessToken);
+  return wsUrl.toString();
+}
+
+const HEARTBEAT_ENDPOINT = "/ws/ping";
+const HEARTBEAT_INTERVAL_MS = 30_000;
+const HEARTBEAT_RECONNECT_MS = 5_000;
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const initialTokens = getStoredTokens();
@@ -178,6 +190,80 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return refreshInFlight.current;
   }, [logout, persistTokens, refreshMutation, tokens.refreshToken]);
+
+  useEffect(() => {
+    const heartbeatAccessToken = tokens.accessToken;
+    if (!heartbeatAccessToken) return;
+
+    let socket: WebSocket | null = null;
+    let pingIntervalId: ReturnType<typeof setInterval> | null = null;
+    let reconnectTimeoutId: ReturnType<typeof setTimeout> | null = null;
+    let disposed = false;
+
+    const clearPingInterval = () => {
+      if (pingIntervalId) {
+        clearInterval(pingIntervalId);
+        pingIntervalId = null;
+      }
+    };
+
+    const clearReconnectTimeout = () => {
+      if (reconnectTimeoutId) {
+        clearTimeout(reconnectTimeoutId);
+        reconnectTimeoutId = null;
+      }
+    };
+
+    const connect = () => {
+      if (disposed) return;
+
+      socket = new WebSocket(
+        resolveWsUrl(HEARTBEAT_ENDPOINT, heartbeatAccessToken),
+      );
+
+      socket.onopen = () => {
+        clearPingInterval();
+        socket?.send("ping");
+        pingIntervalId = setInterval(() => {
+          if (socket?.readyState === WebSocket.OPEN) socket.send("ping");
+        }, HEARTBEAT_INTERVAL_MS);
+      };
+
+      socket.onmessage = () => {};
+
+      socket.onerror = () => {
+        socket?.close();
+      };
+
+      socket.onclose = (event) => {
+        clearPingInterval();
+
+        if (disposed) return;
+        if (event.code === 1008) {
+          logout();
+          return;
+        }
+
+        clearReconnectTimeout();
+        reconnectTimeoutId = setTimeout(connect, HEARTBEAT_RECONNECT_MS);
+      };
+    };
+
+    connect();
+
+    return () => {
+      disposed = true;
+      clearPingInterval();
+      clearReconnectTimeout();
+      if (
+        socket &&
+        (socket.readyState === WebSocket.CONNECTING ||
+          socket.readyState === WebSocket.OPEN)
+      ) {
+        socket.close();
+      }
+    };
+  }, [logout, tokens.accessToken]);
 
   const authFetch = useCallback(
     async (input: RequestInfo | URL, init?: RequestInit) => {

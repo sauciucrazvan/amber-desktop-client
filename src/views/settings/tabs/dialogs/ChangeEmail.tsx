@@ -9,10 +9,17 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { API_BASE_URL } from "@/config";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 
@@ -175,78 +182,112 @@ export default function ChangeEmail() {
               {t("settings.account.email.title")}
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
-            <DialogHeader>
-              <DialogTitle>{t("settings.account.email.title")}</DialogTitle>
-              <DialogDescription>{t(descriptionKey)}</DialogDescription>
-            </DialogHeader>
-            {stage == 0 && (
-              <>
-                <Label>{t("register.emailPlaceholder")}</Label>
-                <Input
-                  placeholder={t("register.emailPlaceholder")}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={isSubmitting}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      onSubmit();
-                    }
-                  }}
-                />
+          <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col gap-4 p-0">
+            <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+              <DialogHeader>
+                <DialogTitle>{t("settings.account.email.title")}</DialogTitle>
+                <DialogDescription>
+                  <Trans
+                    i18nKey={descriptionKey}
+                    values={{ email }}
+                    components={{ b: <b /> }}
+                  />
+                </DialogDescription>
+              </DialogHeader>
+              {stage == 0 && (
+                <>
+                  <Label>{t("register.emailPlaceholder")}</Label>
+                  <Input
+                    placeholder={t("register.emailPlaceholder")}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isSubmitting}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        onSubmit();
+                      }
+                    }}
+                  />
 
-                <Input
-                  placeholder={t("login.passwordPlaceholder")}
-                  type={"password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isSubmitting}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      onSubmit();
-                    }
-                  }}
-                />
-              </>
-            )}
+                  <Input
+                    placeholder={t("login.passwordPlaceholder")}
+                    type={"password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isSubmitting}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        onSubmit();
+                      }
+                    }}
+                  />
+                </>
+              )}
 
-            {stage == 1 && (
-              <>
-                <Label>{t("settings.account.email.confirm_code")}</Label>
-                <Input
-                  placeholder={t("settings.account.email.confirm_code")}
-                  value={confirmCode}
-                  onChange={(e) => setConfirmCode(e.target.value)}
-                  disabled={isSubmitting}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      onSubmit();
-                    }
-                  }}
-                />
-              </>
-            )}
+              {stage == 1 && (
+                <>
+                  <Label>{t("settings.account.email.confirm_code")}</Label>
+                  <InputOTP
+                    maxLength={6}
+                    value={confirmCode}
+                    onChange={setConfirmCode}
+                    disabled={isSubmitting}
+                    inputMode="numeric"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        onSubmit();
+                      }
+                    }}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </>
+              )}
 
-            {stage == 2 && (
-              <>
-                <Label>{t("settings.account.email.verify_code")}</Label>
-                <Input
-                  placeholder={t("settings.account.email.verify_code")}
-                  value={verifyCode}
-                  onChange={(e) => setVerifyCode(e.target.value)}
-                  disabled={isSubmitting}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      onSubmit();
-                    }
-                  }}
-                />
-              </>
-            )}
+              {stage == 2 && (
+                <>
+                  <Label>{t("settings.account.email.verify_code")}</Label>
+                  <InputOTP
+                    maxLength={6}
+                    value={verifyCode}
+                    onChange={setVerifyCode}
+                    disabled={isSubmitting}
+                    inputMode="numeric"
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        onSubmit();
+                      }
+                    }}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </>
+              )}
 
-            {error && <p className="text-red-500">{t(error)}</p>}
+              {error && <p className="text-red-500">{t(error)}</p>}
+            </div>
 
-            <section className="w-full inline-flex items-center justify-between gap-1">
+            <section className="mt-auto w-full flex items-center justify-between gap-4 border-t bg-muted/50 px-6 py-4">
               <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground select-none">
                 <div className={stage >= 0 ? "text-foreground" : undefined}>
                   •
@@ -258,6 +299,7 @@ export default function ChangeEmail() {
                   •
                 </div>
               </div>
+              <Separator orientation="vertical" className="h-6" />
               <div className="w-full inline-flex justify-end gap-1">
                 {stage <= 1 && (
                   <Button

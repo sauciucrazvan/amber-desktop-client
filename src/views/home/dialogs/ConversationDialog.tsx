@@ -22,7 +22,7 @@ export default function ConversationDialog() {
         <DialogTrigger>
           <Button
             variant="outline"
-            className="cursor-pointer h-fit flex flex-col items-center gap-2 w-full"
+            className="cursor-pointer h-fit flex flex-col items-center gap-2 w-[200px]"
           >
             <MessageCircle className="size-12" />
             {t("homepage.conversation.title")}

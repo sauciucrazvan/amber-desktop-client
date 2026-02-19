@@ -32,7 +32,7 @@ export default function Homepage() {
 
             <Button
               variant="outline"
-              className="cursor-pointer h-fit flex flex-col items-center gap-2 w-[25%]"
+              className="cursor-pointer h-fit flex flex-col items-center gap-2 w-[200px]"
             >
               <Paperclip className="size-12" />
               {t("homepage.file")}

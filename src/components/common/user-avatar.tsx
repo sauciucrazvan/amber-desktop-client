@@ -20,11 +20,11 @@ const avatarSizeClasses: Record<AvatarSize, string> = {
 };
 
 const avatarTextSizeClasses: Record<AvatarSize, string> = {
-  xs: "text-xs",
-  sm: "text-sm",
-  md: "text-base",
-  lg: "text-lg",
-  xl: "text-xl",
+  xs: "text-xs text-white",
+  sm: "text-sm text-white",
+  md: "text-base text-white",
+  lg: "text-lg text-white",
+  xl: "text-xl text-white",
 };
 
 export default function UserAvatar({

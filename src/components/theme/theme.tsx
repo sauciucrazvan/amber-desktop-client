@@ -18,7 +18,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("dark");
   const [fontScale] = useState<string>(
-    () => localStorage.getItem("amber.fontScale") ?? "100"
+    () => localStorage.getItem("amber.fontScale") ?? "100",
   );
 
   useEffect(() => {
@@ -27,7 +27,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [fontScale]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
+    const stored = (localStorage.getItem("amber.theme") ??
+      localStorage.getItem("theme")) as Theme | null;
     if (stored && (stored === "dark" || stored === "light")) {
       setThemeState(stored);
     } else {

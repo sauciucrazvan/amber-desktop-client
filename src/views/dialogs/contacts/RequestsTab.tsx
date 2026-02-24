@@ -114,50 +114,49 @@ export default function ContactRequests() {
               return (
                 <div
                   key={`${req.user.id}-${req.created_at}`}
-                  className="w-full flex items-center justify-between gap-2"
+                  className="w-full flex gap-3 items-center"
                 >
-                  <div className="min-w-0 flex items-center gap-2">
+                  <div className="shrink-0">
                     <UserAvatar
                       full_name={req.user!.full_name}
                       username={req.user!.username}
+                      size="lg"
                     />
-                    <div className="min-w-0">
-                      <div className="text-sm font-medium truncate">
-                        {displayName}
-                      </div>
-                      <div className="text-xs text-muted-foreground truncate">
+                  </div>
+                  <div className="flex-1 flex flex-col gap-2">
+                    <div>
+                      <div className="text-sm font-medium">{displayName}</div>
+                      <div className="text-xs text-muted-foreground">
                         @{req.user.username}
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="cursor-pointer"
-                      disabled={actionUserId === req.user.id}
-                      onClick={() =>
-                        performAction("decline", {
-                          id: req.user.id,
-                          username: req.user.username,
-                        })
-                      }
-                    >
-                      <X />
-                    </Button>
-                    <Button
-                      size="sm"
-                      className="cursor-pointer"
-                      disabled={actionUserId === req.user.id}
-                      onClick={() =>
-                        performAction("accept", {
-                          id: req.user.id,
-                          username: req.user.username,
-                        })
-                      }
-                    >
-                      <Check />
-                    </Button>
+                    <div className="flex gap-1">
+                      <Button
+                        variant="outline"
+                        className="flex-1 cursor-pointer rounded-sm h-6 px-1.5 text-xs"
+                        disabled={actionUserId === req.user.id}
+                        onClick={() =>
+                          performAction("decline", {
+                            id: req.user.id,
+                            username: req.user.username,
+                          })
+                        }
+                      >
+                        <X />
+                      </Button>
+                      <Button
+                        className="flex-1 cursor-pointer rounded-sm h-6 px-1.5 text-xs"
+                        disabled={actionUserId === req.user.id}
+                        onClick={() =>
+                          performAction("accept", {
+                            id: req.user.id,
+                            username: req.user.username,
+                          })
+                        }
+                      >
+                        <Check />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               );

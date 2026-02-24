@@ -11,6 +11,8 @@ import {
 } from "../ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import Contact from "./contact";
+import AddContactTab from "@/views/dialogs/contacts/AddContactTab";
+import RequestsTab from "@/views/dialogs/contacts/RequestsTab";
 import { useAuth } from "@/auth/AuthContext";
 import useSWR from "swr";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
@@ -72,6 +74,16 @@ export default function AppSidebar() {
       revalidateOnReconnect: true,
     },
   );
+
+  const { data: contactRequests } = useSWR<
+    Array<{ user: { id: number }; created_at: string }>
+  >(isAuthenticated ? "/account/contacts/requests" : null, {
+    refreshInterval: 30000,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+  });
+
+  const requestCount = contactRequests?.length ?? 0;
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =
@@ -205,9 +217,14 @@ export default function AppSidebar() {
                         <TabsTrigger
                           value="requests"
                           aria-label={t("contacts.requests", "Requests")}
-                          className="flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
+                          className="relative flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
                         >
                           <Inbox className="size-4" />
+                          {requestCount > 0 && (
+                            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-white text-xs flex items-center justify-center font-medium">
+                              {requestCount > 9 ? "9+" : requestCount}
+                            </span>
+                          )}
                           <span className="sr-only">
                             {t("contacts.requests", "Requests")}
                           </span>
@@ -291,23 +308,16 @@ export default function AppSidebar() {
 
             <TabsContent
               value="add-contact"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-3"
+              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-4 flex flex-col"
             >
-              <span className="text-xs text-muted-foreground">
-                {t(
-                  "contacts.add_contact_placeholder",
-                  "Add contact coming soon.",
-                )}
-              </span>
+              <AddContactTab />
             </TabsContent>
 
             <TabsContent
               value="requests"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-3"
+              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-4 flex flex-col"
             >
-              <span className="text-xs text-muted-foreground">
-                {t("contacts.requests_placeholder", "Requests coming soon.")}
-              </span>
+              <RequestsTab />
             </TabsContent>
           </Tabs>
         </SidebarContent>

@@ -230,7 +230,9 @@
     "requests": {
       "title": "Cereri",
       "description": "Acceptă sau refuză cererile de prietenie pe care le-ai primit.",
-      "none": "Nu ai primit cereri în acest moment"
+      "none": "Nu ai primit cereri în acest moment",
+      "accept": "Acceptă",
+      "decline": "Refuză"
     },
     "blocked": {
       "unreachable": "Acest utilizator nu poate fi contactat. Verifică dacă l-ai blocat.",

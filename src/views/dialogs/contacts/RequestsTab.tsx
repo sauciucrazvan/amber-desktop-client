@@ -1,9 +1,7 @@
 import { useAuth } from "@/auth/AuthContext";
 import UserAvatar from "@/components/common/user-avatar";
-import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { API_BASE_URL } from "@/config";
-import { Check, X } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -30,7 +28,7 @@ export default function ContactRequests() {
   const [actionUserId, setActionUserId] = useState<number | null>(null);
   const { isAuthenticated, authFetch } = useAuth();
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const {
     data: requests,
@@ -97,6 +95,9 @@ export default function ContactRequests() {
 
   return (
     <>
+      <h2 className="text-lg font-semibold mb-4">
+        {t("contacts.requests.title")}
+      </h2>
       {requestsError ? (
         <p className="text-sm text-muted-foreground">
           {t("contacts.failed_loading")}
@@ -108,59 +109,84 @@ export default function ContactRequests() {
         </div>
       ) : requests && requests.length > 0 ? (
         <div className="w-full min-h-0 flex-1 overflow-y-auto pr-1">
-          <div className="w-full flex flex-col gap-2">
-            {requests.map((req) => {
-              const displayName = req.user.full_name || req.user.username;
-              return (
-                <div
-                  key={`${req.user.id}-${req.created_at}`}
-                  className="w-full flex gap-3 items-center"
-                >
-                  <div className="shrink-0">
-                    <UserAvatar
-                      full_name={req.user!.full_name}
-                      username={req.user!.username}
-                      size="lg"
-                    />
-                  </div>
-                  <div className="flex-1 flex flex-col gap-2">
-                    <div>
-                      <div className="text-sm font-medium">{displayName}</div>
-                      <div className="text-xs text-muted-foreground">
-                        @{req.user.username}
+          <div className="w-full flex flex-col gap-4">
+            {Object.entries(
+              requests.reduce(
+                (acc, req) => {
+                  const utcDate = new Date(req.created_at);
+                  const date = utcDate.toLocaleDateString(i18n.language, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  });
+                  if (!acc[date]) acc[date] = [];
+                  acc[date].push(req);
+                  return acc;
+                },
+                {} as Record<string, typeof requests>,
+              ),
+            ).map(([date, dateRequests]) => (
+              <div key={date}>
+                <div className="text-sm text-muted-foreground mb-2">{date}</div>
+                <div className="w-full border rounded-lg overflow-hidden shadow-sm">
+                  {dateRequests.map((req, idx) => {
+                    const displayName = req.user.full_name || req.user.username;
+                    return (
+                      <div
+                        key={`${req.user.id}-${req.created_at}`}
+                        className={`w-full flex gap-3 items-start p-3 bg-muted/60 ${
+                          idx < dateRequests.length - 1 ? "border-b" : ""
+                        }`}
+                      >
+                        <div className="shrink-0">
+                          <UserAvatar
+                            full_name={req.user!.full_name}
+                            username={req.user!.username}
+                            size="md"
+                          />
+                        </div>
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div>
+                            <div className="text-sm font-medium">
+                              {displayName}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              @{req.user.username}
+                            </div>
+                          </div>
+                          <div className="flex gap-3">
+                            <button
+                              onClick={() =>
+                                performAction("accept", {
+                                  id: req.user.id,
+                                  username: req.user.username,
+                                })
+                              }
+                              disabled={actionUserId === req.user.id}
+                              className="cursor-pointer text-xs font-medium text-blue-500 hover:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {t("contacts.requests.accept")}
+                            </button>
+                            <button
+                              onClick={() =>
+                                performAction("decline", {
+                                  id: req.user.id,
+                                  username: req.user.username,
+                                })
+                              }
+                              disabled={actionUserId === req.user.id}
+                              className="cursor-pointer text-xs font-medium text-muted-foreground hover:text-muted-foreground/80 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              {t("contacts.requests.decline")}
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button
-                        variant="outline"
-                        className="flex-1 cursor-pointer rounded-sm h-6 px-1.5 text-xs"
-                        disabled={actionUserId === req.user.id}
-                        onClick={() =>
-                          performAction("decline", {
-                            id: req.user.id,
-                            username: req.user.username,
-                          })
-                        }
-                      >
-                        <X />
-                      </Button>
-                      <Button
-                        className="flex-1 cursor-pointer rounded-sm h-6 px-1.5 text-xs"
-                        disabled={actionUserId === req.user.id}
-                        onClick={() =>
-                          performAction("accept", {
-                            id: req.user.id,
-                            username: req.user.username,
-                          })
-                        }
-                      >
-                        <Check />
-                      </Button>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       ) : (

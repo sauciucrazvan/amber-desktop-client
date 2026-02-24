@@ -230,7 +230,9 @@
     "requests": {
       "title": "Solicitudes",
       "description": "Acepta o rechaza las solicitudes de amistad que hayas recibido.",
-      "none": "No se recibieron solicitudes por el momento"
+      "none": "No se recibieron solicitudes por el momento",
+      "accept": "Aceptar",
+      "decline": "Rechazar"
     },
     "blocked": {
       "unreachable": "Este usuario no está disponible. Comprueba si lo has bloqueado.",

@@ -4,7 +4,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
   useSidebar,
@@ -261,10 +260,12 @@ export default function AppSidebar() {
 
             <TabsContent
               value="contacts"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-0"
+              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-0 flex flex-col"
             >
-              <SidebarGroup className="flex-1 min-h-0">
-                <SidebarGroupLabel>{t("contacts.title")}</SidebarGroupLabel>
+              <div className="px-4 pt-4 shrink-0">
+                <h2 className="text-lg font-semibold">{t("contacts.title")}</h2>
+              </div>
+              <SidebarGroup className="flex-1 min-h-0 pt-2">
                 <SidebarMenu className="flex-1 min-h-0 overflow-y-auto pr-1">
                   {contactsError ? (
                     <SidebarMenuItem>
@@ -310,6 +311,9 @@ export default function AppSidebar() {
               value="add-contact"
               className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-4 flex flex-col"
             >
+              <h2 className="text-lg font-semibold mb-4">
+                {t("contacts.add.title")}
+              </h2>
               <AddContactTab />
             </TabsContent>
 

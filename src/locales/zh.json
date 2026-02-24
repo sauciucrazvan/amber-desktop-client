@@ -230,7 +230,9 @@
     "requests": {
       "title": "请求",
       "description": "接受或拒绝你收到的好友请求。",
-      "none": "目前没有收到请求"
+      "none": "目前没有收到请求。",
+      "accept": "接受",
+      "decline": "拒绝"
     },
     "blocked": {
       "unreachable": "该用户无法联系。请检查你是否已将其拉黑。",

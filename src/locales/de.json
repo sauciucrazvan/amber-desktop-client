@@ -230,7 +230,9 @@
     "requests": {
       "title": "Anfragen",
       "description": "Akzeptiere oder lehne Freundschaftsanfragen ab, die du erhalten hast.",
-      "none": "Derzeit keine Anfragen erhalten"
+      "none": "Derzeit keine Anfragen erhalten",
+      "accept": "Akzeptieren",
+      "decline": "Ablehnen"
     },
     "blocked": {
       "unreachable": "Dieser Benutzer ist nicht erreichbar. Prüfe, ob du ihn blockiert hast.",

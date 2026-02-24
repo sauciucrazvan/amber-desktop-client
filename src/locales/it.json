@@ -230,7 +230,9 @@
     "requests": {
       "title": "Richieste",
       "description": "Accetta o rifiuta le richieste di amicizia che hai ricevuto.",
-      "none": "Nessuna richiesta ricevuta al momento"
+      "none": "Nessuna richiesta ricevuta al momento.",
+      "accept": "Accetta",
+      "decline": "Rifiuta"
     },
     "blocked": {
       "unreachable": "Questo utente non è raggiungibile. Controlla se lo hai bloccato.",

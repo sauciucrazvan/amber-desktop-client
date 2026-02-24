@@ -230,7 +230,9 @@
     "requests": {
       "title": "Demandes",
       "description": "Acceptez ou refusez les demandes d'amitié que vous avez reçues.",
-      "none": "Aucune demande reçue pour le moment"
+      "none": "Aucune demande reçue pour le moment.",
+      "accept": "Accepter",
+      "decline": "Refuser"
     },
     "blocked": {
       "unreachable": "Cet utilisateur est injoignable. Vérifiez si vous l'avez bloqué.",

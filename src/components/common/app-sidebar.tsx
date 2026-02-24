@@ -42,7 +42,11 @@ export default function AppSidebar() {
     data: account,
     error,
     isLoading,
-  } = useSWR<AccountMe>(isAuthenticated ? "/account/me" : null);
+  } = useSWR<AccountMe>(isAuthenticated ? "/account/me" : null, {
+    refreshInterval: 60000,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+  });
   const { t } = useTranslation();
 
   const {
@@ -51,6 +55,11 @@ export default function AppSidebar() {
     isLoading: isContactsLoading,
   } = useSWR<ContactListItem[]>(
     isAuthenticated ? "/account/contacts/list" : null,
+    {
+      refreshInterval: 5000,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    },
   );
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");

@@ -203,6 +203,10 @@
         "same": "Can't update full name to your current one.",
         "updated": "Successfully updated your full name. Next change available in a week.",
         "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
+      },
+      "bio": {
+        "too_long": "Limit yourself to 256 characters.",
+        "updated": "Successfully updated your bio!"
       }
     }
   },

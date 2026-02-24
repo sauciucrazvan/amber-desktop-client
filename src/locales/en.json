@@ -232,10 +232,10 @@
     "accepted": "You're now friends with {{user}}.",
     "declined": "You've declined {{user}}'s request.",
     "add": {
-      "title": "Add a Contact",
+      "title": "Add Contacts",
       "description": "You can add contacts with their Amber username.",
       "action": "Add",
-      "username": "Username"
+      "username": "@amber"
     },
     "requests": {
       "title": "Requests",

@@ -92,8 +92,6 @@ export default function MyProfile({ trigger }: MyProfileProps) {
     }
   };
 
-  console.log(user?.bio);
-
   if (!isAuthenticated) return <>Unauthorized.</>;
 
   return (

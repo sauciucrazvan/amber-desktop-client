@@ -4,7 +4,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupAction,
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
@@ -15,11 +14,10 @@ import useSWR from "swr";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui/spinner";
-import AddContact from "@/views/dialogs/AddContact";
-import ContactRequests from "@/views/dialogs/ContactRequests";
 import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
 import MyProfile from "@/views/dialogs/MyProfile";
+import ContactsHub from "@/views/dialogs/contacts/ContactsHub";
 
 type AccountMe = {
   username: string;
@@ -75,9 +73,6 @@ export default function AppSidebar() {
         <SidebarContent>
           <SidebarGroup className="flex-1 min-h-0">
             <SidebarGroupLabel>{t("contacts.title")}</SidebarGroupLabel>
-            <SidebarGroupAction className="cursor-pointer">
-              <AddContact />
-            </SidebarGroupAction>
             <SidebarMenu className="flex-1 min-h-0 overflow-y-auto pr-1">
               {contactsError ? (
                 <SidebarMenuItem>
@@ -152,7 +147,7 @@ export default function AppSidebar() {
               }
             />
             {!account?.verified && <VerifyAccount trigger_type={"button"} />}
-            {account?.verified && <ContactRequests />}
+            {account?.verified && <ContactsHub />}
           </div>
         </SidebarFooter>
       </Sidebar>

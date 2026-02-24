@@ -1,31 +1,21 @@
 import { useAuth } from "@/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
-import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function AddContact() {
-  const [open, setOpen] = useState(false);
+export default function AddContactTab() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [username, setUsername] = useState("");
   const [submittedUsername, setSubmittedUsername] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const { t } = useTranslation();
-  const { accessToken, isAuthenticated } = useAuth();
+  const { accessToken } = useAuth();
 
   const onSubmit = async () => {
     const requestedUsername = username.trim();
@@ -61,7 +51,6 @@ export default function AddContact() {
         throw new Error(detail);
       }
 
-      setOpen(false);
       toast.success(
         t("contacts.requested").replace("{{user}}", requestedUsername),
       );
@@ -74,61 +63,40 @@ export default function AddContact() {
     }
   };
 
-  if (!isAuthenticated) return <>Unauthorized.</>;
-
   return (
     <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
+      <p className="text-sm mb-2 text-foreground-muted">
+        {t("contacts.add.description")}
+      </p>
+      <Field>
+        <ButtonGroup>
+          <Input
+            placeholder={t("contacts.add.username")}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            disabled={isSubmitting}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !isSubmitting) {
+                onSubmit();
+              }
+            }}
+          />
           <Button
             variant="outline"
-            size="icon-sm"
             className="cursor-pointer"
-            title={t("contacts.add.title")}
+            disabled={isSubmitting}
+            onClick={onSubmit}
           >
-            <UserRoundPlus />
+            {t("contacts.add.action")}
           </Button>
-        </DialogTrigger>
+        </ButtonGroup>
+      </Field>
 
-        <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
-          <DialogHeader>
-            <DialogTitle>{t("contacts.add.title")}</DialogTitle>
-            <DialogDescription>
-              {t("contacts.add.description")}
-            </DialogDescription>
-          </DialogHeader>
-          {/* content */}
-          <Field>
-            <ButtonGroup>
-              <Input
-                placeholder={t("contacts.add.username")}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                disabled={isSubmitting}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" && !isSubmitting) {
-                    onSubmit();
-                  }
-                }}
-              />
-              <Button
-                variant="outline"
-                className="cursor-pointer"
-                disabled={isSubmitting}
-                onClick={onSubmit}
-              >
-                {t("contacts.add.action")}
-              </Button>
-            </ButtonGroup>
-          </Field>
-
-          {error && (
-            <p className="text-red-500">
-              <Trans i18nKey={error} values={{ user: submittedUsername }} />
-            </p>
-          )}
-        </DialogContent>
-      </Dialog>
+      {error && (
+        <p className="text-red-500 mt-2">
+          <Trans i18nKey={error} values={{ user: submittedUsername }} />
+        </p>
+      )}
     </>
   );
 }

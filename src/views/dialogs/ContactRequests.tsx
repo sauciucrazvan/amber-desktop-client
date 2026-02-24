@@ -59,6 +59,11 @@ export default function ContactRequests() {
     isLoading: isRequestsLoading,
   } = useSWR<ContactRequestItem[]>(
     isAuthenticated ? "/account/contacts/requests" : null,
+    {
+      refreshInterval: 30000,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    },
   );
 
   const requestCount = requests?.length ?? 0;

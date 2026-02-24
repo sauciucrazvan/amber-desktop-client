@@ -7,6 +7,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuItem,
+  useSidebar,
 } from "../ui/sidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import Contact from "./contact";
@@ -20,6 +21,12 @@ import UserAvatar from "./user-avatar";
 import MyProfile from "@/views/dialogs/MyProfile";
 import { Inbox, MessageCircle, UserRoundPlus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import {
+  type MouseEvent as ReactMouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type AccountMe = {
   username: string;
@@ -38,6 +45,9 @@ type ContactListItem = {
 };
 
 export default function AppSidebar() {
+  const MIN_SIDEBAR_WIDTH = 260;
+  const MAX_SIDEBAR_WIDTH = 320;
+
   const { isAuthenticated } = useAuth();
   const { data: account, isLoading } = useSWR<AccountMe>(
     isAuthenticated ? "/account/me" : null,
@@ -48,6 +58,7 @@ export default function AppSidebar() {
     },
   );
   const { t } = useTranslation();
+  const { open, isMobile } = useSidebar();
 
   const {
     data: contacts,
@@ -66,12 +77,78 @@ export default function AppSidebar() {
   const sidebarSide: "left" | "right" =
     storedSidebarPos === "right" ? "right" : "left";
   const tooltipSide = sidebarSide === "left" ? "right" : "left";
+  const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
+    const storedWidth = Number(localStorage.getItem("amber.sidebarWidth"));
+    if (!Number.isFinite(storedWidth)) return 256;
+    return Math.min(
+      MAX_SIDEBAR_WIDTH,
+      Math.max(MIN_SIDEBAR_WIDTH, storedWidth),
+    );
+  });
+  const resizeStateRef = useRef<{ startX: number; startWidth: number } | null>(
+    null,
+  );
+
+  useEffect(() => {
+    localStorage.setItem("amber.sidebarWidth", String(sidebarWidth));
+  }, [sidebarWidth]);
+
+  useEffect(() => {
+    const sidebarWrapper = document.querySelector(
+      '[data-slot="sidebar-wrapper"]',
+    ) as HTMLElement | null;
+    if (!sidebarWrapper) return;
+    sidebarWrapper.style.setProperty("--sidebar-width", `${sidebarWidth}px`);
+  }, [sidebarWidth]);
+
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      if (!resizeStateRef.current) return;
+
+      const { startX, startWidth } = resizeStateRef.current;
+      const deltaX = event.clientX - startX;
+      const nextWidth =
+        sidebarSide === "left" ? startWidth + deltaX : startWidth - deltaX;
+      const clampedWidth = Math.min(
+        MAX_SIDEBAR_WIDTH,
+        Math.max(MIN_SIDEBAR_WIDTH, nextWidth),
+      );
+
+      setSidebarWidth(clampedWidth);
+    };
+
+    const handleMouseUp = () => {
+      if (!resizeStateRef.current) return;
+      resizeStateRef.current = null;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [sidebarSide]);
+
+  const handleResizeStart = (event: ReactMouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    resizeStateRef.current = {
+      startX: event.clientX,
+      startWidth: sidebarWidth,
+    };
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  };
 
   if (!isAuthenticated) return <>Unauthorized.</>;
+  if (!isMobile && !open) return null;
 
   return (
     <>
-      <Sidebar side={sidebarSide}>
+      <Sidebar side={sidebarSide} className="relative">
         <SidebarContent className="min-h-0 overflow-hidden">
           <Tabs
             defaultValue="contacts"
@@ -242,6 +319,17 @@ export default function AppSidebar() {
             </div>
           </SidebarFooter>
         )}
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize sidebar"
+          onMouseDown={handleResizeStart}
+          className={`absolute inset-y-0 z-20 hidden w-2 cursor-col-resize transition-colors hover:bg-border/60 active:bg-border md:block ${
+            sidebarSide === "left"
+              ? "right-0 translate-x-1/2"
+              : "left-0 -translate-x-1/2"
+          }`}
+        />
       </Sidebar>
     </>
   );

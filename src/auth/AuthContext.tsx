@@ -123,8 +123,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }),
     });
 
-    if (res.status == 422 && !res.statusText)
-      throw new Error("register.fillInput");
     if (!res.ok) throw new Error(await readErrorMessage(res));
     return res.json();
   });

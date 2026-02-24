@@ -1,6 +1,6 @@
 import { useAuth } from "@/auth/AuthContext";
 import UserAvatar from "@/components/common/user-avatar";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { API_BASE_URL } from "@/config";
-import { UserMinus, UserX, Verified } from "lucide-react";
+import { UserMinus, UserX } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ type Profile = {
   id: number;
   username: string;
   full_name: string;
+  bio?: string;
   online: boolean;
   verified: boolean;
   disabled: boolean;
@@ -99,7 +100,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-        <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
+        <DialogContent className="select-none sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
           {!isLoading && (
             <>
               <DialogHeader className="w-full">
@@ -122,11 +123,14 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                   </div>
                 </DialogTitle>
                 <DialogDescription className="inline-flex items-center justify-center gap-1">
-                  {user!.verified && (
-                    <Badge className="rounded-md bg-blue-500 text-foreground">
-                      <Verified size="16" /> {t("common.verified")}
-                    </Badge>
-                  )}
+                  <Card className="w-full gap-0 mt-2 py-2">
+                    <CardHeader className="text-md font-bold mt-1">
+                      {t("profile.bio.title")}
+                    </CardHeader>
+                    <CardContent className="italic text-gray-400 mb-2">
+                      {user && user.bio ? user.bio : t("profile.bio.empty")}
+                    </CardContent>
+                  </Card>
                 </DialogDescription>
               </DialogHeader>
 

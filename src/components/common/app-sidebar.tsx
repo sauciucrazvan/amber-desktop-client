@@ -19,6 +19,7 @@ import AddContact from "@/views/dialogs/AddContact";
 import ContactRequests from "@/views/dialogs/ContactRequests";
 import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
+import MyProfile from "@/views/dialogs/MyProfile";
 
 type AccountMe = {
   username: string;
@@ -120,32 +121,36 @@ export default function AppSidebar() {
         <SidebarFooter className="mb-2 mr-2 mt-0 ml-0 w-full">
           <Separator />
           <div className="inline-flex items-center justify-between w-full h-full gap-1">
-            <section className="w-full flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
-              <UserAvatar
-                full_name={account?.full_name}
-                username={account?.username}
-                isLoading={isLoading}
-                size="sm"
-              />
-              <div className="flex flex-col items-start gap-1">
-                <h3 className="text-md leading-tight">
-                  {error
-                    ? "Failed to load"
-                    : isLoading
-                      ? "Loading…"
-                      : (account?.full_name ?? "") || ""}
-                </h3>
-                <p className="text-muted-foreground text-xs">
-                  {error
-                    ? ""
-                    : isLoading
-                      ? ""
-                      : account?.username
-                        ? `@${account.username}`
-                        : ""}
-                </p>
-              </div>
-            </section>
+            <MyProfile
+              trigger={
+                <section className="w-full flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-2 transition ease-in-out duration-300">
+                  <UserAvatar
+                    full_name={account?.full_name}
+                    username={account?.username}
+                    isLoading={isLoading}
+                    size="sm"
+                  />
+                  <div className="flex flex-col items-start gap-1">
+                    <h3 className="text-md leading-tight">
+                      {error
+                        ? "Failed to load"
+                        : isLoading
+                          ? "Loading…"
+                          : (account?.full_name ?? "") || ""}
+                    </h3>
+                    <p className="text-muted-foreground text-xs">
+                      {error
+                        ? ""
+                        : isLoading
+                          ? ""
+                          : account?.username
+                            ? `@${account.username}`
+                            : ""}
+                    </p>
+                  </div>
+                </section>
+              }
+            />
             {!account?.verified && <VerifyAccount trigger_type={"button"} />}
             {account?.verified && <ContactRequests />}
           </div>

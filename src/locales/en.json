@@ -255,5 +255,14 @@
       "message": "You can message them by typing your message in the input field and pressing Send."
     },
     "file": "Send a file"
+  },
+  "profile": {
+    "bio": {
+      "title": "Bio",
+      "empty": "Empty bio.",
+      "edit": {
+        "title": "Edit bio"
+      }
+    }
   }
 }

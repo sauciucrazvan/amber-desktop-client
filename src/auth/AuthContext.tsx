@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { SWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { API_BASE_URL } from "@/config";
+import { API_BASE_URL, WS_BASE_URL } from "@/config";
 import {
   clearStoredTokens,
   getStoredTokens,
@@ -60,13 +60,13 @@ function resolveApiUrl(key: string) {
 }
 
 function resolveWsUrl(path: string, accessToken: string) {
-  const wsUrl = new URL(resolveApiUrl(path).replace("/api", ""));
+  const wsUrl = new URL(WS_BASE_URL + path);
   wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
   wsUrl.searchParams.set("token", accessToken);
   return wsUrl.toString();
 }
 
-const HEARTBEAT_ENDPOINT = "/ws/ping";
+const HEARTBEAT_ENDPOINT = "/ping";
 const HEARTBEAT_INTERVAL_MS = 30_000;
 const HEARTBEAT_RECONNECT_MS = 5_000;
 

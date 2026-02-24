@@ -217,7 +217,7 @@
     "profile": "Profile",
     "block": "Block",
     "remove": "Remove",
-    "invalid_user": "Couldn't find a match for {{user}}.",
+    "invalid_user": "Couldn't find @{{user}}. Did you type it correctly?",
     "not_found": "Could not find contact.",
     "removed": "Successfully removed contact.",
     "yourself": "You cannot perform this action on yourself.",
@@ -235,12 +235,12 @@
       "title": "Add Contacts",
       "description": "You can add contacts with their Amber username.",
       "action": "Add",
-      "username": "@amber"
+      "username": "Username"
     },
     "requests": {
       "title": "Requests",
       "description": "Accept or decline any friendship requests you've received.",
-      "none": "No requests received at the moment"
+      "none": "No requests received at the moment."
     },
     "blocked": {
       "unreachable": "This user is unreachable. Check if you've blocked them.",

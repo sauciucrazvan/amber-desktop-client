@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { API_BASE_URL } from "@/config";
-import { UserMinus, UserX } from "lucide-react";
+import { Quote, UserMinus, UserX } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -124,8 +124,8 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                 </DialogTitle>
                 <DialogDescription className="inline-flex items-center justify-center gap-1">
                   <Card className="w-full gap-0 mt-2 py-2">
-                    <CardHeader className="text-md font-bold mt-1">
-                      {t("profile.bio.title")}
+                    <CardHeader className="inline-flex items-center gap-1 text-md font-bold mt-1">
+                      <Quote size="12" /> {t("profile.bio.title")}
                     </CardHeader>
                     <CardContent className="italic text-gray-400 mb-2">
                       {user && user.bio ? user.bio : t("profile.bio.empty")}

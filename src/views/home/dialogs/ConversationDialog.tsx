@@ -30,7 +30,7 @@ export default function ConversationDialog() {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Start a conversation</DialogTitle>
+            <DialogTitle>{t("homepage.conversation.title")}</DialogTitle>
           </DialogHeader>
 
           <div className="inline-flex items-center gap-1 text-xs">

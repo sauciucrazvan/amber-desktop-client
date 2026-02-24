@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { API_BASE_URL } from "@/config";
-import { Pencil } from "lucide-react";
+import { Pencil, Quote } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useSWR from "swr";
@@ -123,7 +123,9 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                 <DialogDescription className="inline-flex items-center justify-center gap-1">
                   <Card className="w-full gap-0 mt-2 py-2">
                     <CardHeader className="w-full text-md font-bold inline-flex items-center justify-between">
-                      {t("profile.bio.title")}
+                      <div className="inline-flex items-center gap-1">
+                        <Quote size="12" /> {t("profile.bio.title")}
+                      </div>
                       <Button
                         variant={"ghost"}
                         size="icon-sm"

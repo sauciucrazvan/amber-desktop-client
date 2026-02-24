@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UserPlus, UsersRound } from "lucide-react";
+import { UserRoundPlus, UsersRound } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
@@ -56,7 +56,7 @@ export default function ContactsHub() {
           </Button>
         </DialogTrigger>
 
-        <DialogContent className="sm:max-w-125 max-h-100 min-h-0 flex flex-col items-start justify-start">
+        <DialogContent className="sm:max-w-100 max-h-100 min-h-30 flex flex-col items-start justify-start">
           <Tabs defaultValue={"requests"} className="min-w-full">
             <TabsList>
               <TabsTrigger value="requests">
@@ -64,7 +64,7 @@ export default function ContactsHub() {
                 {t("contacts.requests.title")}
               </TabsTrigger>
               <TabsTrigger value="add">
-                <UserPlus />
+                <UserRoundPlus />
                 {t("contacts.add.title")}
               </TabsTrigger>
             </TabsList>

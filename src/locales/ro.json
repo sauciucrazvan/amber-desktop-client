@@ -113,6 +113,10 @@
           "it": "Italiană"
         }
       },
+      "tray": {
+        "title": "Minimizează în tray",
+        "description": "Când este dezactivat, închiderea aplicației o va opri."
+      },
       "help": {
         "title": "Ajutor",
         "description": "Ai găsit o problemă sau ai nevoie de ajutor cu ceva?",

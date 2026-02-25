@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -13,12 +13,13 @@ import {
   supportedLanguages,
   type SupportedLanguage,
 } from "@/i18n";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function GeneralTab() {
   const [language, setLanguage] =
     useState<SupportedLanguage>(getInitialLanguage());
+  const [allowTray, setAllowTray] = useState(true);
   const { t } = useTranslation();
 
   const languageOptions = supportedLanguages
@@ -30,8 +31,33 @@ export default function GeneralTab() {
       a.label.localeCompare(b.label, undefined, { sensitivity: "base" }),
     );
 
+  useEffect(() => {
+    let isMounted = true;
+    const ipc = window.ipcRenderer;
+
+    if (!ipc?.invoke)
+      return () => {
+        isMounted = false;
+      };
+
+    ipc
+      .invoke("settings:get")
+      .then((value) => {
+        if (isMounted && value && typeof value.allowTray === "boolean") {
+          setAllowTray(value.allowTray);
+        }
+      })
+      .catch(() => {
+        if (isMounted) setAllowTray(true);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
-    <>
+    <div className="flex min-h-0 h-full w-full flex-col">
       <Separator />
 
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
@@ -70,40 +96,44 @@ export default function GeneralTab() {
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
           <h3 className="text-md text-primary">
-            {t("settings.general.help.title")}
+            {t("settings.general.tray.title")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            {t("settings.general.help.description")}
+            {t("settings.general.tray.description")}
           </p>
         </div>
 
-        <Button
-          size="sm"
-          className="cursor-pointer"
-          onClick={() => open("https://github.com/sauciucrazvan/amber")}
+        <Switch
+          checked={allowTray}
+          onCheckedChange={(checked) => {
+            const nextValue = checked === true;
+            setAllowTray(nextValue);
+            window.ipcRenderer?.invoke("settings:set", {
+              allowTray: nextValue,
+            });
+          }}
+        />
+      </div>
+
+      <div className="mt-auto w-full pt-4 text-left text-xs text-muted-foreground">
+        <a
+          className="hover:text-primary underline-offset-4 hover:underline"
+          href="https://github.com/sauciucrazvan/amber"
+          target="_blank"
+          rel="noreferrer"
         >
           {t("settings.general.help.action")}
-        </Button>
-      </div>
-
-      <div className="flex flex-row items-center justify-between gap-1 mt-2">
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.general.feedback.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("settings.general.feedback.description")}
-          </p>
-        </div>
-
-        <Button
-          size="sm"
-          className="cursor-pointer"
-          onClick={() => open("https://github.com/sauciucrazvan/amber/issues")}
+        </a>
+        <span className="px-2">•</span>
+        <a
+          className="hover:text-primary underline-offset-4 hover:underline"
+          href="https://github.com/sauciucrazvan/amber/issues"
+          target="_blank"
+          rel="noreferrer"
         >
           {t("settings.general.feedback.action")}
-        </Button>
+        </a>
       </div>
-    </>
+    </div>
   );
 }

@@ -64,7 +64,10 @@ export default function Settings(props: SettingsProps) {
               </DialogDescription>
             </DialogHeader>
             {/* content */}
-            <Tabs defaultValue="general" className="min-w-full">
+            <Tabs
+              defaultValue="general"
+              className="min-w-full min-h-0 flex flex-1 flex-col"
+            >
               <TabsList>
                 <TabsTrigger value="general">
                   {t("settings.tabs.general")}
@@ -79,16 +82,16 @@ export default function Settings(props: SettingsProps) {
                   {t("settings.tabs.about")}
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="general">
+              <TabsContent value="general" className="min-h-0 flex-1">
                 <GeneralTab />
               </TabsContent>
-              <TabsContent value="appearance">
+              <TabsContent value="appearance" className="min-h-0 flex-1">
                 <AppearanceTab />
               </TabsContent>
-              <TabsContent value="account">
+              <TabsContent value="account" className="min-h-0 flex-1">
                 <AccountTab />
               </TabsContent>
-              <TabsContent value="about">
+              <TabsContent value="about" className="min-h-0 flex-1">
                 <AboutTab />
               </TabsContent>
             </Tabs>

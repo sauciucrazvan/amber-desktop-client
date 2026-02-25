@@ -113,6 +113,10 @@
           "it": "Italiano"
         }
       },
+      "tray": {
+        "title": "Minimizza nella tray",
+        "description": "Se disattivato, la chiusura dell'app la terminerà."
+      },
       "help": {
         "title": "Aiuto",
         "description": "Hai trovato un problema o hai bisogno di aiuto con qualcosa?",

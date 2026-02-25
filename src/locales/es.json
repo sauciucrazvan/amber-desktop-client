@@ -113,6 +113,10 @@
           "it": "Italiano"
         }
       },
+      "tray": {
+        "title": "Minimizar a la bandeja",
+        "description": "Si está desactivado, al cerrar la app se saldrá."
+      },
       "help": {
         "title": "Ayuda",
         "description": "¿Encontraste un problema o necesitas ayuda con algo?",

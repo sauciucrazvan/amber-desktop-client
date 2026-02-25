@@ -3,6 +3,7 @@ import { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
+import { readFileSync, writeFileSync } from "node:fs";
 
 //const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -37,6 +38,32 @@ let splash: BrowserWindow | null;
 let tray: Tray | null;
 
 let isQuitting = false;
+let allowTray = true;
+
+const SETTINGS_FILE = "app-settings.json";
+
+type AppSettings = {
+  allowTray?: boolean;
+};
+
+function getSettingsPath() {
+  return path.join(app.getPath("userData"), SETTINGS_FILE);
+}
+
+function loadSettings() {
+  try {
+    const raw = readFileSync(getSettingsPath(), "utf8");
+    const parsed = JSON.parse(raw) as AppSettings;
+    allowTray = parsed.allowTray ?? true;
+  } catch {
+    allowTray = true;
+  }
+}
+
+function saveSettings() {
+  const payload: AppSettings = { allowTray };
+  writeFileSync(getSettingsPath(), JSON.stringify(payload, null, 2), "utf8");
+}
 
 function focusMainWindow() {
   if (win && !win.isDestroyed()) {
@@ -152,9 +179,15 @@ function createWindow() {
   win.on("close", (event) => {
     if (isQuitting) return;
 
-    event.preventDefault();
-    win?.hide();
-    win?.setSkipTaskbar(true);
+    if (allowTray) {
+      event.preventDefault();
+      win?.hide();
+      win?.setSkipTaskbar(true);
+      return;
+    }
+
+    isQuitting = true;
+    app.quit();
   });
 
   if (VITE_DEV_SERVER_URL) {
@@ -166,7 +199,7 @@ function createWindow() {
 }
 
 function createTray() {
-  if (tray) return;
+  if (tray || !allowTray) return;
 
   const iconPath = path.join(
     process.env.VITE_PUBLIC,
@@ -236,7 +269,7 @@ function createTray() {
 
 app.on("window-all-closed", () => {
   if (process.platform === "darwin") return;
-  if (tray && !isQuitting) return;
+  if (allowTray && tray && !isQuitting) return;
 
   app.quit();
   win = null;
@@ -249,6 +282,7 @@ app.on("activate", () => {
 });
 
 app.whenReady().then(() => {
+  loadSettings();
   createSplashWindow();
   createTray();
   createWindow();
@@ -267,4 +301,24 @@ ipcMain.handle("runtime-info:get", () => {
     osRelease: os.release(),
     osArch: os.arch(),
   };
+});
+
+ipcMain.handle("settings:get", () => {
+  return { allowTray };
+});
+
+ipcMain.handle("settings:set", (_event, next: AppSettings) => {
+  allowTray = next.allowTray ?? allowTray;
+
+  if (!allowTray && tray) {
+    tray.destroy();
+    tray = null;
+  }
+
+  if (allowTray && !tray && app.isReady()) {
+    createTray();
+  }
+
+  saveSettings();
+  return { allowTray };
 });

@@ -117,6 +117,10 @@
           "it": "Italian"
         }
       },
+      "tray": {
+        "title": "Minimize to tray",
+        "description": "When disabled, closing the app will quit instead of hiding it."
+      },
       "help": {
         "title": "Help",
         "description": "Found an issue or need help with something?",

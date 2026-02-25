@@ -113,6 +113,10 @@
           "it": "Italienisch"
         }
       },
+      "tray": {
+        "title": "In den Tray minimieren",
+        "description": "Wenn deaktiviert, wird die App beim Schließen beendet."
+      },
       "help": {
         "title": "Hilfe",
         "description": "Problem gefunden oder brauchst du Hilfe bei etwas?",

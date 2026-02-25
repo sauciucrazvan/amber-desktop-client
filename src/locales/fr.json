@@ -113,6 +113,10 @@
           "it": "Italien"
         }
       },
+      "tray": {
+        "title": "Minimiser dans la zone de notification",
+        "description": "Si désactivé, fermer l'app quittera l'application."
+      },
       "help": {
         "title": "Aide",
         "description": "Vous avez trouvé un problème ou besoin d'aide ?",

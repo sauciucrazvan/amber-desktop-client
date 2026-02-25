@@ -105,6 +105,7 @@ export default function GeneralTab() {
 
         <Switch
           checked={allowTray}
+          className="cursor-pointer"
           onCheckedChange={(checked) => {
             const nextValue = checked === true;
             setAllowTray(nextValue);

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { API_BASE_URL } from "@/config";
-import { Quote, UserMinus, UserX } from "lucide-react";
+import { Ban, Quote, X } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -140,14 +140,14 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                   onClick={onRemove}
                   className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
                 >
-                  <UserMinus /> {t("contacts.remove")}
+                  <X /> {t("contacts.remove")}
                 </a>
 
                 <a
                   onClick={onBlock}
                   className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
                 >
-                  <UserX /> {t("contacts.block")}
+                  <Ban /> {t("contacts.block")}
                 </a>
               </section>
             </>

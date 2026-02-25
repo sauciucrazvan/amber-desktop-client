@@ -1,4 +1,4 @@
-import { User, UserMinus, UserX } from "lucide-react";
+import { Ban, User, X } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -115,10 +115,10 @@ export default function Contact({
             }
           />
           <ContextMenuItem onClick={onRemove}>
-            <UserMinus /> {t("contacts.remove")}
+            <X /> {t("contacts.remove")}
           </ContextMenuItem>
           <ContextMenuItem onClick={onBlock}>
-            <UserX /> {t("contacts.block")}
+            <Ban /> {t("contacts.block")}
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>

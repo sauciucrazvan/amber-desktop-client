@@ -242,7 +242,8 @@
       "description": "Accept or decline any friendship requests you've received.",
       "none": "No requests received at the moment.",
       "accept": "Accept",
-      "decline": "Decline"
+      "decline": "Decline",
+      "notification": "<b>@{{user}}</b> wants to be your friend."
     },
     "blocked": {
       "unreachable": "This user is unreachable. Check if you've blocked them.",

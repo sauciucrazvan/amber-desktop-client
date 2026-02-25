@@ -46,8 +46,8 @@ type ContactListItem = {
 };
 
 export default function AppSidebar() {
-  const MIN_SIDEBAR_WIDTH = 260;
-  const MAX_SIDEBAR_WIDTH = 320;
+  const MIN_SIDEBAR_WIDTH = 320;
+  const MAX_SIDEBAR_WIDTH = 400;
 
   const { isAuthenticated } = useAuth();
   const { data: account, isLoading } = useSWR<AccountMe>(

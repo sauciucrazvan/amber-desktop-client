@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+/* eslint-disable react-refresh/only-export-components */
 import { SWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
 import { API_BASE_URL, WS_BASE_URL } from "@/config";
@@ -49,7 +50,9 @@ async function readErrorMessage(res: Response) {
   try {
     const data = await res.json();
     if (typeof data?.detail === "string") return data.detail;
-  } catch {}
+  } catch {
+    return `Request failed (${res.status})`;
+  }
   return `Request failed (${res.status})`;
 }
 

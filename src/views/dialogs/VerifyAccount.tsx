@@ -173,7 +173,7 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
           </div>
 
           <section className="mt-auto w-full flex items-center justify-between gap-4 border-t bg-muted/50 px-6 py-4">
-            <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground select-none">
+            <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground">
               <div className={stage >= 0 ? "text-foreground" : undefined}>
                 •
               </div>

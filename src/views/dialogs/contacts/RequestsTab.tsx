@@ -27,7 +27,9 @@ async function readErrorMessage(res: Response) {
   try {
     const data = await res.json();
     if (typeof data?.detail === "string") return data.detail;
-  } catch {}
+  } catch {
+    return `Request failed (${res.status})`;
+  }
   return `Request failed (${res.status})`;
 }
 
@@ -127,7 +129,9 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       let data: unknown = null;
       try {
         data = await res.json();
-      } catch {}
+      } catch {
+        data = null;
+      }
 
       const message =
         data && typeof data === "object" && "message" in data

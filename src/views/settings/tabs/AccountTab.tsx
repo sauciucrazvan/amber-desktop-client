@@ -23,6 +23,7 @@ type AccountMe = {
 
 export default function AccountTab() {
   const { isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const {
     data: account,
     error,
@@ -30,8 +31,6 @@ export default function AccountTab() {
   } = useSWR<AccountMe>(isAuthenticated ? "/account/me" : null);
 
   if (!isAuthenticated) return <>Unauthorized.</>;
-
-  const { t } = useTranslation();
 
   return (
     <>

@@ -32,7 +32,9 @@ async function readErrorMessage(res: Response) {
   try {
     const data = await res.json();
     if (typeof data?.detail === "string") return data.detail;
-  } catch {}
+  } catch {
+    return `Request failed (${res.status})`;
+  }
   return `Request failed (${res.status})`;
 }
 
@@ -99,7 +101,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-        <DialogContent className="select-none sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
+        <DialogContent className="sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
           {!isLoading && user && (
             <>
               <DialogHeader className="w-full">

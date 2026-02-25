@@ -4,7 +4,7 @@ import { useLocation } from "wouter";
 import { useAuth } from "@/auth/AuthContext";
 
 type ProtectedRouteProps = RouteProps & {
-  component: React.ComponentType<any>;
+  component: React.ComponentType<Record<string, unknown>>;
 };
 
 export default function ProtectedRoute({
@@ -21,7 +21,11 @@ export default function ProtectedRoute({
   return (
     <Route
       {...rest}
-      component={(props) => (isAuthenticated ? <Component {...props} /> : null)}
+      component={(props) =>
+        isAuthenticated ? (
+          <Component {...(props as Record<string, unknown>)} />
+        ) : null
+      }
     />
   );
 }

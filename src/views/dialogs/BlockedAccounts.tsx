@@ -29,7 +29,9 @@ async function readErrorMessage(res: Response) {
   try {
     const data = await res.json();
     if (typeof data?.detail === "string") return data.detail;
-  } catch {}
+  } catch {
+    return `unblock failed (${res.status})`;
+  }
   return `unblock failed (${res.status})`;
 }
 
@@ -73,7 +75,9 @@ export default function BlockedAccounts() {
 
       try {
         await res.json();
-      } catch {}
+      } catch {
+        void 0;
+      }
 
       toast.success(t("contacts.unblocked", { user: target.username }));
       await mutate("/account/contacts/blocked");

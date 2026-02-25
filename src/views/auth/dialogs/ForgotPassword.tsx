@@ -198,7 +198,7 @@ export default function ForgotPassword() {
             {error && <p className="text-red-500">{t(error)}</p>}
 
             <section className="w-full inline-flex items-center justify-between gap-1">
-              <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground select-none">
+              <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground">
                 <div className={stage >= 0 ? "text-foreground" : undefined}>
                   •
                 </div>

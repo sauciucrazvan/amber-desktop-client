@@ -100,7 +100,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-        <DialogContent className="select-none sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
+        <DialogContent className="sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
           {!isLoading && (
             <>
               <DialogHeader className="w-full">

@@ -39,7 +39,7 @@ export default function UserAvatar({
   const avatarTextSizeClass = avatarTextSizeClasses[resolvedSize];
 
   return (
-    <div className="relative select-none">
+    <div className="relative">
       <Avatar className={avatarSizeClass}>
         <AvatarFallback
           className={avatarTextSizeClass}

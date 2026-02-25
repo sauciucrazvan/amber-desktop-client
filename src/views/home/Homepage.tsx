@@ -35,7 +35,7 @@ export default function Homepage() {
               {t("homepage.file")}
             </Button> */}
           </section>
-          <section className="w-full inline-flex items-center justify-center select-none">
+          <section className="w-full inline-flex items-center justify-center">
             <img
               src={amberLogoSrc}
               alt="Amber logo"

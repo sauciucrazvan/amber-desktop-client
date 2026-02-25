@@ -5,6 +5,7 @@ import {
   useState,
   ReactNode,
 } from "react";
+/* eslint-disable react-refresh/only-export-components */
 
 type Theme = "dark" | "light";
 

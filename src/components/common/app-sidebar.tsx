@@ -261,7 +261,7 @@ export default function AppSidebar() {
 
             <TabsContent
               value="contacts"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-0 flex flex-col"
+              className="min-h-0 flex-1 overflow-hidden rounded-tl-md border-l border-t bg-background p-0 flex flex-col"
             >
               <div className="px-4 pt-4 shrink-0">
                 <h2 className="text-lg font-semibold">{t("contacts.title")}</h2>
@@ -323,7 +323,7 @@ export default function AppSidebar() {
 
             <TabsContent
               value="add-contact"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-4 flex flex-col"
+              className="min-h-0 flex-1 overflow-hidden rounded-tl-md border-l border-t bg-background p-4 flex flex-col"
             >
               <h2 className="text-lg font-semibold mb-4">
                 {t("contacts.add.title")}
@@ -346,7 +346,7 @@ export default function AppSidebar() {
 
             <TabsContent
               value="requests"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-4 flex flex-col"
+              className="min-h-0 flex-1 overflow-hidden rounded-tl-md border-l border-t bg-background p-4 flex flex-col"
             >
               <RequestsTab
                 notice={

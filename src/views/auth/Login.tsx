@@ -50,7 +50,7 @@ export default function LoginView() {
 
   return (
     <>
-      <section className="flex gap-0 w-full min-h-screen">
+      <section className="flex h-full w-full gap-0">
         {/* Application Info */}
         <section className="w-[50%] bg-primary/5 flex flex-col items-center justify-center border-border border-r">
           <Carousel

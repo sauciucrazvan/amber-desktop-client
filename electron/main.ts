@@ -139,6 +139,8 @@ function createWindow() {
     width: 900,
     height: 600,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
+    frame: false,
+    titleBarStyle: "hidden",
     show: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.mjs"),
@@ -321,4 +323,25 @@ ipcMain.handle("settings:set", (_event, next: AppSettings) => {
 
   saveSettings();
   return { allowTray };
+});
+
+ipcMain.handle("window:platform", () => process.platform);
+
+ipcMain.on("window:minimize", () => {
+  if (!win || win.isDestroyed()) return;
+  win.minimize();
+});
+
+ipcMain.on("window:toggle-maximize", () => {
+  if (!win || win.isDestroyed()) return;
+  if (win.isMaximized()) {
+    win.unmaximize();
+    return;
+  }
+  win.maximize();
+});
+
+ipcMain.on("window:close", () => {
+  if (!win || win.isDestroyed()) return;
+  win.close();
 });

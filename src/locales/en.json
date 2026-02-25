@@ -216,7 +216,7 @@
     }
   },
   "contacts": {
-    "title": "Contacts",
+    "title": "Chats",
     "none": "No contacts yet",
     "failed_loading": "Failed to load contacts",
     "profile": "Profile",

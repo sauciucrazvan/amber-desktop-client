@@ -14,7 +14,7 @@ export default function Homepage() {
     <>
       <SidebarProvider>
         {sidebarSide == "left" ? <AppSidebar /> : null}
-        <main className="w-full">
+        <main className="w-full border-t">
           <Header
             extra={
               <SidebarTrigger

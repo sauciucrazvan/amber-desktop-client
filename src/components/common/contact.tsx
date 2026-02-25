@@ -87,7 +87,7 @@ export default function Contact({
         <ContextMenuTrigger asChild>
           <section
             className={cn(
-              "flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-background p-1 transition ease-in-out duration-300",
+              "flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-primary/5 p-1 transition ease-in-out duration-300",
               className,
             )}
             {...props}
@@ -109,15 +109,18 @@ export default function Contact({
           <UserProfile
             username={username}
             trigger={
-              <ContextMenuItem onSelect={(e) => e.preventDefault()}>
+              <ContextMenuItem
+                onSelect={(e) => e.preventDefault()}
+                className="cursor-pointer"
+              >
                 <User /> {t("contacts.profile")}
               </ContextMenuItem>
             }
           />
-          <ContextMenuItem onClick={onRemove}>
+          <ContextMenuItem onClick={onRemove} className="cursor-pointer">
             <X /> {t("contacts.remove")}
           </ContextMenuItem>
-          <ContextMenuItem onClick={onBlock}>
+          <ContextMenuItem onClick={onBlock} className="cursor-pointer">
             <Ban /> {t("contacts.block")}
           </ContextMenuItem>
         </ContextMenuContent>

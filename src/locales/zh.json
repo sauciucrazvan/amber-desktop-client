@@ -95,7 +95,8 @@
     "tabs": {
       "general": "通用",
       "appearance": "外观",
-      "account": "账户"
+      "account": "账户",
+      "about": "关于"
     },
     "general": {
       "language": {

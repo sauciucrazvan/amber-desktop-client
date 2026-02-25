@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import AppearanceTab from "./tabs/AppearanceTab";
 import AccountTab from "./tabs/AccountTab";
 import GeneralTab from "./tabs/GeneralTab";
+import AboutTab from "./tabs/AboutTab";
 
 interface SettingsProps {
   minimalViews: boolean;
@@ -74,6 +75,9 @@ export default function Settings(props: SettingsProps) {
                 <TabsTrigger value="account" disabled={props.minimalViews}>
                   {t("settings.tabs.account")}
                 </TabsTrigger>
+                <TabsTrigger value="about">
+                  {t("settings.tabs.about")}
+                </TabsTrigger>
               </TabsList>
               <TabsContent value="general">
                 <GeneralTab />
@@ -83,6 +87,9 @@ export default function Settings(props: SettingsProps) {
               </TabsContent>
               <TabsContent value="account">
                 <AccountTab />
+              </TabsContent>
+              <TabsContent value="about">
+                <AboutTab />
               </TabsContent>
             </Tabs>
           </DialogContent>

@@ -99,7 +99,8 @@
     "tabs": {
       "general": "General",
       "appearance": "Appearance",
-      "account": "Account"
+      "account": "Account",
+      "about": "About"
     },
     "general": {
       "language": {

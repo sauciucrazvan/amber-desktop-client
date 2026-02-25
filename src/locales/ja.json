@@ -95,7 +95,8 @@
     "tabs": {
       "general": "一般",
       "appearance": "外観",
-      "account": "アカウント"
+      "account": "アカウント",
+      "about": "情報"
     },
     "general": {
       "language": {

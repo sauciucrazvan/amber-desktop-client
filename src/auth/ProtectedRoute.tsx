@@ -3,8 +3,12 @@ import { Route, type RouteProps } from "wouter";
 import { useLocation } from "wouter";
 import { useAuth } from "@/auth/AuthContext";
 
-type ProtectedRouteProps = RouteProps & {
-  component: React.ComponentType<Record<string, unknown>>;
+type RouteComponentProps = React.ComponentProps<
+  NonNullable<RouteProps["component"]>
+>;
+
+type ProtectedRouteProps = Omit<RouteProps, "component"> & {
+  component: React.ComponentType<RouteComponentProps>;
 };
 
 export default function ProtectedRoute({
@@ -21,11 +25,7 @@ export default function ProtectedRoute({
   return (
     <Route
       {...rest}
-      component={(props) =>
-        isAuthenticated ? (
-          <Component {...(props as Record<string, unknown>)} />
-        ) : null
-      }
+      component={(props) => (isAuthenticated ? <Component {...props} /> : null)}
     />
   );
 }

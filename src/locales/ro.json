@@ -95,7 +95,8 @@
     "tabs": {
       "general": "General",
       "appearance": "Aspect",
-      "account": "Cont"
+      "account": "Cont",
+      "about": "Despre"
     },
     "general": {
       "language": {

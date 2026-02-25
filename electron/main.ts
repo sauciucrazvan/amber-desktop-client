@@ -1,7 +1,8 @@
-import { app, BrowserWindow, Menu, Tray, nativeImage } from "electron";
+import { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain } from "electron";
 //import { createRequire } from 'node:module'
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import os from "node:os";
 
 //const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -255,4 +256,15 @@ app.whenReady().then(() => {
 
 app.on("before-quit", () => {
   isQuitting = true;
+});
+
+ipcMain.handle("runtime-info:get", () => {
+  return {
+    electronVersion: process.versions.electron,
+    chromiumVersion: process.versions.chrome,
+    nodeVersion: process.versions.node,
+    osPlatform: os.platform(),
+    osRelease: os.release(),
+    osArch: os.arch(),
+  };
 });

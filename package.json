@@ -1,13 +1,14 @@
 {
   "name": "amber-desktop-app",
   "private": true,
-  "version": "0.4.2",
+  "version": "26.4",
   "author": "Răzvan Sauciuc",
   "description": "The last communication app you'll ever need.",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && electron-builder",
+    "build": "node scripts/build-with-timestamp.mjs",
+    "build:static": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

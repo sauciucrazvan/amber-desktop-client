@@ -95,7 +95,8 @@
     "tabs": {
       "general": "General",
       "appearance": "Apariencia",
-      "account": "Cuenta"
+      "account": "Cuenta",
+      "about": "Acerca de"
     },
     "general": {
       "language": {

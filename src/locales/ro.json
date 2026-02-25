@@ -243,6 +243,11 @@
       "success": "L-ai blocat cu succes pe {{user}}."
     }
   },
+  "account": {
+    "verify": {
+      "notice": "Verifică-ți contul pentru a debloca toate funcționalitățile."
+    }
+  },
   "homepage": {
     "conversation": {
       "title": "Începe o conversație",

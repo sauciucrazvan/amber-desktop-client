@@ -1,8 +1,6 @@
-import { Separator } from "../ui/separator";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarMenu,
   SidebarMenuItem,
@@ -60,6 +58,7 @@ export default function AppSidebar() {
   );
   const { t } = useTranslation();
   const { open, isMobile } = useSidebar();
+  const showVerifyAccount = account?.verified === false;
 
   const {
     data: contacts,
@@ -74,7 +73,7 @@ export default function AppSidebar() {
     },
   );
 
-  const { data: contactRequests } = useSWR<
+  const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
   >(isAuthenticated ? "/account/contacts/requests" : null, {
     refreshInterval: 30000,
@@ -82,7 +81,9 @@ export default function AppSidebar() {
     revalidateOnReconnect: true,
   });
 
-  const requestCount = contactRequests?.length ?? 0;
+  const requestCount = contactRequestsError
+    ? 0
+    : (contactRequests?.length ?? 0);
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
   const sidebarSide: "left" | "right" =
@@ -193,12 +194,12 @@ export default function AppSidebar() {
                       <span>
                         <TabsTrigger
                           value="add-contact"
-                          aria-label={t("contacts.add_contact", "Add contact")}
+                          aria-label={t("contacts.add.title", "Add contact")}
                           className="flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
                         >
                           <UserRoundPlus className="size-4" />
                           <span className="sr-only">
-                            {t("contacts.add_contact", "Add contact")}
+                            {t("contacts.add.title", "Add contact")}
                           </span>
                         </TabsTrigger>
                       </span>
@@ -207,7 +208,7 @@ export default function AppSidebar() {
                       side={tooltipSide}
                       className="px-2 py-1 text-xs"
                     >
-                      {t("contacts.add_contact", "Add contact")}
+                      {t("contacts.add.title", "Add contact")}
                     </TooltipContent>
                   </Tooltip>
                   <Tooltip>
@@ -241,7 +242,7 @@ export default function AppSidebar() {
               </div>
 
               <div className="mt-auto w-full px-1 py-2">
-                <div className="flex w-full justify-center">
+                <div className="flex flex-col w-full justify-center">
                   <MyProfile
                     trigger={
                       <section className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-md p-0 transition ease-in-out duration-300 hover:bg-background">
@@ -264,6 +265,19 @@ export default function AppSidebar() {
             >
               <div className="px-4 pt-4 shrink-0">
                 <h2 className="text-lg font-semibold">{t("contacts.title")}</h2>
+                {showVerifyAccount && (
+                  <div className="mt-3 rounded-md border bg-muted/40 px-3 py-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-xs text-muted-foreground">
+                        {t(
+                          "account.verify.notice",
+                          "Verify your account to unlock full features.",
+                        )}
+                      </p>
+                      <VerifyAccount trigger_type={"button"} />
+                    </div>
+                  </div>
+                )}
               </div>
               <SidebarGroup className="flex-1 min-h-0 pt-2">
                 <SidebarMenu className="flex-1 min-h-0 overflow-y-auto pr-1">
@@ -314,6 +328,19 @@ export default function AppSidebar() {
               <h2 className="text-lg font-semibold mb-4">
                 {t("contacts.add.title")}
               </h2>
+              {showVerifyAccount && (
+                <div className="mb-4 rounded-md border bg-muted/40 px-3 py-2">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-xs text-muted-foreground">
+                      {t(
+                        "account.verify.notice",
+                        "Verify your account to unlock full features.",
+                      )}
+                    </p>
+                    <VerifyAccount trigger_type={"button"} />
+                  </div>
+                </div>
+              )}
               <AddContactTab />
             </TabsContent>
 
@@ -321,18 +348,26 @@ export default function AppSidebar() {
               value="requests"
               className="min-h-0 flex-1 overflow-hidden rounded-tl-2xl border-l bg-background p-4 flex flex-col"
             >
-              <RequestsTab />
+              <RequestsTab
+                notice={
+                  showVerifyAccount ? (
+                    <div className="rounded-md border bg-muted/40 px-3 py-2">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-xs text-muted-foreground">
+                          {t(
+                            "account.verify.notice",
+                            "Verify your account to unlock full features.",
+                          )}
+                        </p>
+                        <VerifyAccount trigger_type={"button"} />
+                      </div>
+                    </div>
+                  ) : null
+                }
+              />
             </TabsContent>
           </Tabs>
         </SidebarContent>
-        {!account?.verified && (
-          <SidebarFooter className="m-0 w-full gap-0 p-0">
-            <Separator className="w-full" />
-            <div className="inline-flex h-full w-full items-center justify-end px-2 py-2">
-              <VerifyAccount trigger_type={"button"} />
-            </div>
-          </SidebarFooter>
-        )}
         <div
           role="separator"
           aria-orientation="vertical"

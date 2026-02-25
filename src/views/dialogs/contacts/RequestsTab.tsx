@@ -3,8 +3,8 @@ import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { API_BASE_URL } from "@/config";
-import { Check, X } from "lucide-react";
-import { useState } from "react";
+import { AlertCircle, Check, X } from "lucide-react";
+import { type ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
@@ -31,7 +31,11 @@ async function readErrorMessage(res: Response) {
   return `Request failed (${res.status})`;
 }
 
-export default function ContactRequests() {
+type ContactRequestsProps = {
+  notice?: ReactNode;
+};
+
+export default function ContactRequests({ notice }: ContactRequestsProps) {
   const [actionUserId, setActionUserId] = useState<number | null>(null);
 
   function groupRequestsByDate(
@@ -152,15 +156,26 @@ export default function ContactRequests() {
     ? groupRequestsByDate(requests, i18n.language)
     : [];
 
+  const requestsErrorMessage = requestsError
+    ? resolveMessage(
+        requestsError instanceof Error ? requestsError.message : null,
+        "contacts.failed_loading",
+      )
+    : null;
+
   return (
     <>
       <h2 className="text-lg font-semibold mb-4">
         {t("contacts.requests.title")}
       </h2>
+      {notice && <div className="mb-4">{notice}</div>}
       {requestsError ? (
-        <p className="text-sm text-muted-foreground">
-          {t("contacts.failed_loading")}
-        </p>
+        <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
+            <p className="text-xs text-destructive">{requestsErrorMessage}</p>
+          </div>
+        </div>
       ) : isRequestsLoading ? (
         <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
           <Spinner />

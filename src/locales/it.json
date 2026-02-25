@@ -243,6 +243,11 @@
       "success": "{{user}} è stato bloccato con successo."
     }
   },
+  "account": {
+    "verify": {
+      "notice": "Verifica il tuo account per sbloccare tutte le funzionalità."
+    }
+  },
   "homepage": {
     "conversation": {
       "title": "Avvia una conversazione",

@@ -7,7 +7,7 @@
     "submit": "Submit",
     "cancel": "Cancel",
     "verified": "Verified",
-    "unverified": "Please verify your account first!",
+    "unverified": "Please verify your account first before you use this feature.",
     "errors": {
       "too_many_requests": "Too many requests! Please try again later."
     },
@@ -232,8 +232,8 @@
     "accepted": "You're now friends with {{user}}.",
     "declined": "You've declined {{user}}'s request.",
     "add": {
-      "title": "Add Contacts",
-      "description": "You can add contacts with their Amber username.",
+      "title": "Add Friends",
+      "description": "You can add friends with their Amber username.",
       "action": "Add",
       "username": "Username"
     },
@@ -252,6 +252,11 @@
       "description": "Manage the contacts you've blocked.",
       "none": "No blocked contacts",
       "success": "Successfully blocked {{user}}."
+    }
+  },
+  "account": {
+    "verify": {
+      "notice": "Verify your account to unlock full features."
     }
   },
   "homepage": {

@@ -243,6 +243,11 @@
       "success": "{{user}} をブロックしました。"
     }
   },
+  "account": {
+    "verify": {
+      "notice": "すべての機能を利用するには、アカウントを認証してください。"
+    }
+  },
   "homepage": {
     "conversation": {
       "title": "会話を始める",

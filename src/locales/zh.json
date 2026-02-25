@@ -243,6 +243,11 @@
       "success": "已成功拉黑 {{user}}。"
     }
   },
+  "account": {
+    "verify": {
+      "notice": "请先验证你的账户以解锁全部功能。"
+    }
+  },
   "homepage": {
     "conversation": {
       "title": "开始对话",

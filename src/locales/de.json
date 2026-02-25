@@ -243,6 +243,11 @@
       "success": "{{user}} wurde erfolgreich blockiert."
     }
   },
+  "account": {
+    "verify": {
+      "notice": "Verifiziere dein Konto, um alle Funktionen freizuschalten."
+    }
+  },
   "homepage": {
     "conversation": {
       "title": "Starte eine Unterhaltung",

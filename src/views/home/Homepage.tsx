@@ -1,12 +1,9 @@
 import AppSidebar from "@/components/common/app-sidebar";
 import Header from "@/components/common/header";
-import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Paperclip } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import ConversationDialog from "./dialogs/ConversationDialog";
+import GetStarted from "./dialogs/GetStarted";
 export default function Homepage() {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const amberLogoSrc = `${import.meta.env.BASE_URL}amber.png`;
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
@@ -28,15 +25,15 @@ export default function Homepage() {
           />
 
           <section className="flex flex-row items-center justify-center h-[75%] w-full gap-2 text-muted-foreground">
-            <ConversationDialog />
+            <GetStarted />
 
-            <Button
+            {/* <Button
               variant="outline"
               className="cursor-pointer h-fit flex flex-col items-center gap-2 w-50"
             >
               <Paperclip className="size-12" />
               {t("homepage.file")}
-            </Button>
+            </Button> */}
           </section>
           <section className="w-full inline-flex items-center justify-center select-none">
             <img

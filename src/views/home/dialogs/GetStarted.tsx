@@ -7,11 +7,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddContact from "@/views/dialogs/AddContact";
-import { MessageCircle, Send, Sidebar } from "lucide-react";
+import { Compass, Send, Sidebar } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function ConversationDialog() {
+export default function GetStarted() {
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
@@ -24,13 +24,15 @@ export default function ConversationDialog() {
             variant="outline"
             className="cursor-pointer h-fit flex flex-col items-center gap-2 w-50"
           >
-            <MessageCircle className="size-12" />
-            {t("homepage.conversation.title")}
+            <Compass className="size-12" />
+            {t("homepage.get_started", "Get Started")}
           </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("homepage.conversation.title")}</DialogTitle>
+            <DialogTitle>
+              {t("homepage.get_started", "Get Started")}
+            </DialogTitle>
           </DialogHeader>
 
           <div className="inline-flex items-center gap-1 text-xs">

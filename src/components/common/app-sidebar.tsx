@@ -89,6 +89,13 @@ export default function AppSidebar() {
   const sidebarSide: "left" | "right" =
     storedSidebarPos === "right" ? "right" : "left";
   const tooltipSide = sidebarSide === "left" ? "right" : "left";
+  const tabsDirectionClass =
+    sidebarSide === "left" ? "flex-row" : "flex-row-reverse";
+  const railPaddingClass = sidebarSide === "left" ? "pl-1" : "pr-1";
+  const panelChromeClass =
+    sidebarSide === "left"
+      ? "rounded-tl-md border-l border-t"
+      : "rounded-tr-md border-r border-t";
   const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
     const storedWidth = Number(localStorage.getItem("amber.sidebarWidth"));
     if (!Number.isFinite(storedWidth)) return 256;
@@ -164,9 +171,9 @@ export default function AppSidebar() {
         <SidebarContent className="min-h-0 overflow-hidden">
           <Tabs
             defaultValue="contacts"
-            className="flex h-full min-h-0 flex-row gap-1"
+            className={`flex h-full min-h-0 ${tabsDirectionClass} gap-1`}
           >
-            <div className="flex h-full w-11 flex-col pl-1">
+            <div className={`flex h-full w-10 flex-col ${railPaddingClass}`}>
               <div className="flex justify-center pt-2">
                 <TabsList className="h-auto w-auto flex-col items-center justify-start gap-1 p-0">
                   <Tooltip>
@@ -241,7 +248,7 @@ export default function AppSidebar() {
                 </TabsList>
               </div>
 
-              <div className="mt-auto w-full px-1 py-2">
+              <div className="mt-auto w-full inline-flex py-2 items-center justify-center">
                 <div className="flex flex-col w-full justify-center">
                   <MyProfile
                     trigger={
@@ -261,7 +268,7 @@ export default function AppSidebar() {
 
             <TabsContent
               value="contacts"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-md border-l border-t bg-background p-0 flex flex-col"
+              className={`min-h-0 flex-1 overflow-hidden ${panelChromeClass} bg-background p-0 flex flex-col`}
             >
               <div className="px-4 pt-4 shrink-0">
                 <h2 className="text-lg font-semibold">{t("contacts.title")}</h2>
@@ -323,7 +330,7 @@ export default function AppSidebar() {
 
             <TabsContent
               value="add-contact"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-md border-l border-t bg-background p-4 flex flex-col"
+              className={`min-h-0 flex-1 overflow-hidden ${panelChromeClass} bg-background p-4 flex flex-col`}
             >
               <h2 className="text-lg font-semibold mb-4">
                 {t("contacts.add.title")}
@@ -346,7 +353,7 @@ export default function AppSidebar() {
 
             <TabsContent
               value="requests"
-              className="min-h-0 flex-1 overflow-hidden rounded-tl-md border-l border-t bg-background p-4 flex flex-col"
+              className={`min-h-0 flex-1 overflow-hidden ${panelChromeClass} bg-background p-4 flex flex-col`}
             >
               <RequestsTab
                 notice={

@@ -69,16 +69,20 @@ export default function Settings(props: SettingsProps) {
               className="min-w-full min-h-0 flex flex-1 flex-col"
             >
               <TabsList>
-                <TabsTrigger value="general">
+                <TabsTrigger value="general" className="cursor-pointer">
                   {t("settings.tabs.general")}
                 </TabsTrigger>
-                <TabsTrigger value="appearance">
+                <TabsTrigger value="appearance" className="cursor-pointer">
                   {t("settings.tabs.appearance")}
                 </TabsTrigger>
-                <TabsTrigger value="account" disabled={props.minimalViews}>
+                <TabsTrigger
+                  value="account"
+                  disabled={props.minimalViews}
+                  className="cursor-pointer"
+                >
                   {t("settings.tabs.account")}
                 </TabsTrigger>
-                <TabsTrigger value="about">
+                <TabsTrigger value="about" className="cursor-pointer">
                   {t("settings.tabs.about")}
                 </TabsTrigger>
               </TabsList>

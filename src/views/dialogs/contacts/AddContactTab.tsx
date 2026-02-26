@@ -4,6 +4,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -93,9 +94,14 @@ export default function AddContactTab() {
       </Field>
 
       {error && (
-        <p className="text-red-500 mt-2">
-          <Trans i18nKey={error} values={{ user: submittedUsername }} />
-        </p>
+        <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 mt-2">
+          <div className="flex items-start gap-2">
+            <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
+            <p className="text-xs text-destructive">
+              <Trans i18nKey={error} values={{ user: submittedUsername }} />
+            </p>
+          </div>
+        </div>
       )}
     </>
   );

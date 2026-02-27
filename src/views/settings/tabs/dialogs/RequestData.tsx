@@ -27,7 +27,7 @@ export default function RequestData() {
 
     try {
       const res = await fetch(API_BASE_URL + "/account/request/data", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

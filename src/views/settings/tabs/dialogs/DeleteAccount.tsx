@@ -29,7 +29,7 @@ export default function DeleteAccount() {
 
     try {
       const res = await fetch(API_BASE_URL + "/account/delete", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

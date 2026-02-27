@@ -33,7 +33,7 @@ export default function ChangeName() {
 
     try {
       const res = await fetch(API_BASE_URL + "/account/modify/fullname", {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

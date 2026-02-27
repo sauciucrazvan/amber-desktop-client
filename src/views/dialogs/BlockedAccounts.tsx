@@ -54,7 +54,7 @@ export default function BlockedAccounts() {
     setActionUserId(target.id);
     try {
       const res = await authFetch(API_BASE_URL + `/contacts/unblock`, {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },

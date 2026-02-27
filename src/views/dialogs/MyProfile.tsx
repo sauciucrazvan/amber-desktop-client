@@ -69,7 +69,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
 
     try {
       const res = await authFetch(API_BASE_URL + "/account/modify/bio", {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },

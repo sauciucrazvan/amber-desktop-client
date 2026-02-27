@@ -46,7 +46,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
   const onBlock = async () => {
     try {
       const res = await fetch(API_BASE_URL + "/contacts/block", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -70,7 +70,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
   const onRemove = async () => {
     try {
       const res = await fetch(API_BASE_URL + "/contacts/remove", {
-        method: "POST",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,

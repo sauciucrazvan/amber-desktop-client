@@ -35,7 +35,7 @@ export default function Contact({
 
   const onBlock = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/account/contacts/block", {
+      const res = await fetch(API_BASE_URL + "/contacts/block", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export default function Contact({
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/account/contacts/list");
+        await mutate("/contacts/list");
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
@@ -59,7 +59,7 @@ export default function Contact({
 
   const onRemove = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/account/contacts/remove", {
+      const res = await fetch(API_BASE_URL + "/contacts/remove", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export default function Contact({
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/account/contacts/list");
+        await mutate("/contacts/list");
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");

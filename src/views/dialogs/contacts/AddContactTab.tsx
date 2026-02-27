@@ -30,7 +30,7 @@ export default function AddContactTab() {
         return;
       }
 
-      const res = await fetch(API_BASE_URL + "/account/contacts/request", {
+      const res = await fetch(API_BASE_URL + "/contacts/request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

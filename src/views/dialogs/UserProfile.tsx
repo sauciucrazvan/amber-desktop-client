@@ -41,13 +41,11 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     data: user,
     error: error,
     isLoading: isLoading,
-  } = useSWR<Profile>(
-    isAuthenticated ? "/account/contacts/profile/" + username : null,
-  );
+  } = useSWR<Profile>(isAuthenticated ? "/contacts/profile/" + username : null);
 
   const onBlock = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/account/contacts/block", {
+      const res = await fetch(API_BASE_URL + "/contacts/block", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +60,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/account/contacts/list");
+        await mutate("/contacts/list");
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
@@ -71,7 +69,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
   const onRemove = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/account/contacts/remove", {
+      const res = await fetch(API_BASE_URL + "/contacts/remove", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,7 +84,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/account/contacts/list");
+        await mutate("/contacts/list");
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");

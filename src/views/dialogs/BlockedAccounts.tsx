@@ -46,16 +46,14 @@ export default function BlockedAccounts() {
     data: blockedAccounts,
     error: blockedAccountsError,
     isLoading: isBlockedAccountsLoading,
-  } = useSWR<BlockedItem[]>(
-    isAuthenticated ? "/account/contacts/blocked" : null,
-  );
+  } = useSWR<BlockedItem[]>(isAuthenticated ? "/contacts/blocked" : null);
 
   const blockedCount = blockedAccounts?.length ?? 0;
 
   const performUnblock = async (target: { id: number; username: string }) => {
     setActionUserId(target.id);
     try {
-      const res = await authFetch(API_BASE_URL + `/account/contacts/unblock`, {
+      const res = await authFetch(API_BASE_URL + `/contacts/unblock`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +78,7 @@ export default function BlockedAccounts() {
       }
 
       toast.success(t("contacts.unblocked", { user: target.username }));
-      await mutate("/account/contacts/blocked");
+      await mutate("/contacts/blocked");
     } catch (e) {
       const message = e instanceof Error ? e.message : "An error occured";
       const looksLikeI18nKey =

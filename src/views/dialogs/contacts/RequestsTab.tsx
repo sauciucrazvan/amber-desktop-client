@@ -91,7 +91,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
     error: requestsError,
     isLoading: isRequestsLoading,
   } = useSWR<ContactRequestItem[]>(
-    isAuthenticated ? "/account/contacts/requests" : null,
+    isAuthenticated ? "/contacts/requests" : null,
     {
       refreshInterval: 30000,
       revalidateOnFocus: true,
@@ -105,18 +105,15 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
   ) => {
     setActionUserId(target.id);
     try {
-      const res = await authFetch(
-        API_BASE_URL + `/account/contacts/${action}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: target.username,
-          }),
+      const res = await authFetch(API_BASE_URL + `/contacts/${action}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          username: target.username,
+        }),
+      });
 
       if (!res.ok) {
         if (res.status === 429) {
@@ -144,9 +141,9 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       toast.success(
         resolveMessage(message, fallbackMessageKey, { user: target.username }),
       );
-      await mutate("/account/contacts/requests");
+      await mutate("/contacts/requests");
       if (action === "accept") {
-        await mutate("/account/contacts/list");
+        await mutate("/contacts/list");
       }
     } catch (e) {
       const message = e instanceof Error ? e.message : "common.errors.generic";

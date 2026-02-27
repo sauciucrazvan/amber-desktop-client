@@ -37,7 +37,7 @@ export default function Titlebar() {
       <button
         type="button"
         aria-label="Minimize window"
-        className="inline-flex h-7 w-8 items-center justify-center rounded-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        className="inline-flex h-7 w-8 items-center justify-center rounded-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer"
         onClick={() => window.windowControls.minimize()}
       >
         <Minus className="size-4" />
@@ -45,7 +45,7 @@ export default function Titlebar() {
       <button
         type="button"
         aria-label="Maximize window"
-        className="inline-flex h-7 w-8 items-center justify-center rounded-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+        className="inline-flex h-7 w-8 items-center justify-center rounded-sm text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer"
         onClick={() => window.windowControls.toggleMaximize()}
       >
         <Square className="size-3.5" />
@@ -53,7 +53,7 @@ export default function Titlebar() {
       <button
         type="button"
         aria-label="Close window"
-        className="inline-flex h-7 w-8 items-center justify-center rounded-sm text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive"
+        className="inline-flex h-7 w-8 items-center justify-center rounded-sm text-sidebar-foreground/80 hover:bg-destructive/20 hover:text-destructive cursor-pointer"
         onClick={() => window.windowControls.close()}
       >
         <X className="size-4" />

@@ -64,18 +64,15 @@ export default function AppSidebar() {
     data: contacts,
     error: contactsError,
     isLoading: isContactsLoading,
-  } = useSWR<ContactListItem[]>(
-    isAuthenticated ? "/account/contacts/list" : null,
-    {
-      refreshInterval: 5000,
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-    },
-  );
+  } = useSWR<ContactListItem[]>(isAuthenticated ? "/contacts/list" : null, {
+    refreshInterval: 5000,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
+  });
 
   const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
-  >(isAuthenticated ? "/account/contacts/requests" : null, {
+  >(isAuthenticated ? "/contacts/requests" : null, {
     refreshInterval: 30000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,

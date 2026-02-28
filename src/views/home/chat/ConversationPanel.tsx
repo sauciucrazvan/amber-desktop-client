@@ -157,7 +157,7 @@ export default function ConversationPanel() {
   if (!activeChat) return null;
 
   return (
-    <section className="flex h-[calc(100%-4rem)] w-full flex-col pb-1 pt-4">
+    <section className="flex h-[calc(100%-3rem)] w-full flex-col pt-4">
       <div className="border-b">
         <div className="mb-1 flex items-center justify-between px-4 pb-2">
           <UserProfile
@@ -240,7 +240,7 @@ export default function ConversationPanel() {
       </div>
 
       <div className="border-t">
-        <div className="flex items-end gap-2 px-4 pt-2">
+        <div className="flex items-end gap-2 px-4 pt-2.5 pb-0">
           <Textarea
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}

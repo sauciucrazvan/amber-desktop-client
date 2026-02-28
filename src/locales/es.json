@@ -261,5 +261,13 @@
       "message": "Puedes enviarles un mensaje escribiéndolo en el campo de texto y pulsando Enviar."
     },
     "file": "Enviar un archivo"
+  },
+  "conversations": {
+    "no_messages": "Aún no hay mensajes.",
+    "type_message": "Escribe un mensaje",
+    "send_message": "Enviar mensaje",
+    "failed_loading": "No se pudo cargar el chat",
+    "failed_sending": "No se pudo enviar el mensaje",
+    "not_participating": "No participas en esta conversación."
   }
 }

@@ -261,5 +261,13 @@
       "message": "Le poți trimite un mesaj tastându-l în câmpul de text și apăsând Trimite."
     },
     "file": "Trimite un fișier"
+  },
+  "conversations": {
+    "no_messages": "Niciun mesaj momentan.",
+    "type_message": "Scrie un mesaj",
+    "send_message": "Trimite mesaj",
+    "failed_loading": "Nu s-a putut încărca conversația",
+    "failed_sending": "Nu s-a putut trimite mesajul",
+    "not_participating": "Nu participi în această conversație."
   }
 }

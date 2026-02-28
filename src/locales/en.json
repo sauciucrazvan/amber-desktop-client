@@ -273,6 +273,14 @@
     },
     "file": "Send a file"
   },
+  "conversations": {
+    "no_messages": "No messages yet.",
+    "type_message": "Type a message",
+    "send_message": "Send message",
+    "failed_loading": "Failed loading chat",
+    "failed_sending": "Failed sending message",
+    "not_participating": "You are not participating in this conversation."
+  },
   "profile": {
     "bio": {
       "title": "Bio",

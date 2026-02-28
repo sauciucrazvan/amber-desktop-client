@@ -261,5 +261,13 @@
       "message": "你可以在输入框中输入消息并点击发送来与他们聊天。"
     },
     "file": "发送文件"
+  },
+  "conversations": {
+    "no_messages": "暂无消息。",
+    "type_message": "输入消息",
+    "send_message": "发送消息",
+    "failed_loading": "加载聊天失败",
+    "failed_sending": "发送消息失败",
+    "not_participating": "你未参与此会话。"
   }
 }

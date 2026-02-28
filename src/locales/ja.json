@@ -261,5 +261,13 @@
       "message": "入力欄にメッセージを入力して、送信を押すと送れます。"
     },
     "file": "ファイルを送信"
+  },
+  "conversations": {
+    "no_messages": "まだメッセージはありません。",
+    "type_message": "メッセージを入力",
+    "send_message": "メッセージを送信",
+    "failed_loading": "チャットの読み込みに失敗しました",
+    "failed_sending": "メッセージの送信に失敗しました",
+    "not_participating": "この会話に参加していません。"
   }
 }

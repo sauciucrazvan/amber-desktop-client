@@ -261,5 +261,13 @@
       "message": "Du kannst ihnen schreiben, indem du deine Nachricht in das Eingabefeld eingibst und auf Senden drückst."
     },
     "file": "Datei senden"
+  },
+  "conversations": {
+    "no_messages": "Noch keine Nachrichten.",
+    "type_message": "Nachricht eingeben",
+    "send_message": "Nachricht senden",
+    "failed_loading": "Chat konnte nicht geladen werden",
+    "failed_sending": "Nachricht konnte nicht gesendet werden",
+    "not_participating": "Du nimmst an dieser Unterhaltung nicht teil."
   }
 }

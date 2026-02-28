@@ -7,6 +7,7 @@ import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Send, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useChat } from "./ChatContext";
 
@@ -37,6 +38,7 @@ async function readErrorMessage(res: Response) {
 export default function ConversationPanel() {
   const { authFetch } = useAuth();
   const { activeChat, closeChat } = useChat();
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [messageText, setMessageText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +82,11 @@ export default function ConversationPanel() {
         await fetchMessages();
       } catch (e) {
         if (!disposed) {
-          toast.error(e instanceof Error ? e.message : "Failed loading chat");
+          toast.error(
+            e instanceof Error
+              ? t(e.message)
+              : t("conversations.failed_loading"),
+          );
         }
       } finally {
         if (!disposed) setIsLoading(false);
@@ -148,7 +154,9 @@ export default function ConversationPanel() {
       setMessageText("");
       await fetchMessages();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Failed sending message");
+      toast.error(
+        e instanceof Error ? t(e.message) : t("conversations.failed_sending"),
+      );
     } finally {
       setIsSending(false);
     }
@@ -210,7 +218,7 @@ export default function ConversationPanel() {
           </div>
         ) : messages.length === 0 ? (
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-            No messages yet.
+            {t("conversations.no_messages")}
           </div>
         ) : (
           <div className="flex flex-col gap-2 py-1">
@@ -244,7 +252,7 @@ export default function ConversationPanel() {
           <Textarea
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
-            placeholder="Type a message"
+            placeholder={t("conversations.type_message")}
             className="min-h-8 resize-none"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -258,7 +266,7 @@ export default function ConversationPanel() {
             size="icon"
             onClick={onSend}
             disabled={!canSend}
-            aria-label="Send message"
+            aria-label={t("conversations.send_message")}
             className="cursor-pointer"
           >
             {isSending ? <Spinner /> : <Send className="size-4" />}

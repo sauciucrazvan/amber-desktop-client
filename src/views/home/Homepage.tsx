@@ -2,8 +2,11 @@ import AppSidebar from "@/components/common/app-sidebar";
 import Header from "@/components/common/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import GetStarted from "./dialogs/GetStarted";
-export default function Homepage() {
-  // const { t } = useTranslation();
+import ConversationPanel from "./chat/ConversationPanel";
+import { ChatProvider, useChat } from "./chat/ChatContext";
+
+function HomepageContent() {
+  const { activeChat } = useChat();
   const amberLogoSrc = `${import.meta.env.BASE_URL}amber.png`;
 
   const storedSidebarPos = localStorage.getItem("amber.sidebarPos");
@@ -11,43 +14,44 @@ export default function Homepage() {
     storedSidebarPos === "right" ? "right" : "left";
 
   return (
-    <>
-      <SidebarProvider>
-        {sidebarSide == "left" ? <AppSidebar /> : null}
-        <main className="w-full border-t">
-          <Header
-            extra={
-              <SidebarTrigger
-                variant={"ghost"}
-                className="p-4 cursor-pointer"
+    <SidebarProvider>
+      {sidebarSide == "left" ? <AppSidebar /> : null}
+      <main className="w-full border-t">
+        <Header
+          extra={
+            <SidebarTrigger variant={"ghost"} className="p-4 cursor-pointer" />
+          }
+        />
+
+        {activeChat ? (
+          <ConversationPanel />
+        ) : (
+          <>
+            <section className="flex flex-row items-center justify-center h-[75%] w-full gap-2 text-muted-foreground">
+              <GetStarted />
+            </section>
+            <section className="w-full inline-flex items-center justify-center">
+              <img
+                src={amberLogoSrc}
+                alt="Amber logo"
+                height={64}
+                width={64}
+                draggable={false}
+                className="grayscale-100 opacity-25"
               />
-            }
-          />
+            </section>
+          </>
+        )}
+      </main>
+      {sidebarSide == "left" ? null : <AppSidebar />}
+    </SidebarProvider>
+  );
+}
 
-          <section className="flex flex-row items-center justify-center h-[75%] w-full gap-2 text-muted-foreground">
-            <GetStarted />
-
-            {/* <Button
-              variant="outline"
-              className="cursor-pointer h-fit flex flex-col items-center gap-2 w-50"
-            >
-              <Paperclip className="size-12" />
-              {t("homepage.file")}
-            </Button> */}
-          </section>
-          <section className="w-full inline-flex items-center justify-center">
-            <img
-              src={amberLogoSrc}
-              alt="Amber logo"
-              height={64}
-              width={64}
-              draggable={false}
-              className="grayscale-100 opacity-25"
-            />
-          </section>
-        </main>
-        {sidebarSide == "left" ? null : <AppSidebar />}
-      </SidebarProvider>
-    </>
+export default function Homepage() {
+  return (
+    <ChatProvider>
+      <HomepageContent />
+    </ChatProvider>
   );
 }

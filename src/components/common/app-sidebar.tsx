@@ -15,11 +15,12 @@ import useSWR from "swr";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
 import { Spinner } from "../ui/spinner";
-import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
 import MyProfile from "@/views/dialogs/MyProfile";
 import { Inbox, MessageCircle, UserRoundPlus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { useChat } from "@/views/home/chat/ChatContext";
+import { toast } from "sonner";
 import {
   type MouseEvent as ReactMouseEvent,
   useEffect,
@@ -57,6 +58,7 @@ export default function AppSidebar() {
     },
   );
   const { t } = useTranslation();
+  const { openDirectChat, openingChatUserId, activeChat } = useChat();
   const { open, isMobile } = useSidebar();
   const showVerifyAccount = account?.verified === false;
 
@@ -157,6 +159,14 @@ export default function AppSidebar() {
     };
     document.body.style.cursor = "col-resize";
     document.body.style.userSelect = "none";
+  };
+
+  const handleOpenDirectChat = async (contact: ContactListItem["user"]) => {
+    try {
+      await openDirectChat(contact);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed opening chat");
+    }
   };
 
   if (!isAuthenticated) return <>Unauthorized.</>;
@@ -302,16 +312,18 @@ export default function AppSidebar() {
                       <SidebarMenuItem
                         key={`${contact.user.id}-${contact.created_at}`}
                       >
-                        <UserProfile
+                        <Contact
                           username={contact.user.username}
-                          trigger={
-                            <Contact
-                              username={contact.user.username}
-                              full_name={contact.user.full_name}
-                              online={contact.user.online}
-                            />
+                          full_name={contact.user.full_name}
+                          online={contact.user.online}
+                          className={
+                            activeChat?.otherUser.id === contact.user.id
+                              ? "bg-primary/5"
+                              : undefined
                           }
-                        ></UserProfile>
+                          onClick={() => handleOpenDirectChat(contact.user)}
+                          aria-busy={openingChatUserId === contact.user.id}
+                        />
                       </SidebarMenuItem>
                     ))
                   ) : (

@@ -19,12 +19,14 @@ type ContactProps = {
   username: string;
   full_name: string;
   online?: boolean;
+  isActive?: boolean;
 } & ComponentPropsWithoutRef<"section">;
 
 export default function Contact({
   username,
   full_name,
   online,
+  isActive = false,
   className,
   ...props
 }: ContactProps) {
@@ -87,7 +89,8 @@ export default function Contact({
         <ContextMenuTrigger asChild>
           <section
             className={cn(
-              "flex flex-row items-center gap-2 cursor-pointer rounded-md hover:bg-primary/5 p-1 transition ease-in-out duration-300",
+              "flex flex-row items-center gap-2 cursor-pointer rounded-md p-1 transition ease-in-out duration-300",
+              isActive ? "bg-primary/10" : "hover:bg-primary/5",
               className,
             )}
             {...props}

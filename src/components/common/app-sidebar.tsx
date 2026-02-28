@@ -67,7 +67,7 @@ export default function AppSidebar() {
     error: contactsError,
     isLoading: isContactsLoading,
   } = useSWR<ContactListItem[]>(isAuthenticated ? "/contacts/list" : null, {
-    refreshInterval: 5000,
+    refreshInterval: 2000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   });
@@ -75,7 +75,7 @@ export default function AppSidebar() {
   const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
   >(isAuthenticated ? "/contacts/requests" : null, {
-    refreshInterval: 30000,
+    refreshInterval: 10000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   });
@@ -316,10 +316,8 @@ export default function AppSidebar() {
                           username={contact.user.username}
                           full_name={contact.user.full_name}
                           online={contact.user.online}
-                          className={
+                          isActive={
                             activeChat?.otherUser.id === contact.user.id
-                              ? "bg-primary/5"
-                              : undefined
                           }
                           onClick={() => handleOpenDirectChat(contact.user)}
                           aria-busy={openingChatUserId === contact.user.id}

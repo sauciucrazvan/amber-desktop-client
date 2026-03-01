@@ -6,10 +6,11 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Send, X } from "lucide-react";
+import { Check, CheckCheck, Send, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useChat } from "./ChatContext";
+import { formatHHmm } from "@/lib/utils";
 
 type MessageItem = {
   id: string;
@@ -19,6 +20,7 @@ type MessageItem = {
   content: { text?: string };
   created_at: string;
   edited_at: string | null;
+  seen: boolean;
 };
 
 type AccountMe = {
@@ -233,11 +235,19 @@ export default function ConversationPanel() {
                   className={`flex w-full ${isMine ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`max-w-[75%] rounded-md border px-3 py-2 text-sm ${
+                    className={`flex flex-row items-end justify-end gap-1 max-w-[75%] rounded-md border px-3 py-2 text-sm ${
                       isMine ? "bg-muted" : "bg-background"
                     }`}
                   >
                     {text}
+                    <div className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+                      {formatHHmm(new Date(message.created_at))}
+                      {message.seen ? (
+                        <CheckCheck size="16" className="text-blue-400" />
+                      ) : (
+                        <Check size="16" />
+                      )}
+                    </div>
                   </div>
                 </div>
               );

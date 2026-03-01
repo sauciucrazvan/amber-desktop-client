@@ -14,6 +14,7 @@ type DirectConversation = {
   type: string;
   direct_pair: string;
   created_at: string;
+  seen: boolean;
 };
 
 export type ActiveChat = {

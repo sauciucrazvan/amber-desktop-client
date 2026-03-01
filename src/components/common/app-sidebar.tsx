@@ -11,6 +11,7 @@ import Contact from "./contact";
 import AddContactTab from "@/views/dialogs/contacts/AddContactTab";
 import RequestsTab from "@/views/dialogs/contacts/RequestsTab";
 import { useAuth } from "@/auth/AuthContext";
+import { API_BASE_URL } from "@/config";
 import useSWR from "swr";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { useTranslation } from "react-i18next";
@@ -44,11 +45,15 @@ type ContactListItem = {
   created_at: string;
 };
 
+type DirectConversationSummary = {
+  seen?: boolean;
+};
+
 export default function AppSidebar() {
   const MIN_SIDEBAR_WIDTH = 320;
   const MAX_SIDEBAR_WIDTH = 400;
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, authFetch } = useAuth();
   const { data: account, isLoading } = useSWR<AccountMe>(
     isAuthenticated ? "/account/me" : null,
     {
@@ -71,6 +76,46 @@ export default function AppSidebar() {
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   });
+
+  const stableContactIds = Array.from(
+    new Set((contacts ?? []).map((contact) => contact.user.id)),
+  ).sort((a, b) => a - b);
+  const contactIdsKey = stableContactIds.join(",");
+
+  const { data: conversationSeenByUserId } = useSWR<Record<number, boolean>>(
+    isAuthenticated && contactIdsKey ? `contacts-seen:${contactIdsKey}` : null,
+    async () => {
+      if (stableContactIds.length === 0) return {};
+
+      const results = await Promise.all(
+        stableContactIds.map(async (userId) => {
+          try {
+            const res = await authFetch(
+              `${API_BASE_URL}/chats/direct/${userId}`,
+              {
+                method: "POST",
+              },
+            );
+
+            if (!res.ok) return [userId, true] as const;
+
+            const data = (await res.json()) as DirectConversationSummary;
+            return [userId, data.seen !== false] as const;
+          } catch {
+            return [userId, true] as const;
+          }
+        }),
+      );
+
+      return Object.fromEntries(results);
+    },
+    {
+      refreshInterval: 5000,
+      dedupingInterval: 1000,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+    },
+  );
 
   const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
@@ -308,22 +353,30 @@ export default function AppSidebar() {
                       </span>
                     </SidebarMenuItem>
                   ) : contacts && contacts.length > 0 ? (
-                    contacts.map((contact) => (
-                      <SidebarMenuItem
-                        key={`${contact.user.id}-${contact.created_at}`}
-                      >
-                        <Contact
-                          username={contact.user.username}
-                          full_name={contact.user.full_name}
-                          online={contact.user.online}
-                          isActive={
-                            activeChat?.otherUser.id === contact.user.id
-                          }
-                          onClick={() => handleOpenDirectChat(contact.user)}
-                          aria-busy={openingChatUserId === contact.user.id}
-                        />
-                      </SidebarMenuItem>
-                    ))
+                    contacts.map((contact) => {
+                      const isActive =
+                        activeChat?.otherUser.id === contact.user.id;
+                      const hasUnseenFromConversationState =
+                        conversationSeenByUserId?.[contact.user.id] === false;
+                      const isUnseen =
+                        !isActive && hasUnseenFromConversationState;
+
+                      return (
+                        <SidebarMenuItem
+                          key={`${contact.user.id}-${contact.created_at}`}
+                        >
+                          <Contact
+                            username={contact.user.username}
+                            full_name={contact.user.full_name}
+                            online={contact.user.online}
+                            isActive={isActive}
+                            isUnseen={isUnseen}
+                            onClick={() => handleOpenDirectChat(contact.user)}
+                            aria-busy={openingChatUserId === contact.user.id}
+                          />
+                        </SidebarMenuItem>
+                      );
+                    })
                   ) : (
                     <SidebarMenuItem>
                       <span className="mx-1 px-1 text-xs text-muted-foreground">

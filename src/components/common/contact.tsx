@@ -1,4 +1,11 @@
-import { Ban, User, X } from "lucide-react";
+import {
+  Ban,
+  BellDot,
+  MessageCircle,
+  MessageCircleMore,
+  User,
+  X,
+} from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -20,6 +27,7 @@ type ContactProps = {
   full_name: string;
   online?: boolean;
   isActive?: boolean;
+  isUnseen?: boolean;
 } & ComponentPropsWithoutRef<"section">;
 
 export default function Contact({
@@ -27,6 +35,7 @@ export default function Contact({
   full_name,
   online,
   isActive = false,
+  isUnseen = false,
   className,
   ...props
 }: ContactProps) {
@@ -90,7 +99,7 @@ export default function Contact({
           <section
             className={cn(
               "flex flex-row items-center gap-2 cursor-pointer rounded-md p-1 transition ease-in-out duration-300",
-              isActive ? "bg-primary/10" : "hover:bg-primary/5",
+              isActive ? "bg-primary/10" : "hover:bg-primary/10",
               className,
             )}
             {...props}
@@ -100,11 +109,24 @@ export default function Contact({
               username={username}
               isOnline={isOnline}
             />
-            <div className="flex flex-row items-center gap-1">
-              <h3 className="text-sm leading-tight">
+            <div className="flex min-w-0 flex-1 flex-row items-center justify-between gap-1">
+              <h3
+                className={cn(
+                  "text-sm leading-tight",
+                  !isActive && isUnseen && "font-semibold",
+                )}
+              >
                 {full_name}
-                <p className="text-xs text-muted-foreground">@{username}</p>
+                <p className="text-xs font-normal text-muted-foreground">
+                  @{username}
+                </p>
               </h3>
+              {!isActive && isUnseen ? (
+                <span
+                  aria-hidden
+                  className="ml-2 inline-flex size-2.5 shrink-0 rounded-full bg-primary"
+                />
+              ) : null}
             </div>
           </section>
         </ContextMenuTrigger>

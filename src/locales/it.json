@@ -6,6 +6,7 @@
     "hide": "Nascondi",
     "submit": "Invia",
     "cancel": "Annulla",
+    "verified": "Verificato",
     "unverified": "Verifica prima il tuo account!",
     "errors": {
       "too_many_requests": "Troppe richieste! Rallenta!"
@@ -73,7 +74,10 @@
     "greeting": "Benvenuto su Amber!",
     "verify": {
       "title": "Verifica il tuo account",
-      "description": "Ti manderemo un'email con un codice di verifica.",
+      "description": {
+        "step_one": "Ti manderemo un'email con un codice di verifica.",
+        "step_two": "Inserisci il codice che ti abbiamo inviato via email."
+      },
       "not_verified": "Il tuo account non è verificato.",
       "verify_now": "Verifica ora",
       "already_verified": "Sei già verificato",
@@ -204,6 +208,10 @@
         "same": "Non puoi aggiornare il nome completo con quello attuale.",
         "updated": "Nome completo aggiornato con successo. La prossima modifica sarà disponibile tra una settimana.",
         "tooSoon": "Hai raggiunto il limite di modifiche. Potrai modificare il tuo nome tra <time>{{days}}</time> giorni."
+      },
+      "bio": {
+        "too_long": "Rimani entro 256 caratteri.",
+        "updated": "La tua bio è stata aggiornata con successo!"
       }
     }
   },
@@ -211,6 +219,7 @@
     "title": "Contatti",
     "none": "Nessun contatto",
     "failed_loading": "Impossibile caricare i contatti",
+    "profile": "Profilo",
     "block": "Blocca",
     "remove": "Rimuovi",
     "invalid_user": "Nessuna corrispondenza trovata per {{user}}.",
@@ -221,6 +230,7 @@
     "unblock": "Sblocca",
     "unblocked": "{{user}} è stato sbloccato con successo.",
     "already_added": "{{user}} è già nella tua lista.",
+    "not_added": "{{user}} non è nella tua lista contatti.",
     "already_requested": "Hai già inviato una richiesta a {{user}}.",
     "requested": "Fatto! La tua richiesta di amicizia a {{user}} è stata inviata.",
     "no_request": "Non hai inviato una richiesta a {{user}}.",
@@ -237,7 +247,8 @@
       "description": "Accetta o rifiuta le richieste di amicizia che hai ricevuto.",
       "none": "Nessuna richiesta ricevuta al momento.",
       "accept": "Accetta",
-      "decline": "Rifiuta"
+      "decline": "Rifiuta",
+      "notification": "<b>@{{user}}</b> vuole essere tuo amico."
     },
     "blocked": {
       "unreachable": "Questo utente non è raggiungibile. Controlla se lo hai bloccato.",
@@ -269,5 +280,14 @@
     "failed_loading": "Impossibile caricare la chat",
     "failed_sending": "Impossibile inviare il messaggio",
     "not_participating": "Non partecipi a questa conversazione."
+  },
+  "profile": {
+    "bio": {
+      "title": "Bio",
+      "empty": "Bio vuota.",
+      "edit": {
+        "title": "Modifica bio"
+      }
+    }
   }
 }

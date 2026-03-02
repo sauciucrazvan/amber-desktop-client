@@ -6,6 +6,7 @@
     "hide": "Ascunde",
     "submit": "Trimite",
     "cancel": "Anulează",
+    "verified": "Verificat",
     "unverified": "Te rugăm să-ți verifici mai întâi contul!",
     "errors": {
       "too_many_requests": "Prea multe cereri! Încetinește!"
@@ -73,7 +74,10 @@
     "greeting": "Bun venit în Amber!",
     "verify": {
       "title": "Verifică-ți contul",
-      "description": "Îți vom trimite un e-mail cu un cod de verificare.",
+      "description": {
+        "step_one": "Îți vom trimite un e-mail cu un cod de verificare.",
+        "step_two": "Te rugăm să introduci codul pe care l-am trimis pe e-mail."
+      },
       "not_verified": "Contul tău nu este verificat.",
       "verify_now": "Verifică acum",
       "already_verified": "Ești deja verificat",
@@ -204,6 +208,10 @@
         "same": "Nu poți actualiza numele complet cu cel curent.",
         "updated": "Numele complet a fost actualizat cu succes. Următoarea schimbare este disponibilă peste o săptămână.",
         "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time>{{days}}</time> zile."
+      },
+      "bio": {
+        "too_long": "Limitează-te la 256 de caractere.",
+        "updated": "Biografia ta a fost actualizată cu succes!"
       }
     }
   },
@@ -211,6 +219,7 @@
     "title": "Contacte",
     "none": "Nu ai încă contacte",
     "failed_loading": "Nu s-au putut încărca contactele",
+    "profile": "Profil",
     "block": "Blochează",
     "remove": "Elimină",
     "invalid_user": "Nu am găsit nicio potrivire pentru {{user}}.",
@@ -221,6 +230,7 @@
     "unblock": "Deblochează",
     "unblocked": "L-ai deblocat cu succes pe {{user}}.",
     "already_added": "{{user}} este deja în lista ta.",
+    "not_added": "{{user}} nu este în lista ta de contacte.",
     "already_requested": "Ai trimis deja o cerere către {{user}}.",
     "requested": "Succes! Cererea ta de prietenie către {{user}} a fost trimisă.",
     "no_request": "Nu ai trimis o cerere către {{user}}.",
@@ -237,7 +247,8 @@
       "description": "Acceptă sau refuză cererile de prietenie pe care le-ai primit.",
       "none": "Nu ai primit cereri în acest moment",
       "accept": "Acceptă",
-      "decline": "Refuză"
+      "decline": "Refuză",
+      "notification": "<b>@{{user}}</b> vrea să fie prietenul tău."
     },
     "blocked": {
       "unreachable": "Acest utilizator nu poate fi contactat. Verifică dacă l-ai blocat.",
@@ -269,5 +280,14 @@
     "failed_loading": "Nu s-a putut încărca conversația",
     "failed_sending": "Nu s-a putut trimite mesajul",
     "not_participating": "Nu participi în această conversație."
+  },
+  "profile": {
+    "bio": {
+      "title": "Biografie",
+      "empty": "Biografie goală.",
+      "edit": {
+        "title": "Editează biografia"
+      }
+    }
   }
 }

@@ -6,6 +6,7 @@
     "hide": "隐藏",
     "submit": "提交",
     "cancel": "取消",
+    "verified": "已验证",
     "unverified": "请先验证你的账号！",
     "errors": {
       "too_many_requests": "请求过多！请减速！"
@@ -73,7 +74,10 @@
     "greeting": "欢迎使用 Amber！",
     "verify": {
       "title": "验证你的账号",
-      "description": "我们会发送一封包含验证码的邮件。",
+      "description": {
+        "step_one": "我们会发送一封包含验证码的邮件。",
+        "step_two": "请输入我们发送到你邮箱的验证码。"
+      },
       "not_verified": "你的账号未被验证。",
       "verify_now": "立即验证",
       "already_verified": "你已被验证",
@@ -204,6 +208,10 @@
         "same": "无法将全名更新为当前全名。",
         "updated": "显示名称已成功更新。下一次可在一周后更改。",
         "tooSoon": "你已达到更改次数上限。你可以在 <time>{{days}}</time> 天后修改姓名。"
+      },
+      "bio": {
+        "too_long": "请限制在 256 个字符以内。",
+        "updated": "个人简介已成功更新！"
       }
     }
   },
@@ -211,6 +219,7 @@
     "title": "联系人",
     "none": "暂无联系人",
     "failed_loading": "加载联系人失败",
+    "profile": "资料",
     "block": "拉黑",
     "remove": "移除",
     "invalid_user": "未找到与 {{user}} 匹配的用户。",
@@ -221,6 +230,7 @@
     "unblock": "取消拉黑",
     "unblocked": "已成功取消拉黑 {{user}}。",
     "already_added": "{{user}} 已在你的列表中。",
+    "not_added": "{{user}} 不在你的联系人列表中。",
     "already_requested": "已向 {{user}} 发送过请求。",
     "requested": "成功！已向 {{user}} 发送好友请求。",
     "no_request": "你没有向 {{user}} 发送请求。",
@@ -237,7 +247,8 @@
       "description": "接受或拒绝你收到的好友请求。",
       "none": "目前没有收到请求。",
       "accept": "接受",
-      "decline": "拒绝"
+      "decline": "拒绝",
+      "notification": "<b>@{{user}}</b> 想和你成为朋友。"
     },
     "blocked": {
       "unreachable": "该用户无法联系。请检查你是否已将其拉黑。",
@@ -269,5 +280,14 @@
     "failed_loading": "加载聊天失败",
     "failed_sending": "发送消息失败",
     "not_participating": "你未参与此会话。"
+  },
+  "profile": {
+    "bio": {
+      "title": "个人简介",
+      "empty": "暂无个人简介。",
+      "edit": {
+        "title": "编辑个人简介"
+      }
+    }
   }
 }

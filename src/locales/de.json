@@ -6,6 +6,7 @@
     "hide": "Ausblenden",
     "submit": "Senden",
     "cancel": "Abbrechen",
+    "verified": "Verifiziert",
     "unverified": "Bitte verifiziere zuerst dein Konto!",
     "errors": {
       "too_many_requests": "Zu viele Anfragen! Verlangsam dich!"
@@ -73,7 +74,10 @@
     "greeting": "Willkommen bei Amber!",
     "verify": {
       "title": "Verifiziere dein Konto",
-      "description": "Wir senden dir eine E-Mail mit einem Bestätigungscode.",
+      "description": {
+        "step_one": "Wir senden dir eine E-Mail mit einem Bestätigungscode.",
+        "step_two": "Bitte gib den Code ein, den wir dir per E-Mail gesendet haben."
+      },
       "not_verified": "Dein Konto ist nicht verifiziert.",
       "verify_now": "Jetzt verifizieren",
       "already_verified": "Du bist bereits verifiziert",
@@ -204,6 +208,10 @@
         "same": "Du kannst deinen vollständigen Namen nicht auf deinen aktuellen ändern.",
         "updated": "Vollständiger Name erfolgreich aktualisiert. Nächste Änderung in einer Woche möglich.",
         "tooSoon": "Du hast dein Änderungslimit erreicht. Du kannst deinen Namen in <time>{{days}}</time> Tagen wieder ändern."
+      },
+      "bio": {
+        "too_long": "Bitte auf 256 Zeichen begrenzen.",
+        "updated": "Deine Bio wurde erfolgreich aktualisiert!"
       }
     }
   },
@@ -211,6 +219,7 @@
     "title": "Kontakte",
     "none": "Noch keine Kontakte",
     "failed_loading": "Kontakte konnten nicht geladen werden",
+    "profile": "Profil",
     "block": "Blockieren",
     "remove": "Entfernen",
     "invalid_user": "Kein Treffer für {{user}} gefunden.",
@@ -221,6 +230,7 @@
     "unblock": "Entblocken",
     "unblocked": "Blockierung für {{user}} erfolgreich aufgehoben.",
     "already_added": "{{user}} ist bereits in deiner Liste.",
+    "not_added": "{{user}} ist nicht in deiner Kontaktliste.",
     "already_requested": "Du hast bereits eine Anfrage an {{user}} gesendet.",
     "requested": "Erfolg! Deine Freundschaftsanfrage an {{user}} wurde gesendet.",
     "no_request": "Du hast keine Anfrage an {{user}} gesendet.",
@@ -237,7 +247,8 @@
       "description": "Akzeptiere oder lehne Freundschaftsanfragen ab, die du erhalten hast.",
       "none": "Derzeit keine Anfragen erhalten",
       "accept": "Akzeptieren",
-      "decline": "Ablehnen"
+      "decline": "Ablehnen",
+      "notification": "<b>@{{user}}</b> möchte mit dir befreundet sein."
     },
     "blocked": {
       "unreachable": "Dieser Benutzer ist nicht erreichbar. Prüfe, ob du ihn blockiert hast.",
@@ -269,5 +280,14 @@
     "failed_loading": "Chat konnte nicht geladen werden",
     "failed_sending": "Nachricht konnte nicht gesendet werden",
     "not_participating": "Du nimmst an dieser Unterhaltung nicht teil."
+  },
+  "profile": {
+    "bio": {
+      "title": "Bio",
+      "empty": "Keine Bio.",
+      "edit": {
+        "title": "Bio bearbeiten"
+      }
+    }
   }
 }

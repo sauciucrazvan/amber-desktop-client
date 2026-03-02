@@ -6,6 +6,7 @@
     "hide": "非表示",
     "submit": "送信",
     "cancel": "キャンセル",
+    "verified": "認証済み",
     "unverified": "まずアカウントを認証してください！",
     "errors": {
       "too_many_requests": "リクエストが多すぎます。ゆっくりしてください。"
@@ -73,7 +74,10 @@
     "greeting": "Amberへようこそ！",
     "verify": {
       "title": "アカウントを確認",
-      "description": "認証コード付きのメールを送信します。",
+      "description": {
+        "step_one": "認証コード付きのメールを送信します。",
+        "step_two": "メールで送信したコードを入力してください。"
+      },
       "not_verified": "アカウントは認証されていません。",
       "verify_now": "今すぐ認証",
       "already_verified": "既に認証されています",
@@ -204,6 +208,10 @@
         "same": "現在の氏名と同じ氏名には変更できません。",
         "updated": "表示名を更新しました。次回の変更は1週間後に可能です。",
         "tooSoon": "変更回数の上限に達しました。<time>{{days}}</time>日後に氏名を変更できます。"
+      },
+      "bio": {
+        "too_long": "256文字以内で入力してください。",
+        "updated": "自己紹介を更新しました！"
       }
     }
   },
@@ -211,6 +219,7 @@
     "title": "連絡先",
     "none": "まだ連絡先がありません",
     "failed_loading": "連絡先の読み込みに失敗しました",
+    "profile": "プロフィール",
     "block": "ブロック",
     "remove": "削除",
     "invalid_user": "{{user}} に一致するユーザーが見つかりませんでした。",
@@ -221,6 +230,7 @@
     "unblock": "ブロック解除",
     "unblocked": "{{user}} のブロックを解除しました。",
     "already_added": "{{user}} はすでにリストに追加されています。",
+    "not_added": "{{user}} は連絡先リストにいません。",
     "already_requested": "{{user}} にはすでにリクエストを送信しています。",
     "requested": "成功！{{user}} への友達申請を送信しました。",
     "no_request": "{{user}} へのリクエストを送信していません。",
@@ -237,7 +247,8 @@
       "description": "受信した友達申請を承認または拒否できます。",
       "none": "現在受信したリクエストはありません",
       "accept": "承認",
-      "decline": "拒否"
+      "decline": "拒否",
+      "notification": "<b>@{{user}}</b> があなたと友達になりたいと言っています。"
     },
     "blocked": {
       "unreachable": "このユーザーに接続できません。ブロックしていないか確認してください。",
@@ -269,5 +280,14 @@
     "failed_loading": "チャットの読み込みに失敗しました",
     "failed_sending": "メッセージの送信に失敗しました",
     "not_participating": "この会話に参加していません。"
+  },
+  "profile": {
+    "bio": {
+      "title": "自己紹介",
+      "empty": "自己紹介は未設定です。",
+      "edit": {
+        "title": "自己紹介を編集"
+      }
+    }
   }
 }

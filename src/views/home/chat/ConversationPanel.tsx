@@ -235,12 +235,12 @@ export default function ConversationPanel() {
                   className={`flex w-full ${isMine ? "justify-end" : "justify-start"}`}
                 >
                   <div
-                    className={`flex flex-row items-end justify-end gap-1 max-w-[75%] rounded-md border px-3 py-2 text-sm ${
-                      isMine ? "bg-muted" : "bg-background"
-                    }`}
+                    className={`flex flex-col max-w-[75%] rounded-md border px-3 py-2 text-sm
+  ${isMine ? "bg-muted" : "bg-background"}`}
                   >
-                    {text}
-                    <div className="inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+                    <div className="wrap-break-word">{text}</div>
+
+                    <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
                       {formatHHmm(new Date(message.created_at))}
                       {message.seen ? (
                         <CheckCheck size="16" className="text-blue-400" />
@@ -257,13 +257,13 @@ export default function ConversationPanel() {
         )}
       </div>
 
-      <div className="border-t">
-        <div className="flex items-end gap-2 px-4 pt-2.5 pb-0">
+      <div className="border-t overflow-hidden">
+        <div className="flex min-w-0 items-end gap-2 px-4 pt-2.5 pb-0">
           <Textarea
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             placeholder={t("conversations.type_message")}
-            className="min-h-8 resize-none"
+            className="min-h-8 max-h-16 min-w-0 max-w-full flex-1 resize-none field-sizing-fixed overflow-x-hidden wrap-break-word"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -277,7 +277,7 @@ export default function ConversationPanel() {
             onClick={onSend}
             disabled={!canSend}
             aria-label={t("conversations.send_message")}
-            className="cursor-pointer"
+            className="shrink-0 cursor-pointer"
           >
             {isSending ? <Spinner /> : <Send className="size-4" />}
           </Button>

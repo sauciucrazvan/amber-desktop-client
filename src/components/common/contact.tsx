@@ -1,11 +1,4 @@
-import {
-  Ban,
-  BellDot,
-  MessageCircle,
-  MessageCircleMore,
-  User,
-  X,
-} from "lucide-react";
+import { Ban, User, X } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,

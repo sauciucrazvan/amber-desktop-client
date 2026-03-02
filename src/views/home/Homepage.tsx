@@ -16,7 +16,7 @@ function HomepageContent() {
   return (
     <SidebarProvider>
       {sidebarSide == "left" ? <AppSidebar /> : null}
-      <main className="w-full border-t">
+      <main className="min-w-0 flex-1 overflow-hidden border-t">
         <Header
           extra={
             <SidebarTrigger variant={"ghost"} className="p-4 cursor-pointer" />

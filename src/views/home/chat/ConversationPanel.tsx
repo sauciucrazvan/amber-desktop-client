@@ -59,6 +59,7 @@ export default function ConversationPanel() {
   const [myUserId, setMyUserId] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const shouldAutoScrollRef = useRef(true);
 
   const conversationId = activeChat?.conversation.id;
@@ -140,6 +141,19 @@ export default function ConversationPanel() {
   useEffect(() => {
     shouldAutoScrollRef.current = true;
   }, [conversationId]);
+
+  useEffect(() => {
+    if (!replyTo) return;
+    const timeoutId = window.setTimeout(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      const length = textarea.value.length;
+      textarea.setSelectionRange(length, length);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [replyTo]);
 
   const canSend = useMemo(
     () => messageText.trim().length > 0 && !isSending,
@@ -320,6 +334,7 @@ export default function ConversationPanel() {
         )}
         <div className="flex min-w-0 items-center gap-2 px-4 pt-2.5 pb-0">
           <Textarea
+            ref={textareaRef}
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             placeholder={t("conversations.type_message")}

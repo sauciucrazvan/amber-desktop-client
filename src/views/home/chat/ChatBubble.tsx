@@ -6,6 +6,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { formatHHmm } from "@/lib/utils";
+import { t } from "i18next";
 import { Check, CheckCheck, Reply, Trash2 } from "lucide-react";
 
 interface Props {
@@ -52,15 +53,28 @@ export default function ChatBubble({
           className={`flex flex-col max-w-[75%] rounded-md border px-3 py-2 text-sm
   ${isMine ? "bg-muted" : "bg-background"}`}
         >
-          <div className="wrap-break-word select-text">{text}</div>
+          {message.content.reply_to && (
+            <div className="bg-primary/5 border-l-2 p-2 rounded-sm mb-1">
+              {message.content.reply_to.sender_id == myUserId && (
+                <p className="text-muted-foreground">
+                  {t("conversations.you")}
+                </p>
+              )}
+              {message.content.reply_to.content.text}
+            </div>
+          )}
 
-          <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-            {formatHHmm(new Date(message.created_at))}
-            {message.seen ? (
-              <CheckCheck size="16" className="text-blue-400" />
-            ) : (
-              <Check size="16" />
-            )}
+          <div className="inline-flex gap-1 items-center">
+            <div className="wrap-break-word select-text">{text}</div>
+
+            <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+              {formatHHmm(new Date(message.created_at))}
+              {message.seen ? (
+                <CheckCheck size="16" className="text-blue-400" />
+              ) : (
+                <Check size="16" />
+              )}
+            </div>
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent className="w-48">

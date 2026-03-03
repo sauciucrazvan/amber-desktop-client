@@ -52,7 +52,7 @@ export default function ChatBubble({
     >
       <ContextMenu key={message.id}>
         <ContextMenuTrigger
-          className={`flex flex-col max-w-[75%] rounded-md border px-3 py-2 text-sm
+          className={`flex min-w-0 max-w-[75%] flex-col rounded-md border px-3 py-2 text-sm
   ${isMine ? "bg-muted" : "bg-background"}`}
         >
           {message.content.reply_to && (
@@ -66,8 +66,10 @@ export default function ChatBubble({
             </div>
           )}
 
-          <div className="inline-flex gap-1 items-center">
-            <div className={"wrap-break-word select-text"}>{text}</div>
+          <div className="inline-flex min-w-0 items-center gap-1">
+            <div className="min-w-0 whitespace-pre-wrap break-all wrap-anywhere select-text">
+              {text}
+            </div>
 
             <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
               {message.edited_at && <p className="mr-0.5">Edited</p>}

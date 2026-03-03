@@ -53,6 +53,7 @@ export default function ConversationPanel() {
   const { t } = useTranslation();
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [messageText, setMessageText] = useState("");
+  const [replyTo, setReplyTo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [myUserId, setMyUserId] = useState<number | null>(null);
@@ -149,19 +150,35 @@ export default function ConversationPanel() {
     setIsSending(true);
     shouldAutoScrollRef.current = true;
     try {
-      const payload = { text: messageText.trim() };
-      const res = await authFetch(
-        `${API_BASE_URL}/chats/${conversationId}/messages`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+      if (replyTo) {
+        const payload = { message_id: replyTo, text: messageText.trim() };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/reply`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
           },
-          body: JSON.stringify(payload),
-        },
-      );
+        );
 
-      if (!res.ok) throw new Error(await readErrorMessage(res));
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+      } else {
+        const payload = { text: messageText.trim() };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+      }
 
       setMessageText("");
       await fetchMessages();
@@ -171,6 +188,7 @@ export default function ConversationPanel() {
       );
     } finally {
       setIsSending(false);
+      setReplyTo("");
     }
   };
 
@@ -181,7 +199,7 @@ export default function ConversationPanel() {
     try {
       const payload = { message_id: id };
       const res = await authFetch(
-        `${API_BASE_URL}/chats/${conversationId}/delete`,
+        `${API_BASE_URL}/chats/${conversationId}/messages`,
         {
           method: "DELETE",
           headers: {
@@ -200,6 +218,11 @@ export default function ConversationPanel() {
     } catch (e) {
       toast.error(e instanceof Error ? t(e.message) : t("common.error"));
     }
+  };
+
+  const onReply = (id: string) => {
+    if (!conversationId) return;
+    setReplyTo(id);
   };
 
   if (!activeChat) return null;
@@ -268,6 +291,7 @@ export default function ConversationPanel() {
                   key={message.id}
                   myUserId={myUserId}
                   message={message}
+                  reply_func={() => onReply(message.id)}
                   delete_func={() => onDelete(message.id)}
                 />
               );
@@ -278,6 +302,12 @@ export default function ConversationPanel() {
       </div>
 
       <div className="border-t overflow-hidden">
+        {replyTo && (
+          <div>
+            <div>Replying to {replyTo}</div>
+            <Button onClick={() => setReplyTo("")}>Cancel</Button>
+          </div>
+        )}
         <div className="flex min-w-0 items-center gap-2 px-4 pt-2.5 pb-0">
           <Textarea
             value={messageText}

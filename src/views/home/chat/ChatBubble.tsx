@@ -30,9 +30,15 @@ interface Props {
   };
 
   delete_func: (id: string) => void;
+  reply_func: (id: string) => void;
 }
 
-export default function ChatBubble({ myUserId, message, delete_func }: Props) {
+export default function ChatBubble({
+  myUserId,
+  message,
+  delete_func,
+  reply_func,
+}: Props) {
   const isMine = myUserId !== null && message.sender_id === myUserId;
   const text = message.content?.text ?? "";
 
@@ -59,7 +65,10 @@ export default function ChatBubble({ myUserId, message, delete_func }: Props) {
         </ContextMenuTrigger>
         <ContextMenuContent className="w-48">
           <ContextMenuGroup>
-            <ContextMenuItem className="cursor-pointer">
+            <ContextMenuItem
+              className="cursor-pointer"
+              onClick={() => reply_func(message.id)}
+            >
               <Reply /> Reply
             </ContextMenuItem>
             {isMine && (

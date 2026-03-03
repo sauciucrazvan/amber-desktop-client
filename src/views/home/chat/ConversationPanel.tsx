@@ -48,6 +48,8 @@ async function readErrorMessage(res: Response) {
 }
 
 export default function ConversationPanel() {
+  const MESSAGE_PAGE_SIZE = 20;
+
   const { authFetch } = useAuth();
   const { activeChat, closeChat } = useChat();
   const { t } = useTranslation();
@@ -57,13 +59,16 @@ export default function ConversationPanel() {
   const [replyTo, setReplyTo] = useState<MessageItem | null>(null);
   const [editing, setEditing] = useState<MessageItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [myUserId, setMyUserId] = useState<number | null>(null);
+  const [hasMoreMessages, setHasMoreMessages] = useState(true);
 
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const shouldAutoScrollRef = useRef(true);
+  const loadingMoreRef = useRef(false);
 
   const conversationId = activeChat?.conversation.id;
 
@@ -74,31 +79,113 @@ export default function ConversationPanel() {
     return distanceFromBottom < 80;
   }, []);
 
-  const fetchMessages = useCallback(async () => {
+  const sortMessages = useCallback((items: MessageItem[]) => {
+    return [...items].sort(
+      (a, b) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+    );
+  }, []);
+
+  const mergeMessages = useCallback(
+    (current: MessageItem[], incoming: MessageItem[]) => {
+      const byId = new Map(current.map((message) => [message.id, message]));
+      incoming.forEach((message) => {
+        byId.set(message.id, message);
+      });
+
+      return sortMessages(Array.from(byId.values()));
+    },
+    [sortMessages],
+  );
+
+  const fetchMessagesPage = useCallback(
+    async (before?: string) => {
+      if (!conversationId) return [] as MessageItem[];
+
+      const params = new URLSearchParams({ limit: String(MESSAGE_PAGE_SIZE) });
+      if (before) params.set("before", before);
+
+      const res = await authFetch(
+        `${API_BASE_URL}/chats/${conversationId}/messages?${params.toString()}`,
+      );
+
+      if (!res.ok) throw new Error(await readErrorMessage(res));
+
+      return (await res.json()) as MessageItem[];
+    },
+    [MESSAGE_PAGE_SIZE, authFetch, conversationId],
+  );
+
+  const refreshLatestMessages = useCallback(async () => {
     if (!conversationId) return;
 
-    const res = await authFetch(
-      `${API_BASE_URL}/chats/${conversationId}/messages?limit=50`,
-    );
-
-    if (!res.ok) throw new Error(await readErrorMessage(res));
-
-    const data = (await res.json()) as MessageItem[];
+    const data = await fetchMessagesPage();
     shouldAutoScrollRef.current = isNearBottom(scrollContainerRef.current);
-    setMessages(data);
-  }, [authFetch, conversationId, isNearBottom]);
+    setMessages((current) => mergeMessages(current, data));
+    if (data.length < MESSAGE_PAGE_SIZE) setHasMoreMessages(false);
+  }, [
+    MESSAGE_PAGE_SIZE,
+    conversationId,
+    fetchMessagesPage,
+    isNearBottom,
+    mergeMessages,
+  ]);
+
+  const loadOlderMessages = useCallback(async () => {
+    if (!conversationId || loadingMoreRef.current || !hasMoreMessages) return;
+
+    const oldestMessage = messages[0];
+    if (!oldestMessage?.created_at) {
+      setHasMoreMessages(false);
+      return;
+    }
+
+    loadingMoreRef.current = true;
+    setIsLoadingMore(true);
+
+    const container = scrollContainerRef.current;
+    const previousHeight = container?.scrollHeight ?? 0;
+
+    try {
+      const older = await fetchMessagesPage(oldestMessage.created_at);
+      setMessages((current) => mergeMessages(current, older));
+      if (older.length < MESSAGE_PAGE_SIZE) setHasMoreMessages(false);
+
+      window.requestAnimationFrame(() => {
+        const currentContainer = scrollContainerRef.current;
+        if (!currentContainer) return;
+
+        const nextHeight = currentContainer.scrollHeight;
+        currentContainer.scrollTop += nextHeight - previousHeight;
+      });
+    } finally {
+      loadingMoreRef.current = false;
+      setIsLoadingMore(false);
+    }
+  }, [
+    MESSAGE_PAGE_SIZE,
+    conversationId,
+    fetchMessagesPage,
+    hasMoreMessages,
+    mergeMessages,
+    messages,
+  ]);
 
   useEffect(() => {
     if (!conversationId) return;
 
     let disposed = false;
 
-    if (replyTo && replyTo.conversation_id != conversationId) setReplyTo(null);
+    setReplyTo((current) =>
+      current && current.conversation_id !== conversationId ? null : current,
+    );
 
     const load = async () => {
       setIsLoading(true);
       try {
-        await fetchMessages();
+        const firstPage = await fetchMessagesPage();
+        setMessages(firstPage);
+        setHasMoreMessages(firstPage.length === MESSAGE_PAGE_SIZE);
       } catch (e) {
         if (!disposed) {
           toast.error(
@@ -115,14 +202,20 @@ export default function ConversationPanel() {
     load();
 
     const interval = window.setInterval(() => {
-      fetchMessages().catch(() => null);
+      refreshLatestMessages().catch(() => null);
     }, 4000);
 
     return () => {
       disposed = true;
       window.clearInterval(interval);
     };
-  }, [conversationId, fetchMessages]);
+  }, [
+    MESSAGE_PAGE_SIZE,
+    conversationId,
+    fetchMessagesPage,
+    refreshLatestMessages,
+    t,
+  ]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -214,7 +307,7 @@ export default function ConversationPanel() {
       }
 
       setMessageText("");
-      await fetchMessages();
+      await refreshLatestMessages();
     } catch (e) {
       toast.error(
         e instanceof Error ? t(e.message) : t("conversations.failed_sending"),
@@ -248,7 +341,7 @@ export default function ConversationPanel() {
         toast.success(t("conversations.deleted_message"));
       }
 
-      await fetchMessages();
+      setMessages((current) => current.filter((message) => message.id !== id));
     } catch (e) {
       toast.error(e instanceof Error ? t(e.message) : t("common.error"));
     }
@@ -324,6 +417,10 @@ export default function ConversationPanel() {
           shouldAutoScrollRef.current = isNearBottom(
             scrollContainerRef.current,
           );
+
+          const container = scrollContainerRef.current;
+          if (!container || container.scrollTop > 60) return;
+          loadOlderMessages().catch(() => null);
         }}
       >
         {isLoading ? (
@@ -336,6 +433,11 @@ export default function ConversationPanel() {
           </div>
         ) : (
           <div className="flex flex-col gap-2 py-1">
+            {isLoadingMore ? (
+              <div className="flex justify-center py-2 text-muted-foreground">
+                <Spinner />
+              </div>
+            ) : null}
             {messages.map((message) => {
               return (
                 <ChatBubble

@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Reply, Send, X } from "lucide-react";
+import { Edit2, Reply, Send, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useChat } from "./ChatContext";
@@ -51,12 +51,15 @@ export default function ConversationPanel() {
   const { authFetch } = useAuth();
   const { activeChat, closeChat } = useChat();
   const { t } = useTranslation();
+
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [messageText, setMessageText] = useState("");
   const [replyTo, setReplyTo] = useState<MessageItem | null>(null);
+  const [editing, setEditing] = useState<MessageItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [myUserId, setMyUserId] = useState<number | null>(null);
+
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -180,6 +183,20 @@ export default function ConversationPanel() {
         );
 
         if (!res.ok) throw new Error(await readErrorMessage(res));
+      } else if (editing) {
+        const payload = { message_id: editing.id, text: messageText.trim() };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!res.ok) throw new Error(await readErrorMessage(res));
       } else {
         const payload = { text: messageText.trim() };
         const res = await authFetch(
@@ -205,6 +222,7 @@ export default function ConversationPanel() {
     } finally {
       setIsSending(false);
       setReplyTo(null);
+      setEditing(null);
     }
   };
 
@@ -238,7 +256,24 @@ export default function ConversationPanel() {
 
   const onReply = (id: string) => {
     if (!conversationId) return;
+    setEditing(null);
     setReplyTo(messages.find((message) => message.id === id) ?? null);
+  };
+
+  const onEdit = (id: string) => {
+    if (!conversationId) return;
+    setReplyTo(null);
+    const messageToEdit = messages.find((message) => message.id === id) ?? null;
+    setEditing(messageToEdit);
+    setMessageText(messageToEdit?.content.text ?? "");
+
+    window.setTimeout(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      const length = textarea.value.length;
+      textarea.setSelectionRange(length, length);
+    }, 0);
   };
 
   if (!activeChat) return null;
@@ -307,6 +342,7 @@ export default function ConversationPanel() {
                   key={message.id}
                   myUserId={myUserId}
                   message={message}
+                  edit_func={() => onEdit(message.id)}
                   reply_func={() => onReply(message.id)}
                   delete_func={() => onDelete(message.id)}
                 />
@@ -318,6 +354,21 @@ export default function ConversationPanel() {
       </div>
 
       <div className="border-t overflow-hidden">
+        {editing && (
+          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2.5 pb-0">
+            <div className="inline-flex items-center gap-1 wrap-normal truncate">
+              <Edit2 size="16" className="text-muted-foreground" />{" "}
+              {editing.content.text}
+            </div>
+            <Button
+              variant={"ghost"}
+              className="cursor-pointer"
+              onClick={() => setEditing(null)}
+            >
+              <X />
+            </Button>
+          </div>
+        )}
         {replyTo && (
           <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2.5 pb-0">
             <div className="inline-flex items-center gap-1 wrap-normal truncate">

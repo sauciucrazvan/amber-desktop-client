@@ -46,7 +46,11 @@ type ContactListItem = {
 };
 
 type DirectConversationSummary = {
-  seen?: boolean;
+  id: string;
+  type: string;
+  direct_pair?: string | null;
+  created_at: string;
+  notifications?: number;
 };
 
 export default function AppSidebar() {
@@ -82,8 +86,12 @@ export default function AppSidebar() {
   ).sort((a, b) => a - b);
   const contactIdsKey = stableContactIds.join(",");
 
-  const { data: conversationSeenByUserId } = useSWR<Record<number, boolean>>(
-    isAuthenticated && contactIdsKey ? `contacts-seen:${contactIdsKey}` : null,
+  const { data: conversationUnseenCountByUserId } = useSWR<
+    Record<number, number>
+  >(
+    isAuthenticated && contactIdsKey
+      ? `contacts-unseen-count:${contactIdsKey}`
+      : null,
     async () => {
       if (stableContactIds.length === 0) return {};
 
@@ -97,12 +105,12 @@ export default function AppSidebar() {
               },
             );
 
-            if (!res.ok) return [userId, true] as const;
+            if (!res.ok) return [userId, 0] as const;
 
             const data = (await res.json()) as DirectConversationSummary;
-            return [userId, data.seen !== false] as const;
+            return [userId, Math.max(0, data.notifications ?? 0)] as const;
           } catch {
-            return [userId, true] as const;
+            return [userId, 0] as const;
           }
         }),
       );
@@ -356,10 +364,10 @@ export default function AppSidebar() {
                     contacts.map((contact) => {
                       const isActive =
                         activeChat?.otherUser.id === contact.user.id;
-                      const hasUnseenFromConversationState =
-                        conversationSeenByUserId?.[contact.user.id] === false;
-                      const isUnseen =
-                        !isActive && hasUnseenFromConversationState;
+                      const unseen_messages = isActive
+                        ? 0
+                        : (conversationUnseenCountByUserId?.[contact.user.id] ??
+                          0);
 
                       return (
                         <SidebarMenuItem
@@ -369,8 +377,8 @@ export default function AppSidebar() {
                             username={contact.user.username}
                             full_name={contact.user.full_name}
                             online={contact.user.online}
+                            unseen_messages={unseen_messages}
                             isActive={isActive}
-                            isUnseen={isUnseen}
                             onClick={() => handleOpenDirectChat(contact.user)}
                             aria-busy={openingChatUserId === contact.user.id}
                           />

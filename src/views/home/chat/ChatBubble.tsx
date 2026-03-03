@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/context-menu";
 import { formatHHmm } from "@/lib/utils";
 import { t } from "i18next";
-import { Check, CheckCheck, Reply, Trash2 } from "lucide-react";
+import { Check, CheckCheck, Pencil, Reply, Trash2 } from "lucide-react";
 
 interface Props {
   myUserId: number | null;
@@ -32,6 +32,7 @@ interface Props {
 
   delete_func: (id: string) => void;
   reply_func: (id: string) => void;
+  edit_func: (id: string) => void;
 }
 
 export default function ChatBubble({
@@ -39,6 +40,7 @@ export default function ChatBubble({
   message,
   delete_func,
   reply_func,
+  edit_func,
 }: Props) {
   const isMine = myUserId !== null && message.sender_id === myUserId;
   const text = message.content?.text ?? "";
@@ -65,10 +67,13 @@ export default function ChatBubble({
           )}
 
           <div className="inline-flex gap-1 items-center">
-            <div className="wrap-break-word select-text">{text}</div>
+            <div className={"wrap-break-word select-text"}>{text}</div>
 
             <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
+              {message.edited_at && <p className="mr-0.5">Edited</p>}
+
               {formatHHmm(new Date(message.created_at))}
+
               {message.seen ? (
                 <CheckCheck size="16" className="text-blue-400" />
               ) : (
@@ -85,6 +90,14 @@ export default function ChatBubble({
             >
               <Reply /> Reply
             </ContextMenuItem>
+            {isMine && (
+              <ContextMenuItem
+                className="cursor-pointer"
+                onClick={() => edit_func(message.id)}
+              >
+                <Pencil /> Edit
+              </ContextMenuItem>
+            )}
             {isMine && (
               <ContextMenuItem
                 variant="destructive"

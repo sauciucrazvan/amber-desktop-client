@@ -19,16 +19,16 @@ type ContactProps = {
   username: string;
   full_name: string;
   online?: boolean;
+  unseen_messages: number;
   isActive?: boolean;
-  isUnseen?: boolean;
 } & ComponentPropsWithoutRef<"section">;
 
 export default function Contact({
   username,
   full_name,
   online,
+  unseen_messages,
   isActive = false,
-  isUnseen = false,
   className,
   ...props
 }: ContactProps) {
@@ -106,7 +106,7 @@ export default function Contact({
               <h3
                 className={cn(
                   "text-sm leading-tight",
-                  !isActive && isUnseen && "font-semibold",
+                  !isActive && unseen_messages && "font-semibold",
                 )}
               >
                 {full_name}
@@ -114,12 +114,11 @@ export default function Contact({
                   @{username}
                 </p>
               </h3>
-              {!isActive && isUnseen ? (
-                <span
-                  aria-hidden
-                  className="ml-2 inline-flex size-2.5 shrink-0 rounded-full bg-primary"
-                />
-              ) : null}
+              {!isActive && unseen_messages > 0 && (
+                <span className="mr-2 h-5 w-5 rounded-full bg-secondary text-white text-xs flex items-center justify-center font-medium">
+                  {unseen_messages > 99 ? "99+" : unseen_messages}
+                </span>
+              )}
             </div>
           </section>
         </ContextMenuTrigger>

@@ -3,6 +3,7 @@ import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu";
 import { useTranslation } from "react-i18next";
@@ -134,10 +135,19 @@ export default function Contact({
               </ContextMenuItem>
             }
           />
-          <ContextMenuItem onClick={onRemove} className="cursor-pointer">
+          <ContextMenuSeparator />
+          <ContextMenuItem
+            variant={"destructive"}
+            onClick={onRemove}
+            className="cursor-pointer"
+          >
             <X /> {t("contacts.remove")}
           </ContextMenuItem>
-          <ContextMenuItem onClick={onBlock} className="cursor-pointer">
+          <ContextMenuItem
+            variant={"destructive"}
+            onClick={onBlock}
+            className="cursor-pointer"
+          >
             <Ban /> {t("contacts.block")}
           </ContextMenuItem>
         </ContextMenuContent>

@@ -4,6 +4,7 @@ import {
   ContextMenuGroup,
   ContextMenuItem,
   ContextMenuTrigger,
+  ContextMenuSeparator,
 } from "@/components/ui/context-menu";
 import { formatHHmm } from "@/lib/utils";
 import { t } from "i18next";
@@ -56,7 +57,7 @@ export default function ChatBubble({
   ${isMine ? "bg-muted" : "bg-background"}`}
         >
           {message.content.reply_to && (
-            <div className="bg-primary/5 border-l-2 p-2 rounded-sm mb-1">
+            <div className="bg-primary/5 border-l-2 p-2 rounded-sm mb-1 whitespace-pre-wrap break-all wrap-anywhere">
               {message.content.reply_to.sender_id == myUserId && (
                 <p className="text-muted-foreground">
                   {t("conversations.you")}
@@ -84,7 +85,7 @@ export default function ChatBubble({
             </div>
           </div>
         </ContextMenuTrigger>
-        <ContextMenuContent className="w-48">
+        <ContextMenuContent className="max-w-xs">
           <ContextMenuGroup>
             <ContextMenuItem
               className="cursor-pointer"
@@ -92,22 +93,26 @@ export default function ChatBubble({
             >
               <Reply /> Reply
             </ContextMenuItem>
+
             {isMine && (
-              <ContextMenuItem
-                className="cursor-pointer"
-                onClick={() => edit_func(message.id)}
-              >
-                <Pencil /> Edit
-              </ContextMenuItem>
-            )}
-            {isMine && (
-              <ContextMenuItem
-                variant="destructive"
-                className="cursor-pointer"
-                onClick={() => delete_func(message.id)}
-              >
-                <Trash2 /> Delete
-              </ContextMenuItem>
+              <>
+                <ContextMenuItem
+                  className="cursor-pointer"
+                  onClick={() => edit_func(message.id)}
+                >
+                  <Pencil /> Edit
+                </ContextMenuItem>
+
+                <ContextMenuSeparator />
+
+                <ContextMenuItem
+                  variant="destructive"
+                  className="cursor-pointer"
+                  onClick={() => delete_func(message.id)}
+                >
+                  <Trash2 /> Delete
+                </ContextMenuItem>
+              </>
             )}
           </ContextMenuGroup>
         </ContextMenuContent>

@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Send, X } from "lucide-react";
+import { Reply, Send, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useChat } from "./ChatContext";
@@ -53,7 +53,7 @@ export default function ConversationPanel() {
   const { t } = useTranslation();
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [messageText, setMessageText] = useState("");
-  const [replyTo, setReplyTo] = useState("");
+  const [replyTo, setReplyTo] = useState<MessageItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [myUserId, setMyUserId] = useState<number | null>(null);
@@ -88,6 +88,8 @@ export default function ConversationPanel() {
     if (!conversationId) return;
 
     let disposed = false;
+
+    if (replyTo && replyTo.conversation_id != conversationId) setReplyTo(null);
 
     const load = async () => {
       setIsLoading(true);
@@ -151,7 +153,7 @@ export default function ConversationPanel() {
     shouldAutoScrollRef.current = true;
     try {
       if (replyTo) {
-        const payload = { message_id: replyTo, text: messageText.trim() };
+        const payload = { message_id: replyTo.id, text: messageText.trim() };
         const res = await authFetch(
           `${API_BASE_URL}/chats/${conversationId}/reply`,
           {
@@ -188,7 +190,7 @@ export default function ConversationPanel() {
       );
     } finally {
       setIsSending(false);
-      setReplyTo("");
+      setReplyTo(null);
     }
   };
 
@@ -222,7 +224,7 @@ export default function ConversationPanel() {
 
   const onReply = (id: string) => {
     if (!conversationId) return;
-    setReplyTo(id);
+    setReplyTo(messages.find((message) => message.id === id) ?? null);
   };
 
   if (!activeChat) return null;
@@ -303,9 +305,17 @@ export default function ConversationPanel() {
 
       <div className="border-t overflow-hidden">
         {replyTo && (
-          <div>
-            <div>Replying to {replyTo}</div>
-            <Button onClick={() => setReplyTo("")}>Cancel</Button>
+          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2.5 pb-0">
+            <div className="inline-flex items-center gap-1 wrap-normal truncate">
+              <Reply className="text-muted-foreground" /> {replyTo.content.text}
+            </div>
+            <Button
+              variant={"ghost"}
+              className="cursor-pointer"
+              onClick={() => setReplyTo(null)}
+            >
+              <X />
+            </Button>
           </div>
         )}
         <div className="flex min-w-0 items-center gap-2 px-4 pt-2.5 pb-0">

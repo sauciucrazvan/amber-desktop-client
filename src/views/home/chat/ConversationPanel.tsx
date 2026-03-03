@@ -6,18 +6,28 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, CheckCheck, Send, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useChat } from "./ChatContext";
-import { formatHHmm } from "@/lib/utils";
+import ChatBubble from "./ChatBubble";
 
 type MessageItem = {
   id: string;
   conversation_id: string;
   sender_id: number;
   type: string;
-  content: { text?: string };
+  content: {
+    text?: string;
+    reply_to: {
+      id: string;
+      sender_id: number;
+      content: {
+        text?: string | undefined;
+      };
+      created_at: string;
+    };
+  };
   created_at: string;
   edited_at: string | null;
   seen: boolean;
@@ -164,6 +174,34 @@ export default function ConversationPanel() {
     }
   };
 
+  const onDelete = async (id: string) => {
+    if (!conversationId) return;
+
+    shouldAutoScrollRef.current = true;
+    try {
+      const payload = { message_id: id };
+      const res = await authFetch(
+        `${API_BASE_URL}/chats/${conversationId}/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!res.ok) throw new Error(await readErrorMessage(res));
+      else {
+        toast.success(t("conversations.deleted_message"));
+      }
+
+      await fetchMessages();
+    } catch (e) {
+      toast.error(e instanceof Error ? t(e.message) : t("common.error"));
+    }
+  };
+
   if (!activeChat) return null;
 
   return (
@@ -225,31 +263,13 @@ export default function ConversationPanel() {
         ) : (
           <div className="flex flex-col gap-2 py-1">
             {messages.map((message) => {
-              const isMine =
-                myUserId !== null && message.sender_id === myUserId;
-              const text = message.content?.text ?? "";
-
               return (
-                <div
+                <ChatBubble
                   key={message.id}
-                  className={`flex w-full ${isMine ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`flex flex-col max-w-[75%] rounded-md border px-3 py-2 text-sm
-  ${isMine ? "bg-muted" : "bg-background"}`}
-                  >
-                    <div className="wrap-break-word">{text}</div>
-
-                    <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-                      {formatHHmm(new Date(message.created_at))}
-                      {message.seen ? (
-                        <CheckCheck size="16" className="text-blue-400" />
-                      ) : (
-                        <Check size="16" />
-                      )}
-                    </div>
-                  </div>
-                </div>
+                  myUserId={myUserId}
+                  message={message}
+                  delete_func={() => onDelete(message.id)}
+                />
               );
             })}
             <div ref={bottomRef} />

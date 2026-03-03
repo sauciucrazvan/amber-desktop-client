@@ -258,12 +258,12 @@ export default function ConversationPanel() {
       </div>
 
       <div className="border-t overflow-hidden">
-        <div className="flex min-w-0 items-end gap-2 px-4 pt-2.5 pb-0">
+        <div className="flex min-w-0 items-center gap-2 px-4 pt-2.5 pb-0">
           <Textarea
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             placeholder={t("conversations.type_message")}
-            className="min-h-8 max-h-16 min-w-0 max-w-full flex-1 resize-none field-sizing-fixed overflow-x-hidden wrap-break-word"
+            className="min-h-8 max-h-10 min-w-0 max-w-full flex-1 resize-none field-sizing-fixed overflow-x-hidden wrap-break-word"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();

@@ -279,9 +279,15 @@
     "no_messages": "No messages yet.",
     "type_message": "Type a message",
     "send_message": "Send message",
-    "failed_loading": "Failed loading chat",
-    "failed_sending": "Failed sending message",
-    "not_participating": "You are not participating in this conversation."
+    "error": {
+      "failed_loading": "Failed loading chat",
+      "failed_sending": "Failed sending message",
+      "not_participating": "You are not participating in this conversation.",
+      "too_long": "The message can not exceed 2048 characters.",
+      "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
+      "no_permission": "You do not have permission to do that!",
+      "no_relation": "You are not friends with this users or they've blocked you."
+    }
   },
   "profile": {
     "bio": {

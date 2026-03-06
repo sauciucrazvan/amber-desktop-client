@@ -37,6 +37,13 @@ type AccountMe = {
   id?: number;
 };
 
+type MarkSeenResponse = {
+  conversation_id: string;
+  reader_id: number;
+  seen_message_ids: string[];
+  updated: number;
+};
+
 async function readErrorMessage(res: Response) {
   try {
     const data = await res.json();
@@ -73,8 +80,17 @@ export default function ConversationPanel() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const shouldAutoScrollRef = useRef(true);
   const loadingMoreRef = useRef(false);
+  const markSeenInFlightRef = useRef(false);
+  const pendingMarkSeenConversationIdRef = useRef<string | null>(null);
+  const activeConversationIdRef = useRef<string | undefined>(undefined);
 
   const conversationId = activeChat?.conversation.id;
+
+  useEffect(() => {
+    activeConversationIdRef.current = conversationId;
+    pendingMarkSeenConversationIdRef.current = null;
+    markSeenInFlightRef.current = false;
+  }, [conversationId]);
 
   const isNearBottom = useCallback((node: HTMLDivElement | null) => {
     if (!node) return true;
@@ -154,6 +170,88 @@ export default function ConversationPanel() {
     mergeMessages,
   ]);
 
+  const fallbackMarkSeenViaMessagesFetch = useCallback(
+    async (targetConversationId: string) => {
+      const params = new URLSearchParams({ limit: String(MESSAGE_PAGE_SIZE) });
+      const res = await authFetch(
+        `${API_BASE_URL}/chats/${targetConversationId}/messages?${params.toString()}`,
+      );
+
+      if (!res.ok) return;
+
+      const latest = (await res.json()) as MessageItem[];
+      if (activeConversationIdRef.current !== targetConversationId) return;
+
+      setMessages((current) => mergeMessages(current, latest));
+    },
+    [MESSAGE_PAGE_SIZE, authFetch, mergeMessages],
+  );
+
+  const markConversationSeen = useCallback(
+    async (targetConversationId: string) => {
+      if (!targetConversationId) return;
+
+      if (markSeenInFlightRef.current) {
+        pendingMarkSeenConversationIdRef.current = targetConversationId;
+        return;
+      }
+
+      markSeenInFlightRef.current = true;
+      try {
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${targetConversationId}/seen`,
+          {
+            method: "POST",
+          },
+        );
+
+        if (!res.ok) {
+          if (res.status === 404 || res.status === 405 || res.status === 501) {
+            await fallbackMarkSeenViaMessagesFetch(targetConversationId);
+          }
+          return;
+        }
+
+        const data = (await res.json()) as MarkSeenResponse;
+        if (activeConversationIdRef.current !== targetConversationId) return;
+        if (data.conversation_id !== targetConversationId) return;
+
+        const seenIds = new Set(data.seen_message_ids ?? []);
+        if (seenIds.size === 0) return;
+
+        setMessages((current) =>
+          current.map((message) =>
+            seenIds.has(message.id)
+              ? {
+                  ...message,
+                  seen: true,
+                }
+              : message,
+          ),
+        );
+      } finally {
+        markSeenInFlightRef.current = false;
+
+        const pendingConversationId = pendingMarkSeenConversationIdRef.current;
+        if (
+          pendingConversationId &&
+          pendingConversationId === activeConversationIdRef.current
+        ) {
+          pendingMarkSeenConversationIdRef.current = null;
+          void markConversationSeen(pendingConversationId);
+        }
+      }
+    },
+    [authFetch, fallbackMarkSeenViaMessagesFetch],
+  );
+
+  const isActivelyViewingConversation = useCallback(() => {
+    return (
+      document.visibilityState === "visible" &&
+      isNearBottom(scrollContainerRef.current)
+    );
+  }, [isNearBottom]);
+
   const loadOlderMessages = useCallback(async () => {
     if (!conversationId || loadingMoreRef.current || !hasMoreMessages) return;
 
@@ -211,8 +309,9 @@ export default function ConversationPanel() {
       setIsLoading(true);
       try {
         const firstPage = await fetchMessagesPage();
-        setMessages(firstPage);
+        setMessages((current) => mergeMessages(current, firstPage));
         setHasMoreMessages(firstPage.length === MESSAGE_PAGE_SIZE);
+        await markConversationSeen(conversationId);
       } catch (e) {
         if (!disposed) {
           toast.error(
@@ -231,7 +330,14 @@ export default function ConversationPanel() {
     return () => {
       disposed = true;
     };
-  }, [MESSAGE_PAGE_SIZE, conversationId, fetchMessagesPage, t]);
+  }, [
+    MESSAGE_PAGE_SIZE,
+    conversationId,
+    fetchMessagesPage,
+    markConversationSeen,
+    mergeMessages,
+    t,
+  ]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -256,6 +362,8 @@ export default function ConversationPanel() {
         payload?: {
           message?: MessageItem;
           message_id?: string;
+          deleted_by?: number;
+          reader_id?: number;
           message_ids?: string[];
         };
       };
@@ -269,6 +377,10 @@ export default function ConversationPanel() {
         if (!incomingMessage) return;
         shouldAutoScrollRef.current = isNearBottom(scrollContainerRef.current);
         setMessages((current) => mergeMessages(current, [incomingMessage]));
+
+        if (isActivelyViewingConversation()) {
+          void markConversationSeen(conversationId);
+        }
         return;
       }
 
@@ -371,7 +483,9 @@ export default function ConversationPanel() {
     };
   }, [
     conversationId,
+    isActivelyViewingConversation,
     isNearBottom,
+    markConversationSeen,
     mergeMessages,
     replaceMessageById,
     resolveWsPingUrl,
@@ -395,6 +509,21 @@ export default function ConversationPanel() {
     isWsConnected,
     refreshLatestMessages,
   ]);
+
+  useEffect(() => {
+    if (!conversationId) return;
+
+    const onVisibilityChange = () => {
+      if (!isActivelyViewingConversation()) return;
+      void markConversationSeen(conversationId);
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [conversationId, isActivelyViewingConversation, markConversationSeen]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -455,6 +584,8 @@ export default function ConversationPanel() {
         );
 
         if (!res.ok) throw new Error(await readErrorMessage(res));
+        const createdMessage = (await res.json()) as MessageItem;
+        setMessages((current) => mergeMessages(current, [createdMessage]));
       } else if (editing) {
         const payload = { message_id: editing.id, text: messageText.trim() };
         const res = await authFetch(
@@ -469,6 +600,8 @@ export default function ConversationPanel() {
         );
 
         if (!res.ok) throw new Error(await readErrorMessage(res));
+        const editedMessage = (await res.json()) as MessageItem;
+        setMessages((current) => replaceMessageById(current, editedMessage));
       } else {
         const payload = { text: messageText.trim() };
         const res = await authFetch(
@@ -483,6 +616,8 @@ export default function ConversationPanel() {
         );
 
         if (!res.ok) throw new Error(await readErrorMessage(res));
+        const createdMessage = (await res.json()) as MessageItem;
+        setMessages((current) => mergeMessages(current, [createdMessage]));
       }
 
       setMessageText("");
@@ -592,9 +727,16 @@ export default function ConversationPanel() {
         ref={scrollContainerRef}
         className="min-h-0 flex-1 overflow-y-auto px-4"
         onScroll={() => {
-          shouldAutoScrollRef.current = isNearBottom(
-            scrollContainerRef.current,
-          );
+          const nearBottom = isNearBottom(scrollContainerRef.current);
+          shouldAutoScrollRef.current = nearBottom;
+
+          if (
+            conversationId &&
+            nearBottom &&
+            document.visibilityState === "visible"
+          ) {
+            void markConversationSeen(conversationId);
+          }
 
           const container = scrollContainerRef.current;
           if (!container || container.scrollTop > 60) return;

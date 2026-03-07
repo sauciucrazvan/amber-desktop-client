@@ -65,6 +65,15 @@ function saveSettings() {
   writeFileSync(getSettingsPath(), JSON.stringify(payload, null, 2), "utf8");
 }
 
+function showMainWindow() {
+  if (!win || win.isDestroyed()) return;
+  win.show();
+
+  if (splash && !splash.isDestroyed()) {
+    splash.close();
+  }
+}
+
 function focusMainWindow() {
   if (win && !win.isDestroyed()) {
     if (win.isMinimized()) win.restore();
@@ -152,6 +161,7 @@ function createWindow() {
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
+    showMainWindow();
   });
 
   win.webContents.on(
@@ -172,10 +182,7 @@ function createWindow() {
   // win.webContents.openDevTools({ mode: "detach" });
 
   win.once("ready-to-show", () => {
-    win?.show();
-    if (splash && !splash.isDestroyed()) {
-      splash.close();
-    }
+    showMainWindow();
   });
 
   win.on("close", (event) => {

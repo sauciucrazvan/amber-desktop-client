@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/build-with-timestamp.mjs",
+    "build:all": "node scripts/build-with-timestamp.mjs --all",
+    "build:linux": "node scripts/build-with-timestamp.mjs --linux",
+    "build:win": "node scripts/build-with-timestamp.mjs --win",
     "build:static": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

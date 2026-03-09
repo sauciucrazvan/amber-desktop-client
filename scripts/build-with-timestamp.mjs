@@ -51,6 +51,96 @@ function run(command, args, extraEnv = {}) {
   }
 }
 
+function parseBuildOptions(argv) {
+  const defaultWinTargets = process.platform === "win32" ? ["msi"] : ["nsis"];
+
+  const options = {
+    linux: false,
+    win: false,
+    linuxTargets: ["AppImage"],
+    winTargets: [...defaultWinTargets],
+    forceMsi: false,
+  };
+
+  for (const arg of argv) {
+    if (arg === "--all") {
+      options.linux = true;
+      options.win = true;
+      continue;
+    }
+
+    if (arg === "--linux") {
+      options.linux = true;
+      continue;
+    }
+
+    if (arg === "--win" || arg === "--windows") {
+      options.win = true;
+      continue;
+    }
+
+    if (arg.startsWith("--linux-targets=")) {
+      const value = arg.slice("--linux-targets=".length);
+      options.linuxTargets = value
+        .split(",")
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+      options.linux = true;
+      continue;
+    }
+
+    if (arg.startsWith("--win-targets=")) {
+      const value = arg.slice("--win-targets=".length);
+      options.winTargets = value
+        .split(",")
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+      options.win = true;
+      continue;
+    }
+
+    if (arg === "--force-msi") {
+      options.forceMsi = true;
+      continue;
+    }
+
+    if (arg === "--help" || arg === "-h") {
+      console.log(
+        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: msi on Windows, nsis on Linux/macOS)\n  --force-msi                 Allow msi target on non-Windows hosts\n`,
+      );
+      process.exit(0);
+    }
+  }
+
+  if (!options.linux && !options.win) {
+    options.linux = true;
+    options.win = true;
+  }
+
+  if (options.linuxTargets.length === 0) {
+    options.linuxTargets = ["AppImage"];
+  }
+
+  if (options.winTargets.length === 0) {
+    options.winTargets = [...defaultWinTargets];
+  }
+
+  const hasMsiTarget = options.winTargets.some(
+    (target) => target.toLowerCase() === "msi",
+  );
+
+  if (process.platform !== "win32" && hasMsiTarget && !options.forceMsi) {
+    console.warn(
+      "[build] msi target on non-Windows host often fails under Wine (WiX). Switching to nsis. Use --force-msi to override.",
+    );
+    options.winTargets = options.winTargets
+      .filter((target) => target.toLowerCase() !== "msi")
+      .concat("nsis");
+  }
+
+  return options;
+}
+
 const now = new Date();
 const year = now.getFullYear();
 const shortYear = year % 100;
@@ -67,6 +157,7 @@ const buildId = `${year}${pad2(month)}${pad2(day)}-${pad2(hour)}${pad2(minute)}`
 const buildVersion = `${shortYear}.${month}.${day}-${pad2(hour)}${pad2(minute)}`;
 const buildLabel = `Built on ${monthName} ${day}${suffix}, ${year} at ${pad2(hour)}:${pad2(minute)} ${meridiem}`;
 const buildIso = now.toISOString();
+const buildOptions = parseBuildOptions(process.argv.slice(2));
 
 const buildInfoPath = path.join(rootDir, "src", "build-info.ts");
 const buildInfoContent = `export const BUILD_ID = "${buildId}";\nexport const BUILD_VERSION = "${buildVersion}";\nexport const BUILD_LABEL = "${buildLabel}";\nexport const BUILD_ISO = "${buildIso}";\n`;
@@ -79,11 +170,31 @@ console.log(`[build] id: ${buildId}`);
 
 run("npm", ["exec", "tsc"]);
 run("npm", ["exec", "vite", "build"]);
-run("npm", [
-  "exec",
-  "electron-builder",
-  "--",
+
+const extraMetadataArgs = [
   `--config.extraMetadata.version=${buildVersion}`,
   `--config.extraMetadata.buildTimestamp=${buildLabel}`,
   `--config.extraMetadata.buildId=${buildId}`,
-]);
+];
+
+if (buildOptions.linux) {
+  run("npm", [
+    "exec",
+    "electron-builder",
+    "--",
+    "--linux",
+    ...buildOptions.linuxTargets,
+    ...extraMetadataArgs,
+  ]);
+}
+
+if (buildOptions.win) {
+  run("npm", [
+    "exec",
+    "electron-builder",
+    "--",
+    "--win",
+    ...buildOptions.winTargets,
+    ...extraMetadataArgs,
+  ]);
+}

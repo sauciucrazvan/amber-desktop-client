@@ -62,7 +62,7 @@ export default function ConversationPanel() {
 
   const { accessToken, authFetch } = useAuth();
   const { activeChat, closeChat } = useChat();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [messageText, setMessageText] = useState("");
@@ -98,6 +98,17 @@ export default function ConversationPanel() {
       node.scrollHeight - node.scrollTop - node.clientHeight;
     return distanceFromBottom < 80;
   }, []);
+
+  const formatMessageDate = useCallback(
+    (dateString: string) => {
+      return new Date(dateString).toLocaleDateString(i18n.language, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    },
+    [i18n.language],
+  );
 
   const sortMessages = useCallback((items: MessageItem[]) => {
     return [...items].sort(
@@ -758,16 +769,33 @@ export default function ConversationPanel() {
                 <Spinner />
               </div>
             ) : null}
-            {messages.map((message) => {
+            {messages.map((message, index) => {
+              const currentDate = formatMessageDate(message.created_at);
+              const previousDate =
+                index > 0
+                  ? formatMessageDate(messages[index - 1].created_at)
+                  : null;
+              const showDateSeparator = currentDate !== previousDate;
+
               return (
-                <ChatBubble
-                  key={message.id}
-                  myUserId={myUserId}
-                  message={message}
-                  edit_func={() => onEdit(message.id)}
-                  reply_func={() => onReply(message.id)}
-                  delete_func={() => onDelete(message.id)}
-                />
+                <div key={message.id}>
+                  {showDateSeparator && (
+                    <div className="flex items-center gap-3 py-2">
+                      <div className="flex-1 h-px bg-border" />
+                      <div className="text-xs text-muted-foreground px-2">
+                        {currentDate}
+                      </div>
+                      <div className="flex-1 h-px bg-border" />
+                    </div>
+                  )}
+                  <ChatBubble
+                    myUserId={myUserId}
+                    message={message}
+                    edit_func={() => onEdit(message.id)}
+                    reply_func={() => onReply(message.id)}
+                    delete_func={() => onDelete(message.id)}
+                  />
+                </div>
               );
             })}
             <div ref={bottomRef} />

@@ -815,7 +815,10 @@ export default function ConversationPanel() {
             <Button
               variant={"ghost"}
               className="cursor-pointer"
-              onClick={() => setEditing(null)}
+              onClick={() => {
+                setEditing(null);
+                setMessageText("");
+              }}
             >
               <X />
             </Button>
@@ -829,7 +832,10 @@ export default function ConversationPanel() {
             <Button
               variant={"ghost"}
               className="cursor-pointer"
-              onClick={() => setReplyTo(null)}
+              onClick={() => {
+                setReplyTo(null);
+                setMessageText("");
+              }}
             >
               <X />
             </Button>

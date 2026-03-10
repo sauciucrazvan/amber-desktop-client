@@ -213,6 +213,36 @@
         "too_long": "256文字以内で入力してください。",
         "updated": "自己紹介を更新しました！"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "情報",
+        "updates": "アップデート"
+      },
+      "appAlt": "Amber ロゴ",
+      "buildNumber": "ビルド番号",
+      "platform": "プラットフォーム",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "アップデート",
+      "updaterUnavailable": "アップデーターの状態を取得できません。",
+      "unableToReadUpdaterStatus": "アップデーター状態を読み取れません。",
+      "downloadedProgress": "{{progress}}% ダウンロード済み",
+      "actions": {
+        "check": "更新を確認",
+        "checking": "確認中...",
+        "restart": "再起動して更新"
+      },
+      "status": {
+        "idle": "待機中",
+        "disabled": "無効",
+        "checking": "更新を確認中",
+        "available": "更新があります",
+        "not-available": "最新です",
+        "downloading": "ダウンロード中",
+        "downloaded": "インストール可能",
+        "error": "エラー"
+      }
     }
   },
   "contacts": {

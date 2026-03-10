@@ -213,6 +213,36 @@
         "too_long": "Rimani entro 256 caratteri.",
         "updated": "La tua bio è stata aggiornata con successo!"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "Informazioni",
+        "updates": "Aggiornamenti"
+      },
+      "appAlt": "Logo Amber",
+      "buildNumber": "Numero build",
+      "platform": "Piattaforma",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Aggiornamenti",
+      "updaterUnavailable": "Stato aggiornamenti non disponibile.",
+      "unableToReadUpdaterStatus": "Impossibile leggere lo stato aggiornamenti.",
+      "downloadedProgress": "{{progress}}% scaricato",
+      "actions": {
+        "check": "Controlla aggiornamenti",
+        "checking": "Controllo...",
+        "restart": "Riavvia per aggiornare"
+      },
+      "status": {
+        "idle": "In attesa",
+        "disabled": "Disattivato",
+        "checking": "Controllo aggiornamenti",
+        "available": "Aggiornamento disponibile",
+        "not-available": "Aggiornato",
+        "downloading": "Download in corso",
+        "downloaded": "Pronto da installare",
+        "error": "Errore"
+      }
     }
   },
   "contacts": {

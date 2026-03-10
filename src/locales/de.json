@@ -213,6 +213,36 @@
         "too_long": "Bitte auf 256 Zeichen begrenzen.",
         "updated": "Deine Bio wurde erfolgreich aktualisiert!"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "Uber",
+        "updates": "Updates"
+      },
+      "appAlt": "Amber-Logo",
+      "buildNumber": "Build-Nummer",
+      "platform": "Plattform",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Updates",
+      "updaterUnavailable": "Updater-Status nicht verfugbar.",
+      "unableToReadUpdaterStatus": "Updater-Status konnte nicht gelesen werden.",
+      "downloadedProgress": "{{progress}}% heruntergeladen",
+      "actions": {
+        "check": "Nach Updates suchen",
+        "checking": "Suche...",
+        "restart": "Zum Aktualisieren neu starten"
+      },
+      "status": {
+        "idle": "Bereit",
+        "disabled": "Deaktiviert",
+        "checking": "Suche nach Updates",
+        "available": "Update verfugbar",
+        "not-available": "Aktuell",
+        "downloading": "Herunterladen",
+        "downloaded": "Bereit zur Installation",
+        "error": "Fehler"
+      }
     }
   },
   "contacts": {

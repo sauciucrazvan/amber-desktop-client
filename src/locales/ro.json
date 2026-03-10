@@ -213,6 +213,36 @@
         "too_long": "Limitează-te la 256 de caractere.",
         "updated": "Biografia ta a fost actualizată cu succes!"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "Despre",
+        "updates": "Actualizari"
+      },
+      "appAlt": "Sigla Amber",
+      "buildNumber": "Numar build",
+      "platform": "Platforma",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Actualizari",
+      "updaterUnavailable": "Starea actualizatorului nu este disponibila.",
+      "unableToReadUpdaterStatus": "Nu s-a putut citi starea actualizatorului.",
+      "downloadedProgress": "{{progress}}% descarcat",
+      "actions": {
+        "check": "Verifica actualizari",
+        "checking": "Se verifica...",
+        "restart": "Reporneste pentru actualizare"
+      },
+      "status": {
+        "idle": "In asteptare",
+        "disabled": "Dezactivat",
+        "checking": "Se verifica actualizari",
+        "available": "Actualizare disponibila",
+        "not-available": "La zi",
+        "downloading": "Se descarca",
+        "downloaded": "Gata de instalare",
+        "error": "Eroare"
+      }
     }
   },
   "contacts": {

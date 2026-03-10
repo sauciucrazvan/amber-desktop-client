@@ -213,6 +213,36 @@
         "too_long": "Limit yourself to 256 characters.",
         "updated": "Successfully updated your bio!"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "About",
+        "updates": "Updates"
+      },
+      "appAlt": "Amber logo",
+      "buildNumber": "Build number",
+      "platform": "Platform",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Updates",
+      "updaterUnavailable": "Updater status unavailable.",
+      "unableToReadUpdaterStatus": "Unable to read updater status.",
+      "downloadedProgress": "{{progress}}% downloaded",
+      "actions": {
+        "check": "Check for updates",
+        "checking": "Checking...",
+        "restart": "Restart to update"
+      },
+      "status": {
+        "idle": "Idle",
+        "disabled": "Disabled",
+        "checking": "Checking for updates",
+        "available": "Update available",
+        "not-available": "Up to date",
+        "downloading": "Downloading",
+        "downloaded": "Ready to install",
+        "error": "Error"
+      }
     }
   },
   "contacts": {

@@ -213,6 +213,36 @@
         "too_long": "请限制在 256 个字符以内。",
         "updated": "个人简介已成功更新！"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "关于",
+        "updates": "更新"
+      },
+      "appAlt": "Amber 标志",
+      "buildNumber": "构建号",
+      "platform": "平台",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "更新",
+      "updaterUnavailable": "更新器状态不可用。",
+      "unableToReadUpdaterStatus": "无法读取更新器状态。",
+      "downloadedProgress": "已下载 {{progress}}%",
+      "actions": {
+        "check": "检查更新",
+        "checking": "检查中...",
+        "restart": "重启以更新"
+      },
+      "status": {
+        "idle": "空闲",
+        "disabled": "已禁用",
+        "checking": "正在检查更新",
+        "available": "有可用更新",
+        "not-available": "已是最新",
+        "downloading": "下载中",
+        "downloaded": "可安装",
+        "error": "错误"
+      }
     }
   },
   "contacts": {

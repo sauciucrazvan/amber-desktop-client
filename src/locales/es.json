@@ -213,6 +213,36 @@
         "too_long": "Limítate a 256 caracteres.",
         "updated": "¡Tu biografía se actualizó correctamente!"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "Acerca de",
+        "updates": "Actualizaciones"
+      },
+      "appAlt": "Logo de Amber",
+      "buildNumber": "Numero de compilacion",
+      "platform": "Plataforma",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Actualizaciones",
+      "updaterUnavailable": "Estado del actualizador no disponible.",
+      "unableToReadUpdaterStatus": "No se pudo leer el estado del actualizador.",
+      "downloadedProgress": "{{progress}}% descargado",
+      "actions": {
+        "check": "Buscar actualizaciones",
+        "checking": "Buscando...",
+        "restart": "Reiniciar para actualizar"
+      },
+      "status": {
+        "idle": "En espera",
+        "disabled": "Desactivado",
+        "checking": "Buscando actualizaciones",
+        "available": "Actualizacion disponible",
+        "not-available": "Actualizado",
+        "downloading": "Descargando",
+        "downloaded": "Listo para instalar",
+        "error": "Error"
+      }
     }
   },
   "contacts": {

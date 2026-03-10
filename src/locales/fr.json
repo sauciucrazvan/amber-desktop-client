@@ -213,6 +213,36 @@
         "too_long": "Limitez-vous à 256 caractères.",
         "updated": "Votre bio a été mise à jour avec succès !"
       }
+    },
+    "aboutPanel": {
+      "tabs": {
+        "about": "A propos",
+        "updates": "Mises a jour"
+      },
+      "appAlt": "Logo Amber",
+      "buildNumber": "Numero de build",
+      "platform": "Plateforme",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Mises a jour",
+      "updaterUnavailable": "Statut de mise a jour indisponible.",
+      "unableToReadUpdaterStatus": "Impossible de lire le statut de mise a jour.",
+      "downloadedProgress": "{{progress}}% telecharge",
+      "actions": {
+        "check": "Verifier les mises a jour",
+        "checking": "Verification...",
+        "restart": "Redemarrer pour mettre a jour"
+      },
+      "status": {
+        "idle": "En attente",
+        "disabled": "Desactive",
+        "checking": "Verification des mises a jour",
+        "available": "Mise a jour disponible",
+        "not-available": "A jour",
+        "downloading": "Telechargement",
+        "downloaded": "Pret a installer",
+        "error": "Erreur"
+      }
     }
   },
   "contacts": {

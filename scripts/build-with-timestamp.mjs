@@ -6,6 +6,9 @@ import { spawnSync } from "node:child_process";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 
+const DEFAULT_GITHUB_OWNER = "sauciucrazvan";
+const DEFAULT_GITHUB_REPO = "amber-desktop-client";
+
 function pad2(value) {
   return String(value).padStart(2, "0");
 }
@@ -60,6 +63,12 @@ function parseBuildOptions(argv) {
     linuxTargets: ["AppImage"],
     winTargets: [...defaultWinTargets],
     forceMsi: false,
+    publish: false,
+    publishProvider: undefined,
+    publishUrl: undefined,
+    githubOwner: undefined,
+    githubRepo: undefined,
+    githubReleaseType: "release",
   };
 
   for (const arg of argv) {
@@ -104,9 +113,46 @@ function parseBuildOptions(argv) {
       continue;
     }
 
+    if (arg === "--publish") {
+      options.publish = true;
+      continue;
+    }
+
+    if (arg.startsWith("--publish-provider=")) {
+      options.publishProvider = arg.slice("--publish-provider=".length).trim();
+      options.publish = true;
+      continue;
+    }
+
+    if (arg.startsWith("--publish-url=")) {
+      options.publishUrl = arg.slice("--publish-url=".length).trim();
+      options.publish = true;
+      continue;
+    }
+
+    if (arg.startsWith("--github-owner=")) {
+      options.githubOwner = arg.slice("--github-owner=".length).trim();
+      options.publish = true;
+      continue;
+    }
+
+    if (arg.startsWith("--github-repo=")) {
+      options.githubRepo = arg.slice("--github-repo=".length).trim();
+      options.publish = true;
+      continue;
+    }
+
+    if (arg.startsWith("--github-release-type=")) {
+      options.githubReleaseType = arg
+        .slice("--github-release-type=".length)
+        .trim();
+      options.publish = true;
+      continue;
+    }
+
     if (arg === "--help" || arg === "-h") {
       console.log(
-        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: msi on Windows, nsis on Linux/macOS)\n  --force-msi                 Allow msi target on non-Windows hosts\n`,
+        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: msi on Windows, nsis on Linux/macOS)\n  --force-msi                 Allow msi target on non-Windows hosts\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n`,
       );
       process.exit(0);
     }
@@ -138,7 +184,86 @@ function parseBuildOptions(argv) {
       .concat("nsis");
   }
 
+  if (!options.publishProvider) {
+    options.publishProvider = process.env.AMBER_PUBLISH_PROVIDER?.trim();
+  }
+
+  if (!options.publishUrl) {
+    options.publishUrl =
+      process.env.AMBER_PUBLISH_URL?.trim() ||
+      process.env.AMBER_UPDATER_URL?.trim();
+  }
+
+  if (!options.githubOwner) {
+    options.githubOwner =
+      process.env.AMBER_GH_OWNER?.trim() ||
+      process.env.GH_OWNER?.trim() ||
+      DEFAULT_GITHUB_OWNER;
+  }
+
+  if (!options.githubRepo) {
+    options.githubRepo =
+      process.env.AMBER_GH_REPO?.trim() ||
+      process.env.GH_REPO?.trim() ||
+      DEFAULT_GITHUB_REPO;
+  }
+
+  if (!options.githubReleaseType) {
+    options.githubReleaseType = "release";
+  }
+
+  if (options.publish && !options.publishProvider) {
+    console.error(
+      "[build] publish requested, but no publish provider was set. Use --publish-provider=github|generic or AMBER_PUBLISH_PROVIDER.",
+    );
+    process.exit(1);
+  }
+
   return options;
+}
+
+function getPublishArgs(options) {
+  if (!options.publish) return [];
+
+  const provider = options.publishProvider?.toLowerCase();
+  if (provider === "generic") {
+    if (!options.publishUrl) {
+      console.error(
+        "[build] generic publish requires --publish-url or AMBER_PUBLISH_URL/AMBER_UPDATER_URL.",
+      );
+      process.exit(1);
+    }
+
+    return [
+      "--publish",
+      "always",
+      "--config.publish.provider=generic",
+      `--config.publish.url=${options.publishUrl}`,
+    ];
+  }
+
+  if (provider === "github") {
+    if (!options.githubOwner || !options.githubRepo) {
+      console.error(
+        "[build] github publish requires owner and repo via --github-owner/--github-repo or AMBER_GH_OWNER/AMBER_GH_REPO.",
+      );
+      process.exit(1);
+    }
+
+    return [
+      "--publish",
+      "always",
+      "--config.publish.provider=github",
+      `--config.publish.owner=${options.githubOwner}`,
+      `--config.publish.repo=${options.githubRepo}`,
+      `--config.publish.releaseType=${options.githubReleaseType || "release"}`,
+    ];
+  }
+
+  console.error(
+    `[build] unsupported publish provider: ${options.publishProvider}. Use github or generic.`,
+  );
+  process.exit(1);
 }
 
 const now = new Date();
@@ -158,6 +283,7 @@ const buildVersion = `${shortYear}.${month}.${day}-${pad2(hour)}${pad2(minute)}`
 const buildLabel = `Built on ${monthName} ${day}${suffix}, ${year} at ${pad2(hour)}:${pad2(minute)} ${meridiem}`;
 const buildIso = now.toISOString();
 const buildOptions = parseBuildOptions(process.argv.slice(2));
+const publishArgs = getPublishArgs(buildOptions);
 
 const buildInfoPath = path.join(rootDir, "src", "build-info.ts");
 const buildInfoContent = `export const BUILD_ID = "${buildId}";\nexport const BUILD_VERSION = "${buildVersion}";\nexport const BUILD_LABEL = "${buildLabel}";\nexport const BUILD_ISO = "${buildIso}";\n`;
@@ -185,6 +311,7 @@ if (buildOptions.linux) {
     "--linux",
     ...buildOptions.linuxTargets,
     ...extraMetadataArgs,
+    ...publishArgs,
   ]);
 }
 
@@ -196,5 +323,6 @@ if (buildOptions.win) {
     "--win",
     ...buildOptions.winTargets,
     ...extraMetadataArgs,
+    ...publishArgs,
   ]);
 }

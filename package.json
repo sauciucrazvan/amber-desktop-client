@@ -11,6 +11,8 @@
     "build:all": "node scripts/build-with-timestamp.mjs --all",
     "build:linux": "node scripts/build-with-timestamp.mjs --linux",
     "build:win": "node scripts/build-with-timestamp.mjs --win",
+    "build:publish:github": "node scripts/build-with-timestamp.mjs --all --publish --publish-provider=github",
+    "build:publish:generic": "node scripts/build-with-timestamp.mjs --all --publish --publish-provider=generic",
     "build:static": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -28,6 +30,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "electron-updater": "^6.8.3",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "i18next": "^25.7.3",

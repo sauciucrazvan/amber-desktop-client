@@ -30,4 +30,30 @@ interface Window {
     close: () => void;
     getPlatform: () => Promise<NodeJS.Platform>;
   };
+  autoUpdater: {
+    getStatus: () => Promise<{
+      status: string;
+      message: string;
+      progress: number;
+      canAutoUpdate: boolean;
+      updateVersion?: string;
+    }>;
+    checkForUpdates: () => Promise<{
+      ok: boolean;
+      message: string;
+    }>;
+    quitAndInstall: () => Promise<{
+      ok: boolean;
+      message: string;
+    }>;
+    onStatusChange: (
+      listener: (status: {
+        status: string;
+        message: string;
+        progress: number;
+        canAutoUpdate: boolean;
+        updateVersion?: string;
+      }) => void,
+    ) => () => void;
+  };
 }

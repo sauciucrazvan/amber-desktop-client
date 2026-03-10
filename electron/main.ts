@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import os from "node:os";
 import { readFileSync, writeFileSync } from "node:fs";
+import { autoUpdater } from "electron-updater";
 
 //const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -39,6 +40,38 @@ let tray: Tray | null;
 
 let isQuitting = false;
 let allowTray = true;
+let updaterCheckInterval: NodeJS.Timeout | null = null;
+
+type UpdaterStatus =
+  | "idle"
+  | "disabled"
+  | "checking"
+  | "available"
+  | "not-available"
+  | "downloading"
+  | "downloaded"
+  | "error";
+
+type UpdaterState = {
+  status: UpdaterStatus;
+  message: string;
+  progress: number;
+  canAutoUpdate: boolean;
+  updateVersion?: string;
+};
+
+type UpdaterProvider = "generic" | "github";
+
+const DEFAULT_GITHUB_OWNER = "sauciucrazvan";
+const DEFAULT_GITHUB_REPO = "amber-desktop-client";
+const DEFAULT_GITHUB_LATEST_DOWNLOAD_URL = `https://github.com/${DEFAULT_GITHUB_OWNER}/${DEFAULT_GITHUB_REPO}/releases/latest/download`;
+
+let updaterState: UpdaterState = {
+  status: "idle",
+  message: "Auto-updater has not started yet.",
+  progress: 0,
+  canAutoUpdate: false,
+};
 
 const SETTINGS_FILE = "app-settings.json";
 
@@ -72,6 +105,181 @@ function showMainWindow() {
   if (splash && !splash.isDestroyed()) {
     splash.close();
   }
+}
+
+function updateUpdaterState(next: Partial<UpdaterState>) {
+  updaterState = {
+    ...updaterState,
+    ...next,
+  };
+
+  if (win && !win.isDestroyed()) {
+    win.webContents.send("updater:status", updaterState);
+  }
+}
+
+function canUseAutoUpdater() {
+  if (VITE_DEV_SERVER_URL) return false;
+  if (!app.isPackaged) return false;
+  return true;
+}
+
+async function checkForAppUpdates() {
+  if (!updaterState.canAutoUpdate) {
+    return {
+      ok: false,
+      message: "Auto-updater is disabled in this environment.",
+    };
+  }
+
+  try {
+    await autoUpdater.checkForUpdates();
+    return {
+      ok: true,
+      message: "Checking for updates.",
+    };
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Unexpected error while checking for updates.";
+
+    updateUpdaterState({
+      status: "error",
+      message,
+    });
+
+    return {
+      ok: false,
+      message,
+    };
+  }
+}
+
+function configureAutoUpdater() {
+  const canAutoUpdate = canUseAutoUpdater();
+
+  if (!canAutoUpdate) {
+    updateUpdaterState({
+      status: "disabled",
+      message: "Auto-updater is only available for packaged builds.",
+      canAutoUpdate: false,
+      progress: 0,
+    });
+    return;
+  }
+
+  const provider = (process.env.AMBER_UPDATER_PROVIDER?.trim() || "") as
+    | UpdaterProvider
+    | "";
+
+  if (!provider || provider === "generic") {
+    const genericFeedUrl = process.env.AMBER_UPDATER_URL?.trim();
+    const feedUrl = genericFeedUrl || DEFAULT_GITHUB_LATEST_DOWNLOAD_URL;
+
+    autoUpdater.setFeedURL({
+      provider: "generic",
+      url: feedUrl,
+    });
+  }
+
+  if (provider === "github") {
+    const owner =
+      process.env.AMBER_GH_OWNER?.trim() ||
+      process.env.GH_OWNER?.trim() ||
+      DEFAULT_GITHUB_OWNER;
+    const repo =
+      process.env.AMBER_GH_REPO?.trim() ||
+      process.env.GH_REPO?.trim() ||
+      DEFAULT_GITHUB_REPO;
+
+    if (!owner || !repo) {
+      updateUpdaterState({
+        status: "disabled",
+        message:
+          "AMBER_UPDATER_PROVIDER=github requires a valid owner/repo configuration.",
+        canAutoUpdate: false,
+      });
+      return;
+    }
+
+    autoUpdater.setFeedURL({
+      provider: "github",
+      owner,
+      repo,
+      private: Boolean(process.env.GH_TOKEN),
+      token: process.env.GH_TOKEN,
+    });
+  }
+
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  updateUpdaterState({
+    status: "idle",
+    message: "Auto-updater is ready.",
+    canAutoUpdate: true,
+    progress: 0,
+  });
+
+  autoUpdater.on("checking-for-update", () => {
+    updateUpdaterState({
+      status: "checking",
+      message: "Checking for updates...",
+      progress: 0,
+    });
+  });
+
+  autoUpdater.on("update-available", (info) => {
+    updateUpdaterState({
+      status: "available",
+      message: `Update ${info.version} is available. Downloading...`,
+      progress: 0,
+      updateVersion: info.version,
+    });
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    updateUpdaterState({
+      status: "not-available",
+      message: "You are already on the latest version.",
+      progress: 0,
+      updateVersion: undefined,
+    });
+  });
+
+  autoUpdater.on("download-progress", (progress) => {
+    updateUpdaterState({
+      status: "downloading",
+      message: `Downloading update (${Math.round(progress.percent)}%)...`,
+      progress: progress.percent,
+    });
+  });
+
+  autoUpdater.on("update-downloaded", (info) => {
+    updateUpdaterState({
+      status: "downloaded",
+      message: `Update ${info.version} downloaded. Restart to install.`,
+      progress: 100,
+      updateVersion: info.version,
+    });
+  });
+
+  autoUpdater.on("error", (error) => {
+    updateUpdaterState({
+      status: "error",
+      message: error?.message ?? "Auto-updater failed.",
+    });
+  });
+
+  void checkForAppUpdates();
+
+  updaterCheckInterval = setInterval(
+    () => {
+      void checkForAppUpdates();
+    },
+    30 * 60 * 1000,
+  );
 }
 
 function focusMainWindow() {
@@ -161,6 +369,7 @@ function createWindow() {
   // Test active push message to Renderer-process.
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
+    win?.webContents.send("updater:status", updaterState);
     showMainWindow();
   });
 
@@ -295,10 +504,16 @@ app.whenReady().then(() => {
   createSplashWindow();
   createTray();
   createWindow();
+  configureAutoUpdater();
 });
 
 app.on("before-quit", () => {
   isQuitting = true;
+
+  if (updaterCheckInterval) {
+    clearInterval(updaterCheckInterval);
+    updaterCheckInterval = null;
+  }
 });
 
 ipcMain.handle("runtime-info:get", () => {
@@ -351,4 +566,27 @@ ipcMain.on("window:toggle-maximize", () => {
 ipcMain.on("window:close", () => {
   if (!win || win.isDestroyed()) return;
   win.close();
+});
+
+ipcMain.handle("updater:get-status", () => {
+  return updaterState;
+});
+
+ipcMain.handle("updater:check-for-updates", async () => {
+  return checkForAppUpdates();
+});
+
+ipcMain.handle("updater:quit-and-install", () => {
+  if (updaterState.status !== "downloaded") {
+    return {
+      ok: false,
+      message: "No downloaded update is ready to install.",
+    };
+  }
+
+  autoUpdater.quitAndInstall();
+  return {
+    ok: true,
+    message: "Installing update and restarting.",
+  };
 });

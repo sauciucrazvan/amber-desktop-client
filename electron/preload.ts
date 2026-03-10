@@ -39,3 +39,39 @@ contextBridge.exposeInMainWorld("windowControls", {
     return ipcRenderer.invoke("window:platform") as Promise<NodeJS.Platform>;
   },
 });
+
+contextBridge.exposeInMainWorld("autoUpdater", {
+  getStatus() {
+    return ipcRenderer.invoke("updater:get-status") as Promise<{
+      status: string;
+      message: string;
+      progress: number;
+      canAutoUpdate: boolean;
+      updateVersion?: string;
+    }>;
+  },
+  checkForUpdates() {
+    return ipcRenderer.invoke("updater:check-for-updates") as Promise<{
+      ok: boolean;
+      message: string;
+    }>;
+  },
+  quitAndInstall() {
+    return ipcRenderer.invoke("updater:quit-and-install") as Promise<{
+      ok: boolean;
+      message: string;
+    }>;
+  },
+  onStatusChange(listener: (status: unknown) => void) {
+    const channel = "updater:status";
+    const wrapped = (_event: Electron.IpcRendererEvent, status: unknown) => {
+      listener(status);
+    };
+
+    ipcRenderer.on(channel, wrapped);
+
+    return () => {
+      ipcRenderer.off(channel, wrapped);
+    };
+  },
+});

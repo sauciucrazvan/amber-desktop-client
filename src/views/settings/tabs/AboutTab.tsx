@@ -63,7 +63,7 @@ export default function AboutTab() {
         if (isMounted) {
           setUpdaterStatus({
             status: "error",
-            message: t("settings.aboutPanel.unableToReadUpdaterStatus"),
+            message: t("settings.about.unableToReadUpdaterStatus"),
             progress: 0,
             canAutoUpdate: false,
           });
@@ -100,8 +100,8 @@ export default function AboutTab() {
   };
 
   const statusLabel = updaterStatus
-    ? t(`settings.aboutPanel.status.${updaterStatus.status}`)
-    : t("settings.aboutPanel.status.idle");
+    ? t(`settings.about.status.${updaterStatus.status}`)
+    : t("settings.about.status.idle");
 
   return (
     <>
@@ -110,7 +110,7 @@ export default function AboutTab() {
       <section className="mt-3 mx-auto flex w-full max-w-md items-center gap-3 text-left">
         <img
           src={`${import.meta.env.BASE_URL}amber.png`}
-          alt={t("settings.aboutPanel.appAlt")}
+          alt={"Amber Logo"}
           className="size-14 shrink-0 rounded-xl"
           draggable={false}
         />
@@ -127,11 +127,11 @@ export default function AboutTab() {
         className="mt-4 w-full max-w-md mx-auto"
       >
         <TabsList className="w-full">
-          <TabsTrigger value="about" className="flex-1">
-            {t("settings.aboutPanel.tabs.about")}
+          <TabsTrigger value="about" className="flex-1 cursor-pointer">
+            {t("settings.about.tabs.data_for_nerds")}
           </TabsTrigger>
-          <TabsTrigger value="updates" className="flex-1">
-            {t("settings.aboutPanel.tabs.updates")}
+          <TabsTrigger value="updates" className="flex-1 cursor-pointer">
+            {t("settings.about.tabs.updates")}
           </TabsTrigger>
         </TabsList>
 
@@ -139,14 +139,14 @@ export default function AboutTab() {
           <section className="w-full flex flex-col gap-2 rounded-md border p-3 text-sm">
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
-                {t("settings.aboutPanel.buildNumber")}
+                {t("settings.about.buildNumber")}
               </span>
               <span>{BUILD_VERSION}</span>
             </div>
 
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
-                {t("settings.aboutPanel.platform")}
+                {t("settings.about.platform")}
               </span>
               <span>
                 {runtimeInfo
@@ -156,13 +156,13 @@ export default function AboutTab() {
             </div>
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
-                {t("settings.aboutPanel.electron")}
+                {t("settings.about.electron")}
               </span>
               <span>{runtimeInfo?.electronVersion ?? "—"}</span>
             </div>
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
-                {t("settings.aboutPanel.chromium")}
+                {t("settings.about.chromium")}
               </span>
               <span>{runtimeInfo?.chromiumVersion ?? "—"}</span>
             </div>
@@ -173,20 +173,19 @@ export default function AboutTab() {
           <section className="w-full overflow-hidden flex flex-col gap-3 rounded-md border p-3 text-sm">
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
-                {t("settings.aboutPanel.updatesLabel")}
+                {t("settings.about.updatesLabel")}
               </span>
               <span className="min-w-0 text-right wrap-break-word">
                 {statusLabel}
               </span>
             </div>
             <p className="text-xs text-muted-foreground wrap-break-word">
-              {updaterStatus?.message ||
-                t("settings.aboutPanel.updaterUnavailable")}
+              {updaterStatus?.message || t("settings.about.updaterUnavailable")}
             </p>
 
             {updaterStatus?.status === "downloading" ? (
               <p className="text-xs text-muted-foreground">
-                {t("settings.aboutPanel.downloadedProgress", {
+                {t("settings.about.downloadedProgress", {
                   progress: Math.round(updaterStatus.progress),
                 })}
               </p>
@@ -196,24 +195,26 @@ export default function AboutTab() {
               <Button
                 size="sm"
                 variant="outline"
+                className="cursor-pointer"
                 onClick={() => {
                   void onCheckForUpdates();
                 }}
                 disabled={!canCheckForUpdates}
               >
                 {isChecking
-                  ? t("settings.aboutPanel.actions.checking")
-                  : t("settings.aboutPanel.actions.check")}
+                  ? t("settings.about.actions.checking")
+                  : t("settings.about.actions.check")}
               </Button>
 
               <Button
                 size="sm"
+                className="cursor-pointer"
                 onClick={() => {
                   void onInstallUpdate();
                 }}
                 disabled={updaterStatus?.status !== "downloaded"}
               >
-                {t("settings.aboutPanel.actions.restart")}
+                {t("settings.about.actions.restart")}
               </Button>
             </div>
           </section>

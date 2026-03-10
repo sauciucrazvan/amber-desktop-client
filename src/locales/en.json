@@ -214,12 +214,12 @@
         "updated": "Successfully updated your bio!"
       }
     },
-    "aboutPanel": {
+    "about": {
       "tabs": {
         "about": "About",
+        "data_for_nerds": "Data for nerds",
         "updates": "Updates"
       },
-      "appAlt": "Amber logo",
       "buildNumber": "Build number",
       "platform": "Platform",
       "electron": "Electron",

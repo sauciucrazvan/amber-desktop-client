@@ -1,322 +1,330 @@
 {
   "common": {
-    "help": "ヘルプ",
-    "info": "情報",
-    "show": "表示",
-    "hide": "非表示",
-    "submit": "送信",
-    "cancel": "キャンセル",
-    "verified": "認証済み",
-    "unverified": "まずアカウントを認証してください！",
+    "help": "Help",
+    "info": "Info",
+    "show": "Show",
+    "hide": "Hide",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "verified": "Verified",
+    "unverified": "Please verify your account first before you use this feature.",
     "errors": {
-      "too_many_requests": "リクエストが多すぎます。ゆっくりしてください。"
+      "too_many_requests": "Too many requests! Please try again later."
     },
-    "online": "オンライン",
-    "offline": "オフライン"
+    "online": "Online",
+    "offline": "Offline"
   },
   "login": {
-    "registerPrompt": "アカウントをお持ちでないですか？",
-    "registerLink": "登録",
-    "title": "アカウントにログイン",
-    "subtitle": "ログインするには認証情報を入力してください",
-    "usernamePlaceholder": "ユーザー名",
-    "passwordPlaceholder": "パスワード",
-    "signIn": "ログイン",
-    "forgotPassword": "パスワードをお忘れですか？",
-    "fillInput": "入力欄を埋めてください",
-    "incorrectCredentials": "ユーザー名またはパスワードが正しくありません。",
-    "greeting": "おかえりなさい！",
-    "account_disabled": "このアカウントは削除されました。",
+    "registerPrompt": "Don't have an account?",
+    "registerLink": "Register",
+    "title": "Login into your account",
+    "subtitle": "Enter your credentials below to login",
+    "usernamePlaceholder": "Your username",
+    "passwordPlaceholder": "Your password",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "fillInput": "Fill in the input fields",
+    "incorrectCredentials": "Incorrect username or password.",
+    "greeting": "Welcome back!",
+    "account_disabled": "This account has been deleted.",
     "recovery": {
-      "title": "パスワードを復旧",
-      "description": "30分ごとにリクエストできます。",
-      "username": "ユーザー名",
-      "code": "復旧コード",
-      "password": "新しいパスワード",
-      "invalid_username": "無効なユーザー名です",
-      "invalid_code": "入力したコードの有効期限が切れているか、無効です。",
-      "invalid_password": "無効なパスワードです",
-      "too_soon": "パスワード変更のリクエストは30分ごとにできます。",
-      "too_late": "使用したコードは既に期限切れです。新しいパスワード変更をリクエストしてください。",
-      "different_passwords": "パスワードが一致しません。",
-      "sent": "復旧コードがメールに送信されました。受信トレイを確認してください（迷惑メールも確認！）。",
-      "success": "パスワードの変更に成功しました。ログインしてください。",
+      "title": "Recover your password",
+      "description": "You can make a request every 30 minutes.",
+      "username": "Username",
+      "code": "Recovery code",
+      "password": "New Password",
+      "invalid_username": "Invalid username",
+      "invalid_code": "The code you entered either expired or is invalid.",
+      "invalid_password": "Invalid password",
+      "too_soon": "You can request a password change every 30 minutes.",
+      "too_late": "The code you used already expired. Request a new password change.",
+      "different_passwords": "The passwords do not match.",
+      "sent": "The recovery code has been sent to your email. Please check your inbox (spam too!)",
+      "success": "You've succesfully changed your password. Please log in.",
       "action": {
-        "next": "次へ",
-        "finish": "完了",
-        "back": "戻る"
+        "next": "Next",
+        "finish": "Finish",
+        "back": "Back"
       }
     }
   },
   "register": {
-    "loginPrompt": "すでにアカウントをお持ちですか？",
-    "loginLink": "ログイン",
-    "title": "アカウントを作成",
-    "subtitle": "アカウント作成のために情報を入力してください",
-    "usernamePlaceholder": "一意のユーザー名",
-    "usernameHint": "使用できるのは英数字のみです。",
-    "fullnamePlaceholder": "表示名",
-    "emailPlaceholder": "メールアドレス",
-    "emailHint": "本人確認に使用します",
-    "passwordPlaceholder": "パスワードを入力",
-    "passwordHint": "パスワードは8文字以上である必要があります",
-    "createAccount": "アカウントを作成",
-    "terms": "続行すると、<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意したものとみなされます。",
-    "fillInput": "入力欄を埋めてください",
-    "invalidUsername": "無効なユーザー名です。空白や特殊文字は使用できません。最大長は16です。",
-    "invalidPassword": "無効なパスワードです。8文字以上で、小文字1つ、大文字1つ、数字1つ以上が必要です。",
-    "nameRequired": "氏名は必須です。",
-    "emailRequired": "メールアドレスは必須です",
-    "invalidName": "氏名には名と姓を含めてください。",
-    "invalidEmail": "無効なメールアドレスです。",
-    "emailTaken": "メールアドレスは既に登録されています！",
-    "usernameTaken": "ユーザー名は既に使用されています。",
-    "greeting": "Amberへようこそ！",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Login",
+    "title": "Create an account",
+    "subtitle": "Enter your info below to create your account",
+    "usernamePlaceholder": "Unique username",
+    "usernameHint": "Only letters and numbers are allowed.",
+    "fullnamePlaceholder": "Display name",
+    "emailPlaceholder": "Your email address",
+    "emailHint": "We'll use this to verify you",
+    "passwordPlaceholder": "Enter password",
+    "passwordHint": "Password must be at least 8 characters",
+    "createAccount": "Create your account",
+    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "fillInput": "Fill in the input fields",
+    "invalidUsername": "Invalid username. Must contain no spaces or special characters. Maximum length is 16.",
+    "invalidPassword": "Invalid password. Must be at least 8 characters long, have at least one lowercase letter, one uppercase letter and one digit.",
+    "nameRequired": "Full name required.",
+    "emailRequired": "Email is required",
+    "invalidName": "Your display name cannot be more than 32 characters!",
+    "invalidEmail": "Invalid email.",
+    "emailTaken": "Email already registered!",
+    "usernameTaken": "Username already taken.",
+    "greeting": "Welcome to Amber!",
     "verify": {
-      "title": "アカウントを確認",
+      "title": "Verify Your Account",
       "description": {
-        "step_one": "認証コード付きのメールを送信します。",
-        "step_two": "メールで送信したコードを入力してください。"
+        "step_one": "We'll send an email with a verification code.",
+        "step_two": "Please enter the code we sent to your email."
       },
-      "not_verified": "アカウントは認証されていません。",
-      "verify_now": "今すぐ認証",
-      "already_verified": "既に認証されています",
-      "too_soon": "認証メールは既に送信されています。30分後に再度お試しください。",
-      "email_sent": "認証メールが送信されました。受信トレイを確認してください（迷惑メールも確認！）。",
-      "invalid_code": "提供されたコードは無効です",
-      "too_late": "認証コードの有効期限が切れています。もう一度お試しください。",
-      "success": "アカウントが認証されました。アップデートに少し時間がかかる場合があります。",
+      "not_verified": "Your account is not verified.",
+      "verify_now": "Verify now",
+      "already_verified": "You are already verified",
+      "too_soon": "A verification email has been already sent. Retry in 30 minutes.",
+      "email_sent": "A verification email has been sent. Please check your inbox (spam too!)",
+      "invalid_code": "The code you provided is invalid",
+      "too_late": "Your verification code has already expired, please retry.",
+      "success": "Your account is verified. It might take a moment to update.",
       "action": {
-        "back": "戻る",
-        "finish": "認証",
-        "next": "送信"
+        "back": "Back",
+        "finish": "Verify",
+        "next": "Send"
       }
     }
   },
   "settings": {
-    "title": "設定",
-    "description": "アプリの設定",
+    "title": "Settings",
+    "description": "Application settings",
     "tabs": {
-      "general": "一般",
-      "appearance": "外観",
-      "account": "アカウント",
-      "about": "情報"
+      "general": "General",
+      "appearance": "Appearance",
+      "account": "Account",
+      "about": "About"
     },
     "general": {
       "language": {
-        "title": "言語",
-        "description": "アプリの言語を選択してください",
+        "title": "Language",
+        "description": "Choose the application language",
         "options": {
-          "en": "英語",
-          "ro": "ルーマニア語",
-          "de": "ドイツ語",
-          "fr": "フランス語",
-          "es": "スペイン語",
-          "zh": "中国語",
-          "ja": "日本語",
-          "it": "イタリア語"
+          "en": "English",
+          "ro": "Romanian",
+          "de": "German",
+          "fr": "French",
+          "es": "Spanish",
+          "zh": "Chinese",
+          "ja": "Japanese",
+          "it": "Italian"
         }
       },
       "tray": {
-        "title": "トレイに最小化",
-        "description": "オフにすると、閉じるとアプリが終了します。"
+        "title": "Minimize to tray",
+        "description": "When disabled, closing the app will quit instead of hiding it."
       },
       "help": {
-        "title": "ヘルプ",
-        "description": "不具合を見つけた、または助けが必要ですか？",
-        "action": "サポート"
+        "title": "Help",
+        "description": "Found an issue or need help with something?",
+        "action": "Support"
       },
       "feedback": {
-        "title": "フィードバック",
-        "description": "改善にご協力ください",
-        "action": "フィードバック"
+        "title": "Feedback",
+        "description": "Help us improve",
+        "action": "Feedback"
       }
     },
     "appearance": {
       "theme": {
-        "title": "テーマ",
-        "description": "アプリ全体のテーマを変更します。"
+        "title": "Theme",
+        "description": "This changes the entire application theme."
       },
       "scaling": {
-        "title": "スケーリング",
-        "description": "画面により多くの内容を表示します。",
-        "label": "スケーリング",
-        "defaultSuffix": "（既定）"
+        "title": "Scaling",
+        "description": "Fit more content on your screen.",
+        "label": "Scaling",
+        "defaultSuffix": "(default)"
       },
       "sidebarPosition": {
-        "title": "サイドバーの位置",
-        "description": "サイドバーの位置を変更します",
-        "label": "位置",
+        "title": "Sidebar Position",
+        "description": "Change the sidebar position",
+        "label": "Positions",
         "options": {
-          "left": "左",
-          "right": "右"
+          "left": "Left",
+          "right": "Right"
         }
       }
     },
     "account": {
       "signOut": {
-        "title": "サインアウト",
-        "description": "サインアウトしますか？ログインページにリダイレクトされます。",
-        "action": "サインアウト",
-        "toast": "ログアウトしました"
+        "title": "Sign out",
+        "description": "Are you sure you want to sign out? You'll be redirected to the login page.",
+        "action": "Sign out",
+        "toast": "Logged out succesfully"
       },
       "delete": {
-        "title": "アカウントを削除",
-        "description": "すべてのデータが完全に削除されます。この操作はサポートでも取り消せません。",
-        "action": "削除",
-        "toast": "アカウントを削除しました"
+        "title": "Delete Account",
+        "description": "Permanently erases all of your data. This action can not be reversed by support.",
+        "action": "Delete",
+        "toast": "Succesfully deleted your account"
       },
       "data": {
-        "title": "個人データのリクエスト",
-        "description": "あなたに関する当社保有データをすべてリクエストします",
-        "action": "リクエスト",
-        "too_soon": "毎週データをリクエストできます。",
-        "toast": "リクエストされたデータがメールに送信されました。受信トレイを確認してください（迷惑メールも確認！）。"
+        "title": "Request Personal Data",
+        "description": "Request all the data we have about you",
+        "action": "Request",
+        "too_soon": "You can request your data every week.",
+        "toast": "Your requested data has been sent to your email. Please check your inbox (spam too!)"
       },
       "password": {
-        "title": "パスワードを変更",
-        "description": "パスワードを変更します。小文字・大文字・数字・特殊文字をそれぞれ1つ以上含めてください。",
-        "action": "変更",
-        "different": "パスワードが一致しません。",
-        "updated": "パスワードを更新しました。",
-        "current_password": "現在のパスワード",
-        "new_password": "新しいパスワード",
-        "new_password_confirmation": "新しいパスワード（確認）"
+        "title": "Change Password",
+        "description": "Modify your password. Remember, you have to use at least a lower-case and an upper-case character, a number and a special character.",
+        "action": "Change",
+        "different": "The passwords do not match.",
+        "updated": "Successfully updated your password.",
+        "current_password": "Current password",
+        "new_password": "New password",
+        "new_password_confirmation": "New password confirmation"
       },
       "email": {
-        "title": "メールアドレスを変更",
-        "description": "アカウントのメールアドレスを変更します。正しいメールアドレスを入力してください。",
-        "request_description": "新しいメールアドレスとパスワードを入力してください。確認と完了のための認証コードを送信します。",
-        "confirm_description": "続行するには確認コードを入力してください。",
-        "verify_description": "メールアドレス変更を完了するには認証コードを入力してください。",
-        "confirm_code": "確認コード",
-        "verify_code": "認証コード",
-        "same": "現在のメールアドレスと同じものには変更できません。",
-        "no_pending": "保留中のメールアドレス変更リクエストはありません。",
-        "not_confirmed": "メールアドレス変更はまだ確認されていません。",
-        "already_confirmed": "メールアドレス変更はすでに確認されています。",
-        "too_late": "認証コードの有効期限が切れました。もう一度やり直してください。",
-        "too_soon": "新しいメールアドレス変更は30分ごとにリクエストできます。",
-        "invalid_code": "認証コードが無効です。",
-        "verify_sent": "認証コードをメールに送信しました。受信トレイを確認してください（迷惑メールも確認）。",
-        "updated": "メールアドレスを更新しました！"
+        "title": "Change Email",
+        "description": "Change your account's email. Make sure it is valid.",
+        "request_description": "Enter your new email and password. We'll send you verification codes to confirm and finish the change.",
+        "confirm_description": "Enter the confirmation code sent to your current email to continue.",
+        "verify_description": "Enter the verification code sent to: <b>{{email}}</b>",
+        "confirm_code": "Confirmation code",
+        "verify_code": "Verification code",
+        "same": "You can't change your email to your current one.",
+        "no_pending": "There is no pending email change request.",
+        "not_confirmed": "The email change has not been confirmed yet.",
+        "already_confirmed": "The email change has already been confirmed.",
+        "too_late": "Your verification code has expired. Please start again.",
+        "too_soon": "You can request a new email change every half an hour.",
+        "invalid_code": "Invalid verification code.",
+        "verify_sent": "A verification code has been sent to your email. Please check your inbox (spam too!)",
+        "updated": "Successfully updated your email address!"
       },
       "name": {
-        "title": "表示名を変更",
-        "description": "この操作は週に1回のみ利用できます。",
-        "action": "変更",
-        "same": "現在の氏名と同じ氏名には変更できません。",
-        "updated": "表示名を更新しました。次回の変更は1週間後に可能です。",
-        "tooSoon": "変更回数の上限に達しました。<time>{{days}}</time>日後に氏名を変更できます。"
+        "title": "Change Display Name",
+        "description": "This action is available only once every week.",
+        "action": "Change",
+        "same": "Can't update full name to your current one.",
+        "updated": "Successfully updated your full name. Next change available in a week.",
+        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
       },
       "bio": {
-        "too_long": "256文字以内で入力してください。",
-        "updated": "自己紹介を更新しました！"
+        "too_long": "Limit yourself to 256 characters.",
+        "updated": "Successfully updated your bio!"
       }
     },
-    "aboutPanel": {
+    "about": {
       "tabs": {
-        "about": "情報",
-        "updates": "アップデート"
+        "about": "About",
+        "data_for_nerds": "Data for nerds",
+        "updates": "Updates"
       },
-      "appAlt": "Amber ロゴ",
-      "buildNumber": "ビルド番号",
-      "platform": "プラットフォーム",
+      "buildNumber": "Build number",
+      "platform": "Platform",
       "electron": "Electron",
       "chromium": "Chromium",
-      "updatesLabel": "アップデート",
-      "updaterUnavailable": "アップデーターの状態を取得できません。",
-      "unableToReadUpdaterStatus": "アップデーター状態を読み取れません。",
-      "downloadedProgress": "{{progress}}% ダウンロード済み",
+      "updatesLabel": "Updates",
+      "updaterUnavailable": "Updater status unavailable.",
+      "unableToReadUpdaterStatus": "Unable to read updater status.",
+      "downloadedProgress": "{{progress}}% downloaded",
       "actions": {
-        "check": "更新を確認",
-        "checking": "確認中...",
-        "restart": "再起動して更新"
+        "check": "Check for updates",
+        "checking": "Checking...",
+        "restart": "Restart to update"
       },
       "status": {
-        "idle": "待機中",
-        "disabled": "無効",
-        "checking": "更新を確認中",
-        "available": "更新があります",
-        "not-available": "最新です",
-        "downloading": "ダウンロード中",
-        "downloaded": "インストール可能",
-        "error": "エラー"
+        "idle": "Idle",
+        "disabled": "Disabled",
+        "checking": "Checking for updates",
+        "available": "Update available",
+        "not-available": "Up to date",
+        "downloading": "Downloading",
+        "downloaded": "Ready to install",
+        "error": "Error"
       }
     }
   },
   "contacts": {
-    "title": "連絡先",
-    "none": "まだ連絡先がありません",
-    "failed_loading": "連絡先の読み込みに失敗しました",
-    "profile": "プロフィール",
-    "block": "ブロック",
-    "remove": "削除",
-    "invalid_user": "{{user}} に一致するユーザーが見つかりませんでした。",
-    "not_found": "連絡先が見つかりませんでした。",
-    "removed": "連絡先を削除しました。",
-    "yourself": "自分自身にはこの操作を実行できません。",
-    "not_blocked": "このユーザーはブロックされていません。",
-    "unblock": "ブロック解除",
-    "unblocked": "{{user}} のブロックを解除しました。",
-    "already_added": "{{user}} はすでにリストに追加されています。",
-    "not_added": "{{user}} は連絡先リストにいません。",
-    "already_requested": "{{user}} にはすでにリクエストを送信しています。",
-    "requested": "成功！{{user}} への友達申請を送信しました。",
-    "no_request": "{{user}} へのリクエストを送信していません。",
-    "accepted": "{{user}} と友達になりました。",
-    "declined": "{{user}} からのリクエストを拒否しました。",
+    "title": "Chats",
+    "none": "No contacts yet",
+    "failed_loading": "Failed to load contacts",
+    "profile": "Profile",
+    "block": "Block",
+    "remove": "Remove",
+    "invalid_user": "Couldn't find @{{user}}. Did you type it correctly?",
+    "not_found": "Could not find contact.",
+    "removed": "Successfully removed contact.",
+    "yourself": "You cannot perform this action on yourself.",
+    "not_blocked": "This user is not blocked.",
+    "unblock": "Unblock",
+    "unblocked": "Successfully unblocked {{user}}.",
+    "already_added": "{{user}} is already on your list.",
+    "not_added": "{{user}} is not in your contacts list.",
+    "already_requested": "Already sent a request to {{user}}.",
+    "requested": "Success! Your request to befriend {{user}} has been sent.",
+    "no_request": "You did not send a request to {{user}}.",
+    "accepted": "You're now friends with {{user}}.",
+    "declined": "You've declined {{user}}'s request.",
     "add": {
-      "title": "連絡先を追加",
-      "description": "Amber のユーザー名を使って連絡先を追加できます。",
-      "action": "追加",
-      "username": "ユーザー名"
+      "title": "Add Friends",
+      "description": "You can add friends with their Amber username.",
+      "action": "Add",
+      "username": "Username"
     },
     "requests": {
-      "title": "リクエスト",
-      "description": "受信した友達申請を承認または拒否できます。",
-      "none": "現在受信したリクエストはありません",
-      "accept": "承認",
-      "decline": "拒否",
-      "notification": "<b>@{{user}}</b> があなたと友達になりたいと言っています。"
+      "title": "Requests",
+      "description": "Accept or decline any friendship requests you've received.",
+      "none": "No requests received at the moment.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "notification": "<b>@{{user}}</b> wants to be your friend."
     },
     "blocked": {
-      "unreachable": "このユーザーに接続できません。ブロックしていないか確認してください。",
-      "trigger": "ブロックした連絡先を管理",
-      "title": "ブロックした連絡先",
-      "description": "ブロックした連絡先を管理します。",
-      "none": "ブロックした連絡先はありません",
-      "success": "{{user}} をブロックしました。"
+      "unreachable": "This user is unreachable. Check if you've blocked them.",
+      "trigger": "Manage blocked contacts",
+      "title": "Blocked contacts",
+      "description": "Manage the contacts you've blocked.",
+      "none": "No blocked contacts",
+      "success": "Successfully blocked {{user}}."
     }
   },
   "account": {
     "verify": {
-      "notice": "すべての機能を利用するには、アカウントを認証してください。"
+      "notice": "Verify your account to unlock full features."
     }
   },
   "homepage": {
     "conversation": {
-      "title": "会話を始める",
-      "add_contacts": "まずは友達を追加しましょう。右側のボタンをクリックして、Amber のユーザー名を入力するだけで簡単に追加できます。",
-      "select": "サイドバーで連絡先を選び、名前をクリックしてください。会話画面が開きます。",
-      "message": "入力欄にメッセージを入力して、送信を押すと送れます。"
+      "title": "Start a conversation",
+      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking the button on the right and entering their Amber username.",
+      "select": "Select a contact in the sidebar and click their name. This will open the conversation view.",
+      "message": "You can message them by typing your message in the input field and pressing Send."
     },
-    "file": "ファイルを送信"
+    "file": "Send a file"
   },
   "conversations": {
-    "no_messages": "まだメッセージはありません。",
-    "type_message": "メッセージを入力",
-    "send_message": "メッセージを送信",
-    "failed_loading": "チャットの読み込みに失敗しました",
-    "failed_sending": "メッセージの送信に失敗しました",
-    "not_participating": "この会話に参加していません。"
+    "you": "You",
+    "edited": "Edited",
+    "no_messages": "No messages yet.",
+    "type_message": "Type a message",
+    "send_message": "Send message",
+    "error": {
+      "failed_loading": "Failed loading chat",
+      "failed_sending": "Failed sending message",
+      "not_participating": "You are not participating in this conversation.",
+      "too_long": "The message can not exceed 2048 characters.",
+      "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
+      "no_permission": "You do not have permission to do that!",
+      "no_relation": "You are not friends with this users or they've blocked you."
+    }
   },
   "profile": {
     "bio": {
-      "title": "自己紹介",
-      "empty": "自己紹介は未設定です。",
+      "title": "Bio",
+      "empty": "Empty bio.",
       "edit": {
-        "title": "自己紹介を編集"
+        "title": "Edit bio"
       }
     }
   }

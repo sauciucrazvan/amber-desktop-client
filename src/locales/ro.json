@@ -1,322 +1,330 @@
 {
   "common": {
-    "help": "Ajutor",
-    "info": "Informații",
-    "show": "Afișează",
-    "hide": "Ascunde",
-    "submit": "Trimite",
-    "cancel": "Anulează",
-    "verified": "Verificat",
-    "unverified": "Te rugăm să-ți verifici mai întâi contul!",
+    "help": "Help",
+    "info": "Info",
+    "show": "Show",
+    "hide": "Hide",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "verified": "Verified",
+    "unverified": "Please verify your account first before you use this feature.",
     "errors": {
-      "too_many_requests": "Prea multe cereri! Încetinește!"
+      "too_many_requests": "Too many requests! Please try again later."
     },
     "online": "Online",
     "offline": "Offline"
   },
   "login": {
-    "registerPrompt": "Nu ai cont?",
-    "registerLink": "Înregistrează-te",
-    "title": "Autentifică-te în contul tău",
-    "subtitle": "Introdu datele de mai jos pentru a te autentifica",
-    "usernamePlaceholder": "Numele tău de utilizator",
-    "passwordPlaceholder": "Parola ta",
-    "signIn": "Autentificare",
-    "forgotPassword": "Ai uitat parola?",
-    "fillInput": "Completează câmpurile",
-    "incorrectCredentials": "Nume de utilizator sau parolă incorecte.",
-    "greeting": "Bine ai revenit!",
-    "account_disabled": "Acest cont a fost șters.",
+    "registerPrompt": "Don't have an account?",
+    "registerLink": "Register",
+    "title": "Login into your account",
+    "subtitle": "Enter your credentials below to login",
+    "usernamePlaceholder": "Your username",
+    "passwordPlaceholder": "Your password",
+    "signIn": "Sign in",
+    "forgotPassword": "Forgot password?",
+    "fillInput": "Fill in the input fields",
+    "incorrectCredentials": "Incorrect username or password.",
+    "greeting": "Welcome back!",
+    "account_disabled": "This account has been deleted.",
     "recovery": {
-      "title": "Recuperează-ți parola",
-      "description": "Poți face o cerere la fiecare 30 de minute.",
-      "username": "Nume de utilizator",
-      "code": "Cod de recuperare",
-      "password": "Parola nouă",
-      "invalid_username": "Nume de utilizator invalid",
-      "invalid_code": "Codul pe care l-ai introdus a expirat sau este invalid.",
-      "invalid_password": "Parolă invalidă",
-      "too_soon": "Poți cere o schimbare de parolă la fiecare 30 de minute.",
-      "too_late": "Codul pe care l-ai folosit a expirat deja. Cere o nouă schimbare de parolă.",
-      "different_passwords": "Parolele nu se potrivesc.",
-      "sent": "Codul de recuperare a fost trimis la e-mailul tău. Te rog să-ți verifica inboxul (și spam!).",
-      "success": "Ți-ai schimbat cu succes parola. Te rog să te autentifici.",
+      "title": "Recover your password",
+      "description": "You can make a request every 30 minutes.",
+      "username": "Username",
+      "code": "Recovery code",
+      "password": "New Password",
+      "invalid_username": "Invalid username",
+      "invalid_code": "The code you entered either expired or is invalid.",
+      "invalid_password": "Invalid password",
+      "too_soon": "You can request a password change every 30 minutes.",
+      "too_late": "The code you used already expired. Request a new password change.",
+      "different_passwords": "The passwords do not match.",
+      "sent": "The recovery code has been sent to your email. Please check your inbox (spam too!)",
+      "success": "You've succesfully changed your password. Please log in.",
       "action": {
-        "next": "Înainte",
-        "finish": "Gata",
-        "back": "Înapoi"
+        "next": "Next",
+        "finish": "Finish",
+        "back": "Back"
       }
     }
   },
   "register": {
-    "loginPrompt": "Ai deja cont?",
-    "loginLink": "Autentifică-te",
-    "title": "Creează un cont",
-    "subtitle": "Introdu datele de mai jos pentru a-ți crea contul",
-    "usernamePlaceholder": "Nume de utilizator unic",
-    "usernameHint": "Sunt permise doar litere și cifre.",
-    "fullnamePlaceholder": "Nume afișat",
-    "emailPlaceholder": "Adresa ta de email",
-    "emailHint": "Vom folosi asta pentru a-ți verifica contul",
-    "passwordPlaceholder": "Introdu parola",
-    "passwordHint": "Parola trebuie să aibă cel puțin 8 caractere",
-    "createAccount": "Creează-ți contul",
-    "terms": "Continuând, ești de acord cu <terms>Termenii de utilizare</terms> și <privacy>Politica de confidențialitate</privacy>.",
-    "fillInput": "Completează câmpurile",
-    "invalidUsername": "Nume de utilizator invalid. Nu trebuie să conțină spații sau caractere speciale. Lungimea maximă este 16.",
-    "invalidPassword": "Parolă invalidă. Trebuie să aibă cel puțin 8 caractere, cel puțin o literă mică, o literă mare și o cifră.",
-    "nameRequired": "Numele complet este obligatoriu.",
-    "emailRequired": "Emailul este obligatoriu",
-    "invalidName": "Numele complet trebuie să conțină prenumele și numele de familie.",
-    "invalidEmail": "Email invalid.",
-    "emailTaken": "Email deja înregistrat!",
-    "usernameTaken": "Numele de utilizator este deja folosit.",
-    "greeting": "Bun venit în Amber!",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Login",
+    "title": "Create an account",
+    "subtitle": "Enter your info below to create your account",
+    "usernamePlaceholder": "Unique username",
+    "usernameHint": "Only letters and numbers are allowed.",
+    "fullnamePlaceholder": "Display name",
+    "emailPlaceholder": "Your email address",
+    "emailHint": "We'll use this to verify you",
+    "passwordPlaceholder": "Enter password",
+    "passwordHint": "Password must be at least 8 characters",
+    "createAccount": "Create your account",
+    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
+    "fillInput": "Fill in the input fields",
+    "invalidUsername": "Invalid username. Must contain no spaces or special characters. Maximum length is 16.",
+    "invalidPassword": "Invalid password. Must be at least 8 characters long, have at least one lowercase letter, one uppercase letter and one digit.",
+    "nameRequired": "Full name required.",
+    "emailRequired": "Email is required",
+    "invalidName": "Your display name cannot be more than 32 characters!",
+    "invalidEmail": "Invalid email.",
+    "emailTaken": "Email already registered!",
+    "usernameTaken": "Username already taken.",
+    "greeting": "Welcome to Amber!",
     "verify": {
-      "title": "Verifică-ți contul",
+      "title": "Verify Your Account",
       "description": {
-        "step_one": "Îți vom trimite un e-mail cu un cod de verificare.",
-        "step_two": "Te rugăm să introduci codul pe care l-am trimis pe e-mail."
+        "step_one": "We'll send an email with a verification code.",
+        "step_two": "Please enter the code we sent to your email."
       },
-      "not_verified": "Contul tău nu este verificat.",
-      "verify_now": "Verifică acum",
-      "already_verified": "Ești deja verificat",
-      "too_soon": "Un e-mail de verificare a fost deja trimis. Încearcă din nou în 30 de minute.",
-      "email_sent": "Un e-mail de verificare a fost trimis. Te rog să-ți verifica inboxul (și spam!).",
-      "invalid_code": "Codul pe care l-ai furnizat este invalid",
-      "too_late": "Codul tău de verificare a expirat, încearcă din nou.",
-      "success": "Contul tău este verificat. Ar putea dura puțin timp pentru a se actualiza.",
+      "not_verified": "Your account is not verified.",
+      "verify_now": "Verify now",
+      "already_verified": "You are already verified",
+      "too_soon": "A verification email has been already sent. Retry in 30 minutes.",
+      "email_sent": "A verification email has been sent. Please check your inbox (spam too!)",
+      "invalid_code": "The code you provided is invalid",
+      "too_late": "Your verification code has already expired, please retry.",
+      "success": "Your account is verified. It might take a moment to update.",
       "action": {
-        "back": "Înapoi",
-        "finish": "Verifică",
-        "next": "Trimite"
+        "back": "Back",
+        "finish": "Verify",
+        "next": "Send"
       }
     }
   },
   "settings": {
-    "title": "Setări",
-    "description": "Setările aplicației",
+    "title": "Settings",
+    "description": "Application settings",
     "tabs": {
       "general": "General",
-      "appearance": "Aspect",
-      "account": "Cont",
-      "about": "Despre"
+      "appearance": "Appearance",
+      "account": "Account",
+      "about": "About"
     },
     "general": {
       "language": {
-        "title": "Limbă",
-        "description": "Alege limba aplicației",
+        "title": "Language",
+        "description": "Choose the application language",
         "options": {
-          "en": "Engleză",
-          "ro": "Română",
-          "de": "Germană",
-          "fr": "Franceză",
-          "es": "Spaniolă",
-          "zh": "Chineză",
-          "ja": "Japoneză",
-          "it": "Italiană"
+          "en": "English",
+          "ro": "Romanian",
+          "de": "German",
+          "fr": "French",
+          "es": "Spanish",
+          "zh": "Chinese",
+          "ja": "Japanese",
+          "it": "Italian"
         }
       },
       "tray": {
-        "title": "Minimizează în tray",
-        "description": "Când este dezactivat, închiderea aplicației o va opri."
+        "title": "Minimize to tray",
+        "description": "When disabled, closing the app will quit instead of hiding it."
       },
       "help": {
-        "title": "Ajutor",
-        "description": "Ai găsit o problemă sau ai nevoie de ajutor cu ceva?",
-        "action": "Suport"
+        "title": "Help",
+        "description": "Found an issue or need help with something?",
+        "action": "Support"
       },
       "feedback": {
         "title": "Feedback",
-        "description": "Ajută-ne să ne îmbunătățim",
+        "description": "Help us improve",
         "action": "Feedback"
       }
     },
     "appearance": {
       "theme": {
-        "title": "Temă",
-        "description": "Schimbă tema întregii aplicații."
+        "title": "Theme",
+        "description": "This changes the entire application theme."
       },
       "scaling": {
-        "title": "Scalare",
-        "description": "Afișează mai mult conținut pe ecran.",
-        "label": "Scalare",
-        "defaultSuffix": "(implicit)"
+        "title": "Scaling",
+        "description": "Fit more content on your screen.",
+        "label": "Scaling",
+        "defaultSuffix": "(default)"
       },
       "sidebarPosition": {
-        "title": "Poziția barei laterale",
-        "description": "Schimbă poziția barei laterale",
-        "label": "Poziții",
+        "title": "Sidebar Position",
+        "description": "Change the sidebar position",
+        "label": "Positions",
         "options": {
-          "left": "Stânga",
-          "right": "Dreapta"
+          "left": "Left",
+          "right": "Right"
         }
       }
     },
     "account": {
       "signOut": {
-        "title": "Deconectare",
-        "description": "Ești sigur că vrei să te deconectezi? Vei fi redirecționat către pagina de autentificare.",
-        "action": "Deconectare",
-        "toast": "Te-ai deconectat cu succes"
+        "title": "Sign out",
+        "description": "Are you sure you want to sign out? You'll be redirected to the login page.",
+        "action": "Sign out",
+        "toast": "Logged out succesfully"
       },
       "delete": {
-        "title": "Șterge contul",
-        "description": "Îți șterge permanent toate datele. Această acțiune nu poate fi anulată de suport.",
-        "action": "Șterge",
-        "toast": "Ți-ai șters contul cu succes"
+        "title": "Delete Account",
+        "description": "Permanently erases all of your data. This action can not be reversed by support.",
+        "action": "Delete",
+        "toast": "Succesfully deleted your account"
       },
       "data": {
-        "title": "Solicită date personale",
-        "description": "Solicită toate datele pe care le avem despre tine",
-        "action": "Solicită",
-        "too_soon": "Poți solicita datele tale în fiecare săptămână.",
-        "toast": "Datele pe care le-ai solicitat au fost trimise la e-mailul tău. Te rog să-ți verifica inboxul (și spam!)"
+        "title": "Request Personal Data",
+        "description": "Request all the data we have about you",
+        "action": "Request",
+        "too_soon": "You can request your data every week.",
+        "toast": "Your requested data has been sent to your email. Please check your inbox (spam too!)"
       },
       "password": {
-        "title": "Schimbă parola",
-        "description": "Modifică parola. Reține: trebuie să folosești cel puțin o literă mică și una mare, un număr și un caracter special.",
-        "action": "Schimbă",
-        "different": "Parolele nu se potrivesc.",
-        "updated": "Parola a fost actualizată cu succes.",
-        "current_password": "Parola curentă",
-        "new_password": "Parola nouă",
-        "new_password_confirmation": "Confirmare parolă nouă"
+        "title": "Change Password",
+        "description": "Modify your password. Remember, you have to use at least a lower-case and an upper-case character, a number and a special character.",
+        "action": "Change",
+        "different": "The passwords do not match.",
+        "updated": "Successfully updated your password.",
+        "current_password": "Current password",
+        "new_password": "New password",
+        "new_password_confirmation": "New password confirmation"
       },
       "email": {
-        "title": "Schimbă emailul",
-        "description": "Schimbă emailul contului tău. Asigură-te că este valid.",
-        "request_description": "Introdu noul email și parola. Îți vom trimite coduri de verificare pentru a confirma și finaliza schimbarea.",
-        "confirm_description": "Introdu codul de confirmare pentru a continua.",
-        "verify_description": "Introdu codul de verificare pentru a finaliza schimbarea emailului.",
-        "confirm_code": "Cod de confirmare",
-        "verify_code": "Cod de verificare",
-        "same": "Nu poți schimba emailul în cel curent.",
-        "no_pending": "Nu există o cerere de schimbare a emailului în așteptare.",
-        "not_confirmed": "Schimbarea emailului nu a fost încă confirmată.",
-        "already_confirmed": "Schimbarea emailului a fost deja confirmată.",
-        "too_late": "Codul de verificare a expirat. Te rog încearcă din nou.",
-        "too_soon": "Poți solicita o nouă schimbare de email la fiecare jumătate de oră.",
-        "invalid_code": "Cod de verificare invalid.",
-        "verify_sent": "Un cod de verificare a fost trimis la emailul tău. Te rog să-ți verifica inboxul (și spam!)",
-        "updated": "Adresa de email a fost actualizată cu succes!"
+        "title": "Change Email",
+        "description": "Change your account's email. Make sure it is valid.",
+        "request_description": "Enter your new email and password. We'll send you verification codes to confirm and finish the change.",
+        "confirm_description": "Enter the confirmation code sent to your current email to continue.",
+        "verify_description": "Enter the verification code sent to: <b>{{email}}</b>",
+        "confirm_code": "Confirmation code",
+        "verify_code": "Verification code",
+        "same": "You can't change your email to your current one.",
+        "no_pending": "There is no pending email change request.",
+        "not_confirmed": "The email change has not been confirmed yet.",
+        "already_confirmed": "The email change has already been confirmed.",
+        "too_late": "Your verification code has expired. Please start again.",
+        "too_soon": "You can request a new email change every half an hour.",
+        "invalid_code": "Invalid verification code.",
+        "verify_sent": "A verification code has been sent to your email. Please check your inbox (spam too!)",
+        "updated": "Successfully updated your email address!"
       },
       "name": {
-        "title": "Schimbă numele afișat",
-        "description": "Această acțiune este disponibilă doar o dată pe săptămână.",
-        "action": "Schimbă",
-        "same": "Nu poți actualiza numele complet cu cel curent.",
-        "updated": "Numele complet a fost actualizat cu succes. Următoarea schimbare este disponibilă peste o săptămână.",
-        "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time>{{days}}</time> zile."
+        "title": "Change Display Name",
+        "description": "This action is available only once every week.",
+        "action": "Change",
+        "same": "Can't update full name to your current one.",
+        "updated": "Successfully updated your full name. Next change available in a week.",
+        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
       },
       "bio": {
-        "too_long": "Limitează-te la 256 de caractere.",
-        "updated": "Biografia ta a fost actualizată cu succes!"
+        "too_long": "Limit yourself to 256 characters.",
+        "updated": "Successfully updated your bio!"
       }
     },
-    "aboutPanel": {
+    "about": {
       "tabs": {
-        "about": "Despre",
-        "updates": "Actualizari"
+        "about": "About",
+        "data_for_nerds": "Data for nerds",
+        "updates": "Updates"
       },
-      "appAlt": "Sigla Amber",
-      "buildNumber": "Numar build",
-      "platform": "Platforma",
+      "buildNumber": "Build number",
+      "platform": "Platform",
       "electron": "Electron",
       "chromium": "Chromium",
-      "updatesLabel": "Actualizari",
-      "updaterUnavailable": "Starea actualizatorului nu este disponibila.",
-      "unableToReadUpdaterStatus": "Nu s-a putut citi starea actualizatorului.",
-      "downloadedProgress": "{{progress}}% descarcat",
+      "updatesLabel": "Updates",
+      "updaterUnavailable": "Updater status unavailable.",
+      "unableToReadUpdaterStatus": "Unable to read updater status.",
+      "downloadedProgress": "{{progress}}% downloaded",
       "actions": {
-        "check": "Verifica actualizari",
-        "checking": "Se verifica...",
-        "restart": "Reporneste pentru actualizare"
+        "check": "Check for updates",
+        "checking": "Checking...",
+        "restart": "Restart to update"
       },
       "status": {
-        "idle": "In asteptare",
-        "disabled": "Dezactivat",
-        "checking": "Se verifica actualizari",
-        "available": "Actualizare disponibila",
-        "not-available": "La zi",
-        "downloading": "Se descarca",
-        "downloaded": "Gata de instalare",
-        "error": "Eroare"
+        "idle": "Idle",
+        "disabled": "Disabled",
+        "checking": "Checking for updates",
+        "available": "Update available",
+        "not-available": "Up to date",
+        "downloading": "Downloading",
+        "downloaded": "Ready to install",
+        "error": "Error"
       }
     }
   },
   "contacts": {
-    "title": "Contacte",
-    "none": "Nu ai încă contacte",
-    "failed_loading": "Nu s-au putut încărca contactele",
-    "profile": "Profil",
-    "block": "Blochează",
-    "remove": "Elimină",
-    "invalid_user": "Nu am găsit nicio potrivire pentru {{user}}.",
-    "not_found": "Nu am putut găsi contactul.",
-    "removed": "Contact eliminat cu succes.",
-    "yourself": "Nu poți efectua această acțiune asupra ta.",
-    "not_blocked": "Acest utilizator nu este blocat.",
-    "unblock": "Deblochează",
-    "unblocked": "L-ai deblocat cu succes pe {{user}}.",
-    "already_added": "{{user}} este deja în lista ta.",
-    "not_added": "{{user}} nu este în lista ta de contacte.",
-    "already_requested": "Ai trimis deja o cerere către {{user}}.",
-    "requested": "Succes! Cererea ta de prietenie către {{user}} a fost trimisă.",
-    "no_request": "Nu ai trimis o cerere către {{user}}.",
-    "accepted": "Acum ești prieten cu {{user}}.",
-    "declined": "Ai refuzat cererea lui {{user}}.",
+    "title": "Chats",
+    "none": "No contacts yet",
+    "failed_loading": "Failed to load contacts",
+    "profile": "Profile",
+    "block": "Block",
+    "remove": "Remove",
+    "invalid_user": "Couldn't find @{{user}}. Did you type it correctly?",
+    "not_found": "Could not find contact.",
+    "removed": "Successfully removed contact.",
+    "yourself": "You cannot perform this action on yourself.",
+    "not_blocked": "This user is not blocked.",
+    "unblock": "Unblock",
+    "unblocked": "Successfully unblocked {{user}}.",
+    "already_added": "{{user}} is already on your list.",
+    "not_added": "{{user}} is not in your contacts list.",
+    "already_requested": "Already sent a request to {{user}}.",
+    "requested": "Success! Your request to befriend {{user}} has been sent.",
+    "no_request": "You did not send a request to {{user}}.",
+    "accepted": "You're now friends with {{user}}.",
+    "declined": "You've declined {{user}}'s request.",
     "add": {
-      "title": "Adaugă un contact",
-      "description": "Poți adăuga contacte folosind numele lor de utilizator Amber.",
-      "action": "Adaugă",
-      "username": "Nume de utilizator"
+      "title": "Add Friends",
+      "description": "You can add friends with their Amber username.",
+      "action": "Add",
+      "username": "Username"
     },
     "requests": {
-      "title": "Cereri",
-      "description": "Acceptă sau refuză cererile de prietenie pe care le-ai primit.",
-      "none": "Nu ai primit cereri în acest moment",
-      "accept": "Acceptă",
-      "decline": "Refuză",
-      "notification": "<b>@{{user}}</b> vrea să fie prietenul tău."
+      "title": "Requests",
+      "description": "Accept or decline any friendship requests you've received.",
+      "none": "No requests received at the moment.",
+      "accept": "Accept",
+      "decline": "Decline",
+      "notification": "<b>@{{user}}</b> wants to be your friend."
     },
     "blocked": {
-      "unreachable": "Acest utilizator nu poate fi contactat. Verifică dacă l-ai blocat.",
-      "trigger": "Gestionează contactele blocate",
-      "title": "Contacte blocate",
-      "description": "Gestionează contactele pe care le-ai blocat.",
-      "none": "Nu ai contacte blocate",
-      "success": "L-ai blocat cu succes pe {{user}}."
+      "unreachable": "This user is unreachable. Check if you've blocked them.",
+      "trigger": "Manage blocked contacts",
+      "title": "Blocked contacts",
+      "description": "Manage the contacts you've blocked.",
+      "none": "No blocked contacts",
+      "success": "Successfully blocked {{user}}."
     }
   },
   "account": {
     "verify": {
-      "notice": "Verifică-ți contul pentru a debloca toate funcționalitățile."
+      "notice": "Verify your account to unlock full features."
     }
   },
   "homepage": {
     "conversation": {
-      "title": "Începe o conversație",
-      "add_contacts": "Să începem prin a-ți adăuga prietenii. Îi poți adăuga ușor făcând clic pe butonul din dreapta și introducând numele lor de utilizator Amber.",
-      "select": "Selectează un contact din bara laterală și fă clic pe numele lui. Se va deschide vizualizarea conversației.",
-      "message": "Le poți trimite un mesaj tastându-l în câmpul de text și apăsând Trimite."
+      "title": "Start a conversation",
+      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking the button on the right and entering their Amber username.",
+      "select": "Select a contact in the sidebar and click their name. This will open the conversation view.",
+      "message": "You can message them by typing your message in the input field and pressing Send."
     },
-    "file": "Trimite un fișier"
+    "file": "Send a file"
   },
   "conversations": {
-    "no_messages": "Niciun mesaj momentan.",
-    "type_message": "Scrie un mesaj",
-    "send_message": "Trimite mesaj",
-    "failed_loading": "Nu s-a putut încărca conversația",
-    "failed_sending": "Nu s-a putut trimite mesajul",
-    "not_participating": "Nu participi în această conversație."
+    "you": "You",
+    "edited": "Edited",
+    "no_messages": "No messages yet.",
+    "type_message": "Type a message",
+    "send_message": "Send message",
+    "error": {
+      "failed_loading": "Failed loading chat",
+      "failed_sending": "Failed sending message",
+      "not_participating": "You are not participating in this conversation.",
+      "too_long": "The message can not exceed 2048 characters.",
+      "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
+      "no_permission": "You do not have permission to do that!",
+      "no_relation": "You are not friends with this users or they've blocked you."
+    }
   },
   "profile": {
     "bio": {
-      "title": "Biografie",
-      "empty": "Biografie goală.",
+      "title": "Bio",
+      "empty": "Empty bio.",
       "edit": {
-        "title": "Editează biografia"
+        "title": "Edit bio"
       }
     }
   }

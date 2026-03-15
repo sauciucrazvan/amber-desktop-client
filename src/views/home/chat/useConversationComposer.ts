@@ -1,0 +1,222 @@
+import { API_BASE_URL } from "@/config";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { TFunction } from "i18next";
+import { toast } from "sonner";
+import { readErrorMessage } from "./conversationErrors";
+import type { MessageItem } from "./conversationTypes";
+
+type UseConversationComposerParams = {
+  conversationId?: string;
+  authFetch: (input: string, init?: RequestInit) => Promise<Response>;
+  t: TFunction;
+  messages: MessageItem[];
+  setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>;
+  mergeMessages: (
+    current: MessageItem[],
+    incoming: MessageItem[],
+  ) => MessageItem[];
+  replaceMessageById: (
+    current: MessageItem[],
+    next: MessageItem,
+  ) => MessageItem[];
+  shouldAutoScrollRef: React.MutableRefObject<boolean>;
+};
+
+export function useConversationComposer({
+  conversationId,
+  authFetch,
+  t,
+  messages,
+  setMessages,
+  mergeMessages,
+  replaceMessageById,
+  shouldAutoScrollRef,
+}: UseConversationComposerParams) {
+  const [messageText, setMessageText] = useState("");
+  const [replyTo, setReplyTo] = useState<MessageItem | null>(null);
+  const [editing, setEditing] = useState<MessageItem | null>(null);
+  const [isSending, setIsSending] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    if (!conversationId) return;
+
+    setReplyTo((current) =>
+      current && current.conversation_id !== conversationId ? null : current,
+    );
+  }, [conversationId]);
+
+  useEffect(() => {
+    if (!replyTo) return;
+    const timeoutId = window.setTimeout(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      const length = textarea.value.length;
+      textarea.setSelectionRange(length, length);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [replyTo]);
+
+  const canSend = useMemo(
+    () => messageText.trim().length > 0 && !isSending,
+    [isSending, messageText],
+  );
+
+  const onSend = useCallback(async () => {
+    if (!conversationId || !canSend) return;
+
+    setIsSending(true);
+    shouldAutoScrollRef.current = true;
+    try {
+      if (replyTo) {
+        const payload = { message_id: replyTo.id, text: messageText.trim() };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/reply`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+        const createdMessage = (await res.json()) as MessageItem;
+        setMessages((current) => mergeMessages(current, [createdMessage]));
+      } else if (editing) {
+        const payload = { message_id: editing.id, text: messageText.trim() };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+        const editedMessage = (await res.json()) as MessageItem;
+        setMessages((current) => replaceMessageById(current, editedMessage));
+      } else {
+        const payload = { text: messageText.trim() };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+        const createdMessage = (await res.json()) as MessageItem;
+        setMessages((current) => mergeMessages(current, [createdMessage]));
+      }
+
+      setMessageText("");
+    } catch (e) {
+      toast.error(
+        e instanceof Error ? t(e.message) : t("conversations.failed_sending"),
+      );
+    } finally {
+      setIsSending(false);
+      setReplyTo(null);
+      setEditing(null);
+    }
+  }, [
+    authFetch,
+    canSend,
+    conversationId,
+    editing,
+    mergeMessages,
+    messageText,
+    replaceMessageById,
+    replyTo,
+    setMessages,
+    shouldAutoScrollRef,
+    t,
+  ]);
+
+  const onDelete = useCallback(
+    async (id: string) => {
+      if (!conversationId) return;
+
+      shouldAutoScrollRef.current = true;
+      try {
+        const payload = { message_id: id };
+        const res = await authFetch(
+          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (!res.ok) throw new Error(await readErrorMessage(res));
+        toast.success(t("conversations.deleted_message"));
+
+        setMessages((current) =>
+          current.filter((message) => message.id !== id),
+        );
+      } catch (e) {
+        toast.error(e instanceof Error ? t(e.message) : t("common.error"));
+      }
+    },
+    [authFetch, conversationId, setMessages, shouldAutoScrollRef, t],
+  );
+
+  const onReply = useCallback(
+    (id: string) => {
+      if (!conversationId) return;
+      setEditing(null);
+      setReplyTo(messages.find((message) => message.id === id) ?? null);
+    },
+    [conversationId, messages],
+  );
+
+  const onEdit = useCallback(
+    (id: string) => {
+      if (!conversationId) return;
+      setReplyTo(null);
+      const messageToEdit =
+        messages.find((message) => message.id === id) ?? null;
+      setEditing(messageToEdit);
+      setMessageText(messageToEdit?.content.text ?? "");
+
+      window.setTimeout(() => {
+        const textarea = textareaRef.current;
+        if (!textarea) return;
+        textarea.focus();
+        const length = textarea.value.length;
+        textarea.setSelectionRange(length, length);
+      }, 0);
+    },
+    [conversationId, messages],
+  );
+
+  return {
+    messageText,
+    setMessageText,
+    replyTo,
+    setReplyTo,
+    editing,
+    setEditing,
+    isSending,
+    canSend,
+    textareaRef,
+    onSend,
+    onDelete,
+    onReply,
+    onEdit,
+  };
+}

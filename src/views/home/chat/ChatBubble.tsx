@@ -17,7 +17,7 @@ interface Props {
     sender_id: number;
     content: {
       text?: string | undefined;
-      reply_to: {
+      reply_to?: {
         id: string;
         sender_id: number;
         content: {

@@ -309,6 +309,7 @@
     "no_messages": "No messages yet.",
     "type_message": "Type a message",
     "send_message": "Send message",
+    "deleted_message": "Successfully deleted the message.",
     "error": {
       "failed_loading": "Failed loading chat",
       "failed_sending": "Failed sending message",

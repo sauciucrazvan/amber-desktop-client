@@ -1,9 +1,10 @@
 import { useAuth } from "@/auth/AuthContext";
+import ErrorBox from "@/components/common/error-box";
 import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { API_BASE_URL } from "@/config";
-import { AlertCircle, Check, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -171,12 +172,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       </h2>
       {notice && <div className="mb-4">{notice}</div>}
       {requestsError ? (
-        <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2">
-          <div className="flex items-start gap-2">
-            <AlertCircle className="mt-0.5 size-4 shrink-0 text-destructive" />
-            <p className="text-xs text-destructive">{requestsErrorMessage}</p>
-          </div>
-        </div>
+        <ErrorBox>{requestsErrorMessage}</ErrorBox>
       ) : isRequestsLoading ? (
         <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
           <Spinner />

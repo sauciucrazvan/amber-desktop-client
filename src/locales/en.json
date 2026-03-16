@@ -252,7 +252,7 @@
     "profile": "Profile",
     "block": "Block",
     "remove": "Remove",
-    "invalid_user": "Couldn't find @{{user}}. Did you type it correctly?",
+    "invalid_user": "Couldn't find @{{user}}.",
     "not_found": "Could not find contact.",
     "removed": "Successfully removed contact.",
     "yourself": "You cannot perform this action on yourself.",

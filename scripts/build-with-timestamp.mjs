@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -8,6 +8,52 @@ const rootDir = path.resolve(__dirname, "..");
 
 const DEFAULT_GITHUB_OWNER = "sauciucrazvan";
 const DEFAULT_GITHUB_REPO = "amber-desktop-client";
+
+function parseDotEnv(content) {
+  const entries = {};
+
+  for (const rawLine of content.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+
+    const equalsIndex = line.indexOf("=");
+    if (equalsIndex <= 0) continue;
+
+    const key = line.slice(0, equalsIndex).trim();
+    if (!key) continue;
+
+    let value = line.slice(equalsIndex + 1).trim();
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    entries[key] = value;
+  }
+
+  return entries;
+}
+
+function loadDotEnvFiles(baseDir) {
+  const candidates = [".env", ".env.local"];
+
+  for (const fileName of candidates) {
+    const filePath = path.join(baseDir, fileName);
+    if (!existsSync(filePath)) continue;
+
+    const content = readFileSync(filePath, "utf8");
+    const parsed = parseDotEnv(content);
+
+    for (const [key, value] of Object.entries(parsed)) {
+      if (process.env[key] === undefined) {
+        process.env[key] = value;
+      }
+    }
+  }
+}
 
 function pad2(value) {
   return String(value).padStart(2, "0");
@@ -282,6 +328,9 @@ const buildId = `${year}${pad2(month)}${pad2(day)}-${pad2(hour)}${pad2(minute)}`
 const buildVersion = `${shortYear}.${month}.${day}-${pad2(hour)}${pad2(minute)}`;
 const buildLabel = `Built on ${monthName} ${day}${suffix}, ${year} at ${pad2(hour)}:${pad2(minute)} ${meridiem}`;
 const buildIso = now.toISOString();
+
+loadDotEnvFiles(rootDir);
+
 const buildOptions = parseBuildOptions(process.argv.slice(2));
 const publishArgs = getPublishArgs(buildOptions);
 

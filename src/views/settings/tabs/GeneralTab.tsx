@@ -119,16 +119,30 @@ export default function GeneralTab() {
       <div className="mt-auto w-full pt-4 text-left text-xs text-muted-foreground">
         <a
           className="hover:text-primary underline-offset-4 hover:underline"
-          href="https://github.com/sauciucrazvan/amber"
-          target="_blank"
-          rel="noreferrer"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.ipcRenderer?.invoke(
+              "open-external-link",
+              "https://github.com/sauciucrazvan/amber",
+            );
+          }}
+          role="button"
+          tabIndex={0}
         >
           {t("settings.general.help.action")}
         </a>
         <span className="px-2">•</span>
         <a
           className="hover:text-primary underline-offset-4 hover:underline"
-          href="https://github.com/sauciucrazvan/amber/issues"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            window.ipcRenderer?.invoke(
+              "open-external-link",
+              "https://github.com/sauciucrazvan/amber/issues",
+            );
+          }}
           target="_blank"
           rel="noreferrer"
         >

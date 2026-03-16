@@ -1,4 +1,12 @@
-import { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain } from "electron";
+import {
+  app,
+  BrowserWindow,
+  Menu,
+  Tray,
+  nativeImage,
+  ipcMain,
+  shell,
+} from "electron";
 //import { createRequire } from 'node:module'
 import { fileURLToPath } from "node:url";
 import path from "node:path";
@@ -566,6 +574,18 @@ ipcMain.on("window:toggle-maximize", () => {
 ipcMain.on("window:close", () => {
   if (!win || win.isDestroyed()) return;
   win.close();
+});
+
+ipcMain.handle("open-external-link", async (_event, url: string) => {
+  try {
+    await shell.openExternal(url);
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
 });
 
 ipcMain.handle("updater:get-status", () => {

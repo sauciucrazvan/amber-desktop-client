@@ -1,6 +1,6 @@
 import { WS_BASE_URL } from "@/config";
 import { useCallback, useEffect } from "react";
-import type { MessageItem } from "./conversationTypes";
+import type { MessageItem } from "../types";
 
 type UseConversationRealtimeParams = {
   accessToken: string | null;

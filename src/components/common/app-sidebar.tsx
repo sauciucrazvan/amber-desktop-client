@@ -20,7 +20,6 @@ import UserAvatar from "./user-avatar";
 import MyProfile from "@/views/dialogs/MyProfile";
 import { Inbox, MessageCircle, UserRoundPlus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { useChat } from "@/views/home/chat/ChatContext";
 import { toast } from "sonner";
 import {
   type MouseEvent as ReactMouseEvent,
@@ -28,6 +27,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { useChat } from "@/views/home/chat";
 
 type AccountMe = {
   username: string;

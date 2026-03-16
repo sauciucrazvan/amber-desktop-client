@@ -6,9 +6,9 @@ import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { Edit2, Reply, Send, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useChat } from "./ChatContext";
+import { useChat } from "../context/ChatContext";
 import ChatBubble from "./ChatBubble";
-import { useConversationLogic } from "./useConversationLogic";
+import { useConversationLogic } from "../hooks/useConversationLogic";
 
 export default function ConversationPanel() {
   const { accessToken, authFetch } = useAuth();
@@ -26,7 +26,6 @@ export default function ConversationPanel() {
     setEditing,
     isLoading,
     isLoadingMore,
-    isSending,
     myUserId,
     canSend,
     textareaRef,
@@ -199,7 +198,7 @@ export default function ConversationPanel() {
             aria-label={t("conversations.send_message")}
             className="shrink-0 cursor-pointer"
           >
-            {isSending ? <Spinner /> : <Send className="size-4" />}
+            <Send className="size-4" />
           </Button>
         </div>
       </div>

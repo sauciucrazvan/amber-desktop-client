@@ -2,8 +2,8 @@ import { API_BASE_URL } from "@/config";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { TFunction } from "i18next";
 import { toast } from "sonner";
-import { readErrorMessage } from "./conversationErrors";
-import type { MessageItem } from "./conversationTypes";
+import { readErrorMessage } from "../errors";
+import type { MessageItem } from "../types";
 
 type UseConversationComposerParams = {
   conversationId?: string;

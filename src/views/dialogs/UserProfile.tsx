@@ -122,10 +122,10 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                 </DialogTitle>
                 <DialogDescription className="inline-flex items-center justify-center gap-1">
                   <Card className="w-full gap-0 mt-2 py-2">
-                    <CardHeader className="inline-flex items-center gap-1 text-md font-bold mt-1">
+                    <CardHeader className="inline-flex items-start gap-1 text-md font-bold mt-1">
                       <Quote size="12" /> {t("profile.bio.title")}
                     </CardHeader>
-                    <CardContent className="italic text-gray-400 mb-2">
+                    <CardContent className="text-start italic text-gray-400 mb-2">
                       {user && user.bio ? user.bio : t("profile.bio.empty")}
                     </CardContent>
                   </Card>

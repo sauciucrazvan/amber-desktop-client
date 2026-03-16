@@ -2,8 +2,7 @@ import AppSidebar from "@/components/common/app-sidebar";
 import Header from "@/components/common/header";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import GetStarted from "./dialogs/GetStarted";
-import ConversationPanel from "./chat/ConversationPanel";
-import { ChatProvider, useChat } from "./chat/ChatContext";
+import { ChatProvider, ConversationPanel, useChat } from "./chat";
 
 function HomepageContent() {
   const { activeChat } = useChat();

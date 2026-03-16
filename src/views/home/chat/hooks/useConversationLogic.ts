@@ -4,7 +4,7 @@ import { useConversationData } from "./useConversationData";
 import { useConversationRealtime } from "./useConversationRealtime";
 import { useConversationComposer } from "./useConversationComposer";
 
-export type { MessageItem } from "./conversationTypes";
+export type { MessageItem } from "../types";
 
 type UseConversationLogicParams = {
   accessToken: string | null;

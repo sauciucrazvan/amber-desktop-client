@@ -179,7 +179,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                           </div>
                         </div>
                       ) : (
-                        <p className="italic text-gray-400">
+                        <p className="text-start italic text-gray-400">
                           {(user.bio ?? "").trim() || t("profile.bio.empty")}
                         </p>
                       )}

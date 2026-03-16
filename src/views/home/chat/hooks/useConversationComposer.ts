@@ -47,6 +47,20 @@ export function useConversationComposer({
   }, [conversationId]);
 
   useEffect(() => {
+    if (!conversationId) return;
+
+    const timeoutId = window.setTimeout(() => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+      textarea.focus();
+      const length = textarea.value.length;
+      textarea.setSelectionRange(length, length);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [conversationId]);
+
+  useEffect(() => {
     if (!replyTo) return;
     const timeoutId = window.setTimeout(() => {
       const textarea = textareaRef.current;

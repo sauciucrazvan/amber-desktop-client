@@ -209,6 +209,13 @@
         "updated": "Numele complet a fost actualizat cu succes. Următoarea schimbare este disponibilă peste o săptămână.",
         "tooSoon": "Ai atins limita de schimbări. Vei putea modifica numele în <time>{{days}}</time> zile."
       },
+      "manage": {
+        "title": "Gestionează detaliile contului",
+        "description": "Actualizează numele afișat, emailul și parola dintr-un singur loc."
+      },
+      "actions": {
+        "title": "Acțiuni"
+      },
       "bio": {
         "too_long": "Limitează-te la 256 de caractere.",
         "updated": "Biografia ta a fost actualizată cu succes!"

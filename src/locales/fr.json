@@ -209,6 +209,13 @@
         "updated": "Nom complet mis à jour avec succès. Prochaine modification disponible dans une semaine.",
         "tooSoon": "Vous avez atteint votre limite de modification. Vous pourrez modifier votre nom dans <time>{{days}}</time> jours."
       },
+      "manage": {
+        "title": "Gérer les informations du compte",
+        "description": "Mettez à jour votre nom d'affichage, votre e-mail et votre mot de passe au même endroit."
+      },
+      "actions": {
+        "title": "Actions"
+      },
       "bio": {
         "too_long": "Limitez-vous à 256 caractères.",
         "updated": "Votre bio a été mise à jour avec succès !"

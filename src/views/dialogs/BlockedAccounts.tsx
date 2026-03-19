@@ -12,10 +12,14 @@ import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { API_BASE_URL } from "@/config";
 import { X } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
+
+interface Props {
+  children?: React.ReactNode;
+}
 
 type BlockedItem = {
   user: {
@@ -35,7 +39,7 @@ async function readErrorMessage(res: Response) {
   return `unblock failed (${res.status})`;
 }
 
-export default function BlockedAccounts() {
+export default function BlockedAccounts({ children }: Props) {
   const [open, setOpen] = useState(false);
   const [actionUserId, setActionUserId] = useState<number | null>(null);
 
@@ -95,13 +99,15 @@ export default function BlockedAccounts() {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button className="cursor-pointer" variant="link">
-            {t("contacts.blocked.trigger")} (
-            {blockedCount > 99 ? "99+" : blockedCount})
-          </Button>
+          {children ?? (
+            <Button className="cursor-pointer" variant="link">
+              {t("contacts.blocked.trigger")} (
+              {blockedCount > 99 ? "99+" : blockedCount})
+            </Button>
+          )}
         </DialogTrigger>
 
-        <DialogContent className="sm:max-w-125 max-h-100 min-h-0 flex flex-col items-start justify-start">
+        <DialogContent className="w-[calc(100vw-2rem)] max-h-[85vh] min-h-0 overflow-hidden sm:max-w-125 flex flex-col items-start justify-start">
           <DialogHeader>
             <DialogTitle>{t("contacts.blocked.title")}</DialogTitle>
             <DialogDescription>
@@ -128,14 +134,14 @@ export default function BlockedAccounts() {
                       key={`${req.user.id}-${req.created_at}`}
                       className="w-full flex items-center justify-between gap-2"
                     >
-                      <div className="min-w-0 flex items-center gap-2">
-                        <div className="min-w-0">
+                      <div className="min-w-0 flex-1 flex items-center gap-2">
+                        <div className="min-w-0 w-full">
                           <div className="text-sm font-medium truncate">
                             @{req.user.username}
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex shrink-0 items-center gap-2">
                         <Button
                           size="sm"
                           variant="outline"

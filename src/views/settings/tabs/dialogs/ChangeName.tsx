@@ -82,7 +82,7 @@ export default function ChangeName({ children }: Props) {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <form>
+        <form className="w-full">
           <DialogTrigger asChild>{children}</DialogTrigger>
           <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col gap-4 p-0">
             <div className="flex flex-1 flex-col gap-4 px-6 pt-6">

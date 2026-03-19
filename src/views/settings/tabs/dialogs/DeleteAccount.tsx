@@ -14,7 +14,11 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function DeleteAccount() {
+interface Props {
+  children: React.ReactNode;
+}
+
+export default function DeleteAccount({ children }: Props) {
   const { t } = useTranslation();
   const { accessToken, isAuthenticated, logout } = useAuth();
   const [open, setOpen] = useState(false);
@@ -59,14 +63,10 @@ export default function DeleteAccount() {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <form>
-          <DialogTrigger asChild>
-            <Button variant="link" className="cursor-pointer">
-              {t("settings.account.delete.title")}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col gap-4 p-0">
-            <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+        <form className="w-full">
+          <DialogTrigger asChild>{children}</DialogTrigger>
+          <DialogContent className="w-[calc(100vw-2rem)] max-h-[85vh] min-h-50 overflow-hidden sm:max-w-125 flex flex-col gap-4 p-0">
+            <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 pt-6">
               <DialogHeader>
                 <DialogTitle>{t("settings.account.delete.title")}</DialogTitle>
                 <DialogDescription>
@@ -87,10 +87,12 @@ export default function DeleteAccount() {
                 }}
               />
 
-              {error && <p className="text-red-500">{t(error)}</p>}
+              {error && (
+                <p className="wrap-break-word text-red-500">{t(error)}</p>
+              )}
             </div>
 
-            <section className="mt-auto w-full flex items-center justify-end gap-1 border-t bg-muted/50 px-6 py-4">
+            <section className="mt-auto w-full flex flex-wrap items-center justify-end gap-1 border-t bg-muted/50 px-4 py-3 sm:px-6 sm:py-4">
               <Button
                 variant="outline"
                 className="cursor-pointer"

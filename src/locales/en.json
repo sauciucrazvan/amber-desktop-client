@@ -209,6 +209,14 @@
         "updated": "Successfully updated your full name. Next change available in a week.",
         "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
       },
+      "manage": {
+        "title": "Manage account details",
+        "short_title": "Manage",
+        "description": "Update your display name, email, and password from one place."
+      },
+      "actions": {
+        "title": "Actions"
+      },
       "bio": {
         "too_long": "Limit yourself to 256 characters.",
         "updated": "Successfully updated your bio!"
@@ -282,7 +290,7 @@
     },
     "blocked": {
       "unreachable": "This user is unreachable. Check if you've blocked them.",
-      "trigger": "Manage blocked contacts",
+      "trigger": "Manage Blocked Contacts",
       "title": "Blocked contacts",
       "description": "Manage the contacts you've blocked.",
       "none": "No blocked contacts",

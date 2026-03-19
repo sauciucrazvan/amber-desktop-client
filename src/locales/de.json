@@ -209,6 +209,13 @@
         "updated": "Vollständiger Name erfolgreich aktualisiert. Nächste Änderung in einer Woche möglich.",
         "tooSoon": "Du hast dein Änderungslimit erreicht. Du kannst deinen Namen in <time>{{days}}</time> Tagen wieder ändern."
       },
+      "manage": {
+        "title": "Kontodaten verwalten",
+        "description": "Aktualisiere deinen Anzeigenamen, deine E-Mail und dein Passwort an einem Ort."
+      },
+      "actions": {
+        "title": "Aktionen"
+      },
       "bio": {
         "too_long": "Bitte auf 256 Zeichen begrenzen.",
         "updated": "Deine Bio wurde erfolgreich aktualisiert!"

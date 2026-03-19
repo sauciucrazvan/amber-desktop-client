@@ -11,11 +11,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { API_BASE_URL } from "@/config";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function ChangePassword() {
+interface Props {
+  children?: React.ReactNode;
+}
+
+export default function ChangePassword({ children }: Props) {
   const { t } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
 
@@ -72,14 +76,16 @@ export default function ChangePassword() {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <form>
+        <form className="w-full">
           <DialogTrigger asChild>
-            <Button variant="link" className="cursor-pointer">
-              {t("settings.account.password.title")}
-            </Button>
+            {children ?? (
+              <Button variant="link" className="cursor-pointer">
+                {t("settings.account.password.title")}
+              </Button>
+            )}
           </DialogTrigger>
-          <DialogContent className="sm:max-w-125 min-h-50 max-h-100 flex flex-col gap-4 p-0">
-            <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
+          <DialogContent className="w-[calc(100vw-2rem)] max-h-[85vh] min-h-50 overflow-hidden sm:max-w-125 flex flex-col gap-4 p-0">
+            <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 pt-6">
               <DialogHeader>
                 <DialogTitle>
                   {t("settings.account.password.title")}
@@ -140,11 +146,13 @@ export default function ChangePassword() {
                 </section>
               )}
 
-              {error && <p className="text-red-500">{t(error)}</p>}
+              {error && (
+                <p className="wrap-break-word text-red-500">{t(error)}</p>
+              )}
             </div>
 
-            <section className="mt-auto w-full flex items-center justify-between gap-4 border-t bg-muted/50 px-6 py-4">
-              <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground">
+            <section className="mt-auto w-full flex flex-wrap items-center gap-2 border-t bg-muted/50 px-4 py-3 sm:px-6 sm:py-4">
+              <div className="inline-flex shrink-0 items-center gap-1 text-2xl cursor-default text-muted-foreground">
                 <div className={stage >= 0 ? "text-foreground" : undefined}>
                   •
                 </div>
@@ -152,8 +160,11 @@ export default function ChangePassword() {
                   •
                 </div>
               </div>
-              <Separator orientation="vertical" className="h-6" />
-              <div className="w-full inline-flex justify-end gap-1">
+              <Separator
+                orientation="vertical"
+                className="hidden h-6 sm:block"
+              />
+              <div className="ml-auto inline-flex w-full flex-wrap justify-end gap-1 sm:w-auto">
                 {stage == 0 && (
                   <Button
                     variant="outline"

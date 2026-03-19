@@ -261,7 +261,7 @@
     "unblocked": "Successfully unblocked {{user}}.",
     "already_added": "{{user}} is already on your list.",
     "not_added": "{{user}} is not in your contacts list.",
-    "already_requested": "Already sent a request to {{user}}.",
+    "already_requested": "There is already a request sent or received from {{user}}.",
     "requested": "Success! Your request to befriend {{user}} has been sent.",
     "no_request": "You did not send a request to {{user}}.",
     "accepted": "You're now friends with {{user}}.",

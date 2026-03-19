@@ -92,7 +92,9 @@ export default function AddContact() {
 
         <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
           <DialogHeader>
-            <DialogTitle>{t("contacts.add.title")}</DialogTitle>
+            <DialogTitle className="text-start">
+              {t("contacts.add.title")}
+            </DialogTitle>
             <DialogDescription>
               {t("contacts.add.description")}
             </DialogDescription>

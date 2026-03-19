@@ -9,6 +9,8 @@ import MyProfile from "@/views/dialogs/MyProfile";
 import { Inbox, MessageCircle, UserRoundPlus } from "lucide-react";
 import type { TFunction } from "i18next";
 import type { AccountMe } from "../types";
+import { Button } from "@/components/ui/button";
+import AddContact from "@/views/dialogs/AddContact";
 
 type SidebarRailProps = {
   railPaddingClass: string;
@@ -29,7 +31,7 @@ export default function SidebarRail({
 }: SidebarRailProps) {
   return (
     <div className={`flex h-full w-10 flex-col ${railPaddingClass}`}>
-      <div className="flex justify-center pt-2">
+      <div className="flex flex-col gap-2 justify-center pt-2">
         <TabsList className="h-auto w-auto flex-col items-center justify-start gap-1 p-0">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -46,26 +48,6 @@ export default function SidebarRail({
             </TooltipTrigger>
             <TooltipContent side={tooltipSide} className="px-2 py-1 text-xs">
               {t("contacts.title")}
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span>
-                <TabsTrigger
-                  value="add-contact"
-                  aria-label={t("contacts.add.title", "Add contact")}
-                  className="flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
-                >
-                  <UserRoundPlus className="size-4" />
-                  <span className="sr-only">
-                    {t("contacts.add.title", "Add contact")}
-                  </span>
-                </TabsTrigger>
-              </span>
-            </TooltipTrigger>
-            <TooltipContent side={tooltipSide} className="px-2 py-1 text-xs">
-              {t("contacts.add.title", "Add contact")}
             </TooltipContent>
           </Tooltip>
 
@@ -94,6 +76,28 @@ export default function SidebarRail({
             </TooltipContent>
           </Tooltip>
         </TabsList>
+
+        <div className="">
+          <Tooltip>
+            <AddContact>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  aria-label={t("contacts.add.title", "Add contact")}
+                  className="border-none text-muted-foreground flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer rounded-lg"
+                >
+                  <UserRoundPlus className="size-4" />
+                  <span className="sr-only">
+                    {t("contacts.add.title", "Add contact")}
+                  </span>
+                </Button>
+              </TooltipTrigger>
+            </AddContact>
+            <TooltipContent side={tooltipSide} className="px-2 py-1 text-xs">
+              {t("contacts.add.title", "Add contact")}
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
 
       <div className="mt-auto w-full inline-flex py-2 items-center justify-center">

@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddContact from "@/views/dialogs/AddContact";
-import { Compass, Send, Sidebar } from "lucide-react";
+import { Compass, Send, Sidebar, UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -38,7 +38,16 @@ export default function GetStarted() {
           <div className="inline-flex items-center gap-1 text-xs">
             <p className="text-xl font-bold mr-2">1</p>
             {t("homepage.conversation.add_contacts")}
-            <AddContact />
+            <AddContact>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                className="cursor-pointer"
+                title={t("contacts.add.title")}
+              >
+                <UserRoundPlus />
+              </Button>
+            </AddContact>
           </div>
 
           <div className="inline-flex items-center gap-1 text-xs">

@@ -1,4 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
+import ErrorBox from "@/components/common/error-box";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
@@ -12,12 +13,15 @@ import {
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
-import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-export default function AddContact() {
+interface Props {
+  children: React.ReactNode;
+}
+
+export default function AddContact({ children }: Props) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [username, setUsername] = useState("");
@@ -79,16 +83,7 @@ export default function AddContact() {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon-sm"
-            className="cursor-pointer"
-            title={t("contacts.add.title")}
-          >
-            <UserRoundPlus />
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
 
         <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col items-start justify-start">
           <DialogHeader>
@@ -125,9 +120,9 @@ export default function AddContact() {
           </Field>
 
           {error && (
-            <p className="text-red-500">
+            <ErrorBox>
               <Trans i18nKey={error} values={{ user: submittedUsername }} />
-            </p>
+            </ErrorBox>
           )}
         </DialogContent>
       </Dialog>

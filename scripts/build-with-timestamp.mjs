@@ -325,7 +325,7 @@ const suffix = getOrdinalSuffix(day);
 const meridiem = hour >= 12 ? "PM" : "AM";
 
 const buildId = `${year}${pad2(month)}${pad2(day)}-${pad2(hour)}${pad2(minute)}`;
-const buildVersion = `${shortYear}.${month}.${day}-${pad2(hour)}${pad2(minute)}`;
+const buildVersion = `${shortYear}.${month}.${day}-h${pad2(hour)}${pad2(minute)}`;
 const buildLabel = `Built on ${monthName} ${day}${suffix}, ${year} at ${pad2(hour)}:${pad2(minute)} ${meridiem}`;
 const buildIso = now.toISOString();
 

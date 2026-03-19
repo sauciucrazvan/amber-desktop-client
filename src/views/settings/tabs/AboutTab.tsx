@@ -183,13 +183,13 @@ export default function AboutTab() {
               {updaterStatus?.message || t("settings.about.updaterUnavailable")}
             </p>
 
-            {updaterStatus?.status === "downloading" ? (
+            {/* {updaterStatus?.status === "downloading" ? (
               <p className="text-xs text-muted-foreground">
                 {t("settings.about.downloadedProgress", {
                   progress: Math.round(updaterStatus.progress),
                 })}
               </p>
-            ) : null}
+            ) : null} */}
 
             <div className="flex flex-wrap items-center gap-2">
               <Button

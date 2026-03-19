@@ -9,18 +9,25 @@ import {
 import { Separator } from "@/components/ui/separator";
 import {
   changeAppLanguage,
-  getInitialLanguage,
   supportedLanguages,
   type SupportedLanguage,
 } from "@/i18n";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function GeneralTab() {
-  const [language, setLanguage] =
-    useState<SupportedLanguage>(getInitialLanguage());
   const [allowTray, setAllowTray] = useState(true);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const activeLanguage = useMemo<SupportedLanguage>(() => {
+    const base = (i18n.resolvedLanguage ?? i18n.language ?? "en")
+      .toLowerCase()
+      .split("-")[0];
+
+    return supportedLanguages.includes(base as SupportedLanguage)
+      ? (base as SupportedLanguage)
+      : "en";
+  }, [i18n.language, i18n.resolvedLanguage]);
 
   const languageOptions = supportedLanguages
     .map((code) => ({
@@ -71,12 +78,11 @@ export default function GeneralTab() {
         </div>
 
         <Select
-          value={language}
+          value={activeLanguage}
           onValueChange={(value) => {
             const next = supportedLanguages.includes(value as SupportedLanguage)
               ? (value as SupportedLanguage)
               : "en";
-            setLanguage(next);
             void changeAppLanguage(next);
           }}
         >

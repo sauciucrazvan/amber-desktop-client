@@ -1,330 +1,292 @@
 {
   "common": {
-    "help": "Help",
-    "info": "Info",
-    "show": "Show",
-    "hide": "Hide",
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "verified": "Verified",
-    "unverified": "Please verify your account first before you use this feature.",
+    "help": "Ayuda",
+    "info": "Información",
+    "show": "Mostrar",
+    "hide": "Ocultar",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "verified": "Verificado",
+    "unverified": "¡Por favor, verifica tu cuenta primero!",
     "errors": {
-      "too_many_requests": "Too many requests! Please try again later."
+      "too_many_requests": "¡Demasiadas solicitudes! ¡Ralentízate!"
     },
-    "online": "Online",
-    "offline": "Offline"
+    "online": "En línea",
+    "offline": "Sin conexión"
   },
   "login": {
-    "registerPrompt": "Don't have an account?",
-    "registerLink": "Register",
-    "title": "Login into your account",
-    "subtitle": "Enter your credentials below to login",
-    "usernamePlaceholder": "Your username",
-    "passwordPlaceholder": "Your password",
-    "signIn": "Sign in",
-    "forgotPassword": "Forgot password?",
-    "fillInput": "Fill in the input fields",
-    "incorrectCredentials": "Incorrect username or password.",
-    "greeting": "Welcome back!",
-    "account_disabled": "This account has been deleted.",
+    "registerPrompt": "¿No tienes una cuenta?",
+    "registerLink": "Registrarse",
+    "title": "Inicia sesión en tu cuenta",
+    "subtitle": "Introduce tus credenciales para iniciar sesión",
+    "usernamePlaceholder": "Tu nombre de usuario",
+    "passwordPlaceholder": "Tu contraseña",
+    "signIn": "Iniciar sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "fillInput": "Rellena los campos",
+    "incorrectCredentials": "Nombre de usuario o contraseña incorrectos.",
+    "greeting": "¡Bienvenido de nuevo!",
+    "account_disabled": "Esta cuenta ha sido eliminada.",
     "recovery": {
-      "title": "Recover your password",
-      "description": "You can make a request every 30 minutes.",
-      "username": "Username",
-      "code": "Recovery code",
-      "password": "New Password",
-      "invalid_username": "Invalid username",
-      "invalid_code": "The code you entered either expired or is invalid.",
-      "invalid_password": "Invalid password",
-      "too_soon": "You can request a password change every 30 minutes.",
-      "too_late": "The code you used already expired. Request a new password change.",
-      "different_passwords": "The passwords do not match.",
-      "sent": "The recovery code has been sent to your email. Please check your inbox (spam too!)",
-      "success": "You've succesfully changed your password. Please log in.",
+      "title": "Recupera tu contraseña",
+      "description": "Puedes hacer una solicitud cada 30 minutos.",
+      "username": "Nombre de usuario",
+      "code": "Código de recuperación",
+      "password": "Nueva contraseña",
+      "invalid_username": "Nombre de usuario inválido",
+      "invalid_code": "El código que ingresaste ha expirado o es inválido.",
+      "invalid_password": "Contraseña inválida",
+      "too_soon": "Puedes solicitar un cambio de contraseña cada 30 minutos.",
+      "too_late": "El código que usaste ya expiró. Solicita un nuevo cambio de contraseña.",
+      "different_passwords": "Las contraseñas no coinciden.",
+      "sent": "El código de recuperación ha sido enviado a tu correo. Por favor, revisa tu bandeja de entrada (¡incluso spam!).",
+      "success": "Has cambiado tu contraseña exitosamente. Por favor, inicia sesión.",
       "action": {
-        "next": "Next",
-        "finish": "Finish",
-        "back": "Back"
+        "next": "Siguiente",
+        "finish": "Finalizar",
+        "back": "Atrás"
       }
     }
   },
   "register": {
-    "loginPrompt": "Already have an account?",
-    "loginLink": "Login",
-    "title": "Create an account",
-    "subtitle": "Enter your info below to create your account",
-    "usernamePlaceholder": "Unique username",
-    "usernameHint": "Only letters and numbers are allowed.",
-    "fullnamePlaceholder": "Display name",
-    "emailPlaceholder": "Your email address",
-    "emailHint": "We'll use this to verify you",
-    "passwordPlaceholder": "Enter password",
-    "passwordHint": "Password must be at least 8 characters",
-    "createAccount": "Create your account",
-    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
-    "fillInput": "Fill in the input fields",
-    "invalidUsername": "Invalid username. Must contain no spaces or special characters. Maximum length is 16.",
-    "invalidPassword": "Invalid password. Must be at least 8 characters long, have at least one lowercase letter, one uppercase letter and one digit.",
-    "nameRequired": "Full name required.",
-    "emailRequired": "Email is required",
-    "invalidName": "Your display name cannot be more than 32 characters!",
-    "invalidEmail": "Invalid email.",
-    "emailTaken": "Email already registered!",
-    "usernameTaken": "Username already taken.",
-    "greeting": "Welcome to Amber!",
+    "loginPrompt": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "title": "Crear una cuenta",
+    "subtitle": "Introduce tu información para crear tu cuenta",
+    "usernamePlaceholder": "Nombre de usuario único",
+    "usernameHint": "Solo se permiten letras y números.",
+    "fullnamePlaceholder": "Nombre para mostrar",
+    "emailPlaceholder": "Tu correo electrónico",
+    "emailHint": "Lo usaremos para verificarte",
+    "passwordPlaceholder": "Introduce la contraseña",
+    "passwordHint": "La contraseña debe tener al menos 8 caracteres",
+    "createAccount": "Crear tu cuenta",
+    "terms": "Al continuar, aceptas nuestros <terms>Términos de servicio</terms> y nuestra <privacy>Política de privacidad</privacy>.",
+    "fillInput": "Rellena los campos",
+    "invalidUsername": "Nombre de usuario no válido. No debe contener espacios ni caracteres especiales. La longitud máxima es 16.",
+    "invalidPassword": "Contraseña no válida. Debe tener al menos 8 caracteres, al menos una letra minúscula, una mayúscula y un dígito.",
+    "nameRequired": "Se requiere el nombre completo.",
+    "emailRequired": "El correo electrónico es obligatorio",
+    "invalidName": "El nombre completo debe contener tu nombre y apellido.",
+    "invalidEmail": "Correo electrónico no válido.",
+    "emailTaken": "¡El correo electrónico ya está registrado!",
+    "usernameTaken": "El nombre de usuario ya está en uso.",
+    "greeting": "¡Bienvenido a Amber!",
     "verify": {
-      "title": "Verify Your Account",
+      "title": "Verifica tu cuenta",
       "description": {
-        "step_one": "We'll send an email with a verification code.",
-        "step_two": "Please enter the code we sent to your email."
+        "step_one": "Te enviaremos un correo electrónico con un código de verificación.",
+        "step_two": "Introduce el código que te enviamos por correo electrónico."
       },
-      "not_verified": "Your account is not verified.",
-      "verify_now": "Verify now",
-      "already_verified": "You are already verified",
-      "too_soon": "A verification email has been already sent. Retry in 30 minutes.",
-      "email_sent": "A verification email has been sent. Please check your inbox (spam too!)",
-      "invalid_code": "The code you provided is invalid",
-      "too_late": "Your verification code has already expired, please retry.",
-      "success": "Your account is verified. It might take a moment to update.",
+      "not_verified": "Tu cuenta no está verificada.",
+      "verify_now": "Verificar ahora",
+      "already_verified": "Ya estás verificado",
+      "too_soon": "Ya se ha enviado un correo de verificación. Reintenta en 30 minutos.",
+      "email_sent": "Se ha enviado un correo de verificación. Por favor, revisa tu bandeja de entrada (¡incluso spam!).",
+      "invalid_code": "El código que proporcionaste es inválido",
+      "too_late": "Tu código de verificación ya ha expirado, por favor reintenta.",
+      "success": "Tu cuenta está verificada. Podría tomar un momento actualizarse.",
       "action": {
-        "back": "Back",
-        "finish": "Verify",
-        "next": "Send"
+        "back": "Atrás",
+        "finish": "Verificar",
+        "next": "Enviar"
       }
     }
   },
   "settings": {
-    "title": "Settings",
-    "description": "Application settings",
+    "title": "Ajustes",
+    "description": "Ajustes de la aplicación",
     "tabs": {
       "general": "General",
-      "appearance": "Appearance",
-      "account": "Account",
-      "about": "About"
+      "appearance": "Apariencia",
+      "account": "Cuenta",
+      "about": "Acerca de"
     },
     "general": {
       "language": {
-        "title": "Language",
-        "description": "Choose the application language",
+        "title": "Idioma",
+        "description": "Elige el idioma de la aplicación",
         "options": {
-          "en": "English",
-          "ro": "Romanian",
-          "de": "German",
-          "fr": "French",
-          "es": "Spanish",
-          "zh": "Chinese",
-          "ja": "Japanese",
-          "it": "Italian"
+          "en": "Inglés",
+          "ro": "Rumano",
+          "de": "Alemán",
+          "fr": "Francés",
+          "es": "Español",
+          "zh": "Chino",
+          "ja": "Japonés",
+          "it": "Italiano"
         }
       },
       "tray": {
-        "title": "Minimize to tray",
-        "description": "When disabled, closing the app will quit instead of hiding it."
+        "title": "Minimizar a la bandeja",
+        "description": "Si está desactivado, al cerrar la app se saldrá."
       },
       "help": {
-        "title": "Help",
-        "description": "Found an issue or need help with something?",
-        "action": "Support"
+        "title": "Ayuda",
+        "description": "¿Encontraste un problema o necesitas ayuda con algo?",
+        "action": "Soporte"
       },
       "feedback": {
-        "title": "Feedback",
-        "description": "Help us improve",
-        "action": "Feedback"
+        "title": "Comentarios",
+        "description": "Ayúdanos a mejorar",
+        "action": "Comentarios"
       }
     },
     "appearance": {
       "theme": {
-        "title": "Theme",
-        "description": "This changes the entire application theme."
+        "title": "Tema",
+        "description": "Esto cambia el tema de toda la aplicación."
       },
       "scaling": {
-        "title": "Scaling",
-        "description": "Fit more content on your screen.",
-        "label": "Scaling",
-        "defaultSuffix": "(default)"
+        "title": "Escala",
+        "description": "Muestra más contenido en tu pantalla.",
+        "label": "Escala",
+        "defaultSuffix": "(predeterminado)"
       },
       "sidebarPosition": {
-        "title": "Sidebar Position",
-        "description": "Change the sidebar position",
-        "label": "Positions",
+        "title": "Posición de la barra lateral",
+        "description": "Cambiar la posición de la barra lateral",
+        "label": "Posiciones",
         "options": {
-          "left": "Left",
-          "right": "Right"
+          "left": "Izquierda",
+          "right": "Derecha"
         }
       }
     },
     "account": {
       "signOut": {
-        "title": "Sign out",
-        "description": "Are you sure you want to sign out? You'll be redirected to the login page.",
-        "action": "Sign out",
-        "toast": "Logged out succesfully"
+        "title": "Cerrar sesión",
+        "description": "¿Seguro que quieres cerrar sesión? Serás redirigido a la página de inicio de sesión.",
+        "action": "Cerrar sesión",
+        "toast": "Sesión cerrada correctamente"
       },
       "delete": {
-        "title": "Delete Account",
-        "description": "Permanently erases all of your data. This action can not be reversed by support.",
-        "action": "Delete",
-        "toast": "Succesfully deleted your account"
+        "title": "Eliminar cuenta",
+        "description": "Elimina permanentemente todos tus datos. Esta acción no puede ser revertida por soporte.",
+        "action": "Eliminar",
+        "toast": "Cuenta eliminada correctamente"
       },
       "data": {
-        "title": "Request Personal Data",
-        "description": "Request all the data we have about you",
-        "action": "Request",
-        "too_soon": "You can request your data every week.",
-        "toast": "Your requested data has been sent to your email. Please check your inbox (spam too!)"
+        "title": "Solicitar datos personales",
+        "description": "Solicita todos los datos que tenemos sobre ti",
+        "action": "Solicitar",
+        "too_soon": "Puedes solicitar tus datos cada semana.",
+        "toast": "Tus datos solicitados han sido enviados a tu correo electrónico. Por favor, revisa tu bandeja de entrada (¡incluso spam!)"
       },
       "password": {
-        "title": "Change Password",
-        "description": "Modify your password. Remember, you have to use at least a lower-case and an upper-case character, a number and a special character.",
-        "action": "Change",
-        "different": "The passwords do not match.",
-        "updated": "Successfully updated your password.",
-        "current_password": "Current password",
-        "new_password": "New password",
-        "new_password_confirmation": "New password confirmation"
+        "title": "Cambiar contraseña",
+        "description": "Modifica tu contraseña. Recuerda: debes usar al menos una letra minúscula y una mayúscula, un número y un carácter especial.",
+        "action": "Cambiar",
+        "different": "Las contraseñas no coinciden.",
+        "updated": "Tu contraseña se actualizó correctamente.",
+        "current_password": "Contraseña actual",
+        "new_password": "Nueva contraseña",
+        "new_password_confirmation": "Confirmación de la nueva contraseña"
       },
       "email": {
-        "title": "Change Email",
-        "description": "Change your account's email. Make sure it is valid.",
-        "request_description": "Enter your new email and password. We'll send you verification codes to confirm and finish the change.",
-        "confirm_description": "Enter the confirmation code sent to your current email to continue.",
-        "verify_description": "Enter the verification code sent to: <b>{{email}}</b>",
-        "confirm_code": "Confirmation code",
-        "verify_code": "Verification code",
-        "same": "You can't change your email to your current one.",
-        "no_pending": "There is no pending email change request.",
-        "not_confirmed": "The email change has not been confirmed yet.",
-        "already_confirmed": "The email change has already been confirmed.",
-        "too_late": "Your verification code has expired. Please start again.",
-        "too_soon": "You can request a new email change every half an hour.",
-        "invalid_code": "Invalid verification code.",
-        "verify_sent": "A verification code has been sent to your email. Please check your inbox (spam too!)",
-        "updated": "Successfully updated your email address!"
+        "title": "Cambiar correo electrónico",
+        "description": "Cambia el correo electrónico de tu cuenta. Asegúrate de que sea válido.",
+        "request_description": "Introduce tu nuevo correo y contraseña. Te enviaremos códigos de verificación para confirmar y finalizar el cambio.",
+        "confirm_description": "Introduce el código de confirmación para continuar.",
+        "verify_description": "Introduce el código de verificación para finalizar el cambio de correo.",
+        "confirm_code": "Código de confirmación",
+        "verify_code": "Código de verificación",
+        "same": "No puedes cambiar tu correo electrónico por el actual.",
+        "no_pending": "No hay una solicitud de cambio de correo pendiente.",
+        "not_confirmed": "El cambio de correo aún no está confirmado.",
+        "already_confirmed": "El cambio de correo ya está confirmado.",
+        "too_late": "Tu código de verificación ha caducado. Por favor, vuelve a intentarlo.",
+        "too_soon": "Puedes solicitar un nuevo cambio de correo cada media hora.",
+        "invalid_code": "Código de verificación inválido.",
+        "verify_sent": "Se envió un código de verificación a tu correo. Revisa tu bandeja de entrada (¡también spam!).",
+        "updated": "¡Correo electrónico actualizado correctamente!"
       },
       "name": {
-        "title": "Change Display Name",
-        "description": "This action is available only once every week.",
-        "action": "Change",
-        "same": "Can't update full name to your current one.",
-        "updated": "Successfully updated your full name. Next change available in a week.",
-        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
+        "title": "Cambiar nombre para mostrar",
+        "description": "Esta acción solo está disponible una vez por semana.",
+        "action": "Cambiar",
+        "same": "No puedes actualizar el nombre completo al actual.",
+        "updated": "Nombre completo actualizado correctamente. El próximo cambio estará disponible en una semana.",
+        "tooSoon": "Has alcanzado tu límite de cambios. Podrás modificar tu nombre en <time>{{days}}</time> días."
       },
       "bio": {
-        "too_long": "Limit yourself to 256 characters.",
-        "updated": "Successfully updated your bio!"
-      }
-    },
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
+        "too_long": "Limítate a 256 caracteres.",
+        "updated": "¡Tu biografía se actualizó correctamente!"
       }
     }
   },
   "contacts": {
-    "title": "Chats",
-    "none": "No contacts yet",
-    "failed_loading": "Failed to load contacts",
-    "profile": "Profile",
-    "block": "Block",
-    "remove": "Remove",
-    "invalid_user": "Couldn't find @{{user}}. Did you type it correctly?",
-    "not_found": "Could not find contact.",
-    "removed": "Successfully removed contact.",
-    "yourself": "You cannot perform this action on yourself.",
-    "not_blocked": "This user is not blocked.",
-    "unblock": "Unblock",
-    "unblocked": "Successfully unblocked {{user}}.",
-    "already_added": "{{user}} is already on your list.",
-    "not_added": "{{user}} is not in your contacts list.",
-    "already_requested": "Already sent a request to {{user}}.",
-    "requested": "Success! Your request to befriend {{user}} has been sent.",
-    "no_request": "You did not send a request to {{user}}.",
-    "accepted": "You're now friends with {{user}}.",
-    "declined": "You've declined {{user}}'s request.",
+    "title": "Contactos",
+    "none": "Aún no hay contactos",
+    "failed_loading": "No se pudieron cargar los contactos",
+    "profile": "Perfil",
+    "block": "Bloquear",
+    "remove": "Eliminar",
+    "invalid_user": "No se encontró ninguna coincidencia para {{user}}.",
+    "not_found": "No se pudo encontrar el contacto.",
+    "removed": "Contacto eliminado correctamente.",
+    "yourself": "No puedes realizar esta acción contigo mismo.",
+    "not_blocked": "Este usuario no está bloqueado.",
+    "unblock": "Desbloquear",
+    "unblocked": "{{user}} ha sido desbloqueado correctamente.",
+    "already_added": "{{user}} ya está en tu lista.",
+    "not_added": "{{user}} no está en tu lista de contactos.",
+    "already_requested": "Ya enviaste una solicitud a {{user}}.",
+    "requested": "¡Listo! Se ha enviado tu solicitud de amistad a {{user}}.",
+    "no_request": "No enviaste una solicitud a {{user}}.",
+    "accepted": "Ahora eres amigo de {{user}}.",
+    "declined": "Has rechazado la solicitud de {{user}}.",
     "add": {
-      "title": "Add Friends",
-      "description": "You can add friends with their Amber username.",
-      "action": "Add",
-      "username": "Username"
+      "title": "Añadir un contacto",
+      "description": "Puedes añadir contactos usando su nombre de usuario de Amber.",
+      "action": "Añadir",
+      "username": "Nombre de usuario"
     },
     "requests": {
-      "title": "Requests",
-      "description": "Accept or decline any friendship requests you've received.",
-      "none": "No requests received at the moment.",
-      "accept": "Accept",
-      "decline": "Decline",
-      "notification": "<b>@{{user}}</b> wants to be your friend."
+      "title": "Solicitudes",
+      "description": "Acepta o rechaza las solicitudes de amistad que hayas recibido.",
+      "none": "No se recibieron solicitudes por el momento",
+      "accept": "Aceptar",
+      "decline": "Rechazar",
+      "notification": "<b>@{{user}}</b> quiere ser tu amigo."
     },
     "blocked": {
-      "unreachable": "This user is unreachable. Check if you've blocked them.",
-      "trigger": "Manage blocked contacts",
-      "title": "Blocked contacts",
-      "description": "Manage the contacts you've blocked.",
-      "none": "No blocked contacts",
-      "success": "Successfully blocked {{user}}."
+      "unreachable": "Este usuario no está disponible. Comprueba si lo has bloqueado.",
+      "trigger": "Administrar contactos bloqueados",
+      "title": "Contactos bloqueados",
+      "description": "Administra los contactos que has bloqueado.",
+      "none": "No hay contactos bloqueados",
+      "success": "{{user}} ha sido bloqueado correctamente."
     }
   },
   "account": {
     "verify": {
-      "notice": "Verify your account to unlock full features."
+      "notice": "Verifica tu cuenta para desbloquear todas las funciones."
     }
   },
   "homepage": {
     "conversation": {
-      "title": "Start a conversation",
-      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking the button on the right and entering their Amber username.",
-      "select": "Select a contact in the sidebar and click their name. This will open the conversation view.",
-      "message": "You can message them by typing your message in the input field and pressing Send."
+      "title": "Iniciar una conversación",
+      "add_contacts": "Empecemos añadiendo a tus amigos. Puedes agregarlos fácilmente haciendo clic en el botón de la derecha e introduciendo su nombre de usuario de Amber.",
+      "select": "Selecciona un contacto en la barra lateral y haz clic en su nombre. Esto abrirá la vista de conversación.",
+      "message": "Puedes enviarles un mensaje escribiéndolo en el campo de texto y pulsando Enviar."
     },
-    "file": "Send a file"
+    "file": "Enviar un archivo"
   },
   "conversations": {
-    "you": "You",
-    "edited": "Edited",
-    "no_messages": "No messages yet.",
-    "type_message": "Type a message",
-    "send_message": "Send message",
-    "error": {
-      "failed_loading": "Failed loading chat",
-      "failed_sending": "Failed sending message",
-      "not_participating": "You are not participating in this conversation.",
-      "too_long": "The message can not exceed 2048 characters.",
-      "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
-      "no_permission": "You do not have permission to do that!",
-      "no_relation": "You are not friends with this users or they've blocked you."
-    }
+    "no_messages": "Aún no hay mensajes.",
+    "type_message": "Escribe un mensaje",
+    "send_message": "Enviar mensaje",
+    "failed_loading": "No se pudo cargar el chat",
+    "failed_sending": "No se pudo enviar el mensaje",
+    "not_participating": "No participas en esta conversación."
   },
   "profile": {
     "bio": {
-      "title": "Bio",
-      "empty": "Empty bio.",
+      "title": "Biografía",
+      "empty": "Biografía vacía.",
       "edit": {
-        "title": "Edit bio"
+        "title": "Editar biografía"
       }
     }
   }

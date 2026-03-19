@@ -1,330 +1,292 @@
 {
   "common": {
-    "help": "Help",
-    "info": "Info",
-    "show": "Show",
-    "hide": "Hide",
-    "submit": "Submit",
-    "cancel": "Cancel",
-    "verified": "Verified",
-    "unverified": "Please verify your account first before you use this feature.",
+    "help": "帮助",
+    "info": "信息",
+    "show": "显示",
+    "hide": "隐藏",
+    "submit": "提交",
+    "cancel": "取消",
+    "verified": "已验证",
+    "unverified": "请先验证你的账号！",
     "errors": {
-      "too_many_requests": "Too many requests! Please try again later."
+      "too_many_requests": "请求过多！请减速！"
     },
-    "online": "Online",
-    "offline": "Offline"
+    "online": "在线",
+    "offline": "离线"
   },
   "login": {
-    "registerPrompt": "Don't have an account?",
-    "registerLink": "Register",
-    "title": "Login into your account",
-    "subtitle": "Enter your credentials below to login",
-    "usernamePlaceholder": "Your username",
-    "passwordPlaceholder": "Your password",
-    "signIn": "Sign in",
-    "forgotPassword": "Forgot password?",
-    "fillInput": "Fill in the input fields",
-    "incorrectCredentials": "Incorrect username or password.",
-    "greeting": "Welcome back!",
-    "account_disabled": "This account has been deleted.",
+    "registerPrompt": "还没有账号？",
+    "registerLink": "注册",
+    "title": "登录你的账号",
+    "subtitle": "请输入你的凭据以登录",
+    "usernamePlaceholder": "你的用户名",
+    "passwordPlaceholder": "你的密码",
+    "signIn": "登录",
+    "forgotPassword": "忘记密码？",
+    "fillInput": "请填写输入框",
+    "incorrectCredentials": "用户名或密码不正确。",
+    "greeting": "欢迎回来！",
+    "account_disabled": "该账号已被删除。",
     "recovery": {
-      "title": "Recover your password",
-      "description": "You can make a request every 30 minutes.",
-      "username": "Username",
-      "code": "Recovery code",
-      "password": "New Password",
-      "invalid_username": "Invalid username",
-      "invalid_code": "The code you entered either expired or is invalid.",
-      "invalid_password": "Invalid password",
-      "too_soon": "You can request a password change every 30 minutes.",
-      "too_late": "The code you used already expired. Request a new password change.",
-      "different_passwords": "The passwords do not match.",
-      "sent": "The recovery code has been sent to your email. Please check your inbox (spam too!)",
-      "success": "You've succesfully changed your password. Please log in.",
+      "title": "恢复你的密码",
+      "description": "你可以每 30 分钟进行一次请求。",
+      "username": "用户名",
+      "code": "恢复代码",
+      "password": "新密码",
+      "invalid_username": "无效的用户名",
+      "invalid_code": "你输入的代码已过期或无效。",
+      "invalid_password": "无效的密码",
+      "too_soon": "你可以每 30 分钟请求一次密码更改。",
+      "too_late": "你使用的代码已经过期。请请求新的密码更改。",
+      "different_passwords": "密码不匹配。",
+      "sent": "恢复代码已发送至你的邮箱。请检查收件箱（包括垃圾邮件！）。",
+      "success": "你已成功更改密码。请登录。",
       "action": {
-        "next": "Next",
-        "finish": "Finish",
-        "back": "Back"
+        "next": "下一步",
+        "finish": "完成",
+        "back": "返回"
       }
     }
   },
   "register": {
-    "loginPrompt": "Already have an account?",
-    "loginLink": "Login",
-    "title": "Create an account",
-    "subtitle": "Enter your info below to create your account",
-    "usernamePlaceholder": "Unique username",
-    "usernameHint": "Only letters and numbers are allowed.",
-    "fullnamePlaceholder": "Display name",
-    "emailPlaceholder": "Your email address",
-    "emailHint": "We'll use this to verify you",
-    "passwordPlaceholder": "Enter password",
-    "passwordHint": "Password must be at least 8 characters",
-    "createAccount": "Create your account",
-    "terms": "By clicking continue, you agree to our <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>.",
-    "fillInput": "Fill in the input fields",
-    "invalidUsername": "Invalid username. Must contain no spaces or special characters. Maximum length is 16.",
-    "invalidPassword": "Invalid password. Must be at least 8 characters long, have at least one lowercase letter, one uppercase letter and one digit.",
-    "nameRequired": "Full name required.",
-    "emailRequired": "Email is required",
-    "invalidName": "Your display name cannot be more than 32 characters!",
-    "invalidEmail": "Invalid email.",
-    "emailTaken": "Email already registered!",
-    "usernameTaken": "Username already taken.",
-    "greeting": "Welcome to Amber!",
+    "loginPrompt": "已经有账号？",
+    "loginLink": "登录",
+    "title": "创建账号",
+    "subtitle": "请输入以下信息来创建你的账号",
+    "usernamePlaceholder": "唯一用户名",
+    "usernameHint": "仅允许字母和数字。",
+    "fullnamePlaceholder": "显示名称",
+    "emailPlaceholder": "你的邮箱地址",
+    "emailHint": "我们将用它来验证你",
+    "passwordPlaceholder": "输入密码",
+    "passwordHint": "密码至少需要 8 个字符",
+    "createAccount": "创建账号",
+    "terms": "继续即表示你同意我们的<terms>服务条款</terms>和<privacy>隐私政策</privacy>。",
+    "fillInput": "请填写输入框",
+    "invalidUsername": "用户名无效。不得包含空格或特殊字符。最大长度为 16。",
+    "invalidPassword": "密码无效。至少 8 个字符，且至少包含 1 个小写字母、1 个大写字母和 1 个数字。",
+    "nameRequired": "必须填写全名。",
+    "emailRequired": "邮箱是必填项",
+    "invalidName": "全名必须包含名和姓。",
+    "invalidEmail": "邮箱格式不正确。",
+    "emailTaken": "该邮箱已被注册！",
+    "usernameTaken": "该用户名已被占用。",
+    "greeting": "欢迎使用 Amber！",
     "verify": {
-      "title": "Verify Your Account",
+      "title": "验证你的账号",
       "description": {
-        "step_one": "We'll send an email with a verification code.",
-        "step_two": "Please enter the code we sent to your email."
+        "step_one": "我们会发送一封包含验证码的邮件。",
+        "step_two": "请输入我们发送到你邮箱的验证码。"
       },
-      "not_verified": "Your account is not verified.",
-      "verify_now": "Verify now",
-      "already_verified": "You are already verified",
-      "too_soon": "A verification email has been already sent. Retry in 30 minutes.",
-      "email_sent": "A verification email has been sent. Please check your inbox (spam too!)",
-      "invalid_code": "The code you provided is invalid",
-      "too_late": "Your verification code has already expired, please retry.",
-      "success": "Your account is verified. It might take a moment to update.",
+      "not_verified": "你的账号未被验证。",
+      "verify_now": "立即验证",
+      "already_verified": "你已被验证",
+      "too_soon": "验证邮件已发送。请在 30 分钟后重试。",
+      "email_sent": "验证邮件已发送。请检查收件箱（包括垃圾邮件！）。",
+      "invalid_code": "你提供的代码无效",
+      "too_late": "你的验证码已过期，请重试。",
+      "success": "你的账号已被验证。可能需要一些时间才能更新。",
       "action": {
-        "back": "Back",
-        "finish": "Verify",
-        "next": "Send"
+        "back": "返回",
+        "finish": "验证",
+        "next": "发送"
       }
     }
   },
   "settings": {
-    "title": "Settings",
-    "description": "Application settings",
+    "title": "设置",
+    "description": "应用设置",
     "tabs": {
-      "general": "General",
-      "appearance": "Appearance",
-      "account": "Account",
-      "about": "About"
+      "general": "通用",
+      "appearance": "外观",
+      "account": "账户",
+      "about": "关于"
     },
     "general": {
       "language": {
-        "title": "Language",
-        "description": "Choose the application language",
+        "title": "语言",
+        "description": "选择应用语言",
         "options": {
-          "en": "English",
-          "ro": "Romanian",
-          "de": "German",
-          "fr": "French",
-          "es": "Spanish",
-          "zh": "Chinese",
-          "ja": "Japanese",
-          "it": "Italian"
+          "en": "英语",
+          "ro": "罗马尼亚语",
+          "de": "德语",
+          "fr": "法语",
+          "es": "西班牙语",
+          "zh": "中文",
+          "ja": "日语",
+          "it": "意大利语"
         }
       },
       "tray": {
-        "title": "Minimize to tray",
-        "description": "When disabled, closing the app will quit instead of hiding it."
+        "title": "最小化到托盘",
+        "description": "关闭时将直接退出应用，而不是隐藏到托盘。"
       },
       "help": {
-        "title": "Help",
-        "description": "Found an issue or need help with something?",
-        "action": "Support"
+        "title": "帮助",
+        "description": "遇到问题或需要帮助处理某些事情？",
+        "action": "支持"
       },
       "feedback": {
-        "title": "Feedback",
-        "description": "Help us improve",
-        "action": "Feedback"
+        "title": "反馈",
+        "description": "帮助我们改进",
+        "action": "反馈"
       }
     },
     "appearance": {
       "theme": {
-        "title": "Theme",
-        "description": "This changes the entire application theme."
+        "title": "主题",
+        "description": "这会改变整个应用的主题。"
       },
       "scaling": {
-        "title": "Scaling",
-        "description": "Fit more content on your screen.",
-        "label": "Scaling",
-        "defaultSuffix": "(default)"
+        "title": "缩放",
+        "description": "在屏幕上显示更多内容。",
+        "label": "缩放",
+        "defaultSuffix": "（默认）"
       },
       "sidebarPosition": {
-        "title": "Sidebar Position",
-        "description": "Change the sidebar position",
-        "label": "Positions",
+        "title": "侧边栏位置",
+        "description": "更改侧边栏位置",
+        "label": "位置",
         "options": {
-          "left": "Left",
-          "right": "Right"
+          "left": "左侧",
+          "right": "右侧"
         }
       }
     },
     "account": {
       "signOut": {
-        "title": "Sign out",
-        "description": "Are you sure you want to sign out? You'll be redirected to the login page.",
-        "action": "Sign out",
-        "toast": "Logged out succesfully"
+        "title": "退出登录",
+        "description": "确定要退出登录吗？你将被重定向到登录页面。",
+        "action": "退出登录",
+        "toast": "已成功退出登录"
       },
       "delete": {
-        "title": "Delete Account",
-        "description": "Permanently erases all of your data. This action can not be reversed by support.",
-        "action": "Delete",
-        "toast": "Succesfully deleted your account"
+        "title": "删除账号",
+        "description": "将永久删除你的所有数据。此操作无法由支持撤销。",
+        "action": "删除",
+        "toast": "账号已成功删除"
       },
       "data": {
-        "title": "Request Personal Data",
-        "description": "Request all the data we have about you",
-        "action": "Request",
-        "too_soon": "You can request your data every week.",
-        "toast": "Your requested data has been sent to your email. Please check your inbox (spam too!)"
+        "title": "请求个人数据",
+        "description": "请求我们所保存的所有关于你的数据",
+        "action": "请求",
+        "too_soon": "你可以每周请求一次你的数据。",
+        "toast": "你请求的数据已发送到你的邮箱。请检查收件箱（包括垃圾邮件！）。"
       },
       "password": {
-        "title": "Change Password",
-        "description": "Modify your password. Remember, you have to use at least a lower-case and an upper-case character, a number and a special character.",
-        "action": "Change",
-        "different": "The passwords do not match.",
-        "updated": "Successfully updated your password.",
-        "current_password": "Current password",
-        "new_password": "New password",
-        "new_password_confirmation": "New password confirmation"
+        "title": "更改密码",
+        "description": "修改你的密码。请注意：至少包含一个小写字母、一个大写字母、一个数字和一个特殊字符。",
+        "action": "更改",
+        "different": "两次输入的密码不一致。",
+        "updated": "密码已成功更新。",
+        "current_password": "当前密码",
+        "new_password": "新密码",
+        "new_password_confirmation": "确认新密码"
       },
       "email": {
-        "title": "Change Email",
-        "description": "Change your account's email. Make sure it is valid.",
-        "request_description": "Enter your new email and password. We'll send you verification codes to confirm and finish the change.",
-        "confirm_description": "Enter the confirmation code sent to your current email to continue.",
-        "verify_description": "Enter the verification code sent to: <b>{{email}}</b>",
-        "confirm_code": "Confirmation code",
-        "verify_code": "Verification code",
-        "same": "You can't change your email to your current one.",
-        "no_pending": "There is no pending email change request.",
-        "not_confirmed": "The email change has not been confirmed yet.",
-        "already_confirmed": "The email change has already been confirmed.",
-        "too_late": "Your verification code has expired. Please start again.",
-        "too_soon": "You can request a new email change every half an hour.",
-        "invalid_code": "Invalid verification code.",
-        "verify_sent": "A verification code has been sent to your email. Please check your inbox (spam too!)",
-        "updated": "Successfully updated your email address!"
+        "title": "更改邮箱",
+        "description": "更改你账号的邮箱。请确保邮箱有效。",
+        "request_description": "请输入新邮箱和密码。我们会发送验证码用于确认并完成更改。",
+        "confirm_description": "请输入确认验证码以继续。",
+        "verify_description": "请输入验证验证码以完成邮箱更改。",
+        "confirm_code": "确认验证码",
+        "verify_code": "验证码",
+        "same": "你不能将邮箱更改为当前邮箱。",
+        "no_pending": "没有待处理的邮箱更改请求。",
+        "not_confirmed": "邮箱更改尚未确认。",
+        "already_confirmed": "邮箱更改已确认。",
+        "too_late": "验证码已过期。请重新开始。",
+        "too_soon": "你可以每半小时请求一次新的邮箱更改。",
+        "invalid_code": "验证码无效。",
+        "verify_sent": "验证码已发送到你的邮箱。请检查收件箱（包括垃圾邮件！）。",
+        "updated": "邮箱地址已成功更新！"
       },
       "name": {
-        "title": "Change Display Name",
-        "description": "This action is available only once every week.",
-        "action": "Change",
-        "same": "Can't update full name to your current one.",
-        "updated": "Successfully updated your full name. Next change available in a week.",
-        "tooSoon": "You've reached your change limit. You'll be able to modify your name in <time>{{days}}</time> days."
+        "title": "更改显示名称",
+        "description": "此操作每周仅可使用一次。",
+        "action": "更改",
+        "same": "无法将全名更新为当前全名。",
+        "updated": "显示名称已成功更新。下一次可在一周后更改。",
+        "tooSoon": "你已达到更改次数上限。你可以在 <time>{{days}}</time> 天后修改姓名。"
       },
       "bio": {
-        "too_long": "Limit yourself to 256 characters.",
-        "updated": "Successfully updated your bio!"
-      }
-    },
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
+        "too_long": "请限制在 256 个字符以内。",
+        "updated": "个人简介已成功更新！"
       }
     }
   },
   "contacts": {
-    "title": "Chats",
-    "none": "No contacts yet",
-    "failed_loading": "Failed to load contacts",
-    "profile": "Profile",
-    "block": "Block",
-    "remove": "Remove",
-    "invalid_user": "Couldn't find @{{user}}. Did you type it correctly?",
-    "not_found": "Could not find contact.",
-    "removed": "Successfully removed contact.",
-    "yourself": "You cannot perform this action on yourself.",
-    "not_blocked": "This user is not blocked.",
-    "unblock": "Unblock",
-    "unblocked": "Successfully unblocked {{user}}.",
-    "already_added": "{{user}} is already on your list.",
-    "not_added": "{{user}} is not in your contacts list.",
-    "already_requested": "Already sent a request to {{user}}.",
-    "requested": "Success! Your request to befriend {{user}} has been sent.",
-    "no_request": "You did not send a request to {{user}}.",
-    "accepted": "You're now friends with {{user}}.",
-    "declined": "You've declined {{user}}'s request.",
+    "title": "联系人",
+    "none": "暂无联系人",
+    "failed_loading": "加载联系人失败",
+    "profile": "资料",
+    "block": "拉黑",
+    "remove": "移除",
+    "invalid_user": "未找到与 {{user}} 匹配的用户。",
+    "not_found": "未找到联系人。",
+    "removed": "已成功移除联系人。",
+    "yourself": "你不能对自己执行此操作。",
+    "not_blocked": "该用户未被拉黑。",
+    "unblock": "取消拉黑",
+    "unblocked": "已成功取消拉黑 {{user}}。",
+    "already_added": "{{user}} 已在你的列表中。",
+    "not_added": "{{user}} 不在你的联系人列表中。",
+    "already_requested": "已向 {{user}} 发送过请求。",
+    "requested": "成功！已向 {{user}} 发送好友请求。",
+    "no_request": "你没有向 {{user}} 发送请求。",
+    "accepted": "你已与 {{user}} 成为好友。",
+    "declined": "你已拒绝 {{user}} 的请求。",
     "add": {
-      "title": "Add Friends",
-      "description": "You can add friends with their Amber username.",
-      "action": "Add",
-      "username": "Username"
+      "title": "添加联系人",
+      "description": "你可以使用对方的 Amber 用户名添加联系人。",
+      "action": "添加",
+      "username": "用户名"
     },
     "requests": {
-      "title": "Requests",
-      "description": "Accept or decline any friendship requests you've received.",
-      "none": "No requests received at the moment.",
-      "accept": "Accept",
-      "decline": "Decline",
-      "notification": "<b>@{{user}}</b> wants to be your friend."
+      "title": "请求",
+      "description": "接受或拒绝你收到的好友请求。",
+      "none": "目前没有收到请求。",
+      "accept": "接受",
+      "decline": "拒绝",
+      "notification": "<b>@{{user}}</b> 想和你成为朋友。"
     },
     "blocked": {
-      "unreachable": "This user is unreachable. Check if you've blocked them.",
-      "trigger": "Manage blocked contacts",
-      "title": "Blocked contacts",
-      "description": "Manage the contacts you've blocked.",
-      "none": "No blocked contacts",
-      "success": "Successfully blocked {{user}}."
+      "unreachable": "该用户无法联系。请检查你是否已将其拉黑。",
+      "trigger": "管理已拉黑联系人",
+      "title": "已拉黑联系人",
+      "description": "管理你已拉黑的联系人。",
+      "none": "暂无已拉黑联系人",
+      "success": "已成功拉黑 {{user}}。"
     }
   },
   "account": {
     "verify": {
-      "notice": "Verify your account to unlock full features."
+      "notice": "请先验证你的账户以解锁全部功能。"
     }
   },
   "homepage": {
     "conversation": {
-      "title": "Start a conversation",
-      "add_contacts": "Let's start by adding your friends. You can easily add them by clicking the button on the right and entering their Amber username.",
-      "select": "Select a contact in the sidebar and click their name. This will open the conversation view.",
-      "message": "You can message them by typing your message in the input field and pressing Send."
+      "title": "开始对话",
+      "add_contacts": "让我们先添加你的朋友。你可以点击右侧按钮并输入对方的 Amber 用户名，轻松完成添加。",
+      "select": "在侧边栏中选择一个联系人并点击其名称。这将打开对话视图。",
+      "message": "你可以在输入框中输入消息并点击发送来与他们聊天。"
     },
-    "file": "Send a file"
+    "file": "发送文件"
   },
   "conversations": {
-    "you": "You",
-    "edited": "Edited",
-    "no_messages": "No messages yet.",
-    "type_message": "Type a message",
-    "send_message": "Send message",
-    "error": {
-      "failed_loading": "Failed loading chat",
-      "failed_sending": "Failed sending message",
-      "not_participating": "You are not participating in this conversation.",
-      "too_long": "The message can not exceed 2048 characters.",
-      "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
-      "no_permission": "You do not have permission to do that!",
-      "no_relation": "You are not friends with this users or they've blocked you."
-    }
+    "no_messages": "暂无消息。",
+    "type_message": "输入消息",
+    "send_message": "发送消息",
+    "failed_loading": "加载聊天失败",
+    "failed_sending": "发送消息失败",
+    "not_participating": "你未参与此会话。"
   },
   "profile": {
     "bio": {
-      "title": "Bio",
-      "empty": "Empty bio.",
+      "title": "个人简介",
+      "empty": "暂无个人简介。",
       "edit": {
-        "title": "Edit bio"
+        "title": "编辑个人简介"
       }
     }
   }

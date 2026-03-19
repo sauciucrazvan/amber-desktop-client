@@ -16,6 +16,7 @@ import { Pencil, Quote } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useSWR from "swr";
+import ChangeName from "../settings/tabs/dialogs/ChangeName";
 
 interface MyProfileProps {
   trigger: ReactNode;
@@ -114,7 +115,11 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                   <div className="flex flex-row items-start justify-start gap-1">
                     <div className="flex flex-row items-center gap-1">
                       <h3 className="text-lg leading-tight">
-                        {user.full_name}
+                        <ChangeName>
+                          <p className="hover:underline cursor-pointer">
+                            {user.full_name}
+                          </p>
+                        </ChangeName>
                         <p className="text-sm text-muted-foreground">
                           @{user.username}
                         </p>

@@ -10,12 +10,16 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { API_BASE_URL } from "@/config";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 
-export default function ChangeName() {
+interface Props {
+  children: React.ReactNode;
+}
+
+export default function ChangeName({ children }: Props) {
   const { t, i18n } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
   const { mutate } = useSWRConfig();
@@ -79,11 +83,7 @@ export default function ChangeName() {
     <>
       <Dialog open={open} onOpenChange={setOpen}>
         <form>
-          <DialogTrigger asChild>
-            <Button variant="link" className="cursor-pointer">
-              {t("settings.account.name.title")}
-            </Button>
-          </DialogTrigger>
+          <DialogTrigger asChild>{children}</DialogTrigger>
           <DialogContent className="sm:max-w-125 min-h-50 max-h-75 flex flex-col gap-4 p-0">
             <div className="flex flex-1 flex-col gap-4 px-6 pt-6">
               <DialogHeader>

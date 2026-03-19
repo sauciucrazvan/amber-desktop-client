@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { BadgeAlert } from "lucide-react";
 import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
 import UserAvatar from "@/components/common/user-avatar";
+import { Button } from "@/components/ui/button";
 
 type AccountMe = {
   username: string;
@@ -75,7 +76,11 @@ export default function AccountTab() {
 
       <section className="w-full inline-flex items-start justify-center gap-1">
         <div className="flex flex-col items-start">
-          <ChangeName />
+          <ChangeName>
+            <Button variant="link" className="cursor-pointer">
+              {t("settings.account.name.title")}
+            </Button>
+          </ChangeName>
           <ChangeEmail />
           <ChangePassword />
         </div>

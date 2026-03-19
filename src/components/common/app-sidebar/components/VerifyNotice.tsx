@@ -1,4 +1,6 @@
+import { Button } from "@/components/ui/button";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
+import { BadgeAlert } from "lucide-react";
 import type { TFunction } from "i18next";
 
 type VerifyNoticeProps = {
@@ -16,7 +18,14 @@ export default function VerifyNotice({ t, className }: VerifyNoticeProps) {
             "Verify your account to unlock full features.",
           )}
         </p>
-        <VerifyAccount trigger_type={"button"} />
+        <VerifyAccount>
+          <Button
+            variant="outline"
+            className="cursor-pointer text-yellow-500 h-full"
+          >
+            <BadgeAlert />
+          </Button>
+        </VerifyAccount>
       </div>
     </div>
   );

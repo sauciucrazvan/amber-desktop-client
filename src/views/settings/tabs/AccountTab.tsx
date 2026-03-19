@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/components/common/user-avatar";
 import {
+  BadgeAlert,
   ChevronRight,
   LogOut,
   Shield,
@@ -16,6 +17,7 @@ import SignOut from "./dialogs/SignOut";
 import DeleteAccount from "./dialogs/DeleteAccount";
 import ManageAccountData from "./dialogs/ManageAccountData";
 import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
+import VerifyAccount from "@/views/dialogs/VerifyAccount";
 
 type AccountMe = {
   username: string;
@@ -98,6 +100,26 @@ export default function AccountTab() {
               <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
           </RequestData>
+
+          {account?.verified === false && (
+            <>
+              <Separator className="my-1" />
+
+              <VerifyAccount>
+                <div className={rowClassName}>
+                  <div className="min-w-0 flex items-center gap-2">
+                    <div className="grid h-6 w-6 place-items-center rounded-md bg-yellow-500/10 text-yellow-600 dark:text-yellow-400">
+                      <BadgeAlert className="h-3.5 w-3.5" />
+                    </div>
+                    <p className="truncate text-xs font-medium">
+                      {t("register.verify.verify_now")}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </VerifyAccount>
+            </>
+          )}
 
           {account?.verified && (
             <>

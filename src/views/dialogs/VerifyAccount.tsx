@@ -16,17 +16,16 @@ import {
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
 import { API_BASE_URL } from "@/config";
-import { BadgeAlert } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 
 interface VerifyAccountProps {
-  trigger_type: "button" | "text";
+  children?: React.ReactNode;
 }
 
-export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
+export default function VerifyAccount({ children }: VerifyAccountProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -110,24 +109,10 @@ export default function VerifyAccount({ trigger_type }: VerifyAccountProps) {
 
   if (!isAuthenticated) return <>Unauthorized.</>;
 
-  const triggerButton =
-    trigger_type == "button" ? (
-      <Button
-        variant="outline"
-        className="cursor-pointer text-yellow-500 h-full"
-      >
-        <BadgeAlert />
-      </Button>
-    ) : (
-      <a className="cursor-pointer hover:underline">
-        <b>{t("register.verify.verify_now")}</b>
-      </a>
-    );
-
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>{triggerButton}</DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
 
         <DialogContent className="sm:max-w-125 min-h-25 max-h-100 flex flex-col gap-4 p-0">
           <div className="flex flex-1 flex-col gap-4 px-6 pt-6">

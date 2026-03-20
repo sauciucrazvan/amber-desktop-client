@@ -81,11 +81,13 @@ export function useConversationComposer({
   const onSend = useCallback(async () => {
     if (!conversationId || !canSend) return;
 
+    const trimmedMessage = messageText.trim();
+
     setIsSending(true);
     shouldAutoScrollRef.current = true;
     try {
       if (replyTo) {
-        const payload = { message_id: replyTo.id, text: messageText.trim() };
+        const payload = { message_id: replyTo.id, text: trimmedMessage };
         const res = await authFetch(
           `${API_BASE_URL}/chats/${conversationId}/reply`,
           {
@@ -101,7 +103,7 @@ export function useConversationComposer({
         const createdMessage = (await res.json()) as MessageItem;
         setMessages((current) => mergeMessages(current, [createdMessage]));
       } else if (editing) {
-        const payload = { message_id: editing.id, text: messageText.trim() };
+        const payload = { message_id: editing.id, text: trimmedMessage };
         const res = await authFetch(
           `${API_BASE_URL}/chats/${conversationId}/messages`,
           {
@@ -117,7 +119,7 @@ export function useConversationComposer({
         const editedMessage = (await res.json()) as MessageItem;
         setMessages((current) => replaceMessageById(current, editedMessage));
       } else {
-        const payload = { text: messageText.trim() };
+        const payload = { text: trimmedMessage };
         const res = await authFetch(
           `${API_BASE_URL}/chats/${conversationId}/messages`,
           {

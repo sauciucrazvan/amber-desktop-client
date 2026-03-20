@@ -52,8 +52,6 @@ export default function BlockedAccounts({ children }: Props) {
     isLoading: isBlockedAccountsLoading,
   } = useSWR<BlockedItem[]>(isAuthenticated ? "/contacts/blocked" : null);
 
-  const blockedCount = blockedAccounts?.length ?? 0;
-
   const performUnblock = async (target: { id: number; username: string }) => {
     setActionUserId(target.id);
     try {
@@ -98,14 +96,7 @@ export default function BlockedAccounts({ children }: Props) {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          {children ?? (
-            <Button className="cursor-pointer" variant="link">
-              {t("contacts.blocked.trigger")} (
-              {blockedCount > 99 ? "99+" : blockedCount})
-            </Button>
-          )}
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
 
         <DialogContent className="w-[calc(100vw-2rem)] max-h-[85vh] min-h-0 overflow-hidden sm:max-w-125 flex flex-col items-start justify-start">
           <DialogHeader>

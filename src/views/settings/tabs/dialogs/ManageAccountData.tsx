@@ -73,7 +73,7 @@ export default function ManageAccountData({ children }: Props) {
               <ChangeEmail>
                 <div className={rowClassName}>
                   <div className="min-w-0 flex items-center gap-2">
-                    <div className="grid h-6 w-6 place-items-center rounded-md bg-sky-500/10 text-sky-600 dark:text-sky-400">
+                    <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
                       <Mail className="h-3.5 w-3.5" />
                     </div>
                     <p className="truncate text-xs font-medium">
@@ -89,7 +89,7 @@ export default function ManageAccountData({ children }: Props) {
               <ChangePassword>
                 <div className={rowClassName}>
                   <div className="min-w-0 flex items-center gap-2">
-                    <div className="grid h-6 w-6 place-items-center rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                    <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
                       <KeyRound className="h-3.5 w-3.5" />
                     </div>
                     <p className="truncate text-xs font-medium">

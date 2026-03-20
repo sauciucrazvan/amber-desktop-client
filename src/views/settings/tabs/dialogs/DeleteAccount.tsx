@@ -1,4 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
+import ErrorBox from "@/components/common/error-box";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -87,9 +88,7 @@ export default function DeleteAccount({ children }: Props) {
                 }}
               />
 
-              {error && (
-                <p className="wrap-break-word text-red-500">{t(error)}</p>
-              )}
+              {error && <ErrorBox>{t(error)}</ErrorBox>}
             </div>
 
             <section className="mt-auto w-full flex flex-wrap items-center justify-end gap-1 border-t bg-muted/50 px-4 py-3 sm:px-6 sm:py-4">

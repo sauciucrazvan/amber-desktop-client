@@ -1,4 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
+import ErrorBox from "@/components/common/error-box";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -106,7 +107,7 @@ export default function ChangeName({ children }: Props) {
               />
 
               {error && (
-                <p className="text-red-500">
+                <ErrorBox>
                   {i18n.exists(error) ? (
                     <Trans
                       i18nKey={error}
@@ -118,7 +119,7 @@ export default function ChangeName({ children }: Props) {
                   ) : (
                     error
                   )}
-                </p>
+                </ErrorBox>
               )}
             </div>
 

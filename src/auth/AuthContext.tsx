@@ -46,6 +46,15 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+export const PRESENCE_EVENT_NAME = "amber:presence";
+
+export type PresenceEventPayload = {
+  type: "presence";
+  event: "user_connected" | "user_disconnected";
+  username: string;
+  online: boolean;
+};
+
 async function readErrorMessage(res: Response) {
   try {
     const data = await res.json();
@@ -67,6 +76,40 @@ function resolveWsUrl(path: string, accessToken: string) {
   wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
   wsUrl.searchParams.set("token", accessToken);
   return wsUrl.toString();
+}
+
+function toPresencePayload(raw: unknown): PresenceEventPayload | null {
+  if (!raw || typeof raw !== "object") return null;
+
+  const payload = raw as {
+    type?: unknown;
+    event?: unknown;
+    username?: unknown;
+    online?: unknown;
+  };
+
+  if (payload.type !== "presence") return null;
+  if (
+    payload.event !== "user_connected" &&
+    payload.event !== "user_disconnected"
+  ) {
+    return null;
+  }
+  if (typeof payload.username !== "string" || payload.username.length === 0) {
+    return null;
+  }
+
+  const online =
+    typeof payload.online === "boolean"
+      ? payload.online
+      : payload.event === "user_connected";
+
+  return {
+    type: "presence",
+    event: payload.event,
+    username: payload.username,
+    online,
+  };
 }
 
 const HEARTBEAT_ENDPOINT = "/ping";
@@ -230,11 +273,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }, HEARTBEAT_INTERVAL_MS);
       };
 
-      socket.onmessage = () => {};
+      socket.onmessage = (event) => {
+        if (typeof event.data !== "string") return;
 
-      socket.onerror = () => {
-        socket?.close();
+        try {
+          const parsed = JSON.parse(event.data) as unknown;
+          const presence = toPresencePayload(parsed);
+          if (!presence) return;
+
+          window.dispatchEvent(
+            new CustomEvent<PresenceEventPayload>(PRESENCE_EVENT_NAME, {
+              detail: presence,
+            }),
+          );
+        } catch {
+          return;
+        }
       };
+
+      socket.onerror = () => {};
 
       socket.onclose = (event) => {
         clearPingInterval();
@@ -256,11 +313,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       disposed = true;
       clearPingInterval();
       clearReconnectTimeout();
-      if (
-        socket &&
-        (socket.readyState === WebSocket.CONNECTING ||
-          socket.readyState === WebSocket.OPEN)
-      ) {
+      if (socket && socket.readyState === WebSocket.OPEN) {
         socket.close();
       }
     };

@@ -1,4 +1,9 @@
 import { API_BASE_URL } from "@/config";
+import {
+  PRESENCE_EVENT_NAME,
+  type PresenceEventPayload,
+} from "@/auth/AuthContext";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { toast } from "sonner";
 import type {
@@ -28,14 +33,59 @@ export function useAppSidebarData({
   );
 
   const {
-    data: contacts,
+    data: contactsFromApi,
     error: contactsError,
     isLoading: isContactsLoading,
   } = useSWR<ContactListItem[]>(isAuthenticated ? "/contacts/list" : null, {
-    refreshInterval: 2000,
+    refreshInterval: 60000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   });
+
+  const [contactsState, setContactsState] = useState<ContactListItem[]>([]);
+
+  useEffect(() => {
+    setContactsState(contactsFromApi ?? []);
+  }, [contactsFromApi]);
+
+  useEffect(() => {
+    const onPresence = (event: Event) => {
+      const customEvent = event as CustomEvent<PresenceEventPayload>;
+      const detail = customEvent.detail;
+      if (!detail || detail.type !== "presence") return;
+
+      setContactsState((current) => {
+        let changed = false;
+
+        const next = current.map((contact) => {
+          if (contact.user.username !== detail.username) return contact;
+          if (contact.user.online === detail.online) return contact;
+
+          changed = true;
+          return {
+            ...contact,
+            user: {
+              ...contact.user,
+              online: detail.online,
+            },
+          };
+        });
+
+        return changed ? next : current;
+      });
+    };
+
+    window.addEventListener(PRESENCE_EVENT_NAME, onPresence as EventListener);
+
+    return () => {
+      window.removeEventListener(
+        PRESENCE_EVENT_NAME,
+        onPresence as EventListener,
+      );
+    };
+  }, []);
+
+  const contacts = useMemo(() => contactsState, [contactsState]);
 
   const stableContactIds = Array.from(
     new Set((contacts ?? []).map((contact) => contact.user.id)),

@@ -1,10 +1,15 @@
 import { API_BASE_URL } from "@/config";
+import {
+  PRESENCE_EVENT_NAME,
+  type PresenceEventPayload,
+} from "@/auth/AuthContext";
 import { useAuth } from "@/auth/AuthContext";
 import {
   createContext,
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -79,6 +84,37 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   );
 
   const closeChat = useCallback(() => setActiveChat(null), []);
+
+  useEffect(() => {
+    const onPresence = (event: Event) => {
+      const customEvent = event as CustomEvent<PresenceEventPayload>;
+      const detail = customEvent.detail;
+      if (!detail || detail.type !== "presence") return;
+
+      setActiveChat((current) => {
+        if (!current) return current;
+        if (current.otherUser.username !== detail.username) return current;
+        if (current.otherUser.online === detail.online) return current;
+
+        return {
+          ...current,
+          otherUser: {
+            ...current.otherUser,
+            online: detail.online,
+          },
+        };
+      });
+    };
+
+    window.addEventListener(PRESENCE_EVENT_NAME, onPresence as EventListener);
+
+    return () => {
+      window.removeEventListener(
+        PRESENCE_EVENT_NAME,
+        onPresence as EventListener,
+      );
+    };
+  }, []);
 
   const value = useMemo<ChatContextValue>(
     () => ({

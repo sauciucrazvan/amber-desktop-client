@@ -165,9 +165,7 @@ export function useConversationRealtime({
         }
       };
 
-      socket.onerror = () => {
-        socket?.close();
-      };
+      socket.onerror = () => {};
 
       socket.onclose = () => {
         setIsWsConnected(false);
@@ -182,11 +180,7 @@ export function useConversationRealtime({
       disposed = true;
       setIsWsConnected(false);
       clearReconnectTimeout();
-      if (
-        socket &&
-        (socket.readyState === WebSocket.CONNECTING ||
-          socket.readyState === WebSocket.OPEN)
-      ) {
+      if (socket && socket.readyState === WebSocket.OPEN) {
         socket.close();
       }
     };

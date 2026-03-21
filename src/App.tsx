@@ -60,9 +60,7 @@ function UpdaterNotifications() {
     window.autoUpdater
       .getStatus()
       .then((status) => notify(status))
-      .catch(() => {
-        // Best effort only.
-      });
+      .catch(() => {});
 
     const unsubscribe = window.autoUpdater.onStatusChange((status) => {
       notify(status as UpdaterStatus);

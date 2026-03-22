@@ -93,6 +93,18 @@
       }
     }
   },
+  "legal": {
+    "terms": {
+      "title": "Termeni și condiții",
+      "description": "Te rugăm să revizuiești termenii și condițiile înainte de a folosi Amber.",
+      "content": "1. Acceptarea Termenilor\\nPrin crearea unui cont și accesarea Amber, ești de acord că ești obligat de acești Termeni și Condiții. Dacă nu ești de acord cu orice parte a acestor termeni, nu poți folosi serviciul.\\n\\n2. Responsabilități Utilizator\\nEști responsabil pentru menținerea confidențialității datelor tale de cont și pentru toate activitățile care au loc sub contul tău. Te angajezi să folosești Amber doar în scopuri legale și într-un mod care nu încalcă drepturile altora.\\n\\n3. Conduita Utilizatorului\\nAccepți să nu hărțui, ameninți sau dăunezi altor utilizatori. Conținutul abuziv, ofensator sau inadecvat este strict interzis. Orice încălcare poate duce la suspendarea sau închiderea contului fără notificare.\\n\\n4. Modificări Serviciu\\nNe rezervăm dreptul de a modifica sau întrerupe Amber, în totalitate sau parțial, în orice moment fără notificare. Nu suntem răspunzători pentru orice modificare, suspendare sau întrerupere a serviciului.\\n\\n5. Limitarea Răspunderii\\nÎn toată măsura permisă de lege, Amber și creatorii săi nu sunt răspunzători pentru daunele indirecte, accidentale, speciale, consecutive sau punitive rezultate din utilizare.\\n\\n6. Modificări ale Termenilor\\nPoate fi nevoie să actualizez acești termeni în orice moment. Utilizarea continuă a Amber după orice modificări constituie acceptarea noilor termeni. Te încurajez să revizuiești periodic.\\n\\n7. Rezilierea\\nNe rezervăm dreptul să reziliem sau să suspendam contul tău în orice moment pentru încălcări ale acestor termeni sau pentru orice motiv considerat necesar pentru a proteja integritatea serviciului."
+    },
+    "privacy": {
+      "title": "Politica de confidențialitate",
+      "description": "Te rugăm să revizuiești modul în care Amber gestionează și protejează datele tale.",
+      "content": "Colectăm doar informațiile necesare pentru funcționarea Amber, precum date de cont și date de utilizare necesare funcțiilor de bază. Îți protejăm datele și nu vindem informații personale."
+    }
+  },
   "settings": {
     "title": "Setări",
     "description": "Setările aplicației",

@@ -93,6 +93,18 @@
       }
     }
   },
+  "legal": {
+    "terms": {
+      "title": "Termini e condizioni",
+      "description": "Ti invitiamo a leggere i termini e condizioni prima di usare Amber.",
+      "content": "1. Accettazione dei termini\\nCreando un account e accedendo ad Amber, accetti di essere vincolato da questi Termini e Condizioni. Se non sei d'accordo con nessuna parte di questi termini, non potrai usare il servizio.\\n\\n2. Responsabilità dell'utente\\nSei responsabile del mantenimento della riservatezza delle tue credenziali di account e di tutte le attività che si verificano sotto il tuo account. Accetti di utilizzare Amber solo per scopi legali e in modo da non violare i diritti di altri utenti.\\n\\n3. Condotta dell'utente\\nAccetti di non molestare, minacciare o danneggiare altri utenti. I contenuti abusivi, offensivi o inappropriati sono rigorosamente vietati. Qualsiasi violazione può comportare la sospensione o la chiusura del tuo account.\\n\\n4. Modifiche del servizio\\nCi riserviamo il diritto di modificare o interrompere Amber, in tutto o in parte, in qualsiasi momento senza preavviso. Non siamo responsabili per alcuna modifica, sospensione o interruzione del servizio.\\n\\n5. Limitazione di responsabilità\\nNella misura massima consentita dalla legge, Amber e i suoi creatori non sono responsabili per danni indiretti, incidentali, speciali, consequenziali o punitivi derivanti dall'utilizzo del servizio.\\n\\n6. Modifiche ai termini\\nPossiamo aggiornare questi termini in qualsiasi momento. Il tuo utilizzo continuato di Amber dopo qualsiasi modifica costituisce la tua accettazione dei nuovi termini. Ti incoraggiamo a rivedere questo accordo periodicamente.\\n\\n7. Rescissione\\nCi riserviamo il diritto di rescindere o sospendere il tuo account in qualsiasi momento per violazioni di questi termini o per protéggere l'integrità del nostro servizio."
+    },
+    "privacy": {
+      "title": "Informativa sulla privacy",
+      "description": "Ti invitiamo a leggere come Amber gestisce e protegge i tuoi dati.",
+      "content": "Raccogliamo solo le informazioni necessarie al funzionamento di Amber, come i dati dell'account e i dati di utilizzo necessari per le funzionalità principali. Proteggiamo i tuoi dati e non vendiamo informazioni personali."
+    }
+  },
   "settings": {
     "title": "Impostazioni",
     "description": "Impostazioni dell'applicazione",

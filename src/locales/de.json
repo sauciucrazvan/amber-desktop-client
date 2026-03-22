@@ -93,6 +93,18 @@
       }
     }
   },
+  "legal": {
+    "terms": {
+      "title": "Allgemeine Geschäftsbedingungen",
+      "description": "Bitte lies die Bedingungen durch, bevor du Amber verwendest.",
+      "content": "1. Annahme der Bedingungen\\nDurch die Erstellung eines Kontos und den Zugriff auf Amber stimmst du zu, an diese Geschäftsbedingungen gebunden zu sein. Wenn du nicht mit einem Teil dieser Bedingungen einverstanden bist, darfst du den Dienst nicht nutzen.\\n\\n2. Nutzerverantwortung\\nDu bist verantwortlich für die Vertraulichkeit deiner Kontoanmeldedaten und alle Aktivitäten, die unter deinem Konto stattfinden. Du erklärst dich einverstanden, Amber nur für rechtmäßige Zwecke zu nutzen.\\n\\n3. Nutzerverhalten\\nDu erklärst dich einverstanden, andere Nutzer nicht zu belästigen, zu bedrohen oder zu schaden. Missbräuchliche, beleidigende oder unangemessene Inhalte sind streng verboten. Jede Verletzung kann zur Suspendierung oder Beendigung des Kontos führen.\\n\\n4. Serviceänderungen\\nWir behalten uns das Recht vor, Amber ganz oder teilweise jederzeit ohne Ankündigung zu ändern oder einzustellen. Wir haften nicht für Änderungen, Suspendierungen oder Einstellungen des Dienstes.\\n\\n5. Haftungsbeschränkung\\nIn vollem gesetzlichen Umfang sind Amber und seine Schöpfer nicht haftbar für indirekte, zufällige, besondere, Folge- oder Strafschadensersatz resultierend aus deiner Nutzung.\\n\\n6. Änderungen der Bedingungen\\nWir können diese Bedingungen jederzeit aktualisieren. Deine weitere Nutzung von Amber nach Änderungen gilt als Annahme der neuen Bedingungen. Wir empfehlen dir, diese Vereinbarung regelmäßig zu überprüfen.\\n\\n7. Beendigung\\nWir behalten uns das Recht vor, dein Konto jederzeit für Verstöße gegen diese Bedingungen zu beenden oder zu suspendieren."
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "description": "Bitte lies, wie Amber deine Daten verarbeitet und schützt.",
+      "content": "Wir erfassen nur die Informationen, die für den Betrieb von Amber erforderlich sind, wie Kontodaten und Nutzungsdaten für Kernfunktionen. Wir schützen deine Daten und verkaufen keine personenbezogenen Informationen."
+    }
+  },
   "settings": {
     "title": "Einstellungen",
     "description": "Anwendungseinstellungen",

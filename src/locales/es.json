@@ -93,6 +93,18 @@
       }
     }
   },
+  "legal": {
+    "terms": {
+      "title": "Términos y condiciones",
+      "description": "Por favor, revisa los términos y condiciones antes de usar Amber.",
+      "content": "1. Aceptación de los términos\\nAl crear una cuenta y acceder a Amber, aceptas estar vinculado por estos Términos y Condiciones. Si no estás de acuerdo con ninguna parte de estos términos, no puedes usar el servicio.\\n\\n2. Responsabilidades del usuario\\nEres responsable de mantener la confidencialidad de las credenciales de tu cuenta y de todas las actividades que ocurran bajo tu cuenta. Aceptas usar Amber solo con fines legales y de una manera que no infrinja los derechos de otros usuarios.\\n\\n3. Conducta del usuario\\nAceptas no acosar, amenazar ni dañar a otros usuarios. El contenido abusivo, ofensivo o inapropiado está estrictamente prohibido. Cualquier violación puede resultar en la suspensión o terminación de tu cuenta.\\n\\n4. Modificaciones del servicio\\nNos reservamos el derecho de modificar o descontinuar Amber, en su totalidad o parte, en cualquier momento sin previo aviso. No somos responsables por ninguna modificación, suspensión o interrupción del servicio.\\n\\n5. Limitación de responsabilidad\\nEn la medida máxima permitida por la ley, Amber y sus creadores no son responsables de daños indirectos, incidentales, especiales, consecuentes o punitivos resultantes de tu uso.\\n\\n6. Cambios en los términos\\nPodemos actualizar estos términos en cualquier momento. Tu uso continuo de Amber después de cualquier cambio constituye tu aceptación de los nuevos términos. Te animamos a revisar este acuerdo periódicamente.\\n\\n7. Terminación\\nNos reservamos el derecho de terminar o suspender tu cuenta en cualquier momento por incumplimiento de estos términos o para proteger la integridad de nuestro servicio."
+    },
+    "privacy": {
+      "title": "Política de privacidad",
+      "description": "Por favor, revisa cómo Amber gestiona y protege tus datos.",
+      "content": "Recopilamos solo la información necesaria para operar Amber, como datos de la cuenta y datos de uso requeridos para las funciones principales. Protegemos tus datos y no vendemos información personal."
+    }
+  },
   "settings": {
     "title": "Ajustes",
     "description": "Ajustes de la aplicación",

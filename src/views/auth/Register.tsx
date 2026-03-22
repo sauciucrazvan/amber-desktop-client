@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/carousel";
 import React from "react";
 import Autoplay from "embla-carousel-autoplay";
+import TermsView from "./dialogs/legal/Terms";
+import PrivacyView from "./dialogs/legal/Privacy";
 
 export default function RegisterView() {
   const [, setLocation] = useLocation();
@@ -203,8 +205,8 @@ export default function RegisterView() {
                 <Trans
                   i18nKey="register.terms"
                   components={{
-                    terms: <a href="/terms" />,
-                    privacy: <a href="/privacy" />,
+                    terms: <TermsView />,
+                    privacy: <PrivacyView />,
                   }}
                 />
               </p>

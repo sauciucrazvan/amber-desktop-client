@@ -7,30 +7,14 @@ import {
   ContextMenuSeparator,
 } from "@/components/ui/context-menu";
 import { formatHHmm } from "@/lib/utils";
-import { t } from "i18next";
 import { Check, CheckCheck, Pencil, Reply, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import type { MessageItem } from "../types";
+import MessageEditHistoryDialog from "./MessageEditHistoryDialog";
 
 interface Props {
   myUserId: number | null;
-  message: {
-    id: string;
-    sender_id: number;
-    type: string;
-    content: {
-      text?: string | undefined;
-      reply_to?: {
-        id: string;
-        sender_id: number;
-        content: {
-          text?: string | undefined;
-        };
-        created_at: string;
-      };
-    };
-    created_at: string;
-    edited_at: string | null;
-    seen: boolean;
-  };
+  message: MessageItem;
 
   delete_func: (id: string) => void;
   reply_func: (id: string) => void;
@@ -44,6 +28,8 @@ export default function ChatBubble({
   reply_func,
   edit_func,
 }: Props) {
+  const { t } = useTranslation();
+
   const isMine = myUserId !== null && message.sender_id === myUserId;
   const text = message.content?.text ?? "";
 
@@ -91,7 +77,10 @@ export default function ChatBubble({
                 </div>
 
                 <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-                  {message.edited_at && <p className="mr-0.5">Edited</p>}
+                  <MessageEditHistoryDialog
+                    editedAt={message.edited_at}
+                    history={message.content?.history}
+                  />
 
                   {formatHHmm(new Date(message.created_at))}
 
@@ -113,7 +102,7 @@ export default function ChatBubble({
                   className="cursor-pointer"
                   onClick={() => reply_func(message.id)}
                 >
-                  <Reply /> Reply
+                  <Reply /> {t("conversations.actions.reply")}
                 </ContextMenuItem>
 
                 {isMine && (
@@ -122,7 +111,7 @@ export default function ChatBubble({
                       className="cursor-pointer"
                       onClick={() => edit_func(message.id)}
                     >
-                      <Pencil /> Edit
+                      <Pencil /> {t("conversations.actions.edit")}
                     </ContextMenuItem>
 
                     <ContextMenuSeparator />
@@ -132,7 +121,7 @@ export default function ChatBubble({
                       className="cursor-pointer"
                       onClick={() => delete_func(message.id)}
                     >
-                      <Trash2 /> Delete
+                      <Trash2 /> {t("conversations.actions.delete")}
                     </ContextMenuItem>
                   </>
                 )}

@@ -293,9 +293,21 @@
     "file": "ファイルを送信"
   },
   "conversations": {
+    "you": "あなた",
+    "edited": "編集済み",
+    "history": {
+      "title": "編集履歴",
+      "description": "このメッセージの以前のバージョンです。",
+      "empty": "以前のバージョンはありません。"
+    },
     "no_messages": "まだメッセージはありません。",
     "type_message": "メッセージを入力",
     "send_message": "メッセージを送信",
+    "actions": {
+      "reply": "返信",
+      "edit": "編集",
+      "delete": "削除"
+    },
     "failed_loading": "チャットの読み込みに失敗しました",
     "failed_sending": "メッセージの送信に失敗しました",
     "not_participating": "この会話に参加していません。"

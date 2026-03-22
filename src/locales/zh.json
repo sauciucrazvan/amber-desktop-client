@@ -293,9 +293,21 @@
     "file": "发送文件"
   },
   "conversations": {
+    "you": "你",
+    "edited": "已编辑",
+    "history": {
+      "title": "编辑历史",
+      "description": "此消息的历史版本。",
+      "empty": "没有可用的历史版本。"
+    },
     "no_messages": "暂无消息。",
     "type_message": "输入消息",
     "send_message": "发送消息",
+    "actions": {
+      "reply": "回复",
+      "edit": "编辑",
+      "delete": "删除"
+    },
     "failed_loading": "加载聊天失败",
     "failed_sending": "发送消息失败",
     "not_participating": "你未参与此会话。"

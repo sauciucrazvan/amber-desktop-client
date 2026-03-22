@@ -293,9 +293,21 @@
     "file": "Trimite un fișier"
   },
   "conversations": {
+    "you": "Tu",
+    "edited": "Editat",
+    "history": {
+      "title": "Istoric editări",
+      "description": "Versiunile anterioare ale acestui mesaj.",
+      "empty": "Nu există versiuni anterioare disponibile."
+    },
     "no_messages": "Niciun mesaj momentan.",
     "type_message": "Scrie un mesaj",
     "send_message": "Trimite mesaj",
+    "actions": {
+      "reply": "Răspunde",
+      "edit": "Editează",
+      "delete": "Șterge"
+    },
     "failed_loading": "Nu s-a putut încărca conversația",
     "failed_sending": "Nu s-a putut trimite mesajul",
     "not_participating": "Nu participi în această conversație."

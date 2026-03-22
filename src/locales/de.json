@@ -293,9 +293,21 @@
     "file": "Datei senden"
   },
   "conversations": {
+    "you": "Du",
+    "edited": "Bearbeitet",
+    "history": {
+      "title": "Bearbeitungsverlauf",
+      "description": "Frühere Versionen dieser Nachricht.",
+      "empty": "Keine früheren Versionen verfügbar."
+    },
     "no_messages": "Noch keine Nachrichten.",
     "type_message": "Nachricht eingeben",
     "send_message": "Nachricht senden",
+    "actions": {
+      "reply": "Antworten",
+      "edit": "Bearbeiten",
+      "delete": "Löschen"
+    },
     "failed_loading": "Chat konnte nicht geladen werden",
     "failed_sending": "Nachricht konnte nicht gesendet werden",
     "not_participating": "Du nimmst an dieser Unterhaltung nicht teil."

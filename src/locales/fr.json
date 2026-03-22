@@ -293,9 +293,21 @@
     "file": "Envoyer un fichier"
   },
   "conversations": {
+    "you": "Vous",
+    "edited": "Modifié",
+    "history": {
+      "title": "Historique des modifications",
+      "description": "Versions précédentes de ce message.",
+      "empty": "Aucune version précédente n'est disponible."
+    },
     "no_messages": "Aucun message pour le moment.",
     "type_message": "Écrire un message",
     "send_message": "Envoyer le message",
+    "actions": {
+      "reply": "Répondre",
+      "edit": "Modifier",
+      "delete": "Supprimer"
+    },
     "failed_loading": "Impossible de charger la discussion",
     "failed_sending": "Impossible d'envoyer le message",
     "not_participating": "Vous ne participez pas à cette conversation."

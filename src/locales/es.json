@@ -293,9 +293,21 @@
     "file": "Enviar un archivo"
   },
   "conversations": {
+    "you": "Tú",
+    "edited": "Editado",
+    "history": {
+      "title": "Historial de ediciones",
+      "description": "Versiones anteriores de este mensaje.",
+      "empty": "No hay versiones anteriores disponibles."
+    },
     "no_messages": "Aún no hay mensajes.",
     "type_message": "Escribe un mensaje",
     "send_message": "Enviar mensaje",
+    "actions": {
+      "reply": "Responder",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
     "failed_loading": "No se pudo cargar el chat",
     "failed_sending": "No se pudo enviar el mensaje",
     "not_participating": "No participas en esta conversación."

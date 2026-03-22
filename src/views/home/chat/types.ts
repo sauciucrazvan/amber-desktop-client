@@ -5,6 +5,10 @@ export type MessageItem = {
   type: string;
   content: {
     text?: string;
+    history?: Array<{
+      text?: string;
+      date?: string;
+    }>;
     reply_to?: {
       id: string;
       sender_id: number;

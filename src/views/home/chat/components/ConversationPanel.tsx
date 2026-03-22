@@ -5,6 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { Edit2, Reply, Send, X } from "lucide-react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useChat } from "../context/ChatContext";
 import ChatBubble from "./ChatBubble";
@@ -44,6 +45,27 @@ export default function ConversationPanel() {
     t,
     language: i18n.language,
   });
+
+  const cancelComposerModes = useCallback(() => {
+    setEditing(null);
+    setReplyTo(null);
+    setMessageText("");
+  }, [setEditing, setReplyTo, setMessageText]);
+
+  useEffect(() => {
+    if (!editing && !replyTo) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      cancelComposerModes();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [cancelComposerModes, editing, replyTo]);
 
   if (!activeChat) return null;
 
@@ -150,10 +172,7 @@ export default function ConversationPanel() {
             <Button
               variant={"ghost"}
               className="cursor-pointer"
-              onClick={() => {
-                setEditing(null);
-                setMessageText("");
-              }}
+              onClick={cancelComposerModes}
             >
               <X />
             </Button>
@@ -167,10 +186,7 @@ export default function ConversationPanel() {
             <Button
               variant={"ghost"}
               className="cursor-pointer"
-              onClick={() => {
-                setReplyTo(null);
-                setMessageText("");
-              }}
+              onClick={cancelComposerModes}
             >
               <X />
             </Button>
@@ -184,6 +200,12 @@ export default function ConversationPanel() {
             placeholder={t("conversations.type_message")}
             className="min-h-8 max-h-10 min-w-0 max-w-full flex-1 resize-none field-sizing-fixed overflow-x-hidden wrap-break-word"
             onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                e.preventDefault();
+                cancelComposerModes();
+                return;
+              }
+
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 onSend();

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { TFunction } from "i18next";
+import { useSWRConfig } from "swr";
 import { useConversationData } from "./useConversationData";
 import { useConversationRealtime } from "./useConversationRealtime";
 import { useConversationComposer } from "./useConversationComposer";
@@ -21,6 +22,7 @@ export function useConversationLogic({
   t,
   language,
 }: UseConversationLogicParams) {
+  const { mutate } = useSWRConfig();
   const [isWsConnected, setIsWsConnected] = useState(false);
 
   const data = useConversationData({
@@ -43,6 +45,9 @@ export function useConversationLogic({
     setMessages: data.setMessages,
     markConversationSeen: data.markConversationSeen,
     shouldAutoScrollRef: data.shouldAutoScrollRef,
+    onMessageActivity: () => {
+      void mutate("/contacts/list");
+    },
   });
 
   const composer = useConversationComposer({
@@ -54,6 +59,9 @@ export function useConversationLogic({
     mergeMessages: data.mergeMessages,
     replaceMessageById: data.replaceMessageById,
     shouldAutoScrollRef: data.shouldAutoScrollRef,
+    onMessageActivity: () => {
+      void mutate("/contacts/list");
+    },
   });
 
   return {

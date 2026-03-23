@@ -19,6 +19,7 @@ type UseConversationRealtimeParams = {
   setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>;
   markConversationSeen: (targetConversationId: string) => Promise<void>;
   shouldAutoScrollRef: React.MutableRefObject<boolean>;
+  onMessageActivity?: () => void;
 };
 
 export function useConversationRealtime({
@@ -32,6 +33,7 @@ export function useConversationRealtime({
   setMessages,
   markConversationSeen,
   shouldAutoScrollRef,
+  onMessageActivity,
 }: UseConversationRealtimeParams) {
   const WS_RECONNECT_BASE_MS = 1_000;
   const WS_RECONNECT_MAX_MS = 15_000;
@@ -86,6 +88,7 @@ export function useConversationRealtime({
         if (!incomingMessage) return;
         shouldAutoScrollRef.current = isNearBottom(scrollContainerRef.current);
         setMessages((current) => mergeMessages(current, [incomingMessage]));
+        onMessageActivity?.();
 
         if (isActivelyViewingConversation()) {
           void markConversationSeen(conversationId);
@@ -196,6 +199,7 @@ export function useConversationRealtime({
     shouldAutoScrollRef,
     scrollContainerRef,
     setMessages,
+    onMessageActivity,
     WS_RECONNECT_BASE_MS,
     WS_RECONNECT_MAX_MS,
   ]);

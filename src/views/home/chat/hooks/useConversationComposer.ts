@@ -20,6 +20,7 @@ type UseConversationComposerParams = {
     next: MessageItem,
   ) => MessageItem[];
   shouldAutoScrollRef: React.MutableRefObject<boolean>;
+  onMessageActivity?: () => void;
 };
 
 export function useConversationComposer({
@@ -31,6 +32,7 @@ export function useConversationComposer({
   mergeMessages,
   replaceMessageById,
   shouldAutoScrollRef,
+  onMessageActivity,
 }: UseConversationComposerParams) {
   const [messageText, setMessageText] = useState("");
   const [replyTo, setReplyTo] = useState<MessageItem | null>(null);
@@ -102,6 +104,7 @@ export function useConversationComposer({
         if (!res.ok) throw new Error(await readErrorMessage(res));
         const createdMessage = (await res.json()) as MessageItem;
         setMessages((current) => mergeMessages(current, [createdMessage]));
+        onMessageActivity?.();
       } else if (editing) {
         const payload = { message_id: editing.id, text: trimmedMessage };
         const res = await authFetch(
@@ -134,6 +137,7 @@ export function useConversationComposer({
         if (!res.ok) throw new Error(await readErrorMessage(res));
         const createdMessage = (await res.json()) as MessageItem;
         setMessages((current) => mergeMessages(current, [createdMessage]));
+        onMessageActivity?.();
       }
 
       setMessageText("");
@@ -157,6 +161,7 @@ export function useConversationComposer({
     replyTo,
     setMessages,
     shouldAutoScrollRef,
+    onMessageActivity,
     t,
   ]);
 

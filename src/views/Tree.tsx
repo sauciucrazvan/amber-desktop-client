@@ -3,6 +3,7 @@ import { useHashLocation } from "wouter/use-hash-location";
 import { Suspense, lazy } from "react";
 
 import ProtectedRoute from "@/auth/ProtectedRoute";
+import Loading from "./Loading";
 
 const Homepage = lazy(() => import("./home/Homepage"));
 const RegisterView = lazy(() => import("./auth/Register"));
@@ -11,11 +12,7 @@ const LoginView = lazy(() => import("./auth/Login"));
 export default function Tree() {
   return (
     <Router hook={useHashLocation}>
-      <Suspense
-        fallback={
-          <div className="p-4 text-sm text-muted-foreground">Loading...</div>
-        }
-      >
+      <Suspense fallback={<Loading />}>
         <Switch>
           <ProtectedRoute path="/" component={Homepage} />
 

@@ -122,7 +122,7 @@ export default function ConversationPanel() {
             {t("conversations.no_messages")}
           </div>
         ) : (
-          <div className="flex flex-col gap-2 py-1">
+          <div className="flex min-h-full flex-col justify-end gap-2 py-1">
             {isLoadingMore ? (
               <div className="flex justify-center py-2 text-muted-foreground">
                 <Spinner />

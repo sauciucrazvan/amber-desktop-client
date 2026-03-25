@@ -34,10 +34,35 @@ export function useConversationData({
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const shouldAutoScrollRef = useRef(true);
+  const pendingInitialScrollRef = useRef(false);
   const loadingMoreRef = useRef(false);
   const markSeenInFlightRef = useRef(false);
   const pendingMarkSeenConversationIdRef = useRef<string | null>(null);
   const activeConversationIdRef = useRef<string | undefined>(undefined);
+
+  const scrollToBottomWithRetry = useCallback((attempt = 0) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    container.scrollTop = container.scrollHeight;
+    bottomRef.current?.scrollIntoView({ block: "end" });
+
+    if (attempt >= 3) return;
+
+    window.requestAnimationFrame(() => {
+      const latestContainer = scrollContainerRef.current;
+      if (!latestContainer) return;
+
+      const distanceFromBottom =
+        latestContainer.scrollHeight -
+        latestContainer.scrollTop -
+        latestContainer.clientHeight;
+
+      if (distanceFromBottom > 2) {
+        scrollToBottomWithRetry(attempt + 1);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     activeConversationIdRef.current = conversationId;
@@ -338,15 +363,30 @@ export function useConversationData({
   }, [authFetch, conversationId]);
 
   useEffect(() => {
-    if (!shouldAutoScrollRef.current) return;
-    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages]);
+    if (isLoading) return;
+
+    if (!pendingInitialScrollRef.current && !shouldAutoScrollRef.current) {
+      return;
+    }
+
+    if (pendingInitialScrollRef.current && messages.length === 0) return;
+
+    window.requestAnimationFrame(() => {
+      scrollToBottomWithRetry();
+    });
+
+    if (pendingInitialScrollRef.current) {
+      pendingInitialScrollRef.current = false;
+    }
+  }, [isLoading, messages, scrollToBottomWithRetry]);
 
   useEffect(() => {
     shouldAutoScrollRef.current = true;
+    pendingInitialScrollRef.current = true;
   }, [conversationId]);
 
   const onScroll = useCallback(() => {
+    const wasAutoScrollEnabled = shouldAutoScrollRef.current;
     const nearBottom = isNearBottom(scrollContainerRef.current);
     shouldAutoScrollRef.current = nearBottom;
 
@@ -359,7 +399,7 @@ export function useConversationData({
     }
 
     const container = scrollContainerRef.current;
-    if (!container || container.scrollTop > 60) return;
+    if (!container || container.scrollTop > 60 || wasAutoScrollEnabled) return;
     void loadOlderMessages().catch(() => null);
   }, [conversationId, isNearBottom, loadOlderMessages, markConversationSeen]);
 

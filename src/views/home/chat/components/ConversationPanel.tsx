@@ -119,8 +119,8 @@ export default function ConversationPanel() {
               disabled={screen !== "idle" || !activeChat.otherUser.online}
               title={
                 activeChat.otherUser.online
-                  ? "Start video call"
-                  : "Contact is offline"
+                  ? t("calls.actions.startVideo")
+                  : t("calls.actions.contactOffline")
               }
             >
               <Phone className="size-4" />

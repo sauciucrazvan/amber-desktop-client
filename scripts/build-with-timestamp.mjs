@@ -101,7 +101,7 @@ function run(command, args, extraEnv = {}) {
 }
 
 function parseBuildOptions(argv) {
-  const defaultWinTargets = process.platform === "win32" ? ["msi"] : ["nsis"];
+  const defaultWinTargets = ["nsis"];
 
   const options = {
     linux: false,
@@ -210,7 +210,7 @@ function parseBuildOptions(argv) {
 
     if (arg === "--help" || arg === "-h") {
       console.log(
-        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: msi on Windows, nsis on Linux/macOS)\n  --force-msi                 Allow msi target on non-Windows hosts\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n`,
+        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: nsis)\n  --force-msi                 Legacy flag (msi is replaced with nsis)\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n`,
       );
       process.exit(0);
     }
@@ -244,13 +244,17 @@ function parseBuildOptions(argv) {
     (target) => target.toLowerCase() === "msi",
   );
 
-  if (process.platform !== "win32" && hasMsiTarget && !options.forceMsi) {
+  if (hasMsiTarget) {
     console.warn(
-      "[build] msi target on non-Windows host often fails under Wine (WiX). Switching to nsis. Use --force-msi to override.",
+      "[build] msi target is disabled for this project. Switching to nsis.",
     );
-    options.winTargets = options.winTargets
+    const nextTargets = options.winTargets
       .filter((target) => target.toLowerCase() !== "msi")
       .concat("nsis");
+
+    options.winTargets = Array.from(
+      new Set(nextTargets.map((target) => target.toLowerCase())),
+    );
   }
 
   if (!options.publishProvider) {

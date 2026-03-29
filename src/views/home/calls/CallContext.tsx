@@ -1,0 +1,1065 @@
+import {
+  useAuth,
+  WS_MESSAGE_EVENT_NAME,
+  WS_SEND_EVENT_NAME,
+} from "@/auth/AuthContext";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import type { Instance, SignalData } from "simple-peer";
+// @ts-expect-error Subpath has no bundled type declarations; use browser build to avoid Node stream runtime errors.
+import Peer from "simple-peer/simplepeer.min.js";
+import { toast } from "sonner";
+
+type ContactPeer = {
+  id?: number;
+  username: string;
+  displayName: string;
+  online?: boolean;
+};
+
+type CallScreen =
+  | "idle"
+  | "outgoing"
+  | "incoming"
+  | "rejected"
+  | "in-progress"
+  | "ended";
+
+type AudioOutputDevice = {
+  deviceId: string;
+  label: string;
+};
+
+type CallSummaryPayload = {
+  call_id: string;
+  status: string;
+  peer?: {
+    id?: number;
+    username: string;
+    display_name?: string;
+  };
+  duration_seconds?: number;
+  end_reason?: string | null;
+};
+
+type CallContextValue = {
+  screen: CallScreen;
+  callId: string | null;
+  peer: ContactPeer | null;
+  localStream: MediaStream | null;
+  remoteStream: MediaStream | null;
+  remoteVideoEnabled: boolean;
+  cameraEnabled: boolean;
+  microphoneEnabled: boolean;
+  isMobileDevice: boolean;
+  canSwitchCamera: boolean;
+  audioOutputs: AudioOutputDevice[];
+  selectedAudioOutputId: string;
+  callDurationSeconds: number;
+  lastEndReason: string | null;
+  startCall: (target: {
+    id?: number;
+    username: string;
+    full_name?: string;
+    online?: boolean;
+  }) => Promise<void>;
+  cancelOutgoingCall: () => void;
+  acceptIncomingCall: () => Promise<void>;
+  rejectIncomingCall: () => void;
+  endCall: () => void;
+  toggleCamera: () => void;
+  toggleMicrophone: () => void;
+  switchCamera: () => Promise<void>;
+  selectAudioOutput: (deviceId: string) => void;
+  dismissOverlay: () => void;
+};
+
+type SignalingMessage = {
+  type?: string;
+  event?: string;
+  payload?: Record<string, unknown>;
+  code?: string;
+  message?: string;
+};
+
+type QueueSignal = SignalData;
+
+const CallContext = createContext<CallContextValue | null>(null);
+
+const CALL_SCREEN_TIMEOUT_MS = 4_000;
+function isCallTraceEnabled() {
+  try {
+    return globalThis.localStorage?.getItem("amber.trace.calls") === "1";
+  } catch {
+    return false;
+  }
+}
+
+function traceCall(label: string, detail?: unknown) {
+  if (!isCallTraceEnabled()) return;
+  if (detail === undefined) {
+    console.debug(`[amber:calls] ${label}`);
+    return;
+  }
+  console.debug(`[amber:calls] ${label}`, detail);
+}
+
+function isMobileUserAgent() {
+  return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function formatPeer(target: {
+  id?: number;
+  username: string;
+  display_name?: string;
+  full_name?: string;
+  online?: boolean;
+}): ContactPeer {
+  const displayName =
+    target.full_name || target.display_name || target.username || "Unknown";
+
+  return {
+    id: target.id,
+    username: target.username,
+    displayName,
+    online: target.online,
+  };
+}
+
+export function CallProvider({ children }: { children: React.ReactNode }) {
+  const { accessToken } = useAuth();
+
+  const [screen, setScreen] = useState<CallScreen>("idle");
+  const [callId, setCallId] = useState<string | null>(null);
+  const [peer, setPeer] = useState<ContactPeer | null>(null);
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+  const [remoteVideoEnabled, setRemoteVideoEnabled] = useState(true);
+  const [cameraEnabled, setCameraEnabled] = useState(true);
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(true);
+  const [audioOutputs, setAudioOutputs] = useState<AudioOutputDevice[]>([]);
+  const [selectedAudioOutputId, setSelectedAudioOutputId] = useState("default");
+  const [callDurationSeconds, setCallDurationSeconds] = useState(0);
+  const [lastEndReason, setLastEndReason] = useState<string | null>(null);
+
+  const isMobileDevice = useMemo(() => isMobileUserAgent(), []);
+  const [canSwitchCamera, setCanSwitchCamera] = useState(false);
+
+  const peerRef = useRef<Instance | null>(null);
+  const pendingSignalsRef = useRef<QueueSignal[]>([]);
+  const localStreamRef = useRef<MediaStream | null>(null);
+  const activeCallIdRef = useRef<string | null>(null);
+  const currentFacingModeRef = useRef<"user" | "environment">("user");
+
+  const autoDismissTimeoutRef = useRef<number | null>(null);
+  const durationIntervalRef = useRef<number | null>(null);
+  const incomingEventHandlerRef = useRef<
+    (message: SignalingMessage) => Promise<void>
+  >(async () => {});
+
+  const clearAutoDismiss = useCallback(() => {
+    if (autoDismissTimeoutRef.current) {
+      window.clearTimeout(autoDismissTimeoutRef.current);
+      autoDismissTimeoutRef.current = null;
+    }
+  }, []);
+
+  const clearDurationInterval = useCallback(() => {
+    if (durationIntervalRef.current) {
+      window.clearInterval(durationIntervalRef.current);
+      durationIntervalRef.current = null;
+    }
+  }, []);
+
+  const startDurationCounter = useCallback(() => {
+    clearDurationInterval();
+    setCallDurationSeconds(0);
+    durationIntervalRef.current = window.setInterval(() => {
+      setCallDurationSeconds((current) => current + 1);
+    }, 1000);
+  }, [clearDurationInterval]);
+
+  const stopAndReleaseTracks = useCallback(() => {
+    if (localStreamRef.current) {
+      for (const track of localStreamRef.current.getTracks()) {
+        track.stop();
+      }
+    }
+    localStreamRef.current = null;
+    setLocalStream(null);
+
+    setRemoteStream(null);
+    setRemoteVideoEnabled(true);
+  }, []);
+
+  const destroyPeer = useCallback(() => {
+    if (peerRef.current) {
+      peerRef.current.destroy();
+      peerRef.current = null;
+    }
+    pendingSignalsRef.current = [];
+  }, []);
+
+  const softResetCallState = useCallback(() => {
+    clearAutoDismiss();
+    clearDurationInterval();
+    setCallDurationSeconds(0);
+    setCallId(null);
+    activeCallIdRef.current = null;
+    setPeer(null);
+    setLastEndReason(null);
+  }, [clearAutoDismiss, clearDurationInterval]);
+
+  const hardResetCallState = useCallback(() => {
+    destroyPeer();
+    stopAndReleaseTracks();
+    softResetCallState();
+    setScreen("idle");
+    setCameraEnabled(true);
+    setMicrophoneEnabled(true);
+  }, [destroyPeer, softResetCallState, stopAndReleaseTracks]);
+
+  const sendSignal = useCallback(
+    (event: string, payload: Record<string, unknown>) => {
+      if (!accessToken) {
+        traceCall("sendSignal skipped (no access token)", { event });
+        return false;
+      }
+
+      const message: Record<string, unknown> = {
+        event,
+        ...payload,
+      };
+
+      traceCall("sendSignal", message);
+      window.dispatchEvent(
+        new CustomEvent<Record<string, unknown>>(WS_SEND_EVENT_NAME, {
+          detail: message,
+        }),
+      );
+      return true;
+    },
+    [accessToken],
+  );
+
+  const sendMediaState = useCallback(
+    (audioEnabled: boolean, videoEnabled: boolean) => {
+      const nextCallId = activeCallIdRef.current;
+      if (!nextCallId) return;
+      sendSignal("call.media-state", {
+        call_id: nextCallId,
+        payload: {
+          audio_enabled: audioEnabled,
+          video_enabled: videoEnabled,
+        },
+      });
+    },
+    [sendSignal],
+  );
+
+  const refreshAudioOutputDevices = useCallback(async () => {
+    if (!navigator.mediaDevices?.enumerateDevices) return;
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const outputDevices = devices
+        .filter((device) => device.kind === "audiooutput")
+        .map((device, index) => ({
+          deviceId: device.deviceId,
+          label:
+            device.label ||
+            (index === 0 ? "Default speaker" : `Speaker ${index + 1}`),
+        }));
+
+      setAudioOutputs(outputDevices);
+      if (
+        outputDevices.length > 0 &&
+        !outputDevices.some(
+          (device) => device.deviceId === selectedAudioOutputId,
+        )
+      ) {
+        setSelectedAudioOutputId(outputDevices[0].deviceId);
+      }
+    } catch {
+      return;
+    }
+  }, [selectedAudioOutputId]);
+
+  const refreshCameraAvailability = useCallback(async () => {
+    if (!navigator.mediaDevices?.enumerateDevices) return;
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoInputs = devices.filter(
+        (device) => device.kind === "videoinput",
+      );
+      setCanSwitchCamera(isMobileDevice && videoInputs.length > 1);
+    } catch {
+      setCanSwitchCamera(false);
+    }
+  }, [isMobileDevice]);
+
+  const ensureLocalStream = useCallback(async () => {
+    if (localStreamRef.current) return localStreamRef.current;
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: currentFacingModeRef.current },
+      audio: true,
+    });
+
+    localStreamRef.current = stream;
+    setLocalStream(stream);
+    setCameraEnabled(true);
+    setMicrophoneEnabled(true);
+
+    return stream;
+  }, []);
+
+  const applyPeerSignal = useCallback((signal: QueueSignal) => {
+    if (!peerRef.current) {
+      pendingSignalsRef.current.push(signal);
+      return;
+    }
+
+    peerRef.current.signal(signal);
+  }, []);
+
+  const createPeer = useCallback(
+    (initiator: boolean, nextCallId: string) => {
+      destroyPeer();
+
+      const stream = localStreamRef.current ?? undefined;
+      let nextPeer: Instance;
+      try {
+        nextPeer = new Peer({
+          initiator,
+          trickle: true,
+          stream,
+        }) as Instance;
+      } catch (error) {
+        traceCall("createPeer failed", error);
+        throw error instanceof Error
+          ? error
+          : new Error("Failed creating WebRTC peer");
+      }
+
+      nextPeer.on("signal", (signalData) => {
+        if (!activeCallIdRef.current || activeCallIdRef.current !== nextCallId)
+          return;
+
+        const signalPayload = signalData as SignalData;
+
+        if (signalPayload.type === "offer" || signalPayload.type === "answer") {
+          sendSignal(`webrtc.${signalPayload.type}`, {
+            call_id: nextCallId,
+            payload: {
+              type: signalPayload.type,
+              sdp: signalPayload.sdp,
+            },
+          });
+          return;
+        }
+
+        if (signalPayload.type !== "candidate") {
+          return;
+        }
+
+        const candidateValue = signalPayload.candidate;
+        sendSignal("webrtc.ice-candidate", {
+          call_id: nextCallId,
+          payload: {
+            candidate: candidateValue.candidate,
+            sdpMLineIndex: candidateValue.sdpMLineIndex ?? undefined,
+            sdpMid: candidateValue.sdpMid ?? undefined,
+          },
+        });
+      });
+
+      nextPeer.on("stream", (nextRemoteStream) => {
+        setRemoteStream(nextRemoteStream);
+      });
+
+      nextPeer.on("close", () => {
+        setRemoteStream(null);
+      });
+
+      nextPeer.on("error", () => {
+        return;
+      });
+
+      peerRef.current = nextPeer;
+
+      if (pendingSignalsRef.current.length > 0) {
+        const queued = [...pendingSignalsRef.current];
+        pendingSignalsRef.current = [];
+        for (const item of queued) {
+          nextPeer.signal(item);
+        }
+      }
+    },
+    [destroyPeer, sendSignal],
+  );
+
+  const finishWithScreen = useCallback(
+    (
+      nextScreen: Exclude<
+        CallScreen,
+        "idle" | "incoming" | "outgoing" | "in-progress"
+      >,
+      endReason?: string | null,
+      durationSeconds?: number,
+    ) => {
+      destroyPeer();
+      stopAndReleaseTracks();
+      clearDurationInterval();
+      if (typeof durationSeconds === "number") {
+        setCallDurationSeconds(durationSeconds);
+      }
+      if (endReason) {
+        setLastEndReason(endReason);
+      }
+      setScreen(nextScreen);
+
+      clearAutoDismiss();
+      autoDismissTimeoutRef.current = window.setTimeout(() => {
+        hardResetCallState();
+      }, CALL_SCREEN_TIMEOUT_MS);
+    },
+    [
+      clearAutoDismiss,
+      clearDurationInterval,
+      destroyPeer,
+      hardResetCallState,
+      stopAndReleaseTracks,
+    ],
+  );
+
+  const handleCallEnded = useCallback(
+    (summary: CallSummaryPayload, explicitScreen?: "rejected" | "ended") => {
+      const status =
+        explicitScreen ||
+        (summary.status === "rejected" ? "rejected" : "ended");
+      finishWithScreen(
+        status,
+        summary.end_reason ?? null,
+        summary.duration_seconds,
+      );
+    },
+    [finishWithScreen],
+  );
+
+  const startCall = useCallback(
+    async (target: {
+      id?: number;
+      username: string;
+      full_name?: string;
+      online?: boolean;
+    }) => {
+      if (!target.online) {
+        toast.error("This contact is offline.");
+        return;
+      }
+
+      try {
+        await ensureLocalStream();
+      } catch {
+        toast.error("Could not access camera/microphone.");
+        return;
+      }
+
+      setPeer(formatPeer(target));
+      setLastEndReason(null);
+      setScreen("outgoing");
+      setCallId(null);
+      activeCallIdRef.current = null;
+
+      const sent = sendSignal("call.invite", {
+        to: target.username,
+      });
+      if (!sent) {
+        toast.error("Connection unavailable. Please try again.");
+        hardResetCallState();
+      }
+    },
+    [ensureLocalStream, hardResetCallState, sendSignal],
+  );
+
+  const cancelOutgoingCall = useCallback(() => {
+    if (!activeCallIdRef.current) {
+      hardResetCallState();
+      return;
+    }
+
+    sendSignal("call.cancel", {
+      call_id: activeCallIdRef.current,
+    });
+  }, [hardResetCallState, sendSignal]);
+
+  const rejectIncomingCall = useCallback(() => {
+    const nextCallId = activeCallIdRef.current;
+    if (!nextCallId) {
+      hardResetCallState();
+      return;
+    }
+
+    sendSignal("call.reject", {
+      call_id: nextCallId,
+      reject_all: true,
+    });
+  }, [hardResetCallState, sendSignal]);
+
+  const acceptIncomingCall = useCallback(async () => {
+    const nextCallId = activeCallIdRef.current;
+    if (!nextCallId) return;
+
+    try {
+      await ensureLocalStream();
+    } catch {
+      toast.error("Could not access camera/microphone.");
+      return;
+    }
+
+    try {
+      createPeer(false, nextCallId);
+    } catch {
+      toast.error("Failed to initialize video call.");
+      hardResetCallState();
+      return;
+    }
+
+    setScreen("in-progress");
+    setRemoteVideoEnabled(true);
+    startDurationCounter();
+
+    sendSignal("call.accept", {
+      call_id: nextCallId,
+    });
+  }, [
+    createPeer,
+    ensureLocalStream,
+    hardResetCallState,
+    sendSignal,
+    startDurationCounter,
+  ]);
+
+  const endCall = useCallback(() => {
+    const nextCallId = activeCallIdRef.current;
+    if (!nextCallId) {
+      hardResetCallState();
+      return;
+    }
+
+    sendSignal("call.end", {
+      call_id: nextCallId,
+      reason: "ended",
+    });
+  }, [hardResetCallState, sendSignal]);
+
+  const toggleCamera = useCallback(() => {
+    const stream = localStreamRef.current;
+    if (!stream) return;
+
+    const [videoTrack] = stream.getVideoTracks();
+    if (!videoTrack) return;
+
+    const nextEnabled = !videoTrack.enabled;
+    videoTrack.enabled = nextEnabled;
+    setCameraEnabled(nextEnabled);
+    sendMediaState(microphoneEnabled, nextEnabled);
+  }, [microphoneEnabled, sendMediaState]);
+
+  const toggleMicrophone = useCallback(() => {
+    const stream = localStreamRef.current;
+    if (!stream) return;
+
+    const [audioTrack] = stream.getAudioTracks();
+    if (!audioTrack) return;
+
+    const nextEnabled = !audioTrack.enabled;
+    audioTrack.enabled = nextEnabled;
+    setMicrophoneEnabled(nextEnabled);
+    sendMediaState(nextEnabled, cameraEnabled);
+  }, [cameraEnabled, sendMediaState]);
+
+  const switchCamera = useCallback(async () => {
+    if (!canSwitchCamera) return;
+
+    const existingStream = localStreamRef.current;
+    if (!existingStream) return;
+
+    const [oldVideoTrack] = existingStream.getVideoTracks();
+    if (!oldVideoTrack) return;
+
+    const nextFacingMode =
+      currentFacingModeRef.current === "user" ? "environment" : "user";
+
+    try {
+      const nextStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: nextFacingMode },
+        audio: false,
+      });
+      const [nextTrack] = nextStream.getVideoTracks();
+      if (!nextTrack) return;
+
+      existingStream.removeTrack(oldVideoTrack);
+      oldVideoTrack.stop();
+      existingStream.addTrack(nextTrack);
+
+      if (peerRef.current) {
+        peerRef.current.replaceTrack(oldVideoTrack, nextTrack, existingStream);
+      }
+
+      currentFacingModeRef.current = nextFacingMode;
+      setLocalStream(new MediaStream(existingStream.getTracks()));
+    } catch {
+      toast.error("Unable to switch camera.");
+    }
+  }, [canSwitchCamera]);
+
+  const selectAudioOutput = useCallback((deviceId: string) => {
+    setSelectedAudioOutputId(deviceId);
+  }, []);
+
+  const dismissOverlay = useCallback(() => {
+    hardResetCallState();
+  }, [hardResetCallState]);
+
+  const handleIncomingSocketEvent = useCallback(
+    async (message: SignalingMessage) => {
+      traceCall("incoming message", message);
+
+      const rawType =
+        typeof message.type === "string" ? message.type.toLowerCase() : "";
+      const rawEvent =
+        typeof message.event === "string" ? message.event.toLowerCase() : "";
+      const payload = (message.payload || {}) as Record<string, unknown>;
+
+      const eventNamespace = rawEvent.includes(".")
+        ? rawEvent.split(".")[0]
+        : "";
+
+      const normalizedType =
+        eventNamespace === "call" ||
+        eventNamespace === "webrtc" ||
+        eventNamespace === "ack" ||
+        eventNamespace === "error"
+          ? eventNamespace
+          : rawType || eventNamespace;
+
+      traceCall("incoming normalized", {
+        rawType,
+        rawEvent,
+        normalizedType,
+      });
+
+      if (normalizedType === "error" || rawEvent === "error") {
+        const code = message.code ?? "call.error";
+        if (
+          screen === "outgoing" ||
+          screen === "incoming" ||
+          screen === "in-progress"
+        ) {
+          toast.error(String(message.message || code));
+          hardResetCallState();
+        }
+        return;
+      }
+
+      if (normalizedType === "ack" || rawEvent === "ack") {
+        const ackEventRaw =
+          rawEvent === "ack"
+            ? String(payload.event || "").toLowerCase()
+            : rawEvent;
+        const ackEvent = ackEventRaw.startsWith("call.")
+          ? ackEventRaw.slice("call.".length)
+          : ackEventRaw;
+
+        if (ackEvent === "invite") {
+          const nextCallId = String(payload.call_id || "");
+          if (!nextCallId) return;
+          setCallId(nextCallId);
+          activeCallIdRef.current = nextCallId;
+          return;
+        }
+
+        if (ackEvent === "reject") {
+          handleCallEnded(
+            {
+              call_id: String(payload.call_id || ""),
+              status: "rejected",
+              end_reason: "rejected",
+            },
+            "rejected",
+          );
+          return;
+        }
+
+        if (ackEvent === "cancel") {
+          handleCallEnded({
+            call_id: String(payload.call_id || ""),
+            status: "canceled",
+            end_reason: "canceled",
+          });
+          return;
+        }
+
+        if (ackEvent === "end") {
+          handleCallEnded({
+            call_id: String(payload.call_id || ""),
+            status: "ended",
+            end_reason: "ended",
+            duration_seconds: callDurationSeconds,
+          });
+          return;
+        }
+
+        return;
+      }
+      if (normalizedType === "call") {
+        const event = rawEvent.startsWith("call.")
+          ? rawEvent.slice("call.".length)
+          : rawEvent;
+        const payload = (message.payload || {}) as Record<string, unknown>;
+        if (event === "ringing" || event === "invite") {
+          const fromRaw =
+            ((payload.from || payload.peer || payload.caller || {}) as Record<
+              string,
+              unknown
+            >) || {};
+          const fromUsername =
+            typeof fromRaw.username === "string"
+              ? fromRaw.username
+              : typeof fromRaw.to === "string"
+                ? fromRaw.to
+                : typeof fromRaw.from === "string"
+                  ? fromRaw.from
+                  : typeof fromRaw.user === "string"
+                    ? fromRaw.user
+                    : "";
+
+          const fromDisplayName =
+            typeof fromRaw.display_name === "string"
+              ? fromRaw.display_name
+              : typeof fromRaw.full_name === "string"
+                ? fromRaw.full_name
+                : undefined;
+
+          const fromId =
+            typeof fromRaw.id === "number" ? fromRaw.id : undefined;
+
+          const incomingCallId = String(payload.call_id || payload.id || "");
+          const callerUsername =
+            fromUsername ||
+            (typeof payload.from === "string"
+              ? String(payload.from)
+              : typeof payload.username === "string"
+                ? String(payload.username)
+                : fromId !== undefined
+                  ? `user-${fromId}`
+                  : "");
+
+          if (!incomingCallId || !callerUsername) return;
+
+          setCallId(incomingCallId);
+          activeCallIdRef.current = incomingCallId;
+          setPeer(
+            formatPeer({
+              id: fromId,
+              username: callerUsername,
+              display_name: fromDisplayName,
+            }),
+          );
+          setLastEndReason(null);
+          setScreen("incoming");
+          return;
+        }
+
+        if (event === "call.accepted" || event === "accepted") {
+          const summary = payload as unknown as CallSummaryPayload;
+          if (!summary.call_id) return;
+
+          const acceptedCallId = String(summary.call_id);
+          setCallId(acceptedCallId);
+          activeCallIdRef.current = acceptedCallId;
+
+          if (summary.peer?.username) {
+            setPeer(
+              formatPeer({
+                id: summary.peer.id,
+                username: summary.peer.username,
+                display_name: summary.peer.display_name,
+              }),
+            );
+          }
+
+          try {
+            await ensureLocalStream();
+          } catch {
+            toast.error("Could not access camera/microphone.");
+            return;
+          }
+
+          try {
+            createPeer(true, acceptedCallId);
+          } catch {
+            toast.error("Failed to initialize video call.");
+            hardResetCallState();
+            return;
+          }
+
+          setRemoteVideoEnabled(true);
+          setScreen("in-progress");
+          startDurationCounter();
+          sendMediaState(microphoneEnabled, cameraEnabled);
+          return;
+        }
+
+        if (
+          event === "rejected" ||
+          event === "cancel" ||
+          event === "canceled" ||
+          event === "missed" ||
+          event === "failed" ||
+          event === "end" ||
+          event === "ended"
+        ) {
+          handleCallEnded(payload as unknown as CallSummaryPayload);
+          return;
+        }
+
+        if (
+          event === "call.terminated_elsewhere" ||
+          event === "terminated_elsewhere"
+        ) {
+          handleCallEnded({
+            call_id: String(payload.call_id || ""),
+            status: "ended",
+            end_reason: "answered-elsewhere",
+          });
+        }
+
+        return;
+      }
+
+      if (normalizedType === "webrtc") {
+        const event = rawEvent.startsWith("webrtc.")
+          ? rawEvent.slice("webrtc.".length)
+          : rawEvent;
+
+        const payloadData = ((payload.data as
+          | Record<string, unknown>
+          | undefined) || payload) as Record<string, unknown>;
+
+        const payloadCallId = String(
+          payload.call_id || payloadData.call_id || "",
+        );
+
+        if (!payloadCallId || payloadCallId !== activeCallIdRef.current) {
+          return;
+        }
+
+        if (event === "offer" || event === "answer") {
+          const sdp =
+            typeof payloadData.sdp === "string" ? payloadData.sdp : "";
+          if (!sdp) return;
+
+          applyPeerSignal({
+            type: event,
+            sdp,
+          });
+          return;
+        }
+
+        if (event === "ice-candidate") {
+          const candidateRaw = payloadData.candidate;
+
+          if (typeof candidateRaw === "string") {
+            const iceCandidate = new RTCIceCandidate({
+              candidate: candidateRaw,
+              sdpMLineIndex:
+                typeof payloadData.sdpMLineIndex === "number"
+                  ? payloadData.sdpMLineIndex
+                  : null,
+              sdpMid:
+                typeof payloadData.sdpMid === "string"
+                  ? payloadData.sdpMid
+                  : null,
+            });
+
+            applyPeerSignal({
+              type: "candidate",
+              candidate: iceCandidate,
+            });
+          }
+
+          return;
+        }
+
+        if (event === "media-state") {
+          setRemoteVideoEnabled(payloadData.video_enabled !== false);
+        }
+
+        return;
+      }
+    },
+    [
+      applyPeerSignal,
+      callDurationSeconds,
+      cameraEnabled,
+      createPeer,
+      ensureLocalStream,
+      handleCallEnded,
+      hardResetCallState,
+      microphoneEnabled,
+      screen,
+      sendMediaState,
+      startDurationCounter,
+    ],
+  );
+
+  useEffect(() => {
+    incomingEventHandlerRef.current = handleIncomingSocketEvent;
+  }, [handleIncomingSocketEvent]);
+
+  useEffect(() => {
+    const onSharedWsMessage = (event: Event) => {
+      const customEvent = event as CustomEvent<unknown>;
+      const detail = customEvent.detail;
+      if (!detail || typeof detail !== "object") return;
+
+      const message = detail as SignalingMessage;
+      if (
+        typeof message.event !== "string" &&
+        typeof message.type !== "string"
+      ) {
+        return;
+      }
+
+      void incomingEventHandlerRef.current(message);
+    };
+
+    window.addEventListener(
+      WS_MESSAGE_EVENT_NAME,
+      onSharedWsMessage as EventListener,
+    );
+    return () => {
+      window.removeEventListener(
+        WS_MESSAGE_EVENT_NAME,
+        onSharedWsMessage as EventListener,
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!accessToken) {
+      hardResetCallState();
+    }
+  }, [accessToken, hardResetCallState]);
+
+  useEffect(() => {
+    void refreshAudioOutputDevices();
+    void refreshCameraAvailability();
+
+    if (!navigator.mediaDevices) return;
+
+    const onDevicesChanged = () => {
+      void refreshAudioOutputDevices();
+      void refreshCameraAvailability();
+    };
+
+    navigator.mediaDevices.addEventListener("devicechange", onDevicesChanged);
+    return () => {
+      navigator.mediaDevices.removeEventListener(
+        "devicechange",
+        onDevicesChanged,
+      );
+    };
+  }, [refreshAudioOutputDevices, refreshCameraAvailability]);
+
+  useEffect(() => {
+    return () => {
+      clearAutoDismiss();
+      clearDurationInterval();
+      destroyPeer();
+      stopAndReleaseTracks();
+    };
+  }, [
+    clearAutoDismiss,
+    clearDurationInterval,
+    destroyPeer,
+    stopAndReleaseTracks,
+  ]);
+
+  const value = useMemo<CallContextValue>(
+    () => ({
+      screen,
+      callId,
+      peer,
+      localStream,
+      remoteStream,
+      remoteVideoEnabled,
+      cameraEnabled,
+      microphoneEnabled,
+      isMobileDevice,
+      canSwitchCamera,
+      audioOutputs,
+      selectedAudioOutputId,
+      callDurationSeconds,
+      lastEndReason,
+      startCall,
+      cancelOutgoingCall,
+      acceptIncomingCall,
+      rejectIncomingCall,
+      endCall,
+      toggleCamera,
+      toggleMicrophone,
+      switchCamera,
+      selectAudioOutput,
+      dismissOverlay,
+    }),
+    [
+      screen,
+      callId,
+      peer,
+      localStream,
+      remoteStream,
+      remoteVideoEnabled,
+      cameraEnabled,
+      microphoneEnabled,
+      isMobileDevice,
+      canSwitchCamera,
+      audioOutputs,
+      selectedAudioOutputId,
+      callDurationSeconds,
+      lastEndReason,
+      startCall,
+      cancelOutgoingCall,
+      acceptIncomingCall,
+      rejectIncomingCall,
+      endCall,
+      toggleCamera,
+      toggleMicrophone,
+      switchCamera,
+      selectAudioOutput,
+      dismissOverlay,
+    ],
+  );
+
+  return <CallContext.Provider value={value}>{children}</CallContext.Provider>;
+}
+
+export function useCalls() {
+  const context = useContext(CallContext);
+  if (!context) {
+    throw new Error("useCalls must be used within CallProvider");
+  }
+
+  return context;
+}

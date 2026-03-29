@@ -1,6 +1,9 @@
 import { WS_BASE_URL } from "@/config";
-import { useCallback, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { MessageItem } from "../types";
+
+const WS_RECONNECT_BASE_MS = 1_000;
+const WS_RECONNECT_MAX_MS = 15_000;
 
 type UseConversationRealtimeParams = {
   accessToken: string | null;
@@ -35,22 +38,25 @@ export function useConversationRealtime({
   shouldAutoScrollRef,
   onMessageActivity,
 }: UseConversationRealtimeParams) {
-  const WS_RECONNECT_BASE_MS = 1_000;
-  const WS_RECONNECT_MAX_MS = 15_000;
+  const isNearBottomRef = useRef(isNearBottom);
+  const mergeMessagesRef = useRef(mergeMessages);
+  const replaceMessageByIdRef = useRef(replaceMessageById);
+  const markConversationSeenRef = useRef(markConversationSeen);
+  const onMessageActivityRef = useRef(onMessageActivity);
 
-  const resolveWsPingUrl = useCallback(() => {
-    const wsUrl = new URL(`${WS_BASE_URL}/ping`);
-    wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
-    if (accessToken) wsUrl.searchParams.set("token", accessToken);
-    return wsUrl.toString();
-  }, [accessToken]);
-
-  const isActivelyViewingConversation = useCallback(() => {
-    return (
-      document.visibilityState === "visible" &&
-      isNearBottom(scrollContainerRef.current)
-    );
-  }, [isNearBottom, scrollContainerRef]);
+  useEffect(() => {
+    isNearBottomRef.current = isNearBottom;
+    mergeMessagesRef.current = mergeMessages;
+    replaceMessageByIdRef.current = replaceMessageById;
+    markConversationSeenRef.current = markConversationSeen;
+    onMessageActivityRef.current = onMessageActivity;
+  }, [
+    isNearBottom,
+    mergeMessages,
+    replaceMessageById,
+    markConversationSeen,
+    onMessageActivity,
+  ]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -86,12 +92,19 @@ export function useConversationRealtime({
       if (eventData.event === "message.created") {
         const incomingMessage = eventData.payload?.message;
         if (!incomingMessage) return;
-        shouldAutoScrollRef.current = isNearBottom(scrollContainerRef.current);
-        setMessages((current) => mergeMessages(current, [incomingMessage]));
-        onMessageActivity?.();
+        shouldAutoScrollRef.current = isNearBottomRef.current(
+          scrollContainerRef.current,
+        );
+        setMessages((current) =>
+          mergeMessagesRef.current(current, [incomingMessage]),
+        );
+        onMessageActivityRef.current?.();
 
-        if (isActivelyViewingConversation()) {
-          void markConversationSeen(conversationId);
+        if (
+          document.visibilityState === "visible" &&
+          isNearBottomRef.current(scrollContainerRef.current)
+        ) {
+          void markConversationSeenRef.current(conversationId);
         }
         return;
       }
@@ -99,7 +112,9 @@ export function useConversationRealtime({
       if (eventData.event === "message.edited") {
         const editedMessage = eventData.payload?.message;
         if (!editedMessage) return;
-        setMessages((current) => replaceMessageById(current, editedMessage));
+        setMessages((current) =>
+          replaceMessageByIdRef.current(current, editedMessage),
+        );
         return;
       }
 
@@ -145,20 +160,49 @@ export function useConversationRealtime({
     const connect = () => {
       if (disposed) return;
 
+      if (
+        socket &&
+        (socket.readyState === WebSocket.OPEN ||
+          socket.readyState === WebSocket.CONNECTING)
+      ) {
+        return;
+      }
+
+      if (socket) {
+        socket.onopen = null;
+        socket.onmessage = null;
+        socket.onerror = null;
+        socket.onclose = null;
+
+        if (socket.readyState !== WebSocket.CLOSED) {
+          socket.close();
+        }
+
+        socket = null;
+      }
+
+      let nextSocket: WebSocket;
       try {
-        socket = new WebSocket(resolveWsPingUrl());
+        const wsUrl = new URL(`${WS_BASE_URL}/ping`);
+        wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
+        if (accessToken) wsUrl.searchParams.set("token", accessToken);
+        nextSocket = new WebSocket(wsUrl.toString());
       } catch {
         setIsWsConnected(false);
         scheduleReconnect();
         return;
       }
 
-      socket.onopen = () => {
+      socket = nextSocket;
+
+      nextSocket.onopen = () => {
+        if (socket !== nextSocket) return;
         reconnectAttempts = 0;
         setIsWsConnected(true);
       };
 
-      socket.onmessage = (event) => {
+      nextSocket.onmessage = (event) => {
+        if (socket !== nextSocket) return;
         if (typeof event.data !== "string") return;
         try {
           const parsed = JSON.parse(event.data) as unknown;
@@ -168,11 +212,15 @@ export function useConversationRealtime({
         }
       };
 
-      socket.onerror = () => {};
+      nextSocket.onerror = () => {
+        if (socket !== nextSocket) return;
+      };
 
-      socket.onclose = () => {
+      nextSocket.onclose = () => {
+        if (socket !== nextSocket) return;
         setIsWsConnected(false);
         if (disposed) return;
+        socket = null;
         scheduleReconnect();
       };
     };
@@ -183,24 +231,26 @@ export function useConversationRealtime({
       disposed = true;
       setIsWsConnected(false);
       clearReconnectTimeout();
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        socket.close();
+
+      if (socket) {
+        socket.onopen = null;
+        socket.onmessage = null;
+        socket.onerror = null;
+        socket.onclose = null;
+
+        if (socket.readyState !== WebSocket.CLOSED) {
+          socket.close();
+        }
+
+        socket = null;
       }
     };
   }, [
     conversationId,
-    isActivelyViewingConversation,
-    isNearBottom,
-    markConversationSeen,
-    mergeMessages,
-    replaceMessageById,
-    resolveWsPingUrl,
+    accessToken,
     setIsWsConnected,
     shouldAutoScrollRef,
     scrollContainerRef,
     setMessages,
-    onMessageActivity,
-    WS_RECONNECT_BASE_MS,
-    WS_RECONNECT_MAX_MS,
   ]);
 }

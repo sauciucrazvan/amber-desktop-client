@@ -117,7 +117,19 @@ function parseBuildOptions(argv) {
     githubReleaseType: "release",
   };
 
+  const hasTruthyNpmConfig = (key) => {
+    const raw = process.env[`npm_config_${key}`];
+    if (!raw) return false;
+    const normalized = String(raw).trim().toLowerCase();
+    return normalized === "true" || normalized === "1" || normalized === "yes";
+  };
+
   for (const arg of argv) {
+    // Support accidental `npm run build - --win` style invocation where `-` reaches this script.
+    if (arg === "-" || arg === "--") {
+      continue;
+    }
+
     if (arg === "--all") {
       options.linux = true;
       options.win = true;
@@ -201,6 +213,17 @@ function parseBuildOptions(argv) {
         `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: msi on Windows, nsis on Linux/macOS)\n  --force-msi                 Allow msi target on non-Windows hosts\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n`,
       );
       process.exit(0);
+    }
+  }
+
+  if (!options.linux && !options.win) {
+    if (hasTruthyNpmConfig("all")) {
+      options.linux = true;
+      options.win = true;
+    } else if (hasTruthyNpmConfig("linux")) {
+      options.linux = true;
+    } else if (hasTruthyNpmConfig("win") || hasTruthyNpmConfig("windows")) {
+      options.win = true;
     }
   }
 

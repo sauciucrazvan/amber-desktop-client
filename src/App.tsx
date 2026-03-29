@@ -5,6 +5,7 @@ import { Toaster } from "./components/ui/sonner";
 import Titlebar from "./components/common/Titlebar";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { CallOverlay, CallProvider } from "./views/home/calls";
 
 type UpdaterStatus = {
   status: string;
@@ -78,13 +79,16 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <UpdaterNotifications />
-        <div className="flex h-screen flex-col overflow-hidden">
-          <Titlebar />
-          <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
-            <Tree />
+        <CallProvider>
+          <UpdaterNotifications />
+          <div className="flex h-screen flex-col overflow-hidden">
+            <Titlebar />
+            <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+              <Tree />
+            </div>
           </div>
-        </div>
+          <CallOverlay />
+        </CallProvider>
         <Toaster />
       </AuthProvider>
     </ThemeProvider>

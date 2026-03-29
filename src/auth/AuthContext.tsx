@@ -47,6 +47,8 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export const PRESENCE_EVENT_NAME = "amber:presence";
+export const WS_MESSAGE_EVENT_NAME = "amber:ws-message";
+export const WS_SEND_EVENT_NAME = "amber:ws-send";
 
 export type PresenceEventPayload = {
   type: "presence";
@@ -115,6 +117,23 @@ function toPresencePayload(raw: unknown): PresenceEventPayload | null {
 const HEARTBEAT_ENDPOINT = "/ping";
 const HEARTBEAT_INTERVAL_MS = 30_000;
 const HEARTBEAT_RECONNECT_MS = 5_000;
+
+function isWsTraceEnabled() {
+  try {
+    return globalThis.localStorage?.getItem("amber.trace.calls") === "1";
+  } catch {
+    return false;
+  }
+}
+
+function traceWs(label: string, detail?: unknown) {
+  if (!isWsTraceEnabled()) return;
+  if (detail === undefined) {
+    console.debug(`[amber:ws] ${label}`);
+    return;
+  }
+  console.debug(`[amber:ws] ${label}`, detail);
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const initialTokens = getStoredTokens();
@@ -261,11 +280,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const connect = () => {
       if (disposed) return;
 
+      traceWs("auth-socket connect", {
+        endpoint: HEARTBEAT_ENDPOINT,
+      });
+
       socket = new WebSocket(
         resolveWsUrl(HEARTBEAT_ENDPOINT, heartbeatAccessToken),
       );
 
+      const onWsSend = (customEvent: Event) => {
+        const event = customEvent as CustomEvent<unknown>;
+        const detail = event.detail;
+        if (!detail || typeof detail !== "object") return;
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+          traceWs("auth-socket send skipped (not open)");
+          return;
+        }
+
+        try {
+          socket.send(JSON.stringify(detail));
+          traceWs("auth-socket send", detail);
+        } catch {
+          traceWs("auth-socket send failed");
+        }
+      };
+
+      window.addEventListener(WS_SEND_EVENT_NAME, onWsSend as EventListener);
+
       socket.onopen = () => {
+        traceWs("auth-socket open");
         clearPingInterval();
         socket?.send("ping");
         pingIntervalId = setInterval(() => {
@@ -278,6 +321,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         try {
           const parsed = JSON.parse(event.data) as unknown;
+          traceWs("auth-socket message", parsed);
+          window.dispatchEvent(
+            new CustomEvent<unknown>(WS_MESSAGE_EVENT_NAME, {
+              detail: parsed,
+            }),
+          );
+
           const presence = toPresencePayload(parsed);
           if (!presence) return;
 
@@ -294,6 +344,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       socket.onerror = () => {};
 
       socket.onclose = (event) => {
+        window.removeEventListener(
+          WS_SEND_EVENT_NAME,
+          onWsSend as EventListener,
+        );
+        traceWs("auth-socket close", {
+          code: event.code,
+          reason: event.reason,
+        });
         clearPingInterval();
 
         if (disposed) return;

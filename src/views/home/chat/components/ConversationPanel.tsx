@@ -4,7 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
-import { Edit2, Reply, Send, X } from "lucide-react";
+import { useCalls } from "@/views/home/calls";
+import { Edit2, Phone, Reply, Send, X } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useChat } from "../context/ChatContext";
@@ -14,6 +15,7 @@ import { useConversationLogic } from "../hooks/useConversationLogic";
 export default function ConversationPanel() {
   const { accessToken, authFetch } = useAuth();
   const { activeChat, closeChat } = useChat();
+  const { startCall, screen } = useCalls();
   const { t, i18n } = useTranslation();
 
   const conversationId = activeChat?.conversation.id;
@@ -73,30 +75,56 @@ export default function ConversationPanel() {
     <section className="flex h-[calc(100%-3rem)] w-full flex-col pt-4">
       <div className="border-b">
         <div className="mb-1 flex items-center justify-between px-4 pb-2">
-          <UserProfile
-            username={activeChat.otherUser.username}
-            trigger={
-              <button
-                type="button"
-                className="min-w-0 inline-flex items-center gap-2 rounded-md px-1 py-1 text-left transition-colors cursor-pointer"
-              >
-                <UserAvatar
-                  full_name={activeChat.otherUser.full_name}
-                  username={activeChat.otherUser.username}
-                  isOnline={activeChat.otherUser.online}
-                  size="sm"
-                />
-                <div className="min-w-0">
-                  <h2 className="truncate text-lg font-semibold">
-                    {activeChat.otherUser.full_name}
-                  </h2>
-                  <p className="truncate text-xs text-muted-foreground">
-                    @{activeChat.otherUser.username}
-                  </p>
-                </div>
-              </button>
-            }
-          />
+          <div className="flex min-w-0 items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="cursor-pointer"
+              onClick={() => {
+                if (!activeChat) return;
+                void startCall({
+                  id: activeChat.otherUser.id,
+                  username: activeChat.otherUser.username,
+                  full_name: activeChat.otherUser.full_name,
+                  online: activeChat.otherUser.online,
+                });
+              }}
+              disabled={screen !== "idle" || !activeChat.otherUser.online}
+              title={
+                activeChat.otherUser.online
+                  ? "Start video call"
+                  : "Contact is offline"
+              }
+            >
+              <Phone className="size-4" />
+            </Button>
+
+            <UserProfile
+              username={activeChat.otherUser.username}
+              trigger={
+                <button
+                  type="button"
+                  className="min-w-0 inline-flex items-center gap-2 rounded-md px-1 py-1 text-left transition-colors cursor-pointer"
+                >
+                  <UserAvatar
+                    full_name={activeChat.otherUser.full_name}
+                    username={activeChat.otherUser.username}
+                    isOnline={activeChat.otherUser.online}
+                    size="sm"
+                  />
+                  <div className="min-w-0">
+                    <h2 className="truncate text-lg font-semibold">
+                      {activeChat.otherUser.full_name}
+                    </h2>
+                    <p className="truncate text-xs text-muted-foreground">
+                      @{activeChat.otherUser.username}
+                    </p>
+                  </div>
+                </button>
+              }
+            />
+          </div>
+
           <Button
             variant="ghost"
             size="icon"

@@ -208,7 +208,11 @@ export default function CallOverlay() {
       {screen === "in-progress" && (
         <div className="h-full bg-black/70 backdrop-blur-sm">
           <div className="relative mx-auto flex h-full w-full max-w-5xl flex-col overflow-hidden bg-neutral-950 text-neutral-100">
-            <div className="absolute left-0 right-0 top-4 z-10 flex items-center justify-center">
+            <div className="absolute left-0 right-0 top-4 z-10 flex items-center justify-center gap-1">
+              <div className="rounded-full bg-black/60 px-4 py-1 text-sm text-neutral-200">
+                @{peerFallback}
+              </div>
+
               <div className="rounded-full bg-black/60 px-4 py-1 text-sm text-neutral-200">
                 {formatDuration(callDurationSeconds)}
               </div>

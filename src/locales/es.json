@@ -339,6 +339,14 @@
     "ended": {
       "duration": "Call duration: {{duration}}"
     },
+    "toasts": {
+      "contactOffline": "This contact is offline.",
+      "mediaAccessFailed": "Could not access camera/microphone.",
+      "connectionUnavailable": "Connection unavailable. Please try again.",
+      "initializeFailed": "Failed to initialize video call.",
+      "switchCameraFailed": "Unable to switch camera.",
+      "genericError": "An unexpected call error occurred."
+    },
     "actions": {
       "startVideo": "Start video call",
       "contactOffline": "Contact is offline",

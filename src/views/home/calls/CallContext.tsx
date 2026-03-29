@@ -12,6 +12,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import type { Instance, SignalData } from "simple-peer";
 // @ts-expect-error Subpath has no bundled type declarations; use browser build to avoid Node stream runtime errors.
 import Peer from "simple-peer/simplepeer.min.js";
@@ -135,6 +136,7 @@ function formatPeer(target: {
 
 export function CallProvider({ children }: { children: React.ReactNode }) {
   const { accessToken } = useAuth();
+  const { t } = useTranslation();
 
   const [screen, setScreen] = useState<CallScreen>("idle");
   const [callId, setCallId] = useState<string | null>(null);
@@ -463,14 +465,14 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       online?: boolean;
     }) => {
       if (!target.online) {
-        toast.error("This contact is offline.");
+        toast.error(t("calls.toasts.contactOffline"));
         return;
       }
 
       try {
         await ensureLocalStream();
       } catch {
-        toast.error("Could not access camera/microphone.");
+        toast.error(t("calls.toasts.mediaAccessFailed"));
         return;
       }
 
@@ -484,11 +486,11 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         to: target.username,
       });
       if (!sent) {
-        toast.error("Connection unavailable. Please try again.");
+        toast.error(t("calls.toasts.connectionUnavailable"));
         hardResetCallState();
       }
     },
-    [ensureLocalStream, hardResetCallState, sendSignal],
+    [ensureLocalStream, hardResetCallState, sendSignal, t],
   );
 
   const cancelOutgoingCall = useCallback(() => {
@@ -522,14 +524,14 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     try {
       await ensureLocalStream();
     } catch {
-      toast.error("Could not access camera/microphone.");
+      toast.error(t("calls.toasts.mediaAccessFailed"));
       return;
     }
 
     try {
       createPeer(false, nextCallId);
     } catch {
-      toast.error("Failed to initialize video call.");
+      toast.error(t("calls.toasts.initializeFailed"));
       hardResetCallState();
       return;
     }
@@ -547,6 +549,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     hardResetCallState,
     sendSignal,
     startDurationCounter,
+    t,
   ]);
 
   const endCall = useCallback(() => {
@@ -619,9 +622,9 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       currentFacingModeRef.current = nextFacingMode;
       setLocalStream(new MediaStream(existingStream.getTracks()));
     } catch {
-      toast.error("Unable to switch camera.");
+      toast.error(t("calls.toasts.switchCameraFailed"));
     }
-  }, [canSwitchCamera]);
+  }, [canSwitchCamera, t]);
 
   const selectAudioOutput = useCallback((deviceId: string) => {
     setSelectedAudioOutputId(deviceId);
@@ -630,6 +633,24 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const dismissOverlay = useCallback(() => {
     hardResetCallState();
   }, [hardResetCallState]);
+
+  const resolveToastMessage = useCallback(
+    (messageOrKey: string | null | undefined, fallbackKey: string) => {
+      const normalized =
+        typeof messageOrKey === "string" ? messageOrKey.trim() : "";
+
+      if (!normalized) {
+        return t(fallbackKey);
+      }
+
+      if (normalized.includes(".")) {
+        return t(normalized, { defaultValue: t(fallbackKey) });
+      }
+
+      return normalized;
+    },
+    [t],
+  );
 
   const handleIncomingSocketEvent = useCallback(
     async (message: SignalingMessage) => {
@@ -666,7 +687,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           screen === "incoming" ||
           screen === "in-progress"
         ) {
-          toast.error(String(message.message || code));
+          toast.error(
+            resolveToastMessage(
+              typeof message.message === "string" ? message.message : code,
+              "calls.toasts.genericError",
+            ),
+          );
           hardResetCallState();
         }
         return;
@@ -802,14 +828,14 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           try {
             await ensureLocalStream();
           } catch {
-            toast.error("Could not access camera/microphone.");
+            toast.error(t("calls.toasts.mediaAccessFailed"));
             return;
           }
 
           try {
             createPeer(true, acceptedCallId);
           } catch {
-            toast.error("Failed to initialize video call.");
+            toast.error(t("calls.toasts.initializeFailed"));
             hardResetCallState();
             return;
           }
@@ -918,9 +944,11 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       handleCallEnded,
       hardResetCallState,
       microphoneEnabled,
+      resolveToastMessage,
       screen,
       sendMediaState,
       startDurationCounter,
+      t,
     ],
   );
 

@@ -706,9 +706,10 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         const ackEvent = ackEventRaw.startsWith("call.")
           ? ackEventRaw.slice("call.".length)
           : ackEventRaw;
+        const ackCallId = String(payload.call_id || "");
 
         if (ackEvent === "invite") {
-          const nextCallId = String(payload.call_id || "");
+          const nextCallId = ackCallId;
           if (!nextCallId) return;
           setCallId(nextCallId);
           activeCallIdRef.current = nextCallId;
@@ -716,9 +717,10 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (ackEvent === "reject") {
+          if (!ackCallId || ackCallId !== activeCallIdRef.current) return;
           handleCallEnded(
             {
-              call_id: String(payload.call_id || ""),
+              call_id: ackCallId,
               status: "rejected",
               end_reason: "rejected",
             },
@@ -728,8 +730,9 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (ackEvent === "cancel") {
+          if (!ackCallId || ackCallId !== activeCallIdRef.current) return;
           handleCallEnded({
-            call_id: String(payload.call_id || ""),
+            call_id: ackCallId,
             status: "canceled",
             end_reason: "canceled",
           });
@@ -737,8 +740,9 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (ackEvent === "end") {
+          if (!ackCallId || ackCallId !== activeCallIdRef.current) return;
           handleCallEnded({
-            call_id: String(payload.call_id || ""),
+            call_id: ackCallId,
             status: "ended",
             end_reason: "ended",
             duration_seconds: callDurationSeconds,
@@ -812,6 +816,15 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           if (!summary.call_id) return;
 
           const acceptedCallId = String(summary.call_id);
+          const currentActiveCallId = activeCallIdRef.current;
+          if (currentActiveCallId) {
+            if (acceptedCallId !== currentActiveCallId) {
+              return;
+            }
+          } else if (screen !== "outgoing") {
+            return;
+          }
+
           setCallId(acceptedCallId);
           activeCallIdRef.current = acceptedCallId;
 
@@ -856,7 +869,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           event === "end" ||
           event === "ended"
         ) {
-          handleCallEnded(payload as unknown as CallSummaryPayload);
+          const summary = payload as unknown as CallSummaryPayload;
+          const endedCallId = String(summary.call_id || "");
+          if (!endedCallId || endedCallId !== activeCallIdRef.current) {
+            return;
+          }
+          handleCallEnded(summary);
           return;
         }
 
@@ -864,8 +882,15 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           event === "call.terminated_elsewhere" ||
           event === "terminated_elsewhere"
         ) {
+          const terminatedCallId = String(payload.call_id || "");
+          if (
+            !terminatedCallId ||
+            terminatedCallId !== activeCallIdRef.current
+          ) {
+            return;
+          }
           handleCallEnded({
-            call_id: String(payload.call_id || ""),
+            call_id: terminatedCallId,
             status: "ended",
             end_reason: "answered-elsewhere",
           });

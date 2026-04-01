@@ -25,6 +25,8 @@ type ContactPeer = {
   online?: boolean;
 };
 
+type CallMode = "audio" | "video";
+
 type CallScreen =
   | "idle"
   | "outgoing"
@@ -52,6 +54,7 @@ type CallSummaryPayload = {
 
 type CallContextValue = {
   screen: CallScreen;
+  callMode: CallMode;
   callId: string | null;
   peer: ContactPeer | null;
   localStream: MediaStream | null;
@@ -65,12 +68,15 @@ type CallContextValue = {
   selectedAudioOutputId: string;
   callDurationSeconds: number;
   lastEndReason: string | null;
-  startCall: (target: {
-    id?: number;
-    username: string;
-    full_name?: string;
-    online?: boolean;
-  }) => Promise<void>;
+  startCall: (
+    target: {
+      id?: number;
+      username: string;
+      full_name?: string;
+      online?: boolean;
+    },
+    mode?: CallMode,
+  ) => Promise<void>;
   cancelOutgoingCall: () => void;
   acceptIncomingCall: () => Promise<void>;
   rejectIncomingCall: () => void;
@@ -139,6 +145,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation();
 
   const [screen, setScreen] = useState<CallScreen>("idle");
+  const [callMode, setCallMode] = useState<CallMode>("video");
   const [callId, setCallId] = useState<string | null>(null);
   const [peer, setPeer] = useState<ContactPeer | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
@@ -158,6 +165,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const pendingSignalsRef = useRef<QueueSignal[]>([]);
   const localStreamRef = useRef<MediaStream | null>(null);
   const activeCallIdRef = useRef<string | null>(null);
+  const callModeRef = useRef<CallMode>("video");
   const currentFacingModeRef = useRef<"user" | "environment">("user");
 
   const autoDismissTimeoutRef = useRef<number | null>(null);
@@ -215,6 +223,8 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     setCallDurationSeconds(0);
     setCallId(null);
     activeCallIdRef.current = null;
+    callModeRef.current = "video";
+    setCallMode("video");
     setPeer(null);
     setLastEndReason(null);
   }, [clearAutoDismiss, clearDurationInterval]);
@@ -308,17 +318,18 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isMobileDevice]);
 
-  const ensureLocalStream = useCallback(async () => {
+  const ensureLocalStream = useCallback(async (mode: CallMode = "video") => {
     if (localStreamRef.current) return localStreamRef.current;
 
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: currentFacingModeRef.current },
+      video:
+        mode === "video" ? { facingMode: currentFacingModeRef.current } : false,
       audio: true,
     });
 
     localStreamRef.current = stream;
     setLocalStream(stream);
-    setCameraEnabled(true);
+    setCameraEnabled(stream.getVideoTracks().length > 0);
     setMicrophoneEnabled(true);
 
     return stream;
@@ -458,19 +469,25 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   );
 
   const startCall = useCallback(
-    async (target: {
-      id?: number;
-      username: string;
-      full_name?: string;
-      online?: boolean;
-    }) => {
+    async (
+      target: {
+        id?: number;
+        username: string;
+        full_name?: string;
+        online?: boolean;
+      },
+      mode: CallMode = "video",
+    ) => {
       if (!target.online) {
         toast.error(t("calls.toasts.contactOffline"));
         return;
       }
 
+      callModeRef.current = mode;
+      setCallMode(mode);
+
       try {
-        await ensureLocalStream();
+        await ensureLocalStream(mode);
       } catch {
         toast.error(t("calls.toasts.mediaAccessFailed"));
         return;
@@ -484,6 +501,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
       const sent = sendSignal("call.invite", {
         to: target.username,
+        mode,
       });
       if (!sent) {
         toast.error(t("calls.toasts.connectionUnavailable"));
@@ -521,8 +539,10 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     const nextCallId = activeCallIdRef.current;
     if (!nextCallId) return;
 
+    const mode = callModeRef.current;
+
     try {
-      await ensureLocalStream();
+      await ensureLocalStream(mode);
     } catch {
       toast.error(t("calls.toasts.mediaAccessFailed"));
       return;
@@ -785,6 +805,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
             typeof fromRaw.id === "number" ? fromRaw.id : undefined;
 
           const incomingCallId = String(payload.call_id || payload.id || "");
+          const incomingMode = payload.mode === "audio" ? "audio" : "video";
           const callerUsername =
             fromUsername ||
             (typeof payload.from === "string"
@@ -807,6 +828,8 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
             }),
           );
           setLastEndReason(null);
+          callModeRef.current = incomingMode;
+          setCallMode(incomingMode);
           setScreen("incoming");
           return;
         }
@@ -838,8 +861,13 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
             );
           }
 
+          const acceptedMode =
+            payload.mode === "audio" ? "audio" : callModeRef.current;
+          callModeRef.current = acceptedMode;
+          setCallMode(acceptedMode);
+
           try {
-            await ensureLocalStream();
+            await ensureLocalStream(acceptedMode);
           } catch {
             toast.error(t("calls.toasts.mediaAccessFailed"));
             return;
@@ -1053,6 +1081,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<CallContextValue>(
     () => ({
       screen,
+      callMode,
       callId,
       peer,
       localStream,
@@ -1079,6 +1108,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     }),
     [
       screen,
+      callMode,
       callId,
       peer,
       localStream,

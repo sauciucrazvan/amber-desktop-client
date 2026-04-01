@@ -5,7 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCalls } from "@/views/home/calls";
-import { Edit2, Phone, Reply, Send, X } from "lucide-react";
+import { Edit2, Phone, Reply, Send, Video, X } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useChat } from "../context/ChatContext";
@@ -102,19 +102,47 @@ export default function ConversationPanel() {
             />
           </div>
 
-          <div>
+          <div className="inline-flex items-center">
             <Button
               variant="ghost"
               size="icon"
               className="cursor-pointer"
               onClick={() => {
                 if (!activeChat) return;
-                void startCall({
-                  id: activeChat.otherUser.id,
-                  username: activeChat.otherUser.username,
-                  full_name: activeChat.otherUser.full_name,
-                  online: activeChat.otherUser.online,
-                });
+                void startCall(
+                  {
+                    id: activeChat.otherUser.id,
+                    username: activeChat.otherUser.username,
+                    full_name: activeChat.otherUser.full_name,
+                    online: activeChat.otherUser.online,
+                  },
+                  "audio",
+                );
+              }}
+              disabled={screen !== "idle" || !activeChat.otherUser.online}
+              title={
+                activeChat.otherUser.online
+                  ? t("calls.actions.startAudio")
+                  : t("calls.actions.contactOffline")
+              }
+            >
+              <Phone className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="cursor-pointer"
+              onClick={() => {
+                if (!activeChat) return;
+                void startCall(
+                  {
+                    id: activeChat.otherUser.id,
+                    username: activeChat.otherUser.username,
+                    full_name: activeChat.otherUser.full_name,
+                    online: activeChat.otherUser.online,
+                  },
+                  "video",
+                );
               }}
               disabled={screen !== "idle" || !activeChat.otherUser.online}
               title={
@@ -123,7 +151,7 @@ export default function ConversationPanel() {
                   : t("calls.actions.contactOffline")
               }
             >
-              <Phone className="size-4" />
+              <Video className="size-4" />
             </Button>
             <Button
               variant="ghost"

@@ -386,6 +386,7 @@
       "genericError": "An unexpected call error occurred."
     },
     "actions": {
+      "startAudio": "Start audio call",
       "startVideo": "Start video call",
       "contactOffline": "Contact is offline",
       "cancelCall": "Cancel call",

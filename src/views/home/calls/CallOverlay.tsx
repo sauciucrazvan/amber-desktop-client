@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import {
   Mic,
   MicOff,
@@ -238,24 +237,23 @@ export default function CallOverlay() {
               )}
             </div>
 
-            <div className="absolute right-4 top-4 z-10 h-36 w-24 overflow-hidden rounded-xl border border-white/20 bg-black/70 sm:h-44 sm:w-32">
-              {localStream ? (
-                <video
-                  ref={localVideoRef}
-                  autoPlay
-                  muted
-                  playsInline
-                  className={cn(
-                    "h-full w-full object-cover transition-opacity",
-                    cameraEnabled ? "opacity-100" : "opacity-20",
-                  )}
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-xs text-neutral-400">
-                  {t("calls.inProgress.noCamera")}
-                </div>
-              )}
-            </div>
+            {cameraEnabled && (
+              <div className="absolute right-4 top-4 z-10 h-36 w-24 overflow-hidden rounded-xl border border-white/20 bg-black/70 sm:h-44 sm:w-32">
+                {localStream ? (
+                  <video
+                    ref={localVideoRef}
+                    autoPlay
+                    muted
+                    playsInline
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-xs text-neutral-400">
+                    {t("calls.inProgress.noCamera")}
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="absolute inset-x-0 bottom-0 z-10 border-t border-white/10 bg-black/70 p-4">
               <div className="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-center gap-2">

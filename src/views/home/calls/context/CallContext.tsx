@@ -67,6 +67,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const pendingSignalsRef = useRef<QueueSignal[]>([]);
   const localStreamRef = useRef<MediaStream | null>(null);
   const activeCallIdRef = useRef<string | null>(null);
+  const pendingOutgoingCancelRef = useRef(false);
   const callModeRef = useRef<CallMode>("video");
   const currentFacingModeRef = useRef<"user" | "environment">("user");
 
@@ -392,6 +393,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       setScreen("outgoing");
       setCallId(null);
       activeCallIdRef.current = null;
+      pendingOutgoingCancelRef.current = false;
 
       const sent = sendSignal("call.invite", {
         to: target.username,
@@ -407,14 +409,21 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
   const cancelOutgoingCall = useCallback(() => {
     if (!activeCallIdRef.current) {
+      if (screen === "outgoing") {
+        sendSignal("call.cancel", {
+          to: peer?.username,
+        });
+        pendingOutgoingCancelRef.current = true;
+      }
       hardResetCallState();
       return;
     }
 
+    pendingOutgoingCancelRef.current = false;
     sendSignal("call.cancel", {
       call_id: activeCallIdRef.current,
     });
-  }, [hardResetCallState, sendSignal]);
+  }, [hardResetCallState, peer?.username, screen, sendSignal]);
 
   const rejectIncomingCall = useCallback(() => {
     const nextCallId = activeCallIdRef.current;
@@ -581,12 +590,17 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         : "";
 
       const normalizedType =
-        eventNamespace === "call" ||
-        eventNamespace === "webrtc" ||
-        eventNamespace === "ack" ||
-        eventNamespace === "error"
-          ? eventNamespace
-          : rawType || eventNamespace;
+        rawType === "call" ||
+        rawType === "webrtc" ||
+        rawType === "ack" ||
+        rawType === "error"
+          ? rawType
+          : eventNamespace === "call" ||
+              eventNamespace === "webrtc" ||
+              eventNamespace === "ack" ||
+              eventNamespace === "error"
+            ? eventNamespace
+            : rawType || eventNamespace;
 
       traceCall("incoming normalized", {
         rawType,
@@ -625,6 +639,22 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         if (ackEvent === "invite") {
           const nextCallId = ackCallId;
           if (!nextCallId) return;
+
+          if (pendingOutgoingCancelRef.current) {
+            pendingOutgoingCancelRef.current = false;
+            setCallId(nextCallId);
+            activeCallIdRef.current = nextCallId;
+            sendSignal("call.cancel", {
+              call_id: nextCallId,
+            });
+            hardResetCallState();
+            return;
+          }
+
+          if (screen !== "outgoing") {
+            return;
+          }
+
           setCallId(nextCallId);
           activeCallIdRef.current = nextCallId;
           return;

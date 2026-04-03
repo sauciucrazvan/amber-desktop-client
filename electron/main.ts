@@ -396,7 +396,7 @@ function createWindow() {
     console.error("[renderer] render-process-gone", details);
   });
 
-  // win.webContents.openDevTools({ mode: "detach" });
+  win.webContents.openDevTools({ mode: "detach" });
 
   win.once("ready-to-show", () => {
     showMainWindow();

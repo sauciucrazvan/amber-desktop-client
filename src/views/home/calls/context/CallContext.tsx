@@ -34,6 +34,14 @@ const CallContext = createContext<CallContextValue | null>(null);
 
 const CALL_SCREEN_TIMEOUT_MS = 4_000;
 
+function resolveCallMode(value: unknown): CallMode | null {
+  if (value === "audio" || value === "video") {
+    return value;
+  }
+
+  return null;
+}
+
 export function CallProvider({ children }: { children: React.ReactNode }) {
   const { accessToken } = useAuth();
   const { t } = useTranslation();
@@ -691,7 +699,10 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
             typeof fromRaw.id === "number" ? fromRaw.id : undefined;
 
           const incomingCallId = String(payload.call_id || payload.id || "");
-          const incomingMode = payload.mode === "audio" ? "audio" : "video";
+          const incomingMode =
+            resolveCallMode(payload.mode) ??
+            resolveCallMode(payload.call_mode) ??
+            "video";
           const callerUsername =
             fromUsername ||
             (typeof payload.from === "string"
@@ -748,7 +759,9 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           }
 
           const acceptedMode =
-            payload.mode === "audio" ? "audio" : callModeRef.current;
+            resolveCallMode(payload.mode) ??
+            resolveCallMode(payload.call_mode) ??
+            callModeRef.current;
           callModeRef.current = acceptedMode;
           setCallMode(acceptedMode);
 

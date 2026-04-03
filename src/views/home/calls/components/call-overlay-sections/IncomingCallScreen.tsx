@@ -1,12 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Phone, PhoneOff } from "lucide-react";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
+import { CircleHelp, Phone, PhoneCall, PhoneOff, Video } from "lucide-react";
 import { PeerHeader } from "./PeerHeader";
 import type { IncomingCallScreenProps } from "./types";
 
@@ -14,19 +9,27 @@ export function IncomingCallScreen({
   peerDisplayName,
   peerFallback,
   peerOnline,
-  incomingBadge,
-  incomingFromLabel,
+  incomingBadgeLabel,
+  incomingCallMode,
   declineLabel,
   answerLabel,
   onDecline,
   onAnswer,
 }: IncomingCallScreenProps) {
+  const BadgeIcon =
+    incomingCallMode === "audio"
+      ? PhoneCall
+      : incomingCallMode === "video"
+        ? Video
+        : CircleHelp;
+
   return (
     <div className="flex h-full items-center justify-center bg-black/50 p-4 backdrop-blur-sm text-foreground">
       <Card className="w-full max-w-md border-border/80 bg-card/95 shadow-xl backdrop-blur">
         <CardHeader className="space-y-3 text-center">
-          <Badge className="mx-auto" variant="default">
-            {incomingBadge}
+          <Badge className="mx-auto gap-2" variant="default">
+            <BadgeIcon className="h-3.5 w-3.5" />
+            {incomingBadgeLabel}
           </Badge>
           <PeerHeader
             peerDisplayName={peerDisplayName}
@@ -34,10 +37,6 @@ export function IncomingCallScreen({
             peerOnline={peerOnline}
           />
         </CardHeader>
-
-        <CardContent className="text-center text-sm text-muted-foreground">
-          {incomingFromLabel}
-        </CardContent>
 
         <CardFooter className="justify-center gap-3 pt-0">
           <Button

@@ -1,4 +1,5 @@
 import type { AudioOutputDevice } from "../../types";
+import type { CallMode } from "../../types";
 
 export type PeerHeaderProps = {
   peerDisplayName: string;
@@ -14,8 +15,8 @@ export type OutgoingCallScreenProps = PeerHeaderProps & {
 };
 
 export type IncomingCallScreenProps = PeerHeaderProps & {
-  incomingBadge: string;
-  incomingFromLabel: string;
+  incomingBadgeLabel: string;
+  incomingCallMode: CallMode | null;
   declineLabel: string;
   answerLabel: string;
   onDecline: () => void;

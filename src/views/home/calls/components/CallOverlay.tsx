@@ -15,6 +15,7 @@ export default function CallOverlay() {
 
   const {
     screen,
+    callMode,
     peer,
     localStream,
     remoteStream,
@@ -85,10 +86,20 @@ export default function CallOverlay() {
           peerDisplayName={peerDisplayName}
           peerFallback={peerFallback}
           peerOnline={peer?.online}
-          incomingBadge={t("calls.badge.incoming")}
-          incomingFromLabel={t("calls.incoming.fromUser", {
-            user: `@${peerFallback}`,
-          })}
+          incomingBadgeLabel={
+            callMode === "audio"
+              ? t("calls.badge.incomingAudioCall", {
+                  defaultValue: "Incoming audio call",
+                })
+              : callMode === "video"
+                ? t("calls.badge.incomingVideoCall", {
+                    defaultValue: "Incoming video call",
+                  })
+                : t("calls.badge.incomingCall", {
+                    defaultValue: "Incoming call",
+                  })
+          }
+          incomingCallMode={callMode}
           declineLabel={t("calls.actions.decline")}
           answerLabel={t("calls.actions.answer")}
           onDecline={rejectIncomingCall}

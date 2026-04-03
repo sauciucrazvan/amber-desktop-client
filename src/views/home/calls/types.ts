@@ -25,6 +25,7 @@ export type AudioOutputDevice = {
 export type CallSummaryPayload = {
   call_id: string;
   status: string;
+  call_mode?: CallMode;
   peer?: {
     id?: number;
     username: string;

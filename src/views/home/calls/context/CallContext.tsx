@@ -17,128 +17,22 @@ import type { Instance, SignalData } from "simple-peer";
 // @ts-expect-error Subpath has no bundled type declarations; use browser build to avoid Node stream runtime errors.
 import Peer from "simple-peer/simplepeer.min.js";
 import { toast } from "sonner";
-
-type ContactPeer = {
-  id?: number;
-  username: string;
-  displayName: string;
-  online?: boolean;
-};
-
-type CallMode = "audio" | "video";
-
-type CallScreen =
-  | "idle"
-  | "outgoing"
-  | "incoming"
-  | "rejected"
-  | "in-progress"
-  | "ended";
-
-type AudioOutputDevice = {
-  deviceId: string;
-  label: string;
-};
-
-type CallSummaryPayload = {
-  call_id: string;
-  status: string;
-  peer?: {
-    id?: number;
-    username: string;
-    display_name?: string;
-  };
-  duration_seconds?: number;
-  end_reason?: string | null;
-};
-
-type CallContextValue = {
-  screen: CallScreen;
-  callMode: CallMode;
-  callId: string | null;
-  peer: ContactPeer | null;
-  localStream: MediaStream | null;
-  remoteStream: MediaStream | null;
-  remoteVideoEnabled: boolean;
-  cameraEnabled: boolean;
-  microphoneEnabled: boolean;
-  isMobileDevice: boolean;
-  canSwitchCamera: boolean;
-  audioOutputs: AudioOutputDevice[];
-  selectedAudioOutputId: string;
-  callDurationSeconds: number;
-  lastEndReason: string | null;
-  startCall: (
-    target: {
-      id?: number;
-      username: string;
-      full_name?: string;
-      online?: boolean;
-    },
-    mode?: CallMode,
-  ) => Promise<void>;
-  cancelOutgoingCall: () => void;
-  acceptIncomingCall: () => Promise<void>;
-  rejectIncomingCall: () => void;
-  endCall: () => void;
-  toggleCamera: () => void;
-  toggleMicrophone: () => void;
-  switchCamera: () => Promise<void>;
-  selectAudioOutput: (deviceId: string) => void;
-  dismissOverlay: () => void;
-};
-
-type SignalingMessage = {
-  type?: string;
-  event?: string;
-  payload?: Record<string, unknown>;
-  code?: string;
-  message?: string;
-};
-
-type QueueSignal = SignalData;
+import {
+  AudioOutputDevice,
+  CallContextValue,
+  CallMode,
+  CallScreen,
+  CallSummaryPayload,
+  ContactPeer,
+  QueueSignal,
+  SignalingMessage,
+  StartCallTarget,
+} from "../types";
+import { formatPeer, isMobileUserAgent, traceCall } from "../utils";
 
 const CallContext = createContext<CallContextValue | null>(null);
 
 const CALL_SCREEN_TIMEOUT_MS = 4_000;
-function isCallTraceEnabled() {
-  try {
-    return globalThis.localStorage?.getItem("amber.trace.calls") === "1";
-  } catch {
-    return false;
-  }
-}
-
-function traceCall(label: string, detail?: unknown) {
-  if (!isCallTraceEnabled()) return;
-  if (detail === undefined) {
-    console.debug(`[amber:calls] ${label}`);
-    return;
-  }
-  console.debug(`[amber:calls] ${label}`, detail);
-}
-
-function isMobileUserAgent() {
-  return /android|iphone|ipad|ipod/i.test(navigator.userAgent);
-}
-
-function formatPeer(target: {
-  id?: number;
-  username: string;
-  display_name?: string;
-  full_name?: string;
-  online?: boolean;
-}): ContactPeer {
-  const displayName =
-    target.full_name || target.display_name || target.username || "Unknown";
-
-  return {
-    id: target.id,
-    username: target.username,
-    displayName,
-    online: target.online,
-  };
-}
 
 export function CallProvider({ children }: { children: React.ReactNode }) {
   const { accessToken } = useAuth();
@@ -469,15 +363,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   );
 
   const startCall = useCallback(
-    async (
-      target: {
-        id?: number;
-        username: string;
-        full_name?: string;
-        online?: boolean;
-      },
-      mode: CallMode = "video",
-    ) => {
+    async (target: StartCallTarget, mode: CallMode = "video") => {
       if (!target.online) {
         toast.error(t("calls.toasts.contactOffline"));
         return;

@@ -68,6 +68,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const localStreamRef = useRef<MediaStream | null>(null);
   const activeCallIdRef = useRef<string | null>(null);
   const pendingOutgoingCancelRef = useRef(false);
+  const acceptingIncomingCallRef = useRef(false);
   const callModeRef = useRef<CallMode>("video");
   const currentFacingModeRef = useRef<"user" | "environment">("user");
 
@@ -133,13 +134,26 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   }, [clearAutoDismiss, clearDurationInterval]);
 
   const hardResetCallState = useCallback(() => {
+    traceCall("call hard reset", {
+      screen,
+      call_id: activeCallIdRef.current,
+      call_mode: callModeRef.current,
+      last_end_reason: lastEndReason,
+    });
+    acceptingIncomingCallRef.current = false;
     destroyPeer();
     stopAndReleaseTracks();
     softResetCallState();
     setScreen("idle");
     setCameraEnabled(true);
     setMicrophoneEnabled(true);
-  }, [destroyPeer, softResetCallState, stopAndReleaseTracks]);
+  }, [
+    destroyPeer,
+    lastEndReason,
+    screen,
+    softResetCallState,
+    stopAndReleaseTracks,
+  ]);
 
   const sendSignal = useCallback(
     (event: string, payload: Record<string, unknown>) => {
@@ -332,6 +346,13 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       endReason?: string | null,
       durationSeconds?: number,
     ) => {
+      traceCall("call closing", {
+        next_screen: nextScreen,
+        end_reason: endReason ?? null,
+        duration_seconds: durationSeconds ?? callDurationSeconds,
+        call_id: activeCallIdRef.current,
+        call_mode: callModeRef.current,
+      });
       destroyPeer();
       stopAndReleaseTracks();
       clearDurationInterval();
@@ -351,6 +372,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     [
       clearAutoDismiss,
       clearDurationInterval,
+      callDurationSeconds,
       destroyPeer,
       hardResetCallState,
       stopAndReleaseTracks,
@@ -441,14 +463,21 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
   const acceptIncomingCall = useCallback(async () => {
     const nextCallId = activeCallIdRef.current;
     if (!nextCallId) return;
+    if (acceptingIncomingCallRef.current) return;
 
+    acceptingIncomingCallRef.current = true;
     const mode = callModeRef.current;
 
     try {
       await ensureLocalStream(mode);
     } catch {
       toast.error(t("calls.toasts.mediaAccessFailed"));
+      acceptingIncomingCallRef.current = false;
       return;
+    }
+
+    if (mode === "audio") {
+      setCameraEnabled(false);
     }
 
     try {
@@ -456,6 +485,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     } catch {
       toast.error(t("calls.toasts.initializeFailed"));
       hardResetCallState();
+      acceptingIncomingCallRef.current = false;
       return;
     }
 
@@ -466,6 +496,8 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     sendSignal("call.accept", {
       call_id: nextCallId,
     });
+
+    acceptingIncomingCallRef.current = false;
   }, [
     createPeer,
     ensureLocalStream,
@@ -637,6 +669,14 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           screen === "incoming" ||
           screen === "in-progress"
         ) {
+          traceCall("call close via error", {
+            code,
+            rawEvent,
+            normalizedType,
+            call_id: activeCallIdRef.current,
+            call_mode: callModeRef.current,
+            duration_seconds: callDurationSeconds,
+          });
           toast.error(
             resolveToastMessage(
               typeof message.message === "string" ? message.message : code,
@@ -684,6 +724,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
         if (ackEvent === "reject") {
           if (!ackCallId || ackCallId !== activeCallIdRef.current) return;
+          traceCall("call close via ack", {
+            ack_event: ackEvent,
+            call_id: ackCallId,
+            call_mode: callModeRef.current,
+            duration_seconds: callDurationSeconds,
+          });
           handleCallEnded(
             {
               call_id: ackCallId,
@@ -697,6 +743,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
         if (ackEvent === "cancel") {
           if (!ackCallId || ackCallId !== activeCallIdRef.current) return;
+          traceCall("call close via ack", {
+            ack_event: ackEvent,
+            call_id: ackCallId,
+            call_mode: callModeRef.current,
+            duration_seconds: callDurationSeconds,
+          });
           handleCallEnded({
             call_id: ackCallId,
             status: "canceled",
@@ -707,6 +759,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
         if (ackEvent === "end") {
           if (!ackCallId || ackCallId !== activeCallIdRef.current) return;
+          traceCall("call close via ack", {
+            ack_event: ackEvent,
+            call_id: ackCallId,
+            call_mode: callModeRef.current,
+            duration_seconds: callDurationSeconds,
+          });
           handleCallEnded({
             call_id: ackCallId,
             status: "ended",
@@ -824,6 +882,10 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
             return;
           }
 
+          if (acceptedMode === "audio") {
+            setCameraEnabled(false);
+          }
+
           try {
             createPeer(true, acceptedCallId);
           } catch {
@@ -853,6 +915,14 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           if (!endedCallId || endedCallId !== activeCallIdRef.current) {
             return;
           }
+          traceCall("call close via event", {
+            event,
+            call_id: endedCallId,
+            status: summary.status,
+            end_reason: summary.end_reason,
+            duration_seconds: summary.duration_seconds,
+            call_mode: callModeRef.current,
+          });
           handleCallEnded(summary);
           return;
         }
@@ -868,6 +938,11 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           ) {
             return;
           }
+          traceCall("call close via terminated_elsewhere", {
+            call_id: terminatedCallId,
+            call_mode: callModeRef.current,
+            duration_seconds: callDurationSeconds,
+          });
           handleCallEnded({
             call_id: terminatedCallId,
             status: "ended",

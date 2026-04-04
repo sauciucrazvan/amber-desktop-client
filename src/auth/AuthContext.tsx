@@ -73,10 +73,25 @@ function resolveApiUrl(key: string) {
   return `${API_BASE_URL}/${key}`;
 }
 
-function resolveWsUrl(path: string, accessToken: string) {
+const WS_SESSION_ID_KEY = "amber.wsSessionId";
+
+function getOrCreateWsSessionId() {
+  const stored = globalThis.localStorage?.getItem(WS_SESSION_ID_KEY);
+  if (stored) return stored;
+
+  const nextId =
+    globalThis.crypto?.randomUUID?.() ||
+    `ws-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
+  globalThis.localStorage?.setItem(WS_SESSION_ID_KEY, nextId);
+  return nextId;
+}
+
+function resolveWsUrl(path: string, accessToken: string, sessionId: string) {
   const wsUrl = new URL(WS_BASE_URL + path);
   wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
   wsUrl.searchParams.set("token", accessToken);
+  wsUrl.searchParams.set("session_id", sessionId);
   return wsUrl.toString();
 }
 
@@ -139,6 +154,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const initialTokens = getStoredTokens();
   const [tokens, setTokens] = useState<StoredTokens>(initialTokens);
   const refreshInFlight = useRef<Promise<string | null> | null>(null);
+  const wsSessionId = useMemo(() => getOrCreateWsSessionId(), []);
 
   const persistTokens = useCallback((next: StoredTokens) => {
     setTokens(next);
@@ -282,10 +298,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       traceWs("auth-socket connect", {
         endpoint: HEARTBEAT_ENDPOINT,
+        sessionId: wsSessionId,
       });
 
       socket = new WebSocket(
-        resolveWsUrl(HEARTBEAT_ENDPOINT, heartbeatAccessToken),
+        resolveWsUrl(HEARTBEAT_ENDPOINT, heartbeatAccessToken, wsSessionId),
       );
 
       const onWsSend = (customEvent: Event) => {
@@ -375,7 +392,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         socket.close();
       }
     };
-  }, [logout, tokens.accessToken]);
+  }, [logout, tokens.accessToken, wsSessionId]);
 
   const authFetch = useCallback(
     async (input: RequestInfo | URL, init?: RequestInit) => {

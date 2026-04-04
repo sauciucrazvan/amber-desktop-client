@@ -488,18 +488,40 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     });
   }, [hardResetCallState, sendSignal]);
 
-  const toggleCamera = useCallback(() => {
+  const toggleCamera = useCallback(async () => {
     const stream = localStreamRef.current;
     if (!stream) return;
 
-    const [videoTrack] = stream.getVideoTracks();
-    if (!videoTrack) return;
+    const videoTracks = stream.getVideoTracks();
 
-    const nextEnabled = !videoTrack.enabled;
-    videoTrack.enabled = nextEnabled;
-    setCameraEnabled(nextEnabled);
-    sendMediaState(microphoneEnabled, nextEnabled);
-  }, [microphoneEnabled, sendMediaState]);
+    if (videoTracks.length > 0) {
+      const [videoTrack] = videoTracks;
+      videoTrack.enabled = false;
+      setCameraEnabled(false);
+      sendMediaState(microphoneEnabled, false);
+    } else {
+      try {
+        const newStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: currentFacingModeRef.current },
+          audio: false,
+        });
+        const [newVideoTrack] = newStream.getVideoTracks();
+        if (!newVideoTrack) return;
+
+        stream.addTrack(newVideoTrack);
+
+        if (peerRef.current) {
+          await peerRef.current.addTrack(newVideoTrack, stream);
+        }
+
+        setCameraEnabled(true);
+        sendMediaState(microphoneEnabled, true);
+        setLocalStream(new MediaStream(stream.getTracks()));
+      } catch {
+        toast.error(t("calls.toasts.mediaAccessFailed"));
+      }
+    }
+  }, [microphoneEnabled, sendMediaState, t]);
 
   const toggleMicrophone = useCallback(() => {
     const stream = localStreamRef.current;

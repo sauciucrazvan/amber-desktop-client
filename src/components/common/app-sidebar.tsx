@@ -4,6 +4,7 @@ import { useAuth } from "@/auth/AuthContext";
 import { useTranslation } from "react-i18next";
 import { useChat } from "@/views/home/chat";
 import {
+  CallHistoryTabContent,
   ContactsTabContent,
   SidebarRail,
   VerifyNotice,
@@ -37,6 +38,9 @@ export default function AppSidebar() {
     isContactsLoading,
     conversationUnseenCountByUserId,
     requestCount,
+    callHistory,
+    callHistoryError,
+    isCallHistoryLoading,
     showVerifyAccount,
     handleOpenDirectChat,
   } = useAppSidebarData({
@@ -97,6 +101,20 @@ export default function AppSidebar() {
                     />
                   ) : null
                 }
+              />
+            </TabsContent>
+
+            <TabsContent
+              value="call-history"
+              className={`min-h-0 flex-1 overflow-hidden ${panelChromeClass} bg-background p-0 flex flex-col`}
+            >
+              <CallHistoryTabContent
+                t={t}
+                callHistory={callHistory}
+                callHistoryError={callHistoryError}
+                isCallHistoryLoading={isCallHistoryLoading}
+                openingChatUserId={openingChatUserId}
+                onOpenDirectChat={handleOpenDirectChat}
               />
             </TabsContent>
           </Tabs>

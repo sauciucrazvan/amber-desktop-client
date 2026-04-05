@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { toast } from "sonner";
 import type {
   AccountMe,
+  CallHistoryItem,
   ContactListItem,
   DirectConversationSummary,
 } from "../types";
@@ -143,6 +144,24 @@ export function useAppSidebarData({
     ? 0
     : (contactRequests?.length ?? 0);
 
+  const {
+    data: callHistoryData,
+    error: callHistoryError,
+    isLoading: isCallHistoryLoading,
+  } = useSWR<{ calls: CallHistoryItem[] }>(
+    isAuthenticated ? "/calls/history?limit=100&offset=0" : null,
+    {
+      refreshInterval: 30000,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+    },
+  );
+
+  const callHistory = useMemo(
+    () => callHistoryData?.calls ?? [],
+    [callHistoryData],
+  );
+
   const showVerifyAccount = account?.verified === false;
 
   const handleOpenDirectChat = async (contact: ContactListItem["user"]) => {
@@ -161,6 +180,9 @@ export function useAppSidebarData({
     isContactsLoading,
     conversationUnseenCountByUserId,
     requestCount,
+    callHistory,
+    callHistoryError,
+    isCallHistoryLoading,
     showVerifyAccount,
     handleOpenDirectChat,
   };

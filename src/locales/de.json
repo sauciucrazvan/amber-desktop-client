@@ -316,7 +316,9 @@
     "unknown": "Unknown",
     "badge": {
       "outgoing": "Outgoing call",
-      "incoming": "Incoming call"
+      "incoming": "Incoming call",
+      "audio": "Audio",
+      "video": "Video"
     },
     "status": {
       "rejected": "Call rejected",
@@ -335,6 +337,11 @@
     },
     "ended": {
       "duration": "Call duration: {{duration}}"
+    },
+    "history": {
+      "title": "Call history",
+      "empty": "No calls yet",
+      "failedLoading": "Failed loading call history"
     },
     "toasts": {
       "contactOffline": "This contact is offline.",

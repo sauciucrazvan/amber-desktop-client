@@ -1,12 +1,13 @@
 import ErrorBox from "@/components/common/error-box";
 import UserAvatar from "@/components/common/user-avatar";
+import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Spinner } from "@/components/ui/spinner";
-import { Phone, Video } from "lucide-react";
+import { ChevronLeft, ChevronRight, Phone, Video } from "lucide-react";
 import type { TFunction } from "i18next";
 import type { CallHistoryItem, ContactListItem } from "../types";
 
@@ -15,6 +16,12 @@ type CallHistoryTabContentProps = {
   callHistory: CallHistoryItem[];
   callHistoryError: unknown;
   isCallHistoryLoading: boolean;
+  callHistoryPage: number;
+  callHistoryTotalPages: number;
+  canGoToPreviousCallHistoryPage: boolean;
+  canGoToNextCallHistoryPage: boolean;
+  onGoToPreviousCallHistoryPage: () => void;
+  onGoToNextCallHistoryPage: () => void;
   openingChatUserId: number | null;
   onOpenDirectChat: (contact: ContactListItem["user"]) => Promise<void>;
 };
@@ -44,6 +51,12 @@ export default function CallHistoryTabContent({
   callHistory,
   callHistoryError,
   isCallHistoryLoading,
+  callHistoryPage,
+  callHistoryTotalPages,
+  canGoToPreviousCallHistoryPage,
+  canGoToNextCallHistoryPage,
+  onGoToPreviousCallHistoryPage,
+  onGoToNextCallHistoryPage,
   openingChatUserId,
   onOpenDirectChat,
 }: CallHistoryTabContentProps) {
@@ -152,6 +165,40 @@ export default function CallHistoryTabContent({
             </SidebarMenuItem>
           )}
         </SidebarMenu>
+
+        <div className="mt-2 px-1 pb-1">
+          <div className="inline-flex w-full items-center justify-between rounded-md border px-2 py-1 text-[11px] text-muted-foreground">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="h-6 w-6 cursor-pointer"
+              disabled={!canGoToPreviousCallHistoryPage}
+              onClick={onGoToPreviousCallHistoryPage}
+              aria-label={t("calls.history.previousPage", "Previous page")}
+            >
+              <ChevronLeft className="size-3.5" />
+            </Button>
+
+            <span>
+              {t("calls.history.page", {
+                defaultValue: "Page {{current}} / {{total}}",
+                current: callHistoryPage + 1,
+                total: callHistoryTotalPages,
+              })}
+            </span>
+
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="h-6 w-6 cursor-pointer"
+              disabled={!canGoToNextCallHistoryPage}
+              onClick={onGoToNextCallHistoryPage}
+              aria-label={t("calls.history.nextPage", "Next page")}
+            >
+              <ChevronRight className="size-3.5" />
+            </Button>
+          </div>
+        </div>
       </SidebarGroup>
     </>
   );

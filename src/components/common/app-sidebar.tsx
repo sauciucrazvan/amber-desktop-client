@@ -41,6 +41,12 @@ export default function AppSidebar() {
     callHistory,
     callHistoryError,
     isCallHistoryLoading,
+    callHistoryPage,
+    callHistoryTotalPages,
+    canGoToPreviousCallHistoryPage,
+    canGoToNextCallHistoryPage,
+    goToPreviousCallHistoryPage,
+    goToNextCallHistoryPage,
     showVerifyAccount,
     handleOpenDirectChat,
   } = useAppSidebarData({
@@ -113,6 +119,12 @@ export default function AppSidebar() {
                 callHistory={callHistory}
                 callHistoryError={callHistoryError}
                 isCallHistoryLoading={isCallHistoryLoading}
+                callHistoryPage={callHistoryPage}
+                callHistoryTotalPages={callHistoryTotalPages}
+                canGoToPreviousCallHistoryPage={canGoToPreviousCallHistoryPage}
+                canGoToNextCallHistoryPage={canGoToNextCallHistoryPage}
+                onGoToPreviousCallHistoryPage={goToPreviousCallHistoryPage}
+                onGoToNextCallHistoryPage={goToNextCallHistoryPage}
                 openingChatUserId={openingChatUserId}
                 onOpenDirectChat={handleOpenDirectChat}
               />

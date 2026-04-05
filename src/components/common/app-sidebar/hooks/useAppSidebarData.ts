@@ -24,6 +24,8 @@ export function useAppSidebarData({
   authFetch,
   openDirectChat,
 }: UseAppSidebarDataParams) {
+  const CALL_HISTORY_PAGE_SIZE = 20;
+
   const { data: account, isLoading: isAccountLoading } = useSWR<AccountMe>(
     isAuthenticated ? "/account/me" : null,
     {
@@ -144,12 +146,23 @@ export function useAppSidebarData({
     ? 0
     : (contactRequests?.length ?? 0);
 
+  const [callHistoryPage, setCallHistoryPage] = useState(0);
+  const [callHistoryTotal, setCallHistoryTotal] = useState(0);
+  const callHistoryOffset = callHistoryPage * CALL_HISTORY_PAGE_SIZE;
+
   const {
     data: callHistoryData,
     error: callHistoryError,
     isLoading: isCallHistoryLoading,
-  } = useSWR<{ calls: CallHistoryItem[] }>(
-    isAuthenticated ? "/calls/history?limit=100&offset=0" : null,
+  } = useSWR<{
+    total: number;
+    limit: number;
+    offset: number;
+    calls: CallHistoryItem[];
+  }>(
+    isAuthenticated
+      ? `/calls/history?limit=${CALL_HISTORY_PAGE_SIZE}&offset=${callHistoryOffset}`
+      : null,
     {
       refreshInterval: 30000,
       revalidateOnFocus: true,
@@ -157,10 +170,45 @@ export function useAppSidebarData({
     },
   );
 
+  useEffect(() => {
+    if (typeof callHistoryData?.total !== "number") return;
+    setCallHistoryTotal(callHistoryData.total);
+  }, [callHistoryData?.total]);
+
+  const effectiveCallHistoryTotal =
+    typeof callHistoryData?.total === "number"
+      ? callHistoryData.total
+      : callHistoryTotal;
+
+  const callHistoryTotalPages = Math.max(
+    1,
+    Math.ceil(effectiveCallHistoryTotal / CALL_HISTORY_PAGE_SIZE),
+  );
+
+  useEffect(() => {
+    if (!callHistoryData) return;
+    if (callHistoryPage < callHistoryTotalPages) return;
+    setCallHistoryPage(Math.max(0, callHistoryTotalPages - 1));
+  }, [callHistoryData, callHistoryPage, callHistoryTotalPages]);
+
   const callHistory = useMemo(
     () => callHistoryData?.calls ?? [],
     [callHistoryData],
   );
+
+  const canGoToPreviousCallHistoryPage = callHistoryPage > 0;
+  const canGoToNextCallHistoryPage =
+    callHistoryPage + 1 < callHistoryTotalPages;
+
+  const goToPreviousCallHistoryPage = () => {
+    if (!canGoToPreviousCallHistoryPage) return;
+    setCallHistoryPage((current) => Math.max(0, current - 1));
+  };
+
+  const goToNextCallHistoryPage = () => {
+    if (!canGoToNextCallHistoryPage) return;
+    setCallHistoryPage((current) => current + 1);
+  };
 
   const showVerifyAccount = account?.verified === false;
 
@@ -183,6 +231,12 @@ export function useAppSidebarData({
     callHistory,
     callHistoryError,
     isCallHistoryLoading,
+    callHistoryPage,
+    callHistoryTotalPages,
+    canGoToPreviousCallHistoryPage,
+    canGoToNextCallHistoryPage,
+    goToPreviousCallHistoryPage,
+    goToNextCallHistoryPage,
     showVerifyAccount,
     handleOpenDirectChat,
   };

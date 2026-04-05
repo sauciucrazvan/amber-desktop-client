@@ -379,7 +379,10 @@
     "history": {
       "title": "Call history",
       "empty": "No calls yet",
-      "failedLoading": "Failed loading call history"
+      "failedLoading": "Failed loading call history",
+      "previousPage": "Previous page",
+      "nextPage": "Next page",
+      "page": "Page {{current}} / {{total}}"
     },
     "toasts": {
       "contactOffline": "This contact is offline.",

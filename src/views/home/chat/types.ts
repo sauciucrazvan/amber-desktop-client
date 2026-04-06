@@ -6,6 +6,12 @@ export type MessageItem = {
   type: string;
   content: {
     text?: string;
+    event?: string;
+    call_id?: string;
+    status?: string;
+    actor_user_id?: number;
+    actor_display_name?: string;
+    actor_username?: string;
     history?: Array<{
       text?: string;
       date?: string;

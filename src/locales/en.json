@@ -355,6 +355,9 @@
     "badge": {
       "outgoing": "Outgoing call",
       "incoming": "Incoming call",
+      "incomingCall": "Incoming call",
+      "incomingAudioCall": "Incoming audio call",
+      "incomingVideoCall": "Incoming video call",
       "audio": "Audio",
       "video": "Video"
     },
@@ -383,6 +386,17 @@
       "previousPage": "Previous page",
       "nextPage": "Next page",
       "page": "Page {{current}} / {{total}}"
+    },
+    "logs": {
+      "initiated": "Started a call",
+      "initiatedWithActor": "{{actor}} started a call",
+      "accepted": "Accepted the call",
+      "acceptedWithActor": "{{actor}} accepted the call",
+      "rejected": "Rejected the call",
+      "rejectedWithActor": "{{actor}} rejected the call",
+      "missed": "Missed call",
+      "finished": "Finished the call",
+      "finishedWithActor": "{{actor}} finished the call"
     },
     "toasts": {
       "contactOffline": "This contact is offline.",

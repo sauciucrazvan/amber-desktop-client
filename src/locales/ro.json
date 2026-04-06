@@ -313,61 +313,75 @@
     "not_participating": "Nu participi în această conversație."
   },
   "calls": {
-    "unknown": "Unknown",
+    "unknown": "Necunoscut",
     "badge": {
-      "outgoing": "Outgoing call",
-      "incoming": "Incoming call",
+      "outgoing": "Apel efectuat",
+      "incoming": "Apel primit",
+      "incomingCall": "Apel primit",
+      "incomingAudioCall": "Apel audio primit",
+      "incomingVideoCall": "Apel video primit",
       "audio": "Audio",
       "video": "Video"
     },
     "status": {
-      "rejected": "Call rejected",
-      "missed": "Missed call",
-      "failed": "Call failed",
-      "ended": "Call ended"
+      "rejected": "Apel respins",
+      "missed": "Apel ratat",
+      "failed": "Apel eșuat",
+      "ended": "Apel încheiat"
     },
     "outgoing": {
-      "waiting": "Waiting for the other person to answer..."
+      "waiting": "Se așteaptă răspunsul celeilalte persoane..."
     },
     "inProgress": {
-      "waitingRemoteVideo": "Waiting for remote video...",
-      "cameraOff": "Camera is turned off",
-      "noCamera": "No camera",
-      "speaker": "Speaker"
+      "waitingRemoteVideo": "Se așteaptă video de la celălalt participant...",
+      "cameraOff": "Camera este oprită",
+      "noCamera": "Fără cameră",
+      "speaker": "Difuzor"
     },
     "ended": {
-      "duration": "Call duration: {{duration}}"
+      "duration": "Durata apelului: {{duration}}"
     },
     "history": {
-      "title": "Call history",
-      "empty": "No calls yet",
-      "failedLoading": "Failed loading call history",
-      "previousPage": "Previous page",
-      "nextPage": "Next page",
-      "page": "Page {{current}} / {{total}}"
+      "title": "Istoric apeluri",
+      "empty": "Niciun apel încă",
+      "failedLoading": "Încărcarea istoricului apelurilor a eșuat",
+      "previousPage": "Pagina anterioară",
+      "nextPage": "Pagina următoare",
+      "page": "Pagina {{current}} / {{total}}"
+    },
+    "logs": {
+      "initiated": "A început un apel",
+      "initiatedWithActor": "{{actor}} a început un apel",
+      "accepted": "A acceptat apelul",
+      "acceptedWithActor": "{{actor}} a acceptat apelul",
+      "rejected": "A respins apelul",
+      "rejectedWithActor": "{{actor}} a respins apelul",
+      "missed": "Apel ratat",
+      "finished": "A încheiat apelul",
+      "finishedWithActor": "{{actor}} a încheiat apelul"
     },
     "toasts": {
-      "contactOffline": "This contact is offline.",
-      "mediaAccessFailed": "Could not access camera/microphone.",
-      "connectionUnavailable": "Connection unavailable. Please try again.",
-      "initializeFailed": "Failed to initialize video call.",
-      "switchCameraFailed": "Unable to switch camera.",
-      "genericError": "An unexpected call error occurred."
+      "contactOffline": "Acest contact este offline.",
+      "mediaAccessFailed": "Nu s-a putut accesa camera/microfonul.",
+      "connectionUnavailable": "Conexiune indisponibilă. Te rugăm să încerci din nou.",
+      "initializeFailed": "Inițializarea apelului video a eșuat.",
+      "switchCameraFailed": "Nu s-a putut schimba camera.",
+      "genericError": "A apărut o eroare neașteptată la apel."
     },
     "actions": {
-      "startAudio": "Start audio call",
-      "startVideo": "Start video call",
-      "contactOffline": "Contact is offline",
-      "cancelCall": "Cancel call",
-      "decline": "Decline",
-      "answer": "Answer",
-      "mute": "Mute",
-      "unmute": "Unmute",
-      "cameraOn": "Camera on",
-      "cameraOff": "Camera off",
-      "switchCamera": "Switch camera",
-      "endCall": "End call",
-      "close": "Close"
+      "startAudio": "Pornește apel audio",
+      "startVideo": "Pornește apel video",
+      "contactOffline": "Contactul este offline",
+      "cancelCall": "Anulează apelul",
+      "decline": "Respinge",
+      "answer": "Răspunde",
+      "mute": "Dezactivează microfonul",
+      "unmute": "Activează microfonul",
+      "cameraOn": "Pornește camera",
+      "cameraOff": "Oprește camera",
+      "switchCamera": "Schimbă camera",
+      "endCall": "Încheie apelul",
+      "close": "Închide"
     }
   },
   "profile": {

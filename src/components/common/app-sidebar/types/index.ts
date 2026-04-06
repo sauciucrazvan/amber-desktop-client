@@ -12,6 +12,7 @@ export type ContactListItem = {
     online?: boolean;
   };
   created_at: string;
+  last_action_at?: string;
 };
 
 export type DirectConversationSummary = {

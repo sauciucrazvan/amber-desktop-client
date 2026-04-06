@@ -143,9 +143,6 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
         resolveMessage(message, fallbackMessageKey, { user: target.username }),
       );
       await mutate("/contacts/requests");
-      if (action === "accept") {
-        await mutate("/contacts/list");
-      }
     } catch (e) {
       const message = e instanceof Error ? e.message : "common.errors.generic";
       toast.error(resolveMessage(message, "common.errors.generic"));

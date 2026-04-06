@@ -12,6 +12,22 @@ import { useTranslation } from "react-i18next";
 import type { MessageItem } from "../types";
 import MessageEditHistoryDialog from "./MessageEditHistoryDialog";
 
+const LOG_SUFFIX_BY_EVENT: Record<string, string> = {
+  initiated: " started a call",
+  accepted: " accepted the call",
+  rejected: " rejected the call",
+  finished: " finished the call",
+};
+
+function extractActorFromLegacyCallLogText(text: string, eventName: string) {
+  const suffix = LOG_SUFFIX_BY_EVENT[eventName];
+  if (!suffix) return "";
+  if (!text.endsWith(suffix)) return "";
+
+  const actor = text.slice(0, text.length - suffix.length).trim();
+  return actor;
+}
+
 interface Props {
   myUserId: number | null;
   message: MessageItem;
@@ -35,6 +51,37 @@ export default function ChatBubble({
 
   const isTextMessage = message.type === "text";
   const isLogMessage = message.type === "log";
+  const logEvent =
+    typeof message.content?.event === "string" ? message.content.event : "";
+  const logEventName = logEvent.startsWith("call.")
+    ? logEvent.slice("call.".length)
+    : logEvent;
+
+  const actorFromPayload =
+    typeof message.content?.actor_display_name === "string"
+      ? message.content.actor_display_name.trim()
+      : "";
+  const actorFromLegacyText = extractActorFromLegacyCallLogText(
+    text,
+    logEventName,
+  );
+  const logActor = actorFromPayload || actorFromLegacyText;
+
+  const supportsActorInterpolation =
+    logEventName === "initiated" ||
+    logEventName === "accepted" ||
+    logEventName === "rejected" ||
+    logEventName === "finished";
+
+  const logText =
+    isLogMessage && logEventName
+      ? supportsActorInterpolation && logActor
+        ? t(`calls.logs.${logEventName}WithActor`, {
+            actor: logActor,
+            defaultValue: text,
+          })
+        : t(`calls.logs.${logEventName}`, { defaultValue: text })
+      : text;
 
   return (
     <div
@@ -44,7 +91,7 @@ export default function ChatBubble({
       {isLogMessage && (
         <div className="flex w-full justify-center">
           <div className="flex max-w-[90%] items-center gap-2 rounded-full border border-dashed bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground">
-            <span className="max-w-full text-center">{text}</span>
+            <span className="max-w-full text-center">{logText}</span>
             <span className="shrink-0 text-[10px] opacity-80">
               {formatHHmm(new Date(message.created_at))}
             </span>

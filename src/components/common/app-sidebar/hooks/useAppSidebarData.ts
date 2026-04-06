@@ -1,6 +1,7 @@
 import { API_BASE_URL } from "@/config";
 import {
   PRESENCE_EVENT_NAME,
+  WS_MESSAGE_EVENT_NAME,
   type PresenceEventPayload,
 } from "@/auth/AuthContext";
 import { useEffect, useMemo, useState } from "react";
@@ -40,15 +41,24 @@ export function useAppSidebarData({
     error: contactsError,
     isLoading: isContactsLoading,
   } = useSWR<ContactListItem[]>(isAuthenticated ? "/contacts/list" : null, {
-    refreshInterval: 60000,
-    revalidateOnFocus: true,
-    revalidateOnReconnect: true,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    revalidateIfStale: false,
   });
 
   const [contactsState, setContactsState] = useState<ContactListItem[]>([]);
 
+  const sortContactsByLastAction = (contacts: ContactListItem[]) => {
+    return [...contacts].sort((a, b) => {
+      const aTs = Date.parse(a.last_action_at ?? a.created_at ?? "") || 0;
+      const bTs = Date.parse(b.last_action_at ?? b.created_at ?? "") || 0;
+      if (aTs !== bTs) return bTs - aTs;
+      return a.user.username.localeCompare(b.user.username);
+    });
+  };
+
   useEffect(() => {
-    setContactsState(contactsFromApi ?? []);
+    setContactsState(sortContactsByLastAction(contactsFromApi ?? []));
   }, [contactsFromApi]);
 
   useEffect(() => {
@@ -78,12 +88,108 @@ export function useAppSidebarData({
       });
     };
 
+    const onWsMessage = (event: Event) => {
+      const customEvent = event as CustomEvent<unknown>;
+      const detail = customEvent.detail;
+      if (!detail || typeof detail !== "object") return;
+
+      const payload = detail as {
+        type?: unknown;
+        event?: unknown;
+        payload?: unknown;
+      };
+
+      if (payload.type !== "contacts") return;
+      if (typeof payload.event !== "string") return;
+      if (!payload.payload || typeof payload.payload !== "object") return;
+
+      const eventPayload = payload.payload as {
+        user?: ContactListItem["user"];
+        user_id?: number;
+        other_user_id?: number;
+        created_at?: string;
+        last_action_at?: string;
+      };
+
+      if (payload.event === "contact.accepted" && eventPayload.user) {
+        setContactsState((current) => {
+          const filtered = current.filter(
+            (contact) => contact.user.id !== eventPayload.user?.id,
+          );
+          filtered.push({
+            user: {
+              id: eventPayload.user.id,
+              username: eventPayload.user.username,
+              full_name: eventPayload.user.full_name,
+              online: eventPayload.user.online,
+            },
+            created_at: eventPayload.created_at ?? new Date().toISOString(),
+            last_action_at:
+              eventPayload.last_action_at ?? eventPayload.created_at,
+          });
+          return sortContactsByLastAction(filtered);
+        });
+        return;
+      }
+
+      if (payload.event === "contact.removed") {
+        setContactsState((current) => {
+          const byUserId =
+            typeof eventPayload.user_id === "number"
+              ? eventPayload.user_id
+              : null;
+          const byOtherUserId =
+            typeof eventPayload.other_user_id === "number"
+              ? eventPayload.other_user_id
+              : null;
+
+          const removedId = current.some(
+            (contact) => contact.user.id === byUserId,
+          )
+            ? byUserId
+            : current.some((contact) => contact.user.id === byOtherUserId)
+              ? byOtherUserId
+              : null;
+
+          if (removedId === null) return current;
+
+          return current.filter((contact) => contact.user.id !== removedId);
+        });
+        return;
+      }
+
+      if (payload.event === "contact.last_action.updated") {
+        if (typeof eventPayload.user_id !== "number") return;
+        if (typeof eventPayload.last_action_at !== "string") return;
+
+        setContactsState((current) => {
+          const next = current.map((contact) =>
+            contact.user.id === eventPayload.user_id
+              ? {
+                  ...contact,
+                  last_action_at: eventPayload.last_action_at,
+                }
+              : contact,
+          );
+          return sortContactsByLastAction(next);
+        });
+      }
+    };
+
     window.addEventListener(PRESENCE_EVENT_NAME, onPresence as EventListener);
+    window.addEventListener(
+      WS_MESSAGE_EVENT_NAME,
+      onWsMessage as EventListener,
+    );
 
     return () => {
       window.removeEventListener(
         PRESENCE_EVENT_NAME,
         onPresence as EventListener,
+      );
+      window.removeEventListener(
+        WS_MESSAGE_EVENT_NAME,
+        onWsMessage as EventListener,
       );
     };
   }, []);

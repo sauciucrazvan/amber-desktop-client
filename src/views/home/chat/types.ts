@@ -2,6 +2,7 @@ export type MessageItem = {
   id: string;
   conversation_id: string;
   sender_id: number;
+  seq: number;
   type: string;
   content: {
     text?: string;
@@ -32,4 +33,5 @@ export type MarkSeenResponse = {
   reader_id: number;
   seen_message_ids: string[];
   updated: number;
+  last_seen_seq?: number;
 };

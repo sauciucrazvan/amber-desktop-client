@@ -8,6 +8,7 @@ const WS_RECONNECT_MAX_MS = 15_000;
 type UseConversationRealtimeParams = {
   accessToken: string | null;
   conversationId?: string;
+  myUserId: number | null;
   setIsWsConnected: (next: boolean) => void;
   scrollContainerRef: React.RefObject<HTMLDivElement | null>;
   isNearBottom: (node: HTMLDivElement | null) => boolean;
@@ -21,6 +22,7 @@ type UseConversationRealtimeParams = {
   ) => MessageItem[];
   setMessages: React.Dispatch<React.SetStateAction<MessageItem[]>>;
   markConversationSeen: (targetConversationId: string) => Promise<void>;
+  noteReadCursorSynced?: (lastSeenSeq: number) => void;
   shouldAutoScrollRef: React.MutableRefObject<boolean>;
   onMessageActivity?: () => void;
 };
@@ -28,6 +30,7 @@ type UseConversationRealtimeParams = {
 export function useConversationRealtime({
   accessToken,
   conversationId,
+  myUserId,
   setIsWsConnected,
   scrollContainerRef,
   isNearBottom,
@@ -35,6 +38,7 @@ export function useConversationRealtime({
   replaceMessageById,
   setMessages,
   markConversationSeen,
+  noteReadCursorSynced,
   shouldAutoScrollRef,
   onMessageActivity,
 }: UseConversationRealtimeParams) {
@@ -42,6 +46,8 @@ export function useConversationRealtime({
   const mergeMessagesRef = useRef(mergeMessages);
   const replaceMessageByIdRef = useRef(replaceMessageById);
   const markConversationSeenRef = useRef(markConversationSeen);
+  const noteReadCursorSyncedRef = useRef(noteReadCursorSynced);
+  const myUserIdRef = useRef(myUserId);
   const onMessageActivityRef = useRef(onMessageActivity);
 
   useEffect(() => {
@@ -49,12 +55,16 @@ export function useConversationRealtime({
     mergeMessagesRef.current = mergeMessages;
     replaceMessageByIdRef.current = replaceMessageById;
     markConversationSeenRef.current = markConversationSeen;
+    noteReadCursorSyncedRef.current = noteReadCursorSynced;
+    myUserIdRef.current = myUserId;
     onMessageActivityRef.current = onMessageActivity;
   }, [
     isNearBottom,
     mergeMessages,
     replaceMessageById,
     markConversationSeen,
+    noteReadCursorSynced,
+    myUserId,
     onMessageActivity,
   ]);
 
@@ -82,6 +92,8 @@ export function useConversationRealtime({
           message?: MessageItem;
           message_id?: string;
           message_ids?: string[];
+          reader_id?: number;
+          last_seen_seq?: number;
         };
       };
 
@@ -140,6 +152,31 @@ export function useConversationRealtime({
                 }
               : message,
           ),
+        );
+        return;
+      }
+
+      if (eventData.event === "conversation.read_cursor.updated") {
+        const readerId = eventData.payload?.reader_id;
+        const lastSeenSeq = eventData.payload?.last_seen_seq;
+        if (typeof readerId !== "number" || typeof lastSeenSeq !== "number") {
+          return;
+        }
+
+        if (myUserIdRef.current !== null && readerId === myUserIdRef.current) {
+          noteReadCursorSyncedRef.current?.(lastSeenSeq);
+        }
+
+        setMessages((current) =>
+          current.map((message) => {
+            if (message.seq > lastSeenSeq) return message;
+            if (message.sender_id === readerId) return message;
+            if (message.seen) return message;
+            return {
+              ...message,
+              seen: true,
+            };
+          }),
         );
       }
     };

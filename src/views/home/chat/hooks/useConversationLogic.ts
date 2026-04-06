@@ -37,6 +37,7 @@ export function useConversationLogic({
   useConversationRealtime({
     accessToken,
     conversationId,
+    myUserId: data.myUserId,
     setIsWsConnected,
     scrollContainerRef: data.scrollContainerRef,
     isNearBottom: data.isNearBottom,
@@ -44,6 +45,7 @@ export function useConversationLogic({
     replaceMessageById: data.replaceMessageById,
     setMessages: data.setMessages,
     markConversationSeen: data.markConversationSeen,
+    noteReadCursorSynced: data.noteReadCursorSynced,
     shouldAutoScrollRef: data.shouldAutoScrollRef,
     onMessageActivity: () => {
       void mutate("/contacts/list");

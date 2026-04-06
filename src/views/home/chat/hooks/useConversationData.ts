@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/config";
+import { WS_SEND_EVENT_NAME } from "@/auth/AuthContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TFunction } from "i18next";
 import { toast } from "sonner";
@@ -24,6 +25,7 @@ export function useConversationData({
 }: UseConversationDataParams) {
   const MESSAGE_PAGE_SIZE = 20;
   const DISCONNECTED_REFRESH_MS = 45_000;
+  const READ_CURSOR_DEBOUNCE_MS = 450;
 
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,8 +38,10 @@ export function useConversationData({
   const shouldAutoScrollRef = useRef(true);
   const pendingInitialScrollRef = useRef(false);
   const loadingMoreRef = useRef(false);
-  const markSeenInFlightRef = useRef(false);
-  const pendingMarkSeenConversationIdRef = useRef<string | null>(null);
+  const readCursorTimerRef = useRef<number | null>(null);
+  const lastSentReadSeqRef = useRef(0);
+  const pendingReadSeqRef = useRef(0);
+  const latestLoadedSeqRef = useRef(0);
   const activeConversationIdRef = useRef<string | undefined>(undefined);
 
   const scrollToBottomWithRetry = useCallback((attempt = 0) => {
@@ -66,9 +70,18 @@ export function useConversationData({
 
   useEffect(() => {
     activeConversationIdRef.current = conversationId;
-    pendingMarkSeenConversationIdRef.current = null;
-    markSeenInFlightRef.current = false;
+    lastSentReadSeqRef.current = 0;
+    pendingReadSeqRef.current = 0;
+    latestLoadedSeqRef.current = 0;
+    if (readCursorTimerRef.current) {
+      window.clearTimeout(readCursorTimerRef.current);
+      readCursorTimerRef.current = null;
+    }
   }, [conversationId]);
+
+  useEffect(() => {
+    latestLoadedSeqRef.current = messages.at(-1)?.seq ?? 0;
+  }, [messages]);
 
   const isNearBottom = useCallback((node: HTMLDivElement | null) => {
     if (!node) return true;
@@ -169,63 +182,106 @@ export function useConversationData({
     [MESSAGE_PAGE_SIZE, authFetch, mergeMessages],
   );
 
-  const markConversationSeen = useCallback(
+  const flushReadCursor = useCallback(
     async (targetConversationId: string) => {
-      if (!targetConversationId) return;
-
-      if (markSeenInFlightRef.current) {
-        pendingMarkSeenConversationIdRef.current = targetConversationId;
+      const pendingSeq = pendingReadSeqRef.current;
+      if (!targetConversationId || pendingSeq <= lastSentReadSeqRef.current) {
         return;
       }
 
-      markSeenInFlightRef.current = true;
+      pendingReadSeqRef.current = 0;
+
       try {
+        window.dispatchEvent(
+          new CustomEvent(WS_SEND_EVENT_NAME, {
+            detail: {
+              event: "chat.read_cursor.update",
+              payload: {
+                conversation_id: targetConversationId,
+                upto_seq: pendingSeq,
+              },
+            },
+          }),
+        );
+        lastSentReadSeqRef.current = pendingSeq;
+      } catch {
         const res = await authFetch(
-          `${API_BASE_URL}/chats/${targetConversationId}/seen`,
+          `${API_BASE_URL}/chats/${targetConversationId}/read-cursor`,
           {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ upto_seq: pendingSeq }),
           },
         );
 
-        if (!res.ok) {
-          if (res.status === 404 || res.status === 405 || res.status === 501) {
-            await fallbackMarkSeenViaMessagesFetch(targetConversationId);
-          }
+        if (res.ok) {
+          const data = (await res.json()) as MarkSeenResponse;
+          const serverSeq = data.last_seen_seq ?? pendingSeq;
+          lastSentReadSeqRef.current = Math.max(
+            lastSentReadSeqRef.current,
+            serverSeq,
+          );
           return;
         }
 
-        const data = (await res.json()) as MarkSeenResponse;
-        if (activeConversationIdRef.current !== targetConversationId) return;
-        if (data.conversation_id !== targetConversationId) return;
-
-        const seenIds = new Set(data.seen_message_ids ?? []);
-        if (seenIds.size === 0) return;
-
-        setMessages((current) =>
-          current.map((message) =>
-            seenIds.has(message.id)
-              ? {
-                  ...message,
-                  seen: true,
-                }
-              : message,
-          ),
-        );
-      } finally {
-        markSeenInFlightRef.current = false;
-
-        const pendingConversationId = pendingMarkSeenConversationIdRef.current;
-        if (
-          pendingConversationId &&
-          pendingConversationId === activeConversationIdRef.current
-        ) {
-          pendingMarkSeenConversationIdRef.current = null;
-          void markConversationSeen(pendingConversationId);
+        if (res.status === 404 || res.status === 405 || res.status === 501) {
+          await fallbackMarkSeenViaMessagesFetch(targetConversationId);
         }
       }
     },
     [authFetch, fallbackMarkSeenViaMessagesFetch],
   );
+
+  const markConversationSeen = useCallback(
+    async (
+      targetConversationId: string,
+      uptoSeq?: number,
+      flushImmediately = false,
+    ) => {
+      if (!targetConversationId) return;
+
+      const candidateSeq = uptoSeq ?? latestLoadedSeqRef.current;
+      if (candidateSeq <= lastSentReadSeqRef.current) return;
+
+      pendingReadSeqRef.current = Math.max(
+        pendingReadSeqRef.current,
+        candidateSeq,
+      );
+
+      if (flushImmediately) {
+        if (readCursorTimerRef.current) {
+          window.clearTimeout(readCursorTimerRef.current);
+          readCursorTimerRef.current = null;
+        }
+        await flushReadCursor(targetConversationId);
+        return;
+      }
+
+      if (readCursorTimerRef.current) {
+        return;
+      }
+
+      readCursorTimerRef.current = window.setTimeout(() => {
+        readCursorTimerRef.current = null;
+        void flushReadCursor(targetConversationId);
+      }, READ_CURSOR_DEBOUNCE_MS);
+    },
+    [READ_CURSOR_DEBOUNCE_MS, flushReadCursor],
+  );
+
+  const noteReadCursorSynced = useCallback((lastSeenSeq: number) => {
+    if (!Number.isFinite(lastSeenSeq)) return;
+    lastSentReadSeqRef.current = Math.max(
+      lastSentReadSeqRef.current,
+      lastSeenSeq,
+    );
+    pendingReadSeqRef.current = Math.max(
+      pendingReadSeqRef.current,
+      lastSeenSeq,
+    );
+  }, []);
 
   const isActivelyViewingConversation = useCallback(() => {
     return (
@@ -289,7 +345,11 @@ export function useConversationData({
         const firstPage = await fetchMessagesPage();
         setMessages((current) => mergeMessages(current, firstPage));
         setHasMoreMessages(firstPage.length === MESSAGE_PAGE_SIZE);
-        await markConversationSeen(conversationId);
+        await markConversationSeen(
+          conversationId,
+          firstPage.at(-1)?.seq ?? 0,
+          true,
+        );
       } catch (e) {
         if (!disposed) {
           toast.error(
@@ -349,6 +409,17 @@ export function useConversationData({
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [conversationId, isActivelyViewingConversation, markConversationSeen]);
+
+  useEffect(() => {
+    return () => {
+      if (!conversationId) return;
+      if (readCursorTimerRef.current) {
+        window.clearTimeout(readCursorTimerRef.current);
+        readCursorTimerRef.current = null;
+      }
+      void flushReadCursor(conversationId);
+    };
+  }, [conversationId, flushReadCursor]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -416,6 +487,7 @@ export function useConversationData({
     shouldAutoScrollRef,
     isNearBottom,
     markConversationSeen,
+    noteReadCursorSynced,
     mergeMessages,
     replaceMessageById,
   };

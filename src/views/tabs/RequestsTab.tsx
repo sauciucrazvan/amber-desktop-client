@@ -249,6 +249,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
                                 performAction("decline", {
                                   id: req.user.id,
                                   username: req.user.username,
+                                  full_name: req.user.full_name,
                                 })
                               }
                               disabled={actionUserId === req.user.id}

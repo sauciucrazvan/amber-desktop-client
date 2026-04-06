@@ -141,7 +141,9 @@ export function useConversationComposer({
         if (!res.ok) throw new Error(await readErrorMessage(res));
         const editedMessage = (await res.json()) as MessageItem;
         setMessages((current) => replaceMessageById(current, editedMessage));
-        emitLastActionUpdate(editedMessage.edited_at ?? new Date().toISOString());
+        emitLastActionUpdate(
+          editedMessage.edited_at ?? new Date().toISOString(),
+        );
       } else {
         const payload = { text: trimmedMessage };
         const res = await authFetch(

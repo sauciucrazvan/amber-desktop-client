@@ -177,11 +177,14 @@ export function useAppSidebarData({
               ? eventPayload.username
               : null;
 
-          const removedId = current.some((contact) => contact.user.id === byUserId)
+          const removedId = current.some(
+            (contact) => contact.user.id === byUserId,
+          )
             ? byUserId
             : current.some((contact) => contact.user.id === byOtherUserId)
               ? byOtherUserId
-              : current.find((contact) => contact.user.username === byUsername)?.user.id ?? null;
+              : (current.find((contact) => contact.user.username === byUsername)
+                  ?.user.id ?? null);
 
           if (removedId === null) return current;
 

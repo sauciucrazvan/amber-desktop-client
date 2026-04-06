@@ -44,7 +44,7 @@ export default function ConversationPanel() {
     accessToken,
     authFetch,
     conversationId,
-    peerUserId: activeChat.otherUser.id,
+    peerUserId: activeChat?.otherUser.id,
     t,
     language: i18n.language,
   });

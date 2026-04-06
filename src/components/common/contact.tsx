@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { ComponentPropsWithoutRef } from "react";
 import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
+import { dispatchContactsEvent } from "@/lib/contact-events";
 
 type ContactProps = {
   username: string;
@@ -56,6 +57,13 @@ export default function Contact({
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
         await mutate("/contacts/list");
+        dispatchContactsEvent({
+          type: "contacts",
+          event: "contact.removed",
+          payload: {
+            username,
+          },
+        });
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
@@ -80,6 +88,13 @@ export default function Contact({
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
         await mutate("/contacts/list");
+        dispatchContactsEvent({
+          type: "contacts",
+          event: "contact.removed",
+          payload: {
+            username,
+          },
+        });
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");

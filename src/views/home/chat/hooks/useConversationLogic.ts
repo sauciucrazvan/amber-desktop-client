@@ -11,6 +11,7 @@ type UseConversationLogicParams = {
   accessToken: string | null;
   authFetch: (input: string, init?: RequestInit) => Promise<Response>;
   conversationId?: string;
+  peerUserId?: number | null;
   t: TFunction;
   language: string;
 };
@@ -19,6 +20,7 @@ export function useConversationLogic({
   accessToken,
   authFetch,
   conversationId,
+  peerUserId,
   t,
   language,
 }: UseConversationLogicParams) {
@@ -54,6 +56,7 @@ export function useConversationLogic({
 
   const composer = useConversationComposer({
     conversationId,
+    peerUserId,
     authFetch,
     t,
     messages: data.messages,

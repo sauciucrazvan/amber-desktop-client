@@ -15,6 +15,7 @@ import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
+import { dispatchContactsEvent } from "@/lib/contact-events";
 
 interface UserProfileProps {
   username: string;
@@ -61,6 +62,13 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
         await mutate("/contacts/list");
+        dispatchContactsEvent({
+          type: "contacts",
+          event: "contact.removed",
+          payload: {
+            username,
+          },
+        });
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
@@ -85,6 +93,13 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
         await mutate("/contacts/list");
+        dispatchContactsEvent({
+          type: "contacts",
+          event: "contact.removed",
+          payload: {
+            username,
+          },
+        });
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");

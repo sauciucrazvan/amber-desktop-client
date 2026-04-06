@@ -4,9 +4,11 @@ import type { TFunction } from "i18next";
 import { toast } from "sonner";
 import { readErrorMessage } from "../errors";
 import type { MessageItem } from "../types";
+import { dispatchContactsEvent } from "@/lib/contact-events";
 
 type UseConversationComposerParams = {
   conversationId?: string;
+  peerUserId?: number | null;
   authFetch: (input: string, init?: RequestInit) => Promise<Response>;
   t: TFunction;
   messages: MessageItem[];
@@ -25,6 +27,7 @@ type UseConversationComposerParams = {
 
 export function useConversationComposer({
   conversationId,
+  peerUserId,
   authFetch,
   t,
   messages,
@@ -80,6 +83,22 @@ export function useConversationComposer({
     [isSending, messageText],
   );
 
+  const emitLastActionUpdate = useCallback(
+    (lastActionAt: string) => {
+      if (typeof peerUserId !== "number") return;
+
+      dispatchContactsEvent({
+        type: "contacts",
+        event: "contact.last_action.updated",
+        payload: {
+          user_id: peerUserId,
+          last_action_at: lastActionAt,
+        },
+      });
+    },
+    [peerUserId],
+  );
+
   const onSend = useCallback(async () => {
     if (!conversationId || !canSend) return;
 
@@ -105,6 +124,7 @@ export function useConversationComposer({
         const createdMessage = (await res.json()) as MessageItem;
         setMessages((current) => mergeMessages(current, [createdMessage]));
         onMessageActivity?.();
+        emitLastActionUpdate(createdMessage.created_at);
       } else if (editing) {
         const payload = { message_id: editing.id, text: trimmedMessage };
         const res = await authFetch(
@@ -121,6 +141,7 @@ export function useConversationComposer({
         if (!res.ok) throw new Error(await readErrorMessage(res));
         const editedMessage = (await res.json()) as MessageItem;
         setMessages((current) => replaceMessageById(current, editedMessage));
+        emitLastActionUpdate(editedMessage.edited_at ?? new Date().toISOString());
       } else {
         const payload = { text: trimmedMessage };
         const res = await authFetch(
@@ -138,6 +159,7 @@ export function useConversationComposer({
         const createdMessage = (await res.json()) as MessageItem;
         setMessages((current) => mergeMessages(current, [createdMessage]));
         onMessageActivity?.();
+        emitLastActionUpdate(createdMessage.created_at);
       }
 
       setMessageText("");

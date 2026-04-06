@@ -36,17 +36,9 @@ export function useAppSidebarData({
     },
   );
 
-  const {
-    data: contactsFromApi,
-    error: contactsError,
-    isLoading: isContactsLoading,
-  } = useSWR<ContactListItem[]>(isAuthenticated ? "/contacts/list" : null, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    revalidateIfStale: false,
-  });
-
   const [contactsState, setContactsState] = useState<ContactListItem[]>([]);
+  const [contactsError, setContactsError] = useState<unknown>(null);
+  const [isContactsLoading, setIsContactsLoading] = useState(false);
 
   const sortContactsByLastAction = (contacts: ContactListItem[]) => {
     return [...contacts].sort((a, b) => {
@@ -58,8 +50,45 @@ export function useAppSidebarData({
   };
 
   useEffect(() => {
-    setContactsState(sortContactsByLastAction(contactsFromApi ?? []));
-  }, [contactsFromApi]);
+    if (!isAuthenticated) {
+      setContactsState([]);
+      setContactsError(null);
+      setIsContactsLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    const loadContacts = async () => {
+      setIsContactsLoading(true);
+      setContactsError(null);
+
+      try {
+        const res = await authFetch(`${API_BASE_URL}/contacts/list`);
+        if (!res.ok) {
+          throw new Error(`Request failed (${res.status})`);
+        }
+
+        const data = (await res.json()) as ContactListItem[];
+        if (cancelled) return;
+
+        setContactsState(sortContactsByLastAction(data ?? []));
+      } catch (error) {
+        if (cancelled) return;
+        setContactsError(error);
+      } finally {
+        if (!cancelled) {
+          setIsContactsLoading(false);
+        }
+      }
+    };
+
+    void loadContacts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authFetch, isAuthenticated]);
 
   useEffect(() => {
     const onPresence = (event: Event) => {
@@ -107,6 +136,7 @@ export function useAppSidebarData({
         user?: ContactListItem["user"];
         user_id?: number;
         other_user_id?: number;
+        username?: string;
         created_at?: string;
         last_action_at?: string;
       };
@@ -118,10 +148,10 @@ export function useAppSidebarData({
           );
           filtered.push({
             user: {
-              id: eventPayload.user.id,
-              username: eventPayload.user.username,
-              full_name: eventPayload.user.full_name,
-              online: eventPayload.user.online,
+              id: eventPayload.user!.id,
+              username: eventPayload.user!.username,
+              full_name: eventPayload.user!.full_name,
+              online: eventPayload.user!.online,
             },
             created_at: eventPayload.created_at ?? new Date().toISOString(),
             last_action_at:
@@ -142,14 +172,16 @@ export function useAppSidebarData({
             typeof eventPayload.other_user_id === "number"
               ? eventPayload.other_user_id
               : null;
+          const byUsername =
+            typeof eventPayload.username === "string"
+              ? eventPayload.username
+              : null;
 
-          const removedId = current.some(
-            (contact) => contact.user.id === byUserId,
-          )
+          const removedId = current.some((contact) => contact.user.id === byUserId)
             ? byUserId
             : current.some((contact) => contact.user.id === byOtherUserId)
               ? byOtherUserId
-              : null;
+              : current.find((contact) => contact.user.username === byUsername)?.user.id ?? null;
 
           if (removedId === null) return current;
 

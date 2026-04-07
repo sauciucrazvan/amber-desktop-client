@@ -388,7 +388,9 @@
       "cameraOff": "Camera off",
       "switchCamera": "Switch camera",
       "endCall": "End call",
-      "close": "Close"
+      "close": "Close",
+      "minimize": "Minimize",
+      "maximize": "Maximize"
     }
   },
   "profile": {

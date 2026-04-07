@@ -23,15 +23,19 @@ export function useCallMediaElements({
     const node = remoteVideoRef.current;
     if (!node) return;
 
-    node.srcObject = remoteStream;
-  }, [remoteVideoRef, remoteStream]);
+    if (node.srcObject !== remoteStream) {
+      node.srcObject = remoteStream;
+    }
+  });
 
   useEffect(() => {
     const node = localVideoRef.current;
     if (!node) return;
 
-    node.srcObject = localStream;
-  }, [localVideoRef, localStream]);
+    if (node.srcObject !== localStream) {
+      node.srcObject = localStream;
+    }
+  });
 
   useEffect(() => {
     const node = remoteVideoRef.current as SinkableMediaElement | null;
@@ -40,5 +44,5 @@ export function useCallMediaElements({
     void node.setSinkId(selectedAudioOutputId).catch(() => {
       return;
     });
-  }, [remoteVideoRef, selectedAudioOutputId]);
+  });
 }

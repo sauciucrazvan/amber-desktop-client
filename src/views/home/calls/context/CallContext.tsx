@@ -376,8 +376,12 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         setRemoteStream(null);
       });
 
-      nextPeer.on("error", () => {
-        return;
+      nextPeer.on("error", (error) => {
+        traceCall("peer error", {
+          call_id: nextCallId,
+          initiator,
+          error,
+        });
       });
 
       peerRef.current = nextPeer;
@@ -1024,7 +1028,9 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
         const payloadData = ((payload.data as
           | Record<string, unknown>
-          | undefined) || payload) as Record<string, unknown>;
+          | undefined) ||
+          (payload.payload as Record<string, unknown> | undefined) ||
+          payload) as Record<string, unknown>;
 
         const payloadCallId = String(
           payload.call_id || payloadData.call_id || "",
@@ -1050,22 +1056,33 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           const candidateRaw = payloadData.candidate;
 
           if (typeof candidateRaw === "string") {
-            const iceCandidate = new RTCIceCandidate({
-              candidate: candidateRaw,
-              sdpMLineIndex:
-                typeof payloadData.sdpMLineIndex === "number"
-                  ? payloadData.sdpMLineIndex
-                  : null,
-              sdpMid:
-                typeof payloadData.sdpMid === "string"
-                  ? payloadData.sdpMid
-                  : null,
-            });
+            try {
+              const parsedCandidate: {
+                candidate: string;
+                sdpMLineIndex?: number;
+                sdpMid?: string;
+              } = {
+                candidate: candidateRaw,
+              };
 
-            applyPeerSignal({
-              type: "candidate",
-              candidate: iceCandidate,
-            });
+              if (typeof payloadData.sdpMLineIndex === "number") {
+                parsedCandidate.sdpMLineIndex = payloadData.sdpMLineIndex;
+              }
+              if (typeof payloadData.sdpMid === "string") {
+                parsedCandidate.sdpMid = payloadData.sdpMid;
+              }
+
+              applyPeerSignal({
+                type: "candidate",
+                candidate: parsedCandidate as unknown as RTCIceCandidate,
+              });
+            } catch (error) {
+              traceCall("failed to apply ICE candidate", {
+                event,
+                error,
+                payloadData,
+              });
+            }
           }
 
           return;

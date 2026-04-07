@@ -111,6 +111,7 @@
     "tabs": {
       "general": "General",
       "appearance": "Aspect",
+      "devices": "Dispozitive",
       "account": "Cont",
       "about": "Despre"
     },
@@ -132,6 +133,26 @@
       "tray": {
         "title": "Minimizează în tray",
         "description": "Când este dezactivat, închiderea aplicației o va opri."
+      },
+      "devices": {
+        "microphone": {
+          "title": "Microfon",
+          "description": "Selectează microfonul implicit pentru apeluri.",
+          "empty": "Nu au fost găsite microfoane",
+          "fallback": "Microfon {{index}}"
+        },
+        "camera": {
+          "title": "Cameră",
+          "description": "Selectează camera implicită pentru apeluri.",
+          "empty": "Nu au fost găsite camere",
+          "fallback": "Cameră {{index}}"
+        },
+        "speaker": {
+          "title": "Difuzor",
+          "description": "Selectează difuzorul implicit pentru apeluri.",
+          "empty": "Nu au fost găsite difuzoare",
+          "fallback": "Difuzor {{index}}"
+        }
       },
       "help": {
         "title": "Ajutor",

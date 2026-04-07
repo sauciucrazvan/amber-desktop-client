@@ -111,6 +111,7 @@
     "tabs": {
       "general": "Allgemein",
       "appearance": "Darstellung",
+      "devices": "Geräte",
       "account": "Konto",
       "about": "Über"
     },
@@ -132,6 +133,26 @@
       "tray": {
         "title": "In den Tray minimieren",
         "description": "Wenn deaktiviert, wird die App beim Schließen beendet."
+      },
+      "devices": {
+        "microphone": {
+          "title": "Mikrofon",
+          "description": "Wähle das Standardmikrofon für Anrufe.",
+          "empty": "Keine Mikrofone gefunden",
+          "fallback": "Mikrofon {{index}}"
+        },
+        "camera": {
+          "title": "Kamera",
+          "description": "Wähle die Standardkamera für Anrufe.",
+          "empty": "Keine Kameras gefunden",
+          "fallback": "Kamera {{index}}"
+        },
+        "speaker": {
+          "title": "Lautsprecher",
+          "description": "Wähle den Standardlautsprecher für Anrufe.",
+          "empty": "Keine Lautsprecher gefunden",
+          "fallback": "Lautsprecher {{index}}"
+        }
       },
       "help": {
         "title": "Hilfe",

@@ -15,6 +15,10 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+type AppSettingsPayload = {
+  allowTray?: boolean;
+};
+
 export default function GeneralTab() {
   const [allowTray, setAllowTray] = useState(true);
   const { t, i18n } = useTranslation();
@@ -49,8 +53,10 @@ export default function GeneralTab() {
 
     ipc
       .invoke("settings:get")
-      .then((value) => {
-        if (isMounted && value && typeof value.allowTray === "boolean") {
+      .then((value: AppSettingsPayload | undefined) => {
+        if (!isMounted || !value) return;
+
+        if (typeof value.allowTray === "boolean") {
           setAllowTray(value.allowTray);
         }
       })

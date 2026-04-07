@@ -85,7 +85,14 @@ const SETTINGS_FILE = "app-settings.json";
 
 type AppSettings = {
   allowTray?: boolean;
+  preferredMicrophoneId?: string;
+  preferredCameraId?: string;
+  preferredSpeakerId?: string;
 };
+
+let preferredMicrophoneId = "";
+let preferredCameraId = "";
+let preferredSpeakerId = "";
 
 function getSettingsPath() {
   return path.join(app.getPath("userData"), SETTINGS_FILE);
@@ -96,13 +103,24 @@ function loadSettings() {
     const raw = readFileSync(getSettingsPath(), "utf8");
     const parsed = JSON.parse(raw) as AppSettings;
     allowTray = parsed.allowTray ?? true;
+    preferredMicrophoneId = parsed.preferredMicrophoneId ?? "";
+    preferredCameraId = parsed.preferredCameraId ?? "";
+    preferredSpeakerId = parsed.preferredSpeakerId ?? "";
   } catch {
     allowTray = true;
+    preferredMicrophoneId = "";
+    preferredCameraId = "";
+    preferredSpeakerId = "";
   }
 }
 
 function saveSettings() {
-  const payload: AppSettings = { allowTray };
+  const payload: AppSettings = {
+    allowTray,
+    preferredMicrophoneId,
+    preferredCameraId,
+    preferredSpeakerId,
+  };
   writeFileSync(getSettingsPath(), JSON.stringify(payload, null, 2), "utf8");
 }
 
@@ -536,11 +554,28 @@ ipcMain.handle("runtime-info:get", () => {
 });
 
 ipcMain.handle("settings:get", () => {
-  return { allowTray };
+  return {
+    allowTray,
+    preferredMicrophoneId,
+    preferredCameraId,
+    preferredSpeakerId,
+  };
 });
 
 ipcMain.handle("settings:set", (_event, next: AppSettings) => {
   allowTray = next.allowTray ?? allowTray;
+  preferredMicrophoneId =
+    typeof next.preferredMicrophoneId === "string"
+      ? next.preferredMicrophoneId
+      : preferredMicrophoneId;
+  preferredCameraId =
+    typeof next.preferredCameraId === "string"
+      ? next.preferredCameraId
+      : preferredCameraId;
+  preferredSpeakerId =
+    typeof next.preferredSpeakerId === "string"
+      ? next.preferredSpeakerId
+      : preferredSpeakerId;
 
   if (!allowTray && tray) {
     tray.destroy();

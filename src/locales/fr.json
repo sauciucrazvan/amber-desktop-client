@@ -111,6 +111,7 @@
     "tabs": {
       "general": "Général",
       "appearance": "Apparence",
+      "devices": "Appareils",
       "account": "Compte",
       "about": "À propos"
     },
@@ -132,6 +133,26 @@
       "tray": {
         "title": "Minimiser dans la zone de notification",
         "description": "Si désactivé, fermer l'app quittera l'application."
+      },
+      "devices": {
+        "microphone": {
+          "title": "Microphone",
+          "description": "Sélectionnez le microphone par défaut pour les appels.",
+          "empty": "Aucun microphone trouvé",
+          "fallback": "Microphone {{index}}"
+        },
+        "camera": {
+          "title": "Caméra",
+          "description": "Sélectionnez la caméra par défaut pour les appels.",
+          "empty": "Aucune caméra trouvée",
+          "fallback": "Caméra {{index}}"
+        },
+        "speaker": {
+          "title": "Haut-parleur",
+          "description": "Sélectionnez le haut-parleur par défaut pour les appels.",
+          "empty": "Aucun haut-parleur trouvé",
+          "fallback": "Haut-parleur {{index}}"
+        }
       },
       "help": {
         "title": "Aide",

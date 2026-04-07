@@ -34,6 +34,12 @@ const CallContext = createContext<CallContextValue | null>(null);
 
 const CALL_SCREEN_TIMEOUT_MS = 4_000;
 
+type MediaPreferences = {
+  preferredMicrophoneId?: string;
+  preferredCameraId?: string;
+  preferredSpeakerId?: string;
+};
+
 function resolveCallMode(value: unknown): CallMode | null {
   if (value === "audio" || value === "video") {
     return value;
@@ -235,22 +241,72 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isMobileDevice]);
 
-  const ensureLocalStream = useCallback(async (mode: CallMode = "video") => {
-    if (localStreamRef.current) return localStreamRef.current;
+  const getPreferredMediaDevices = useCallback(async () => {
+    try {
+      const settings = (await window.ipcRenderer?.invoke("settings:get")) as
+        | MediaPreferences
+        | undefined;
 
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video:
-        mode === "video" ? { facingMode: currentFacingModeRef.current } : false,
-      audio: true,
-    });
-
-    localStreamRef.current = stream;
-    setLocalStream(stream);
-    setCameraEnabled(stream.getVideoTracks().length > 0);
-    setMicrophoneEnabled(true);
-
-    return stream;
+      return {
+        preferredMicrophoneId: settings?.preferredMicrophoneId || "",
+        preferredCameraId: settings?.preferredCameraId || "",
+        preferredSpeakerId: settings?.preferredSpeakerId || "",
+      };
+    } catch {
+      return {
+        preferredMicrophoneId: "",
+        preferredCameraId: "",
+        preferredSpeakerId: "",
+      };
+    }
   }, []);
+
+  const ensureLocalStream = useCallback(
+    async (mode: CallMode = "video") => {
+      if (localStreamRef.current) return localStreamRef.current;
+
+      const { preferredMicrophoneId, preferredCameraId, preferredSpeakerId } =
+        await getPreferredMediaDevices();
+
+      if (preferredSpeakerId) {
+        setSelectedAudioOutputId(preferredSpeakerId);
+      }
+
+      const requestedConstraints: MediaStreamConstraints = {
+        video:
+          mode === "video"
+            ? preferredCameraId
+              ? { deviceId: { exact: preferredCameraId } }
+              : { facingMode: currentFacingModeRef.current }
+            : false,
+        audio: preferredMicrophoneId
+          ? { deviceId: { exact: preferredMicrophoneId } }
+          : true,
+      };
+
+      let stream: MediaStream;
+      try {
+        stream =
+          await navigator.mediaDevices.getUserMedia(requestedConstraints);
+      } catch {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video:
+            mode === "video"
+              ? { facingMode: currentFacingModeRef.current }
+              : false,
+          audio: true,
+        });
+      }
+
+      localStreamRef.current = stream;
+      setLocalStream(stream);
+      setCameraEnabled(stream.getVideoTracks().length > 0);
+      setMicrophoneEnabled(true);
+
+      return stream;
+    },
+    [getPreferredMediaDevices],
+  );
 
   const applyPeerSignal = useCallback((signal: QueueSignal) => {
     if (!peerRef.current) {
@@ -533,8 +589,11 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       sendMediaState(microphoneEnabled, false);
     } else {
       try {
+        const { preferredCameraId } = await getPreferredMediaDevices();
         const newStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: currentFacingModeRef.current },
+          video: preferredCameraId
+            ? { deviceId: { exact: preferredCameraId } }
+            : { facingMode: currentFacingModeRef.current },
           audio: false,
         });
         const [newVideoTrack] = newStream.getVideoTracks();
@@ -553,7 +612,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
         toast.error(t("calls.toasts.mediaAccessFailed"));
       }
     }
-  }, [microphoneEnabled, sendMediaState, t]);
+  }, [getPreferredMediaDevices, microphoneEnabled, sendMediaState, t]);
 
   const toggleMicrophone = useCallback(() => {
     const stream = localStreamRef.current;
@@ -605,6 +664,11 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
   const selectAudioOutput = useCallback((deviceId: string) => {
     setSelectedAudioOutputId(deviceId);
+    void window.ipcRenderer
+      ?.invoke("settings:set", { preferredSpeakerId: deviceId })
+      .catch(() => {
+        return;
+      });
   }, []);
 
   const dismissOverlay = useCallback(() => {
@@ -1069,6 +1133,16 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       hardResetCallState();
     }
   }, [accessToken, hardResetCallState]);
+
+  useEffect(() => {
+    void getPreferredMediaDevices().then((settings) => {
+      if (settings.preferredSpeakerId) {
+        setSelectedAudioOutputId(settings.preferredSpeakerId);
+      }
+    });
+
+    return;
+  }, [getPreferredMediaDevices]);
 
   useEffect(() => {
     void refreshAudioOutputDevices();

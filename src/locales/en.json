@@ -111,6 +111,7 @@
     "tabs": {
       "general": "General",
       "appearance": "Appearance",
+      "devices": "Devices",
       "account": "Account",
       "about": "About"
     },
@@ -132,6 +133,26 @@
       "tray": {
         "title": "Minimize to tray",
         "description": "When disabled, closing the app will quit instead of hiding it."
+      },
+      "devices": {
+        "microphone": {
+          "title": "Microphone",
+          "description": "Select the default microphone for calls.",
+          "empty": "No microphones found",
+          "fallback": "Microphone {{index}}"
+        },
+        "camera": {
+          "title": "Camera",
+          "description": "Select the default camera for calls.",
+          "empty": "No cameras found",
+          "fallback": "Camera {{index}}"
+        },
+        "speaker": {
+          "title": "Speaker",
+          "description": "Select the default speaker for calls.",
+          "empty": "No speakers found",
+          "fallback": "Speaker {{index}}"
+        }
       },
       "help": {
         "title": "Help",

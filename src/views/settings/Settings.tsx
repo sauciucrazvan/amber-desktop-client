@@ -15,6 +15,7 @@ import AppearanceTab from "./tabs/AppearanceTab";
 import AccountTab from "./tabs/AccountTab";
 import GeneralTab from "./tabs/GeneralTab";
 import AboutTab from "./tabs/AboutTab";
+import DevicesTab from "./tabs/DevicesTab";
 
 interface SettingsProps {
   minimalViews: boolean;
@@ -66,14 +67,17 @@ export default function Settings(props: SettingsProps) {
             {/* content */}
             <Tabs
               defaultValue="general"
-              className="min-w-full min-h-0 flex flex-1 flex-col"
+              className="w-full min-w-0 min-h-0 flex flex-1 flex-col"
             >
-              <TabsList>
+              <TabsList className="h-auto w-full flex-wrap justify-start gap-1">
                 <TabsTrigger value="general" className="cursor-pointer">
                   {t("settings.tabs.general")}
                 </TabsTrigger>
                 <TabsTrigger value="appearance" className="cursor-pointer">
                   {t("settings.tabs.appearance")}
+                </TabsTrigger>
+                <TabsTrigger value="devices" className="cursor-pointer">
+                  {t("settings.tabs.devices")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="account"
@@ -86,16 +90,22 @@ export default function Settings(props: SettingsProps) {
                   {t("settings.tabs.about")}
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="general" className="min-h-0 flex-1">
+              <TabsContent value="general" className="min-h-0 min-w-0 flex-1">
                 <GeneralTab />
               </TabsContent>
-              <TabsContent value="appearance" className="min-h-0 flex-1">
+              <TabsContent
+                value="appearance"
+                className="min-h-0 min-w-0 flex-1"
+              >
                 <AppearanceTab />
               </TabsContent>
-              <TabsContent value="account" className="min-h-0 flex-1">
+              <TabsContent value="devices" className="min-h-0 min-w-0 flex-1">
+                <DevicesTab />
+              </TabsContent>
+              <TabsContent value="account" className="min-h-0 min-w-0 flex-1">
                 <AccountTab />
               </TabsContent>
-              <TabsContent value="about" className="min-h-0 flex-1">
+              <TabsContent value="about" className="min-h-0 min-w-0 flex-1">
                 <AboutTab />
               </TabsContent>
             </Tabs>

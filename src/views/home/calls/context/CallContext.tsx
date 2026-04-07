@@ -590,33 +590,40 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
     if (videoTracks.length > 0) {
       const [videoTrack] = videoTracks;
-      videoTrack.enabled = false;
-      setCameraEnabled(false);
-      sendMediaState(microphoneEnabled, false);
-    } else {
-      try {
-        const { preferredCameraId } = await getPreferredMediaDevices();
-        const newStream = await navigator.mediaDevices.getUserMedia({
-          video: preferredCameraId
-            ? { deviceId: { exact: preferredCameraId } }
-            : { facingMode: currentFacingModeRef.current },
-          audio: false,
-        });
-        const [newVideoTrack] = newStream.getVideoTracks();
-        if (!newVideoTrack) return;
-
-        stream.addTrack(newVideoTrack);
-
-        if (peerRef.current) {
-          await peerRef.current.addTrack(newVideoTrack, stream);
-        }
-
-        setCameraEnabled(true);
-        sendMediaState(microphoneEnabled, true);
-        setLocalStream(new MediaStream(stream.getTracks()));
-      } catch {
-        toast.error(t("calls.toasts.mediaAccessFailed"));
+      if (videoTrack.readyState === "ended") {
+        stream.removeTrack(videoTrack);
+      } else {
+        const nextEnabled = !videoTrack.enabled;
+        videoTrack.enabled = nextEnabled;
+        setCameraEnabled(nextEnabled);
+        sendMediaState(microphoneEnabled, nextEnabled);
+        return;
       }
+    }
+
+    try {
+      const { preferredCameraId } = await getPreferredMediaDevices();
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: preferredCameraId
+          ? { deviceId: { exact: preferredCameraId } }
+          : { facingMode: currentFacingModeRef.current },
+        audio: false,
+      });
+      const [newVideoTrack] = newStream.getVideoTracks();
+      if (!newVideoTrack) return;
+
+      newVideoTrack.enabled = true;
+      stream.addTrack(newVideoTrack);
+
+      if (peerRef.current) {
+        await peerRef.current.addTrack(newVideoTrack, stream);
+      }
+
+      setCameraEnabled(true);
+      sendMediaState(microphoneEnabled, true);
+      setLocalStream(new MediaStream(stream.getTracks()));
+    } catch {
+      toast.error(t("calls.toasts.mediaAccessFailed"));
     }
   }, [getPreferredMediaDevices, microphoneEnabled, sendMediaState, t]);
 

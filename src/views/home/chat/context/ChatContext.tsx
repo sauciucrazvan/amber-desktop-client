@@ -1,4 +1,5 @@
 import { API_BASE_URL } from "@/config";
+/* eslint-disable react-refresh/only-export-components */
 import {
   PRESENCE_EVENT_NAME,
   type PresenceEventPayload,

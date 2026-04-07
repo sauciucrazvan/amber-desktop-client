@@ -1,9 +1,9 @@
-import { WS_BASE_URL } from "@/config";
+import {
+  WS_MESSAGE_EVENT_NAME,
+  WS_STATUS_EVENT_NAME,
+} from "@/auth/AuthContext";
 import { useEffect, useRef } from "react";
 import type { MessageItem } from "../types";
-
-const WS_RECONNECT_BASE_MS = 1_000;
-const WS_RECONNECT_MAX_MS = 15_000;
 
 type UseConversationRealtimeParams = {
   accessToken: string | null;
@@ -71,16 +71,7 @@ export function useConversationRealtime({
   useEffect(() => {
     if (!conversationId) return;
 
-    let disposed = false;
-    let reconnectAttempts = 0;
-    let socket: WebSocket | null = null;
-    let reconnectTimeoutId: number | null = null;
-
-    const clearReconnectTimeout = () => {
-      if (!reconnectTimeoutId) return;
-      window.clearTimeout(reconnectTimeoutId);
-      reconnectTimeoutId = null;
-    };
+    setIsWsConnected(Boolean(accessToken));
 
     const handleIncomingEvent = (raw: unknown) => {
       if (!raw || typeof raw !== "object") return;
@@ -181,106 +172,42 @@ export function useConversationRealtime({
       }
     };
 
-    const scheduleReconnect = () => {
-      if (disposed) return;
-
-      const delay = Math.min(
-        WS_RECONNECT_BASE_MS * Math.pow(2, reconnectAttempts),
-        WS_RECONNECT_MAX_MS,
-      );
-      reconnectAttempts += 1;
-
-      clearReconnectTimeout();
-      reconnectTimeoutId = window.setTimeout(connect, delay);
+    const onSharedWsMessage = (event: Event) => {
+      const customEvent = event as CustomEvent<unknown>;
+      const detail = customEvent.detail;
+      if (!detail || typeof detail !== "object") return;
+      handleIncomingEvent(detail);
     };
 
-    const connect = () => {
-      if (disposed) return;
+    const onSharedWsStatus = (event: Event) => {
+      const customEvent = event as CustomEvent<unknown>;
+      const detail = customEvent.detail;
+      if (!detail || typeof detail !== "object") return;
 
-      if (
-        socket &&
-        (socket.readyState === WebSocket.OPEN ||
-          socket.readyState === WebSocket.CONNECTING)
-      ) {
-        return;
-      }
-
-      if (socket) {
-        socket.onopen = null;
-        socket.onmessage = null;
-        socket.onerror = null;
-        socket.onclose = null;
-
-        if (socket.readyState !== WebSocket.CLOSED) {
-          socket.close();
-        }
-
-        socket = null;
-      }
-
-      let nextSocket: WebSocket;
-      try {
-        const wsUrl = new URL(`${WS_BASE_URL}/ping`);
-        wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
-        if (accessToken) wsUrl.searchParams.set("token", accessToken);
-        nextSocket = new WebSocket(wsUrl.toString());
-      } catch {
-        setIsWsConnected(false);
-        scheduleReconnect();
-        return;
-      }
-
-      socket = nextSocket;
-
-      nextSocket.onopen = () => {
-        if (socket !== nextSocket) return;
-        reconnectAttempts = 0;
-        setIsWsConnected(true);
-      };
-
-      nextSocket.onmessage = (event) => {
-        if (socket !== nextSocket) return;
-        if (typeof event.data !== "string") return;
-        try {
-          const parsed = JSON.parse(event.data) as unknown;
-          handleIncomingEvent(parsed);
-        } catch {
-          return;
-        }
-      };
-
-      nextSocket.onerror = () => {
-        if (socket !== nextSocket) return;
-      };
-
-      nextSocket.onclose = () => {
-        if (socket !== nextSocket) return;
-        setIsWsConnected(false);
-        if (disposed) return;
-        socket = null;
-        scheduleReconnect();
-      };
+      const status = detail as { connected?: unknown };
+      if (typeof status.connected !== "boolean") return;
+      setIsWsConnected(status.connected);
     };
 
-    connect();
+    window.addEventListener(
+      WS_MESSAGE_EVENT_NAME,
+      onSharedWsMessage as EventListener,
+    );
+    window.addEventListener(
+      WS_STATUS_EVENT_NAME,
+      onSharedWsStatus as EventListener,
+    );
 
     return () => {
-      disposed = true;
       setIsWsConnected(false);
-      clearReconnectTimeout();
-
-      if (socket) {
-        socket.onopen = null;
-        socket.onmessage = null;
-        socket.onerror = null;
-        socket.onclose = null;
-
-        if (socket.readyState !== WebSocket.CLOSED) {
-          socket.close();
-        }
-
-        socket = null;
-      }
+      window.removeEventListener(
+        WS_MESSAGE_EVENT_NAME,
+        onSharedWsMessage as EventListener,
+      );
+      window.removeEventListener(
+        WS_STATUS_EVENT_NAME,
+        onSharedWsStatus as EventListener,
+      );
     };
   }, [
     conversationId,

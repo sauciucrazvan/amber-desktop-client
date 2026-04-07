@@ -179,6 +179,7 @@ export function useConversationComposer({
     canSend,
     conversationId,
     editing,
+    emitLastActionUpdate,
     mergeMessages,
     messageText,
     replaceMessageById,

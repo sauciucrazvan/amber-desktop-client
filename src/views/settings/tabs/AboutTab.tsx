@@ -49,7 +49,7 @@ export default function AboutTab() {
     return () => {
       isMounted = false;
     };
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -80,7 +80,7 @@ export default function AboutTab() {
       isMounted = false;
       unsubscribe();
     };
-  }, []);
+  }, [t]);
 
   const canCheckForUpdates = Boolean(
     updaterStatus?.canAutoUpdate && !isChecking,

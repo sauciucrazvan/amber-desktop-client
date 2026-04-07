@@ -49,6 +49,7 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export const PRESENCE_EVENT_NAME = "amber:presence";
 export const WS_MESSAGE_EVENT_NAME = "amber:ws-message";
 export const WS_SEND_EVENT_NAME = "amber:ws-send";
+export const WS_STATUS_EVENT_NAME = "amber:ws-status";
 
 export type PresenceEventPayload = {
   type: "presence";
@@ -326,6 +327,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       socket.onopen = () => {
         traceWs("auth-socket open");
+        window.dispatchEvent(
+          new CustomEvent<{ connected: boolean }>(WS_STATUS_EVENT_NAME, {
+            detail: { connected: true },
+          }),
+        );
         clearPingInterval();
         socket?.send("ping");
         pingIntervalId = setInterval(() => {
@@ -365,6 +371,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           WS_SEND_EVENT_NAME,
           onWsSend as EventListener,
         );
+        window.dispatchEvent(
+          new CustomEvent<{ connected: boolean }>(WS_STATUS_EVENT_NAME, {
+            detail: { connected: false },
+          }),
+        );
         traceWs("auth-socket close", {
           code: event.code,
           reason: event.reason,
@@ -386,6 +397,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       disposed = true;
+      window.dispatchEvent(
+        new CustomEvent<{ connected: boolean }>(WS_STATUS_EVENT_NAME, {
+          detail: { connected: false },
+        }),
+      );
       clearPingInterval();
       clearReconnectTimeout();
       if (socket && socket.readyState === WebSocket.OPEN) {

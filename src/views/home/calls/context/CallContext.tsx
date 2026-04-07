@@ -3,6 +3,7 @@ import {
   WS_MESSAGE_EVENT_NAME,
   WS_SEND_EVENT_NAME,
 } from "@/auth/AuthContext";
+/* eslint-disable react-refresh/only-export-components */
 import React, {
   createContext,
   useCallback,
@@ -326,7 +327,8 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       try {
         nextPeer = new Peer({
           initiator,
-          trickle: true,
+          // Use full SDP exchange to avoid candidate race/parsing issues.
+          trickle: false,
           stream,
         }) as Instance;
       } catch (error) {
@@ -1106,6 +1108,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
       microphoneEnabled,
       resolveToastMessage,
       screen,
+      sendSignal,
       sendMediaState,
       startDurationCounter,
       t,

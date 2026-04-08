@@ -17,10 +17,12 @@ import { useTranslation } from "react-i18next";
 
 type AppSettingsPayload = {
   allowTray?: boolean;
+  startOnBoot?: boolean;
 };
 
 export default function GeneralTab() {
   const [allowTray, setAllowTray] = useState(true);
+  const [startOnBoot, setStartOnBoot] = useState(false);
   const { t, i18n } = useTranslation();
 
   const activeLanguage = useMemo<SupportedLanguage>(() => {
@@ -58,6 +60,10 @@ export default function GeneralTab() {
 
         if (typeof value.allowTray === "boolean") {
           setAllowTray(value.allowTray);
+        }
+
+        if (typeof value.startOnBoot === "boolean") {
+          setStartOnBoot(value.startOnBoot);
         }
       })
       .catch(() => {
@@ -123,6 +129,32 @@ export default function GeneralTab() {
             setAllowTray(nextValue);
             window.ipcRenderer?.invoke("settings:set", {
               allowTray: nextValue,
+            });
+          }}
+        />
+      </div>
+
+      <div className="flex flex-row items-center justify-between gap-1 mt-2">
+        <div>
+          <h3 className="text-md text-primary">
+            {t("settings.general.startOnBoot.title", "Start on boot")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              "settings.general.startOnBoot.description",
+              "Launch Amber automatically when you sign in.",
+            )}
+          </p>
+        </div>
+
+        <Switch
+          checked={startOnBoot}
+          className="cursor-pointer"
+          onCheckedChange={(checked) => {
+            const nextValue = checked === true;
+            setStartOnBoot(nextValue);
+            window.ipcRenderer?.invoke("settings:set", {
+              startOnBoot: nextValue,
             });
           }}
         />

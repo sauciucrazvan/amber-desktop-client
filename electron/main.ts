@@ -49,6 +49,7 @@ let tray: Tray | null;
 let isQuitting = false;
 let allowTray = true;
 let updaterCheckInterval: NodeJS.Timeout | null = null;
+let launchHiddenAtStartup = false;
 
 type UpdaterStatus =
   | "idle"
@@ -85,6 +86,7 @@ const SETTINGS_FILE = "app-settings.json";
 
 type AppSettings = {
   allowTray?: boolean;
+  startOnBoot?: boolean;
   preferredMicrophoneId?: string;
   preferredCameraId?: string;
   preferredSpeakerId?: string;
@@ -93,6 +95,7 @@ type AppSettings = {
 let preferredMicrophoneId = "";
 let preferredCameraId = "";
 let preferredSpeakerId = "";
+let startOnBoot = false;
 
 function getSettingsPath() {
   return path.join(app.getPath("userData"), SETTINGS_FILE);
@@ -103,11 +106,13 @@ function loadSettings() {
     const raw = readFileSync(getSettingsPath(), "utf8");
     const parsed = JSON.parse(raw) as AppSettings;
     allowTray = parsed.allowTray ?? true;
+    startOnBoot = parsed.startOnBoot ?? false;
     preferredMicrophoneId = parsed.preferredMicrophoneId ?? "";
     preferredCameraId = parsed.preferredCameraId ?? "";
     preferredSpeakerId = parsed.preferredSpeakerId ?? "";
   } catch {
     allowTray = true;
+    startOnBoot = false;
     preferredMicrophoneId = "";
     preferredCameraId = "";
     preferredSpeakerId = "";
@@ -117,11 +122,30 @@ function loadSettings() {
 function saveSettings() {
   const payload: AppSettings = {
     allowTray,
+    startOnBoot,
     preferredMicrophoneId,
     preferredCameraId,
     preferredSpeakerId,
   };
   writeFileSync(getSettingsPath(), JSON.stringify(payload, null, 2), "utf8");
+}
+
+function applyLoginItemSettings() {
+  if (!app.isReady()) return;
+
+  app.setLoginItemSettings({
+    openAtLogin: startOnBoot,
+    openAsHidden: startOnBoot,
+    args: startOnBoot ? ["--start-hidden"] : [],
+  });
+}
+
+function shouldLaunchHiddenFromStartup() {
+  if (!startOnBoot || !allowTray) return false;
+
+  const launchedWithHiddenArg = process.argv.includes("--start-hidden");
+  const wasOpenedAtLogin = app.getLoginItemSettings().wasOpenedAtLogin;
+  return launchedWithHiddenArg || wasOpenedAtLogin;
 }
 
 function showMainWindow() {
@@ -377,7 +401,9 @@ function createSplashWindow() {
   });
 }
 
-function createWindow() {
+function createWindow(options?: { startHidden?: boolean }) {
+  const startHidden = options?.startHidden === true;
+
   win = new BrowserWindow({
     width: 900,
     height: 600,
@@ -396,6 +422,16 @@ function createWindow() {
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
     win?.webContents.send("updater:status", updaterState);
+
+    if (startHidden) {
+      win?.hide();
+      win?.setSkipTaskbar(true);
+      if (splash && !splash.isDestroyed()) {
+        splash.close();
+      }
+      return;
+    }
+
     showMainWindow();
   });
 
@@ -417,6 +453,7 @@ function createWindow() {
   // win.webContents.openDevTools({ mode: "detach" });
 
   win.once("ready-to-show", () => {
+    if (startHidden) return;
     showMainWindow();
   });
 
@@ -527,9 +564,15 @@ app.on("activate", () => {
 
 app.whenReady().then(() => {
   loadSettings();
-  createSplashWindow();
+  applyLoginItemSettings();
+  launchHiddenAtStartup = shouldLaunchHiddenFromStartup();
+
+  if (!launchHiddenAtStartup) {
+    createSplashWindow();
+  }
+
   createTray();
-  createWindow();
+  createWindow({ startHidden: launchHiddenAtStartup });
   configureAutoUpdater();
 });
 
@@ -556,6 +599,7 @@ ipcMain.handle("runtime-info:get", () => {
 ipcMain.handle("settings:get", () => {
   return {
     allowTray,
+    startOnBoot,
     preferredMicrophoneId,
     preferredCameraId,
     preferredSpeakerId,
@@ -564,6 +608,7 @@ ipcMain.handle("settings:get", () => {
 
 ipcMain.handle("settings:set", (_event, next: AppSettings) => {
   allowTray = next.allowTray ?? allowTray;
+  startOnBoot = next.startOnBoot ?? startOnBoot;
   preferredMicrophoneId =
     typeof next.preferredMicrophoneId === "string"
       ? next.preferredMicrophoneId
@@ -586,8 +631,9 @@ ipcMain.handle("settings:set", (_event, next: AppSettings) => {
     createTray();
   }
 
+  applyLoginItemSettings();
   saveSettings();
-  return { allowTray };
+  return { allowTray, startOnBoot };
 });
 
 ipcMain.handle("window:platform", () => process.platform);
@@ -626,11 +672,9 @@ ipcMain.handle("open-external-link", async (_event, url: string) => {
 ipcMain.handle("updater:get-status", () => {
   return updaterState;
 });
-
 ipcMain.handle("updater:check-for-updates", async () => {
   return checkForAppUpdates();
 });
-
 ipcMain.handle("updater:quit-and-install", () => {
   if (updaterState.status !== "downloaded") {
     return {

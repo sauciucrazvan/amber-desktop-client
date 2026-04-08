@@ -134,6 +134,10 @@
         "title": "Minimize to tray",
         "description": "When disabled, closing the app will quit instead of hiding it."
       },
+      "startOnBoot": {
+        "title": "Start on boot",
+        "description": "Launch Amber automatically when you sign in."
+      },
       "devices": {
         "microphone": {
           "title": "Microphone",

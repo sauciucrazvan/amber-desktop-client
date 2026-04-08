@@ -181,6 +181,14 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       )
     : null;
 
+  if (isRequestsLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <>
       <h2 className="text-lg font-semibold mb-4">
@@ -189,11 +197,6 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       {notice && <div className="mb-4">{notice}</div>}
       {requestsError ? (
         <ErrorBox>{requestsErrorMessage}</ErrorBox>
-      ) : isRequestsLoading ? (
-        <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
-          <Spinner />
-          <span>{t("common.info")}</span>
-        </div>
       ) : groupedRequests.length > 0 ? (
         <div className="w-full min-h-0 flex-1 overflow-y-auto pr-1">
           <div className="w-full flex flex-col gap-4">

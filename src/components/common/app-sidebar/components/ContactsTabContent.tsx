@@ -4,6 +4,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Spinner } from "@/components/ui/spinner";
+import ErrorBox from "@/components/common/error-box";
 import Contact from "@/components/common/contact";
 import type { TFunction } from "i18next";
 import type { ActiveChat } from "@/views/home/chat";
@@ -33,6 +34,14 @@ export default function ContactsTabContent({
   conversationUnseenCountByUserId,
   onOpenDirectChat,
 }: ContactsTabContentProps) {
+  if (isContactsLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="px-4 pt-4 shrink-0">
@@ -49,15 +58,7 @@ export default function ContactsTabContent({
         <SidebarMenu className="flex-1 min-h-0 overflow-y-auto pr-1">
           {contactsError ? (
             <SidebarMenuItem>
-              <span className="px-1 text-xs text-muted-foreground">
-                {t("contacts.failed_loading")}
-              </span>
-            </SidebarMenuItem>
-          ) : isContactsLoading ? (
-            <SidebarMenuItem>
-              <span className="px-1 text-xs text-muted-foreground">
-                <Spinner />
-              </span>
+              <ErrorBox>{t("contacts.failed_loading")}</ErrorBox>
             </SidebarMenuItem>
           ) : contacts && contacts.length > 0 ? (
             contacts.map((contact) => {

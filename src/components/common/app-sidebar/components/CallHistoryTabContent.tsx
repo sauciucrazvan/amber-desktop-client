@@ -60,6 +60,14 @@ export default function CallHistoryTabContent({
   openingChatUserId,
   onOpenDirectChat,
 }: CallHistoryTabContentProps) {
+  if (isCallHistoryLoading) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="px-4 pt-4 shrink-0">
@@ -78,13 +86,6 @@ export default function CallHistoryTabContent({
                   "Failed loading call history",
                 )}
               </ErrorBox>
-            </SidebarMenuItem>
-          ) : isCallHistoryLoading ? (
-            <SidebarMenuItem>
-              <span className="px-1 text-xs text-muted-foreground inline-flex items-center gap-2">
-                <Spinner />
-                {t("common.info")}
-              </span>
             </SidebarMenuItem>
           ) : callHistory.length > 0 ? (
             callHistory.map((call) => {

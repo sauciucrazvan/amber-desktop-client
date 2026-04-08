@@ -55,6 +55,26 @@ export default function SidebarRail({
             <TooltipTrigger asChild>
               <span>
                 <TabsTrigger
+                  value="call-history"
+                  aria-label={t("calls.history.title", "Call history")}
+                  className="flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
+                >
+                  <Phone className="size-4" />
+                  <span className="sr-only">
+                    {t("calls.history.title", "Call history")}
+                  </span>
+                </TabsTrigger>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent side={tooltipSide} className="px-2 py-1 text-xs">
+              {t("calls.history.title", "Call history")}
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <TabsTrigger
                   value="requests"
                   aria-label={t("contacts.requests", "Requests")}
                   className="relative flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
@@ -73,26 +93,6 @@ export default function SidebarRail({
             </TooltipTrigger>
             <TooltipContent side={tooltipSide} className="px-2 py-1 text-xs">
               {t("contacts.requests.title", "Requests")}
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span>
-                <TabsTrigger
-                  value="call-history"
-                  aria-label={t("calls.history.title", "Call history")}
-                  className="flex-none h-9 w-9 shrink-0 flex-col items-center gap-0.5 justify-center p-0 cursor-pointer"
-                >
-                  <Phone className="size-4" />
-                  <span className="sr-only">
-                    {t("calls.history.title", "Call history")}
-                  </span>
-                </TabsTrigger>
-              </span>
-            </TooltipTrigger>
-            <TooltipContent side={tooltipSide} className="px-2 py-1 text-xs">
-              {t("calls.history.title", "Call history")}
             </TooltipContent>
           </Tooltip>
         </TabsList>

@@ -195,7 +195,7 @@ export default function ConversationPanel() {
               const showDateSeparator = currentDate !== previousDate;
 
               return (
-                <div key={message.id}>
+                <div key={message.id} id={`message-${message.id}`}>
                   {showDateSeparator && (
                     <div className="flex items-center gap-3 py-2">
                       <div className="flex-1 h-px bg-border" />
@@ -208,6 +208,18 @@ export default function ConversationPanel() {
                   <ChatBubble
                     myUserId={myUserId}
                     message={message}
+                    otherUserName={activeChat.otherUser.full_name}
+                    onScrollToMessage={(messageId) => {
+                      const element = document.getElementById(
+                        `message-${messageId}`,
+                      );
+                      if (element) {
+                        element.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      }
+                    }}
                     edit_func={() => onEdit(message.id)}
                     reply_func={() => onReply(message.id)}
                     delete_func={() => onDelete(message.id)}

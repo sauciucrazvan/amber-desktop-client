@@ -31,6 +31,8 @@ function extractActorFromLegacyCallLogText(text: string, eventName: string) {
 interface Props {
   myUserId: number | null;
   message: MessageItem;
+  otherUserName?: string;
+  onScrollToMessage?: (messageId: string) => void;
 
   delete_func: (id: string) => void;
   reply_func: (id: string) => void;
@@ -40,6 +42,8 @@ interface Props {
 export default function ChatBubble({
   myUserId,
   message,
+  otherUserName,
+  onScrollToMessage,
   delete_func,
   reply_func,
   edit_func,
@@ -105,14 +109,22 @@ export default function ChatBubble({
             className={`flex min-w-0 flex-col text-sm max-w-[75%] rounded-md border px-3 py-2 ${isMine ? "bg-muted" : "bg-background"}`}
           >
             {message.content.reply_to && (
-              <div className="bg-primary/5 border-l-2 p-2 rounded-sm mb-1 whitespace-pre-wrap break-all wrap-anywhere">
-                {message.content.reply_to.sender_id == myUserId && (
-                  <p className="text-muted-foreground">
-                    {t("conversations.you")}
-                  </p>
-                )}
-                {message.content.reply_to.content.text}
-              </div>
+              <button
+                type="button"
+                onClick={() =>
+                  onScrollToMessage?.(message.content.reply_to!.id)
+                }
+                className="w-full bg-primary/5 border-l-2 p-2 rounded-sm mb-1 whitespace-pre-wrap break-all wrap-anywhere text-left hover:bg-primary/10 transition-colors cursor-pointer"
+              >
+                <p className="text-xs text-muted-foreground mb-1 font-medium">
+                  {message.content.reply_to.sender_id === myUserId
+                    ? t("conversations.you")
+                    : otherUserName}
+                </p>
+                <p className="text-sm">
+                  {message.content.reply_to.content.text}
+                </p>
+              </button>
             )}
 
             <div className="inline-flex min-w-0 items-center gap-1">

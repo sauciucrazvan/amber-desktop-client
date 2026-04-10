@@ -304,7 +304,7 @@ export default function InProgressCallView() {
                 autoPlay
                 muted
                 playsInline
-                className="h-full w-full -scale-x-100 object-cover"
+                className="h-full w-full object-cover"
               />
             ) : (
               <div className="flex h-full items-center justify-center text-xs text-neutral-400">

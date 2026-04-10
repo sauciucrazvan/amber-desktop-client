@@ -28,7 +28,6 @@ export default function ContactsHub() {
   const { data: requests } = useSWR<ContactRequestItem[]>(
     isAuthenticated ? "/contacts/requests" : null,
     {
-      refreshInterval: 30000,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
     },

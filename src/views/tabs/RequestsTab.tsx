@@ -95,7 +95,6 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
   } = useSWR<ContactRequestItem[]>(
     isAuthenticated ? "/contacts/requests" : null,
     {
-      refreshInterval: 30000,
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
     },

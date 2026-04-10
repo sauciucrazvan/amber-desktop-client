@@ -5,7 +5,7 @@ import {
   type PresenceEventPayload,
 } from "@/auth/AuthContext";
 import { useEffect, useMemo, useState } from "react";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { toast } from "sonner";
 import type {
   AccountMe,
@@ -131,6 +131,14 @@ export function useAppSidebarData({
       if (payload.type !== "contacts") return;
       if (typeof payload.event !== "string") return;
       if (!payload.payload || typeof payload.payload !== "object") return;
+
+      if (
+        payload.event === "contact.request.received" ||
+        payload.event === "contact.request.removed" ||
+        payload.event === "contact.accepted"
+      ) {
+        void mutate("/contacts/requests");
+      }
 
       const eventPayload = payload.payload as {
         user?: ContactListItem["user"];
@@ -278,7 +286,6 @@ export function useAppSidebarData({
   const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
   >(isAuthenticated ? "/contacts/requests" : null, {
-    refreshInterval: 10000,
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   });

@@ -350,9 +350,9 @@
   "homepage": {
     "conversation": {
       "title": "Avvia una conversazione",
-      "add_contacts": "Iniziamo aggiungendo i tuoi amici. Puoi aggiungerli facilmente cliccando sul pulsante a destra e inserendo il loro nome utente Amber.",
-      "select": "Seleziona un contatto nella barra laterale e clicca sul suo nome. Questo aprirà la vista della conversazione.",
-      "message": "Puoi inviare loro un messaggio digitandolo nel campo di testo e premendo Invia."
+      "add_contacts": "Aggiungi contatti",
+      "select": "Seleziona contatto",
+      "message": "Invia messaggio"
     },
     "file": "Invia un file"
   },

@@ -350,9 +350,9 @@
   "homepage": {
     "conversation": {
       "title": "Iniciar una conversación",
-      "add_contacts": "Empecemos añadiendo a tus amigos. Puedes agregarlos fácilmente haciendo clic en el botón de la derecha e introduciendo su nombre de usuario de Amber.",
-      "select": "Selecciona un contacto en la barra lateral y haz clic en su nombre. Esto abrirá la vista de conversación.",
-      "message": "Puedes enviarles un mensaje escribiéndolo en el campo de texto y pulsando Enviar."
+      "add_contacts": "Añadir contactos",
+      "select": "Elegir contacto",
+      "message": "Enviar mensaje"
     },
     "file": "Enviar un archivo"
   },

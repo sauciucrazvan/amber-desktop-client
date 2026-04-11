@@ -350,9 +350,9 @@
   "homepage": {
     "conversation": {
       "title": "Începe o conversație",
-      "add_contacts": "Să începem prin a-ți adăuga prietenii. Îi poți adăuga ușor făcând clic pe butonul din dreapta și introducând numele lor de utilizator Amber.",
-      "select": "Selectează un contact din bara laterală și fă clic pe numele lui. Se va deschide vizualizarea conversației.",
-      "message": "Le poți trimite un mesaj tastându-l în câmpul de text și apăsând Trimite."
+      "add_contacts": "Adaugă contacte",
+      "select": "Alege contact",
+      "message": "Trimite mesaj"
     },
     "file": "Trimite un fișier"
   },

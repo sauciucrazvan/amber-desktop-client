@@ -350,9 +350,9 @@
   "homepage": {
     "conversation": {
       "title": "Starte eine Unterhaltung",
-      "add_contacts": "Lass uns anfangen, indem du deine Freunde hinzufügst. Du kannst sie ganz einfach hinzufügen, indem du rechts auf die Schaltfläche klickst und ihren Amber-Benutzernamen eingibst.",
-      "select": "Wähle einen Kontakt in der Seitenleiste aus und klicke auf den Namen. Dadurch wird die Unterhaltungsansicht geöffnet.",
-      "message": "Du kannst ihnen schreiben, indem du deine Nachricht in das Eingabefeld eingibst und auf Senden drückst."
+      "add_contacts": "Kontakte hinzufügen",
+      "select": "Kontakt wählen",
+      "message": "Nachricht senden"
     },
     "file": "Datei senden"
   },

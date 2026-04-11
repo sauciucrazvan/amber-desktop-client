@@ -100,6 +100,33 @@ function run(command, args, extraEnv = {}) {
   }
 }
 
+function runAndCapture(command, args, extraEnv = {}) {
+  const isNpm = command === "npm";
+  const runner = isNpm ? process.execPath : command;
+  const runnerArgs = isNpm
+    ? [process.env.npm_execpath, ...args].filter(Boolean)
+    : args;
+
+  const result = spawnSync(runner, runnerArgs, {
+    cwd: rootDir,
+    stdio: ["ignore", "pipe", "pipe"],
+    shell: false,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      ...extraEnv,
+    },
+  });
+
+  return {
+    ok: !result.error && result.status === 0,
+    stdout: result.stdout || "",
+    stderr: result.stderr || "",
+    error: result.error,
+    status: result.status,
+  };
+}
+
 function parseBuildOptions(argv) {
   const defaultWinTargets = ["nsis"];
 
@@ -115,6 +142,9 @@ function parseBuildOptions(argv) {
     githubOwner: undefined,
     githubRepo: undefined,
     githubReleaseType: "release",
+    includeGitReleaseNotes: false,
+    gitReleaseBase: undefined,
+    gitReleaseLimit: 30,
   };
 
   const hasTruthyNpmConfig = (key) => {
@@ -208,9 +238,30 @@ function parseBuildOptions(argv) {
       continue;
     }
 
+    if (arg === "--git-release-notes") {
+      options.includeGitReleaseNotes = true;
+      continue;
+    }
+
+    if (arg.startsWith("--git-release-base=")) {
+      options.gitReleaseBase = arg.slice("--git-release-base=".length).trim();
+      options.includeGitReleaseNotes = true;
+      continue;
+    }
+
+    if (arg.startsWith("--git-release-limit=")) {
+      const raw = arg.slice("--git-release-limit=".length).trim();
+      const parsed = Number.parseInt(raw, 10);
+      if (Number.isFinite(parsed) && parsed > 0) {
+        options.gitReleaseLimit = parsed;
+      }
+      options.includeGitReleaseNotes = true;
+      continue;
+    }
+
     if (arg === "--help" || arg === "-h") {
       console.log(
-        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: nsis)\n  --force-msi                 Legacy flag (msi is replaced with nsis)\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n`,
+        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: nsis)\n  --force-msi                 Legacy flag (msi is replaced with nsis)\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n  --git-release-notes         Add git commit list to GitHub release notes\n  --git-release-base=ref      Use commit/tag ref as release notes base\n  --git-release-limit=n       Max commits included in notes (default: 30)\n`,
       );
       process.exit(0);
     }
@@ -285,6 +336,20 @@ function parseBuildOptions(argv) {
     options.githubReleaseType = "release";
   }
 
+  if (!options.gitReleaseBase) {
+    options.gitReleaseBase = process.env.AMBER_RELEASE_NOTES_BASE?.trim();
+  }
+
+  if (!options.includeGitReleaseNotes) {
+    const envFlag = process.env.AMBER_GIT_RELEASE_NOTES?.trim().toLowerCase();
+    options.includeGitReleaseNotes =
+      envFlag === "1" || envFlag === "true" || envFlag === "yes";
+  }
+
+  if (!options.gitReleaseLimit || options.gitReleaseLimit < 1) {
+    options.gitReleaseLimit = 30;
+  }
+
   if (options.publish && !options.publishProvider) {
     console.error(
       "[build] publish requested, but no publish provider was set. Use --publish-provider=github|generic or AMBER_PUBLISH_PROVIDER.",
@@ -293,6 +358,52 @@ function parseBuildOptions(argv) {
   }
 
   return options;
+}
+
+function resolveReleaseBaseRef(options) {
+  if (options.gitReleaseBase) {
+    return options.gitReleaseBase;
+  }
+
+  const latestTag = runAndCapture("git", ["describe", "--tags", "--abbrev=0"]);
+  if (latestTag.ok) {
+    const value = latestTag.stdout.trim();
+    if (value) return value;
+  }
+
+  return undefined;
+}
+
+function buildGitReleaseNotes(options) {
+  const baseRef = resolveReleaseBaseRef(options);
+  const range = baseRef ? `${baseRef}..HEAD` : "HEAD";
+  const args = [
+    "log",
+    range,
+    `--max-count=${options.gitReleaseLimit}`,
+    "--pretty=format:- %h %s (%an)",
+  ];
+
+  const result = runAndCapture("git", args);
+  if (!result.ok) {
+    console.warn(
+      "[build] could not generate git release notes; continuing without commit list.",
+    );
+    return undefined;
+  }
+
+  const commits = result.stdout.trim();
+  if (!commits) {
+    return baseRef
+      ? `No new commits since ${baseRef}.`
+      : "No commits found for release notes.";
+  }
+
+  const title = baseRef
+    ? `Changes since ${baseRef}:`
+    : `Recent changes (${options.gitReleaseLimit} commits max):`;
+
+  return `${title}\n\n${commits}`;
 }
 
 function getPublishArgs(options) {
@@ -339,6 +450,20 @@ function getPublishArgs(options) {
   process.exit(1);
 }
 
+function getReleaseInfoArgs(options, buildVersion) {
+  if (!options.publish) return [];
+  if (options.publishProvider?.toLowerCase() !== "github") return [];
+  if (!options.includeGitReleaseNotes) return [];
+
+  const releaseNotes = buildGitReleaseNotes(options);
+  if (!releaseNotes) return [];
+
+  return [
+    `--config.releaseInfo.releaseName=v${buildVersion}`,
+    `--config.releaseInfo.releaseNotes=${releaseNotes}`,
+  ];
+}
+
 const now = new Date();
 const year = now.getFullYear();
 const shortYear = year % 100;
@@ -360,6 +485,7 @@ loadDotEnvFiles(rootDir);
 
 const buildOptions = parseBuildOptions(process.argv.slice(2));
 const publishArgs = getPublishArgs(buildOptions);
+const releaseInfoArgs = getReleaseInfoArgs(buildOptions, buildVersion);
 
 const buildInfoPath = path.join(rootDir, "src", "build-info.ts");
 const buildInfoContent = `export const BUILD_ID = "${buildId}";\nexport const BUILD_VERSION = "${buildVersion}";\nexport const BUILD_LABEL = "${buildLabel}";\nexport const BUILD_ISO = "${buildIso}";\n`;
@@ -388,6 +514,7 @@ if (buildOptions.linux) {
     ...buildOptions.linuxTargets,
     ...extraMetadataArgs,
     ...publishArgs,
+    ...releaseInfoArgs,
   ]);
 }
 
@@ -400,5 +527,6 @@ if (buildOptions.win) {
     ...buildOptions.winTargets,
     ...extraMetadataArgs,
     ...publishArgs,
+    ...releaseInfoArgs,
   ]);
 }

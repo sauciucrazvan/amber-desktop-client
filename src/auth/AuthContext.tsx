@@ -51,6 +51,12 @@ export const WS_MESSAGE_EVENT_NAME = "amber:ws-message";
 export const WS_SEND_EVENT_NAME = "amber:ws-send";
 export const WS_STATUS_EVENT_NAME = "amber:ws-status";
 
+export type SharedWsStatusPayload = {
+  phase: "connecting" | "connected" | "failed" | "disconnected";
+  connected: boolean;
+  message?: string;
+};
+
 export type PresenceEventPayload = {
   type: "presence";
   event: "user_connected" | "user_disconnected";
@@ -297,6 +303,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const connect = () => {
       if (disposed) return;
 
+      window.dispatchEvent(
+        new CustomEvent<SharedWsStatusPayload>(WS_STATUS_EVENT_NAME, {
+          detail: {
+            phase: "connecting",
+            connected: false,
+          },
+        }),
+      );
+
       traceWs("auth-socket connect", {
         endpoint: HEARTBEAT_ENDPOINT,
         sessionId: wsSessionId,
@@ -328,8 +343,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       socket.onopen = () => {
         traceWs("auth-socket open");
         window.dispatchEvent(
-          new CustomEvent<{ connected: boolean }>(WS_STATUS_EVENT_NAME, {
-            detail: { connected: true },
+          new CustomEvent<SharedWsStatusPayload>(WS_STATUS_EVENT_NAME, {
+            detail: { phase: "connected", connected: true },
           }),
         );
         clearPingInterval();
@@ -371,16 +386,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           WS_SEND_EVENT_NAME,
           onWsSend as EventListener,
         );
-        window.dispatchEvent(
-          new CustomEvent<{ connected: boolean }>(WS_STATUS_EVENT_NAME, {
-            detail: { connected: false },
-          }),
-        );
         traceWs("auth-socket close", {
           code: event.code,
           reason: event.reason,
         });
         clearPingInterval();
+
+        const isCleanShutdown = disposed || event.code === 1000;
+
+        window.dispatchEvent(
+          new CustomEvent<SharedWsStatusPayload>(WS_STATUS_EVENT_NAME, {
+            detail: {
+              phase: isCleanShutdown ? "disconnected" : "failed",
+              connected: false,
+              message:
+                !isCleanShutdown && event.reason ? event.reason : undefined,
+            },
+          }),
+        );
 
         if (disposed) return;
         if (event.code === 1008) {
@@ -398,8 +421,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       disposed = true;
       window.dispatchEvent(
-        new CustomEvent<{ connected: boolean }>(WS_STATUS_EVENT_NAME, {
-          detail: { connected: false },
+        new CustomEvent<SharedWsStatusPayload>(WS_STATUS_EVENT_NAME, {
+          detail: { phase: "disconnected", connected: false },
         }),
       );
       clearPingInterval();

@@ -170,3 +170,13 @@
     background-color: var(--scrollbar-thumb-hover);
   }
 }
+
+@keyframes amber-bar-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(360%);
+  }
+}

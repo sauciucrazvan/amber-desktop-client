@@ -118,12 +118,7 @@ export default function AboutTab() {
       })
       .catch(() => {
         if (isMounted) {
-          setServerError(
-            t(
-              "settings.about.developer.unableToLoad",
-              "Unable to load server configuration.",
-            ),
-          );
+          setServerError(t("settings.about.developer.unableToLoad"));
         }
       });
 
@@ -158,11 +153,7 @@ export default function AboutTab() {
       const result = await window.serverConfig.setActive(serverId);
       if (!result.ok || !result.activeServer) {
         setServerError(
-          result.message ||
-            t(
-              "settings.about.developer.unableToApply",
-              "Unable to apply selected server.",
-            ),
+          result.message || t("settings.about.developer.unableToApply"),
         );
         return;
       }
@@ -172,12 +163,7 @@ export default function AboutTab() {
       applyServerConfig(result.activeServer);
       window.location.reload();
     } catch {
-      setServerError(
-        t(
-          "settings.about.developer.unableToApply",
-          "Unable to apply selected server.",
-        ),
-      );
+      setServerError(t("settings.about.developer.unableToApply"));
     } finally {
       setIsApplyingServer(false);
     }
@@ -219,7 +205,7 @@ export default function AboutTab() {
           </TabsTrigger>
           {isDevelopmentBuild ? (
             <TabsTrigger value="developer" className="flex-1 cursor-pointer">
-              {t("settings.about.tabs.developer", "Developer")}
+              {t("settings.about.tabs.developer")}
             </TabsTrigger>
           ) : null}
         </TabsList>
@@ -306,10 +292,10 @@ export default function AboutTab() {
             <section className="w-full flex flex-col gap-3 rounded-md border p-3 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-muted-foreground">
-                  {t("settings.about.developer.server", "Server")}
+                  {t("settings.about.developer.server")}
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  {t("settings.about.developer.debugOnly", "Debug builds only")}
+                  {t("settings.about.developer.debugOnly")}
                 </span>
               </div>
 
@@ -322,10 +308,7 @@ export default function AboutTab() {
               >
                 <SelectTrigger className="w-full">
                   <SelectValue
-                    placeholder={t(
-                      "settings.about.developer.selectServer",
-                      "Select a server",
-                    )}
+                    placeholder={t("settings.about.developer.selectServer")}
                   />
                 </SelectTrigger>
                 <SelectContent>

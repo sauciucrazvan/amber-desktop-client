@@ -11,6 +11,9 @@
     "errors": {
       "too_many_requests": "Prea multe cereri! Încetinește!"
     },
+    "connection": {
+      "failed": "Connection to the selected server failed."
+    },
     "online": "Online",
     "offline": "Offline"
   },
@@ -302,6 +305,46 @@
   "account": {
     "verify": {
       "notice": "Verifică-ți contul pentru a debloca toate funcționalitățile."
+    }
+  },
+  "settings": {
+    "about": {
+      "tabs": {
+        "about": "About",
+        "data_for_nerds": "Data for nerds",
+        "updates": "Updates",
+        "developer": "Developer"
+      },
+      "buildNumber": "Build number",
+      "platform": "Platform",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Updates",
+      "updaterUnavailable": "Updater status unavailable.",
+      "unableToReadUpdaterStatus": "Unable to read updater status.",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "Debug builds only",
+        "selectServer": "Select a server",
+        "unableToLoad": "Unable to load server configuration.",
+        "unableToApply": "Unable to apply selected server."
+      },
+      "downloadedProgress": "{{progress}}% downloaded",
+      "actions": {
+        "check": "Check for updates",
+        "checking": "Checking...",
+        "restart": "Restart to update"
+      },
+      "status": {
+        "idle": "Idle",
+        "disabled": "Disabled",
+        "checking": "Checking for updates",
+        "available": "Update available",
+        "not-available": "Up to date",
+        "downloading": "Downloading",
+        "downloaded": "Ready to install",
+        "error": "Error"
+      }
     }
   },
   "homepage": {

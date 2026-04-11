@@ -11,6 +11,9 @@
     "errors": {
       "too_many_requests": "Too many requests! Please try again later."
     },
+    "connection": {
+      "failed": "Connection to the selected server failed."
+    },
     "online": "Online",
     "offline": "Offline"
   },
@@ -263,7 +266,8 @@
       "tabs": {
         "about": "About",
         "data_for_nerds": "Data for nerds",
-        "updates": "Updates"
+        "updates": "Updates",
+        "developer": "Developer"
       },
       "buildNumber": "Build number",
       "platform": "Platform",
@@ -272,6 +276,13 @@
       "updatesLabel": "Updates",
       "updaterUnavailable": "Updater status unavailable.",
       "unableToReadUpdaterStatus": "Unable to read updater status.",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "Debug builds only",
+        "selectServer": "Select a server",
+        "unableToLoad": "Unable to load server configuration.",
+        "unableToApply": "Unable to apply selected server."
+      },
       "downloadedProgress": "{{progress}}% downloaded",
       "actions": {
         "check": "Check for updates",
@@ -293,7 +304,7 @@
   "contacts": {
     "title": "Chats",
     "none": "No contacts yet",
-    "failed_loading": "Failed to load contacts",
+    "failed_loading": "Failed loading contacts",
     "profile": "Profile",
     "block": "Block",
     "remove": "Remove",

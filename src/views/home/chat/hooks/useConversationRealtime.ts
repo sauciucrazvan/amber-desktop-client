@@ -1,6 +1,7 @@
 import {
   WS_MESSAGE_EVENT_NAME,
   WS_STATUS_EVENT_NAME,
+  type SharedWsStatusPayload,
 } from "@/auth/AuthContext";
 import { useEffect, useRef } from "react";
 import type { MessageItem } from "../types";
@@ -184,9 +185,26 @@ export function useConversationRealtime({
       const detail = customEvent.detail;
       if (!detail || typeof detail !== "object") return;
 
-      const status = detail as { connected?: unknown };
-      if (typeof status.connected !== "boolean") return;
-      setIsWsConnected(status.connected);
+      const status = detail as SharedWsStatusPayload & {
+        connected?: unknown;
+      };
+
+      if (typeof status.connected === "boolean") {
+        setIsWsConnected(status.connected);
+        return;
+      }
+
+      if (status.phase === "connected") {
+        setIsWsConnected(true);
+        return;
+      }
+
+      if (status.phase === "connecting") {
+        setIsWsConnected(Boolean(accessToken));
+        return;
+      }
+
+      setIsWsConnected(false);
     };
 
     window.addEventListener(

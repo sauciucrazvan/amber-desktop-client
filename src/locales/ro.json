@@ -12,7 +12,7 @@
       "too_many_requests": "Prea multe cereri! Încetinește!"
     },
     "connection": {
-      "failed": "Connection to the selected server failed."
+      "failed": "Conectarea la serverul selectat a eșuat."
     },
     "online": "Online",
     "offline": "Offline"
@@ -137,6 +137,10 @@
         "title": "Minimizează în tray",
         "description": "Când este dezactivat, închiderea aplicației o va opri."
       },
+      "startOnBoot": {
+        "title": "Pornește la pornirea sistemului",
+        "description": "Lansează Amber automat când te autentifici."
+      },
       "devices": {
         "microphone": {
           "title": "Microfon",
@@ -256,6 +260,44 @@
         "too_long": "Limitează-te la 256 de caractere.",
         "updated": "Biografia ta a fost actualizată cu succes!"
       }
+    },
+    "about": {
+      "tabs": {
+        "about": "Despre",
+        "data_for_nerds": "Date pentru pasionați",
+        "updates": "Actualizări",
+        "developer": "Dezvoltator"
+      },
+      "buildNumber": "Numărul versiunii",
+      "platform": "Platformă",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Actualizări",
+      "updaterUnavailable": "Starea actualizatorului nu este disponibilă.",
+      "unableToReadUpdaterStatus": "Nu s-a putut citi starea actualizatorului.",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "Doar builduri de debug",
+        "selectServer": "Selectează un server",
+        "unableToLoad": "Nu s-a putut încărca configurația serverului.",
+        "unableToApply": "Nu s-a putut aplica serverul selectat."
+      },
+      "downloadedProgress": "{{progress}}% descărcat",
+      "actions": {
+        "check": "Verifică actualizările",
+        "checking": "Se verifică...",
+        "restart": "Repornește pentru a actualiza"
+      },
+      "status": {
+        "idle": "Inactiv",
+        "disabled": "Dezactivat",
+        "checking": "Se verifică actualizările",
+        "available": "Actualizare disponibilă",
+        "not-available": "La zi",
+        "downloading": "Se descarcă",
+        "downloaded": "Gata de instalare",
+        "error": "Eroare"
+      }
     }
   },
   "contacts": {
@@ -307,52 +349,17 @@
       "notice": "Verifică-ți contul pentru a debloca toate funcționalitățile."
     }
   },
-  "settings": {
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates",
-        "developer": "Developer"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "developer": {
-        "server": "Server",
-        "debugOnly": "Debug builds only",
-        "selectServer": "Select a server",
-        "unableToLoad": "Unable to load server configuration.",
-        "unableToApply": "Unable to apply selected server."
-      },
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
-      }
-    }
-  },
   "homepage": {
+    "get_started": "Începe",
     "conversation": {
       "title": "Începe o conversație",
+      "get_started_description": "Trei pași rapizi pentru a începe prima conversație.",
       "add_contacts": "Adaugă contacte",
+      "add_contacts_hint": "Deschide fluxul de adăugare a contactelor pentru a invita pe cineva după numele de utilizator.",
       "select": "Alege contact",
-      "message": "Trimite mesaj"
+      "select_hint": "Alege un contact din bara laterală pentru a deschide chatul.",
+      "message": "Trimite mesaj",
+      "message_hint": "Scrie mesajul și trimite-l când ești gata."
     },
     "file": "Trimite un fișier"
   },

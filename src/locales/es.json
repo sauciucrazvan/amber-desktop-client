@@ -12,7 +12,7 @@
       "too_many_requests": "¡Demasiadas solicitudes! ¡Ralentízate!"
     },
     "connection": {
-      "failed": "Connection to the selected server failed."
+      "failed": "La conexión con el servidor seleccionado ha fallado."
     },
     "online": "En línea",
     "offline": "Sin conexión"
@@ -157,6 +157,10 @@
         "title": "Minimizar a la bandeja",
         "description": "Si está desactivado, al cerrar la app se saldrá."
       },
+      "startOnBoot": {
+        "title": "Iniciar al arrancar",
+        "description": "Inicia Amber automáticamente cuando inicies sesión."
+      },
       "help": {
         "title": "Ayuda",
         "description": "¿Encontraste un problema o necesitas ayuda con algo?",
@@ -256,6 +260,44 @@
         "too_long": "Limítate a 256 caracteres.",
         "updated": "¡Tu biografía se actualizó correctamente!"
       }
+    },
+    "about": {
+      "tabs": {
+        "about": "Acerca de",
+        "data_for_nerds": "Datos para nerds",
+        "updates": "Actualizaciones",
+        "developer": "Desarrollador"
+      },
+      "buildNumber": "Número de compilación",
+      "platform": "Plataforma",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Actualizaciones",
+      "updaterUnavailable": "Estado del actualizador no disponible.",
+      "unableToReadUpdaterStatus": "No se pudo leer el estado del actualizador.",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "Solo compilaciones de depuración",
+        "selectServer": "Selecciona un servidor",
+        "unableToLoad": "No se pudo cargar la configuración del servidor.",
+        "unableToApply": "No se pudo aplicar el servidor seleccionado."
+      },
+      "downloadedProgress": "{{progress}} % descargado",
+      "actions": {
+        "check": "Buscar actualizaciones",
+        "checking": "Comprobando...",
+        "restart": "Reiniciar para actualizar"
+      },
+      "status": {
+        "idle": "Inactivo",
+        "disabled": "Desactivado",
+        "checking": "Buscando actualizaciones",
+        "available": "Actualización disponible",
+        "not-available": "Actualizado",
+        "downloading": "Descargando",
+        "downloaded": "Listo para instalar",
+        "error": "Error"
+      }
     }
   },
   "contacts": {
@@ -307,52 +349,17 @@
       "notice": "Verifica tu cuenta para desbloquear todas las funciones."
     }
   },
-  "settings": {
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates",
-        "developer": "Developer"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "developer": {
-        "server": "Server",
-        "debugOnly": "Debug builds only",
-        "selectServer": "Select a server",
-        "unableToLoad": "Unable to load server configuration.",
-        "unableToApply": "Unable to apply selected server."
-      },
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
-      }
-    }
-  },
   "homepage": {
+    "get_started": "Empezar",
     "conversation": {
       "title": "Iniciar una conversación",
+      "get_started_description": "Tres pasos rápidos para comenzar tu primera conversación.",
       "add_contacts": "Añadir contactos",
+      "add_contacts_hint": "Abre el flujo de añadir contactos para invitar a alguien por nombre de usuario.",
       "select": "Elegir contacto",
-      "message": "Enviar mensaje"
+      "select_hint": "Elige un contacto de la barra lateral para abrir el chat.",
+      "message": "Enviar mensaje",
+      "message_hint": "Escribe tu mensaje y envíalo cuando estés listo."
     },
     "file": "Enviar un archivo"
   },

@@ -12,7 +12,7 @@
       "too_many_requests": "Zu viele Anfragen! Verlangsam dich!"
     },
     "connection": {
-      "failed": "Connection to the selected server failed."
+      "failed": "Verbindung zum ausgewählten Server fehlgeschlagen."
     },
     "online": "Online",
     "offline": "Offline"
@@ -137,6 +137,10 @@
         "title": "In den Tray minimieren",
         "description": "Wenn deaktiviert, wird die App beim Schließen beendet."
       },
+      "startOnBoot": {
+        "title": "Beim Start ausführen",
+        "description": "Amber automatisch starten, wenn du dich anmeldest."
+      },
       "devices": {
         "microphone": {
           "title": "Mikrofon",
@@ -256,6 +260,44 @@
         "too_long": "Bitte auf 256 Zeichen begrenzen.",
         "updated": "Deine Bio wurde erfolgreich aktualisiert!"
       }
+    },
+    "about": {
+      "tabs": {
+        "about": "Über",
+        "data_for_nerds": "Technische Daten",
+        "updates": "Aktualisierungen",
+        "developer": "Entwickler"
+      },
+      "buildNumber": "Build-Nummer",
+      "platform": "Plattform",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Aktualisierungen",
+      "updaterUnavailable": "Updater-Status nicht verfügbar.",
+      "unableToReadUpdaterStatus": "Updater-Status konnte nicht gelesen werden.",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "Nur Debug-Builds",
+        "selectServer": "Server auswählen",
+        "unableToLoad": "Serverkonfiguration konnte nicht geladen werden.",
+        "unableToApply": "Ausgewählten Server konnte nicht anwenden."
+      },
+      "downloadedProgress": "{{progress}} % heruntergeladen",
+      "actions": {
+        "check": "Nach Updates suchen",
+        "checking": "Wird geprüft...",
+        "restart": "Zum Aktualisieren neu starten"
+      },
+      "status": {
+        "idle": "Inaktiv",
+        "disabled": "Deaktiviert",
+        "checking": "Suche nach Updates",
+        "available": "Update verfügbar",
+        "not-available": "Auf dem neuesten Stand",
+        "downloading": "Wird heruntergeladen",
+        "downloaded": "Bereit zur Installation",
+        "error": "Fehler"
+      }
     }
   },
   "contacts": {
@@ -307,52 +349,17 @@
       "notice": "Verifiziere dein Konto, um alle Funktionen freizuschalten."
     }
   },
-  "settings": {
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates",
-        "developer": "Developer"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "developer": {
-        "server": "Server",
-        "debugOnly": "Debug builds only",
-        "selectServer": "Select a server",
-        "unableToLoad": "Unable to load server configuration.",
-        "unableToApply": "Unable to apply selected server."
-      },
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
-      }
-    }
-  },
   "homepage": {
+    "get_started": "Los geht's",
     "conversation": {
       "title": "Starte eine Unterhaltung",
+      "get_started_description": "Drei kurze Schritte, um mit deiner ersten Unterhaltung zu beginnen.",
       "add_contacts": "Kontakte hinzufügen",
+      "add_contacts_hint": "Öffne das Kontakte-hinzufügen-Fenster, um jemanden per Benutzername einzuladen.",
       "select": "Kontakt wählen",
-      "message": "Nachricht senden"
+      "select_hint": "Wähle einen Kontakt in der Seitenleiste aus, um den Chat zu öffnen.",
+      "message": "Nachricht senden",
+      "message_hint": "Schreibe deine Nachricht und sende sie, wenn du bereit bist."
     },
     "file": "Datei senden"
   },

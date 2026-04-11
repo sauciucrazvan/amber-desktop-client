@@ -12,7 +12,7 @@
       "too_many_requests": "请求过多！请减速！"
     },
     "connection": {
-      "failed": "Connection to the selected server failed."
+      "failed": "连接到所选服务器失败。"
     },
     "online": "在线",
     "offline": "离线"
@@ -157,6 +157,10 @@
         "title": "最小化到托盘",
         "description": "关闭时将直接退出应用，而不是隐藏到托盘。"
       },
+      "startOnBoot": {
+        "title": "开机启动",
+        "description": "登录系统时自动启动 Amber。"
+      },
       "help": {
         "title": "帮助",
         "description": "遇到问题或需要帮助处理某些事情？",
@@ -256,6 +260,44 @@
         "too_long": "请限制在 256 个字符以内。",
         "updated": "个人简介已成功更新！"
       }
+    },
+    "about": {
+      "tabs": {
+        "about": "关于",
+        "data_for_nerds": "技术信息",
+        "updates": "更新",
+        "developer": "开发者"
+      },
+      "buildNumber": "构建编号",
+      "platform": "平台",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "更新",
+      "updaterUnavailable": "更新器状态不可用。",
+      "unableToReadUpdaterStatus": "无法读取更新器状态。",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "仅限调试构建",
+        "selectServer": "选择服务器",
+        "unableToLoad": "无法加载服务器配置。",
+        "unableToApply": "无法应用所选服务器。"
+      },
+      "downloadedProgress": "已下载 {{progress}}%",
+      "actions": {
+        "check": "检查更新",
+        "checking": "检查中...",
+        "restart": "重启以更新"
+      },
+      "status": {
+        "idle": "空闲",
+        "disabled": "已禁用",
+        "checking": "正在检查更新",
+        "available": "有可用更新",
+        "not-available": "已是最新版本",
+        "downloading": "正在下载",
+        "downloaded": "可安装",
+        "error": "错误"
+      }
     }
   },
   "contacts": {
@@ -307,52 +349,17 @@
       "notice": "请先验证你的账户以解锁全部功能。"
     }
   },
-  "settings": {
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates",
-        "developer": "Developer"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "developer": {
-        "server": "Server",
-        "debugOnly": "Debug builds only",
-        "selectServer": "Select a server",
-        "unableToLoad": "Unable to load server configuration.",
-        "unableToApply": "Unable to apply selected server."
-      },
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
-      }
-    }
-  },
   "homepage": {
+    "get_started": "开始使用",
     "conversation": {
       "title": "开始对话",
+      "get_started_description": "开始你的第一次对话只需三个简单步骤。",
       "add_contacts": "添加联系人",
+      "add_contacts_hint": "打开添加联系人的流程，通过用户名邀请他人。",
       "select": "选择联系人",
-      "message": "发送消息"
+      "select_hint": "从侧边栏选择联系人即可打开聊天。",
+      "message": "发送消息",
+      "message_hint": "输入你的消息，准备好后发送即可。"
     },
     "file": "发送文件"
   },

@@ -12,7 +12,7 @@
       "too_many_requests": "Trop de requêtes ! Ralentis !"
     },
     "connection": {
-      "failed": "Connection to the selected server failed."
+      "failed": "La connexion au serveur sélectionné a échoué."
     },
     "online": "En ligne",
     "offline": "Hors ligne"
@@ -137,6 +137,10 @@
         "title": "Minimiser dans la zone de notification",
         "description": "Si désactivé, fermer l'app quittera l'application."
       },
+      "startOnBoot": {
+        "title": "Lancer au démarrage",
+        "description": "Lancer Amber automatiquement lorsque vous vous connectez."
+      },
       "devices": {
         "microphone": {
           "title": "Microphone",
@@ -256,6 +260,44 @@
         "too_long": "Limitez-vous à 256 caractères.",
         "updated": "Votre bio a été mise à jour avec succès !"
       }
+    },
+    "about": {
+      "tabs": {
+        "about": "À propos",
+        "data_for_nerds": "Données pour les nerds",
+        "updates": "Mises à jour",
+        "developer": "Développeur"
+      },
+      "buildNumber": "Numéro de version",
+      "platform": "Plateforme",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "Mises à jour",
+      "updaterUnavailable": "Statut du programme de mise à jour indisponible.",
+      "unableToReadUpdaterStatus": "Impossible de lire le statut du programme de mise à jour.",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "Bêtas de débogage uniquement",
+        "selectServer": "Sélectionner un serveur",
+        "unableToLoad": "Impossible de charger la configuration du serveur.",
+        "unableToApply": "Impossible d'appliquer le serveur sélectionné."
+      },
+      "downloadedProgress": "{{progress}} % téléchargé",
+      "actions": {
+        "check": "Rechercher des mises à jour",
+        "checking": "Vérification...",
+        "restart": "Redémarrer pour mettre à jour"
+      },
+      "status": {
+        "idle": "Inactif",
+        "disabled": "Désactivé",
+        "checking": "Recherche de mises à jour",
+        "available": "Mise à jour disponible",
+        "not-available": "À jour",
+        "downloading": "Téléchargement",
+        "downloaded": "Prêt à installer",
+        "error": "Erreur"
+      }
     }
   },
   "contacts": {
@@ -307,52 +349,17 @@
       "notice": "Vérifiez votre compte pour débloquer toutes les fonctionnalités."
     }
   },
-  "settings": {
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates",
-        "developer": "Developer"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "developer": {
-        "server": "Server",
-        "debugOnly": "Debug builds only",
-        "selectServer": "Select a server",
-        "unableToLoad": "Unable to load server configuration.",
-        "unableToApply": "Unable to apply selected server."
-      },
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
-      }
-    }
-  },
   "homepage": {
+    "get_started": "Commencer",
     "conversation": {
       "title": "Démarrer une conversation",
+      "get_started_description": "Trois étapes rapides pour commencer votre première conversation.",
       "add_contacts": "Ajouter des contacts",
+      "add_contacts_hint": "Ouvrez l’ajout de contact pour inviter quelqu’un avec son nom d’utilisateur.",
       "select": "Choisir un contact",
-      "message": "Envoyer un message"
+      "select_hint": "Choisissez un contact dans la barre latérale pour ouvrir le chat.",
+      "message": "Envoyer un message",
+      "message_hint": "Tapez votre message et envoyez-le quand vous êtes prêt."
     },
     "file": "Envoyer un fichier"
   },

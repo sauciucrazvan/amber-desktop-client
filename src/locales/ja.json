@@ -12,7 +12,7 @@
       "too_many_requests": "リクエストが多すぎます。ゆっくりしてください。"
     },
     "connection": {
-      "failed": "Connection to the selected server failed."
+      "failed": "選択したサーバーへの接続に失敗しました。"
     },
     "online": "オンライン",
     "offline": "オフライン"
@@ -157,6 +157,10 @@
         "title": "トレイに最小化",
         "description": "オフにすると、閉じるとアプリが終了します。"
       },
+      "startOnBoot": {
+        "title": "起動時に開始",
+        "description": "サインイン時に Amber を自動起動します。"
+      },
       "help": {
         "title": "ヘルプ",
         "description": "不具合を見つけた、または助けが必要ですか？",
@@ -256,6 +260,44 @@
         "too_long": "256文字以内で入力してください。",
         "updated": "自己紹介を更新しました！"
       }
+    },
+    "about": {
+      "tabs": {
+        "about": "情報",
+        "data_for_nerds": "技術情報",
+        "updates": "更新",
+        "developer": "開発者"
+      },
+      "buildNumber": "ビルド番号",
+      "platform": "プラットフォーム",
+      "electron": "Electron",
+      "chromium": "Chromium",
+      "updatesLabel": "更新",
+      "updaterUnavailable": "アップデーターの状態を取得できません。",
+      "unableToReadUpdaterStatus": "アップデーターの状態を読み取れません。",
+      "developer": {
+        "server": "Server",
+        "debugOnly": "デバッグビルドのみ",
+        "selectServer": "サーバーを選択",
+        "unableToLoad": "サーバー設定を読み込めません。",
+        "unableToApply": "選択したサーバーを適用できません。"
+      },
+      "downloadedProgress": "{{progress}}% ダウンロード済み",
+      "actions": {
+        "check": "更新を確認",
+        "checking": "確認中...",
+        "restart": "更新するため再起動"
+      },
+      "status": {
+        "idle": "待機中",
+        "disabled": "無効",
+        "checking": "更新を確認中",
+        "available": "更新があります",
+        "not-available": "最新です",
+        "downloading": "ダウンロード中",
+        "downloaded": "インストール準備完了",
+        "error": "エラー"
+      }
     }
   },
   "contacts": {
@@ -307,52 +349,17 @@
       "notice": "すべての機能を利用するには、アカウントを認証してください。"
     }
   },
-  "settings": {
-    "about": {
-      "tabs": {
-        "about": "About",
-        "data_for_nerds": "Data for nerds",
-        "updates": "Updates",
-        "developer": "Developer"
-      },
-      "buildNumber": "Build number",
-      "platform": "Platform",
-      "electron": "Electron",
-      "chromium": "Chromium",
-      "updatesLabel": "Updates",
-      "updaterUnavailable": "Updater status unavailable.",
-      "unableToReadUpdaterStatus": "Unable to read updater status.",
-      "developer": {
-        "server": "Server",
-        "debugOnly": "Debug builds only",
-        "selectServer": "Select a server",
-        "unableToLoad": "Unable to load server configuration.",
-        "unableToApply": "Unable to apply selected server."
-      },
-      "downloadedProgress": "{{progress}}% downloaded",
-      "actions": {
-        "check": "Check for updates",
-        "checking": "Checking...",
-        "restart": "Restart to update"
-      },
-      "status": {
-        "idle": "Idle",
-        "disabled": "Disabled",
-        "checking": "Checking for updates",
-        "available": "Update available",
-        "not-available": "Up to date",
-        "downloading": "Downloading",
-        "downloaded": "Ready to install",
-        "error": "Error"
-      }
-    }
-  },
   "homepage": {
+    "get_started": "はじめる",
     "conversation": {
       "title": "会話を始める",
+      "get_started_description": "最初の会話を始めるための3つの簡単な手順です。",
       "add_contacts": "連絡先を追加",
+      "add_contacts_hint": "連絡先を追加して、ユーザー名で相手を招待します。",
       "select": "連絡先を選択",
-      "message": "メッセージを送信"
+      "select_hint": "サイドバーから連絡先を選ぶと、チャットが開きます。",
+      "message": "メッセージを送信",
+      "message_hint": "メッセージを入力して、準備ができたら送信してください。"
     },
     "file": "ファイルを送信"
   },

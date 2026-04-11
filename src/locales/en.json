@@ -351,11 +351,16 @@
     }
   },
   "homepage": {
+    "get_started": "Get Started",
     "conversation": {
       "title": "Start a conversation",
+      "get_started_description": "Three quick steps to begin your first conversation.",
       "add_contacts": "Add contacts",
+      "add_contacts_hint": "Open the add-contact flow to invite someone by username.",
       "select": "Select contact",
-      "message": "Send message"
+      "select_hint": "Choose a contact from the sidebar to open the chat.",
+      "message": "Send message",
+      "message_hint": "Type your message and send it when you're ready."
     },
     "file": "Send a file"
   },

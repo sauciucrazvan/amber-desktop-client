@@ -68,6 +68,10 @@ function getOrdinalSuffix(day) {
   return "th";
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function run(command, args, extraEnv = {}) {
   const isNpm = command === "npm";
   const runner = isNpm ? process.execPath : command;
@@ -261,7 +265,7 @@ function parseBuildOptions(argv) {
 
     if (arg === "--help" || arg === "-h") {
       console.log(
-        `Usage: node scripts/build-with-timestamp.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: nsis)\n  --force-msi                 Legacy flag (msi is replaced with nsis)\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n  --git-release-notes         Add git commit list to GitHub release notes\n  --git-release-base=ref      Use commit/tag ref as release notes base\n  --git-release-limit=n       Max commits included in notes (default: 30)\n`,
+        `Usage: node scripts/build.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: nsis)\n  --force-msi                 Legacy flag (msi is replaced with nsis)\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n  --git-release-notes         Add git commit list to GitHub release notes\n  --git-release-base=ref      Use commit/tag ref as release notes base\n  --git-release-limit=n       Max commits included in notes (default: 30)\n`,
       );
       process.exit(0);
     }
@@ -436,29 +440,30 @@ async function getPreviousReleaseTagFromGithub(options, currentTagName) {
   }
 
   const token = getGithubReleaseToken();
-  const headers = {
-    Accept: "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
-    "User-Agent": "amber-build-script",
-  };
+  const headers = getGithubApiHeaders(token);
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
+  let releases;
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}/releases?per_page=50`,
+      {
+        method: "GET",
+        headers,
+      },
+    );
 
-  const response = await fetch(
-    `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}/releases?per_page=50`,
-    {
-      method: "GET",
-      headers,
-    },
-  );
+    if (!response.ok) {
+      return undefined;
+    }
 
-  if (!response.ok) {
+    releases = await response.json();
+  } catch (error) {
+    console.warn(
+      `[build] could not query GitHub releases for base tag selection: ${error?.message || error}`,
+    );
     return undefined;
   }
 
-  const releases = await response.json();
   if (!Array.isArray(releases)) {
     return undefined;
   }
@@ -538,29 +543,30 @@ async function getGithubCommitLines(options, baseRef, limit) {
   }
 
   const token = getGithubReleaseToken();
-  const headers = {
-    Accept: "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
-    "User-Agent": "amber-build-script",
-  };
+  const headers = getGithubApiHeaders(token);
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
+  let payload;
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}/compare/${encodeURIComponent(baseRef)}...${encodeURIComponent(headSha)}`,
+      {
+        method: "GET",
+        headers,
+      },
+    );
 
-  const response = await fetch(
-    `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}/compare/${encodeURIComponent(baseRef)}...${encodeURIComponent(headSha)}`,
-    {
-      method: "GET",
-      headers,
-    },
-  );
+    if (!response.ok) {
+      return undefined;
+    }
 
-  if (!response.ok) {
+    payload = await response.json();
+  } catch (error) {
+    console.warn(
+      `[build] could not query GitHub compare API for commit mentions: ${error?.message || error}`,
+    );
     return undefined;
   }
 
-  const payload = await response.json();
   if (!Array.isArray(payload?.commits)) {
     return undefined;
   }
@@ -632,13 +638,6 @@ async function buildGitReleaseNotes(options, buildVersion) {
       "[build] could not generate git release notes; continuing without commit list.",
     );
     return undefined;
-  }
-
-  if (!commits) {
-    return {
-      baseRef,
-      content: `No new commits since ${baseRef}.`,
-    };
   }
 
   const title = `Changes since ${baseRef}:`;
@@ -731,6 +730,20 @@ function getGithubReleaseToken() {
   );
 }
 
+function getGithubApiHeaders(token) {
+  const headers = {
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "amber-build-script",
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+}
+
 async function updateGithubReleaseBody(
   options,
   buildVersion,
@@ -748,76 +761,91 @@ async function updateGithubReleaseBody(
     return;
   }
 
-  const tagName = `v${buildVersion}`;
-  const baseUrl = `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}`;
-  const commonHeaders = {
-    Accept: "application/vnd.github+json",
-    Authorization: `Bearer ${token}`,
-    "X-GitHub-Api-Version": "2022-11-28",
-    "User-Agent": "amber-build-script",
-  };
+  try {
+    const tagName = `v${buildVersion}`;
+    const baseUrl = `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}`;
+    const commonHeaders = getGithubApiHeaders(token);
 
-  let getReleaseResponse;
-  for (let attempt = 1; attempt <= 5; attempt += 1) {
-    getReleaseResponse = await fetch(
-      `${baseUrl}/releases/tags/${encodeURIComponent(tagName)}`,
-      {
-        method: "GET",
-        headers: commonHeaders,
-      },
-    );
+    let getReleaseResponse;
+    for (let attempt = 1; attempt <= 5; attempt += 1) {
+      try {
+        getReleaseResponse = await fetch(
+          `${baseUrl}/releases/tags/${encodeURIComponent(tagName)}`,
+          {
+            method: "GET",
+            headers: commonHeaders,
+          },
+        );
+      } catch (error) {
+        if (attempt < 5) {
+          await sleep(2000);
+          continue;
+        }
 
-    if (getReleaseResponse.ok) {
+        console.warn(
+          `[build] could not fetch GitHub release for tag ${tagName}: ${error?.message || error}`,
+        );
+        return;
+      }
+
+      if (getReleaseResponse.ok) {
+        break;
+      }
+
+      if (attempt < 5 && getReleaseResponse.status === 404) {
+        await sleep(2000);
+        continue;
+      }
+
       break;
     }
 
-    if (attempt < 5 && getReleaseResponse.status === 404) {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      continue;
+    if (!getReleaseResponse?.ok) {
+      const detail = getReleaseResponse
+        ? await getReleaseResponse.text()
+        : "no response";
+      console.warn(
+        `[build] could not fetch GitHub release for tag ${tagName}: ${getReleaseResponse?.status || "n/a"} ${detail}`,
+      );
+      return;
     }
 
-    break;
-  }
+    const release = await getReleaseResponse.json();
+    const releaseId = release?.id;
 
-  if (!getReleaseResponse.ok) {
-    const detail = await getReleaseResponse.text();
+    if (!releaseId) {
+      console.warn(
+        `[build] GitHub release for tag ${tagName} has no id; skipping body update.`,
+      );
+      return;
+    }
+
+    const patchResponse = await fetch(`${baseUrl}/releases/${releaseId}`, {
+      method: "PATCH",
+      headers: {
+        ...commonHeaders,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        body: releaseNotesPayload.content,
+        name: tagName,
+      }),
+    });
+
+    if (!patchResponse.ok) {
+      const detail = await patchResponse.text();
+      console.warn(
+        `[build] failed to update GitHub release body for ${tagName}: ${patchResponse.status} ${detail}`,
+      );
+      return;
+    }
+
+    console.log(`[build] GitHub release body updated for ${tagName}.`);
+  } catch (error) {
     console.warn(
-      `[build] could not fetch GitHub release for tag ${tagName}: ${getReleaseResponse.status} ${detail}`,
+      `[build] skipping GitHub release body update due to network/API error: ${error?.message || error}`,
     );
-    return;
   }
-
-  const release = await getReleaseResponse.json();
-  const releaseId = release?.id;
-
-  if (!releaseId) {
-    console.warn(
-      `[build] GitHub release for tag ${tagName} has no id; skipping body update.`,
-    );
-    return;
-  }
-
-  const patchResponse = await fetch(`${baseUrl}/releases/${releaseId}`, {
-    method: "PATCH",
-    headers: {
-      ...commonHeaders,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      body: releaseNotesPayload.content,
-      name: tagName,
-    }),
-  });
-
-  if (!patchResponse.ok) {
-    const detail = await patchResponse.text();
-    console.warn(
-      `[build] failed to update GitHub release body for ${tagName}: ${patchResponse.status} ${detail}`,
-    );
-    return;
-  }
-
-  console.log(`[build] GitHub release body updated for ${tagName}.`);
 }
 
 async function main() {

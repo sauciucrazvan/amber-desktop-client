@@ -360,50 +360,301 @@ function parseBuildOptions(argv) {
   return options;
 }
 
-function resolveReleaseBaseRef(options) {
-  if (options.gitReleaseBase) {
-    return options.gitReleaseBase;
+function parseReleaseTagValue(tag) {
+  const match = /^v(\d+)\.(\d+)\.(\d+)(?:-h?(\d+))?$/.exec(tag);
+  if (!match) return undefined;
+
+  return {
+    major: Number.parseInt(match[1], 10),
+    minor: Number.parseInt(match[2], 10),
+    patch: Number.parseInt(match[3], 10),
+    revision: Number.parseInt(match[4] || "0", 10),
+  };
+}
+
+function compareReleaseTagsDesc(leftTag, rightTag) {
+  const left = parseReleaseTagValue(leftTag);
+  const right = parseReleaseTagValue(rightTag);
+
+  if (left && right) {
+    if (left.major !== right.major) return right.major - left.major;
+    if (left.minor !== right.minor) return right.minor - left.minor;
+    if (left.patch !== right.patch) return right.patch - left.patch;
+    if (left.revision !== right.revision) return right.revision - left.revision;
+    return 0;
   }
 
-  const latestTag = runAndCapture("git", ["describe", "--tags", "--abbrev=0"]);
-  if (latestTag.ok) {
-    const value = latestTag.stdout.trim();
-    if (value) return value;
+  if (left && !right) return -1;
+  if (!left && right) return 1;
+
+  return rightTag.localeCompare(leftTag, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
+
+function getRemoteReleaseTags() {
+  const remoteTagsResult = runAndCapture("git", [
+    "ls-remote",
+    "--tags",
+    "--refs",
+    "origin",
+    "v*",
+  ]);
+
+  if (!remoteTagsResult.ok) {
+    return [];
+  }
+
+  return remoteTagsResult.stdout
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const parts = line.split(/\s+/);
+      const ref = parts[1] || "";
+      return ref.replace(/^refs\/tags\//, "").trim();
+    })
+    .filter(Boolean);
+}
+
+function getLocalReleaseTags() {
+  const localTagsResult = runAndCapture("git", ["tag", "--list", "v*"]);
+  if (!localTagsResult.ok) {
+    return [];
+  }
+
+  return localTagsResult.stdout
+    .split(/\r?\n/)
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+async function getPreviousReleaseTagFromGithub(options, currentTagName) {
+  if (!options.githubOwner || !options.githubRepo) {
+    return undefined;
+  }
+
+  const token = getGithubReleaseToken();
+  const headers = {
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "amber-build-script",
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(
+    `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}/releases?per_page=50`,
+    {
+      method: "GET",
+      headers,
+    },
+  );
+
+  if (!response.ok) {
+    return undefined;
+  }
+
+  const releases = await response.json();
+  if (!Array.isArray(releases)) {
+    return undefined;
+  }
+
+  for (const release of releases) {
+    const tagName = String(release?.tag_name || "").trim();
+    if (!tagName) continue;
+    if (tagName === currentTagName) continue;
+    if (!tagName.startsWith("v")) continue;
+    return tagName;
   }
 
   return undefined;
 }
 
-function buildGitReleaseNotes(options) {
-  const baseRef = resolveReleaseBaseRef(options);
-  const range = baseRef ? `${baseRef}..HEAD` : "HEAD";
-  const args = [
-    "log",
-    range,
-    `--max-count=${options.gitReleaseLimit}`,
-    "--pretty=format:- %h %s (%an)",
-  ];
+async function resolveReleaseBaseRef(options, currentTagName) {
+  if (options.gitReleaseBase) {
+    return options.gitReleaseBase;
+  }
 
-  const result = runAndCapture("git", args);
+  const githubReleaseTag = await getPreviousReleaseTagFromGithub(
+    options,
+    currentTagName,
+  );
+  if (githubReleaseTag) {
+    return githubReleaseTag;
+  }
+
+  const remoteTags = getRemoteReleaseTags();
+  const localTags = getLocalReleaseTags();
+  const allTags = Array.from(new Set([...remoteTags, ...localTags])).sort(
+    compareReleaseTagsDesc,
+  );
+
+  for (const tag of allTags) {
+    if (currentTagName && tag === currentTagName) continue;
+    return tag;
+  }
+
+  return undefined;
+}
+
+function toGithubMention(loginOrName) {
+  if (!loginOrName) return "unknown";
+  const value = String(loginOrName).trim();
+  if (!value) return "unknown";
+  return value.startsWith("@") ? value : `@${value}`;
+}
+
+function mentionFromEmailOrName(email, name) {
+  const normalizedEmail = String(email || "")
+    .trim()
+    .toLowerCase();
+  const noreplyMatch = /^(?:\d+\+)?([^@]+)@users\.noreply\.github\.com$/.exec(
+    normalizedEmail,
+  );
+  if (noreplyMatch?.[1]) {
+    return toGithubMention(noreplyMatch[1]);
+  }
+
+  return String(name || "").trim() || "unknown";
+}
+
+async function getGithubCommitLines(options, baseRef, limit) {
+  if (!options.githubOwner || !options.githubRepo) {
+    return undefined;
+  }
+
+  const headShaResult = runAndCapture("git", ["rev-parse", "HEAD"]);
+  if (!headShaResult.ok) {
+    return undefined;
+  }
+
+  const headSha = headShaResult.stdout.trim();
+  if (!headSha) {
+    return undefined;
+  }
+
+  const token = getGithubReleaseToken();
+  const headers = {
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "amber-build-script",
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(
+    `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}/compare/${encodeURIComponent(baseRef)}...${encodeURIComponent(headSha)}`,
+    {
+      method: "GET",
+      headers,
+    },
+  );
+
+  if (!response.ok) {
+    return undefined;
+  }
+
+  const payload = await response.json();
+  if (!Array.isArray(payload?.commits)) {
+    return undefined;
+  }
+
+  const lines = payload.commits.slice(0, limit).map((commit) => {
+    const shortSha = String(commit?.sha || "").slice(0, 7) || "unknown";
+    const subject = String(commit?.commit?.message || "")
+      .split(/\r?\n/)[0]
+      .trim();
+    const mention = commit?.author?.login
+      ? toGithubMention(commit.author.login)
+      : mentionFromEmailOrName(
+          commit?.commit?.author?.email,
+          commit?.commit?.author?.name,
+        );
+
+    return `- ${shortSha} ${subject || "(no message)"} (${mention})`;
+  });
+
+  return lines.join("\n").trim() || undefined;
+}
+
+function getFallbackCommitLines(baseRef, limit) {
+  const result = runAndCapture("git", [
+    "log",
+    `${baseRef}..HEAD`,
+    `--max-count=${limit}`,
+    "--pretty=format:%h%x09%s%x09%ae%x09%an",
+  ]);
+
   if (!result.ok) {
+    return undefined;
+  }
+
+  const lines = result.stdout
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [sha = "", subject = "", email = "", name = ""] = line.split("\t");
+      const mention = mentionFromEmailOrName(email, name);
+      return `- ${sha || "unknown"} ${subject || "(no message)"} (${mention})`;
+    });
+
+  return lines.join("\n").trim() || undefined;
+}
+
+async function buildGitReleaseNotes(options, buildVersion) {
+  const currentTagName = `v${buildVersion}`;
+  const baseRef = await resolveReleaseBaseRef(options, currentTagName);
+  if (!baseRef) {
+    console.warn(
+      "[build] no previous release tag found for git release notes; skipping release notes. Use --git-release-base=<ref> if needed.",
+    );
+    return undefined;
+  }
+
+  let commits = await getGithubCommitLines(
+    options,
+    baseRef,
+    options.gitReleaseLimit,
+  );
+  if (!commits) {
+    commits = getFallbackCommitLines(baseRef, options.gitReleaseLimit);
+  }
+
+  if (!commits) {
     console.warn(
       "[build] could not generate git release notes; continuing without commit list.",
     );
     return undefined;
   }
 
-  const commits = result.stdout.trim();
   if (!commits) {
-    return baseRef
-      ? `No new commits since ${baseRef}.`
-      : "No commits found for release notes.";
+    return {
+      baseRef,
+      content: `No new commits since ${baseRef}.`,
+    };
   }
 
-  const title = baseRef
-    ? `Changes since ${baseRef}:`
-    : `Recent changes (${options.gitReleaseLimit} commits max):`;
+  const title = `Changes since ${baseRef}:`;
 
-  return `${title}\n\n${commits}`;
+  return {
+    baseRef,
+    content: `${title}\n\n${commits}`,
+  };
+}
+
+async function getReleaseNotesPayload(options, buildVersion) {
+  if (!options.publish) return undefined;
+  if (options.publishProvider?.toLowerCase() !== "github") return undefined;
+  if (!options.includeGitReleaseNotes) return undefined;
+
+  return buildGitReleaseNotes(options, buildVersion);
 }
 
 function getPublishArgs(options) {
@@ -450,83 +701,209 @@ function getPublishArgs(options) {
   process.exit(1);
 }
 
-function getReleaseInfoArgs(options, buildVersion) {
+function getReleaseInfoArgs(options, buildVersion, releaseNotesPayload) {
   if (!options.publish) return [];
   if (options.publishProvider?.toLowerCase() !== "github") return [];
   if (!options.includeGitReleaseNotes) return [];
+  if (!releaseNotesPayload?.content) return [];
 
-  const releaseNotes = buildGitReleaseNotes(options);
-  if (!releaseNotes) return [];
+  const releaseNotesFilePath = path.join(
+    rootDir,
+    ".tmp-github-release-notes.md",
+  );
+  writeFileSync(releaseNotesFilePath, releaseNotesPayload.content, "utf8");
+
+  console.log(
+    `[build] github release notes base: ${releaseNotesPayload.baseRef}; file: ${releaseNotesFilePath}`,
+  );
 
   return [
     `--config.releaseInfo.releaseName=v${buildVersion}`,
-    `--config.releaseInfo.releaseNotes=${releaseNotes}`,
+    `--config.releaseInfo.releaseNotesFile=${releaseNotesFilePath}`,
   ];
 }
 
-const now = new Date();
-const year = now.getFullYear();
-const shortYear = year % 100;
-const month = now.getMonth() + 1;
-const day = now.getDate();
-const hour = now.getHours();
-const minute = now.getMinutes();
-
-const monthName = now.toLocaleString("en-US", { month: "long" });
-const suffix = getOrdinalSuffix(day);
-const meridiem = hour >= 12 ? "PM" : "AM";
-
-const buildId = `${year}${pad2(month)}${pad2(day)}-${pad2(hour)}${pad2(minute)}`;
-const buildVersion = `${shortYear}.${month}.${day}-h${pad2(hour)}${pad2(minute)}`;
-const buildLabel = `Built on ${monthName} ${day}${suffix}, ${year} at ${pad2(hour)}:${pad2(minute)} ${meridiem}`;
-const buildIso = now.toISOString();
-
-loadDotEnvFiles(rootDir);
-
-const buildOptions = parseBuildOptions(process.argv.slice(2));
-const publishArgs = getPublishArgs(buildOptions);
-const releaseInfoArgs = getReleaseInfoArgs(buildOptions, buildVersion);
-
-const buildInfoPath = path.join(rootDir, "src", "build-info.ts");
-const buildInfoContent = `export const BUILD_ID = "${buildId}";\nexport const BUILD_VERSION = "${buildVersion}";\nexport const BUILD_LABEL = "${buildLabel}";\nexport const BUILD_ISO = "${buildIso}";\n`;
-
-writeFileSync(buildInfoPath, buildInfoContent, "utf8");
-
-console.log(`[build] ${buildLabel}`);
-console.log(`[build] version: ${buildVersion}`);
-console.log(`[build] id: ${buildId}`);
-
-run("npm", ["exec", "tsc"]);
-run("npm", ["exec", "vite", "build"]);
-
-const extraMetadataArgs = [
-  `--config.extraMetadata.version=${buildVersion}`,
-  `--config.extraMetadata.buildTimestamp=${buildLabel}`,
-  `--config.extraMetadata.buildId=${buildId}`,
-];
-
-if (buildOptions.linux) {
-  run("npm", [
-    "exec",
-    "electron-builder",
-    "--",
-    "--linux",
-    ...buildOptions.linuxTargets,
-    ...extraMetadataArgs,
-    ...publishArgs,
-    ...releaseInfoArgs,
-  ]);
+function getGithubReleaseToken() {
+  return (
+    process.env.GITHUB_RELEASE_TOKEN?.trim() ||
+    process.env.GH_TOKEN?.trim() ||
+    process.env.GITHUB_TOKEN?.trim()
+  );
 }
 
-if (buildOptions.win) {
-  run("npm", [
-    "exec",
-    "electron-builder",
-    "--",
-    "--win",
-    ...buildOptions.winTargets,
-    ...extraMetadataArgs,
-    ...publishArgs,
-    ...releaseInfoArgs,
-  ]);
+async function updateGithubReleaseBody(
+  options,
+  buildVersion,
+  releaseNotesPayload,
+) {
+  if (!options.publish) return;
+  if (options.publishProvider?.toLowerCase() !== "github") return;
+  if (!releaseNotesPayload?.content) return;
+
+  const token = getGithubReleaseToken();
+  if (!token) {
+    console.warn(
+      "[build] skipping GitHub release body update: GH_TOKEN/GITHUB_TOKEN/GITHUB_RELEASE_TOKEN is not set.",
+    );
+    return;
+  }
+
+  const tagName = `v${buildVersion}`;
+  const baseUrl = `https://api.github.com/repos/${options.githubOwner}/${options.githubRepo}`;
+  const commonHeaders = {
+    Accept: "application/vnd.github+json",
+    Authorization: `Bearer ${token}`,
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "amber-build-script",
+  };
+
+  let getReleaseResponse;
+  for (let attempt = 1; attempt <= 5; attempt += 1) {
+    getReleaseResponse = await fetch(
+      `${baseUrl}/releases/tags/${encodeURIComponent(tagName)}`,
+      {
+        method: "GET",
+        headers: commonHeaders,
+      },
+    );
+
+    if (getReleaseResponse.ok) {
+      break;
+    }
+
+    if (attempt < 5 && getReleaseResponse.status === 404) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      continue;
+    }
+
+    break;
+  }
+
+  if (!getReleaseResponse.ok) {
+    const detail = await getReleaseResponse.text();
+    console.warn(
+      `[build] could not fetch GitHub release for tag ${tagName}: ${getReleaseResponse.status} ${detail}`,
+    );
+    return;
+  }
+
+  const release = await getReleaseResponse.json();
+  const releaseId = release?.id;
+
+  if (!releaseId) {
+    console.warn(
+      `[build] GitHub release for tag ${tagName} has no id; skipping body update.`,
+    );
+    return;
+  }
+
+  const patchResponse = await fetch(`${baseUrl}/releases/${releaseId}`, {
+    method: "PATCH",
+    headers: {
+      ...commonHeaders,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      body: releaseNotesPayload.content,
+      name: tagName,
+    }),
+  });
+
+  if (!patchResponse.ok) {
+    const detail = await patchResponse.text();
+    console.warn(
+      `[build] failed to update GitHub release body for ${tagName}: ${patchResponse.status} ${detail}`,
+    );
+    return;
+  }
+
+  console.log(`[build] GitHub release body updated for ${tagName}.`);
 }
+
+async function main() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const shortYear = year % 100;
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+
+  const monthName = now.toLocaleString("en-US", { month: "long" });
+  const suffix = getOrdinalSuffix(day);
+  const meridiem = hour >= 12 ? "PM" : "AM";
+
+  const buildId = `${year}${pad2(month)}${pad2(day)}-${pad2(hour)}${pad2(minute)}`;
+  const buildVersion = `${shortYear}.${month}.${day}-h${pad2(hour)}${pad2(minute)}`;
+  const buildLabel = `Built on ${monthName} ${day}${suffix}, ${year} at ${pad2(hour)}:${pad2(minute)} ${meridiem}`;
+  const buildIso = now.toISOString();
+
+  loadDotEnvFiles(rootDir);
+
+  const buildOptions = parseBuildOptions(process.argv.slice(2));
+  const publishArgs = getPublishArgs(buildOptions);
+  const releaseNotesPayload = await getReleaseNotesPayload(
+    buildOptions,
+    buildVersion,
+  );
+  const releaseInfoArgs = getReleaseInfoArgs(
+    buildOptions,
+    buildVersion,
+    releaseNotesPayload,
+  );
+
+  const buildInfoPath = path.join(rootDir, "src", "build-info.ts");
+  const buildInfoContent = `export const BUILD_ID = "${buildId}";\nexport const BUILD_VERSION = "${buildVersion}";\nexport const BUILD_LABEL = "${buildLabel}";\nexport const BUILD_ISO = "${buildIso}";\n`;
+
+  writeFileSync(buildInfoPath, buildInfoContent, "utf8");
+
+  console.log(`[build] ${buildLabel}`);
+  console.log(`[build] version: ${buildVersion}`);
+  console.log(`[build] id: ${buildId}`);
+
+  run("npm", ["exec", "tsc"]);
+  run("npm", ["exec", "vite", "build"]);
+
+  const extraMetadataArgs = [
+    `--config.extraMetadata.version=${buildVersion}`,
+    `--config.extraMetadata.buildTimestamp=${buildLabel}`,
+    `--config.extraMetadata.buildId=${buildId}`,
+  ];
+
+  if (buildOptions.linux) {
+    run("npm", [
+      "exec",
+      "electron-builder",
+      "--",
+      "--linux",
+      ...buildOptions.linuxTargets,
+      ...extraMetadataArgs,
+      ...publishArgs,
+      ...releaseInfoArgs,
+    ]);
+  }
+
+  if (buildOptions.win) {
+    run("npm", [
+      "exec",
+      "electron-builder",
+      "--",
+      "--win",
+      ...buildOptions.winTargets,
+      ...extraMetadataArgs,
+      ...publishArgs,
+      ...releaseInfoArgs,
+    ]);
+  }
+
+  await updateGithubReleaseBody(
+    buildOptions,
+    buildVersion,
+    releaseNotesPayload,
+  );
+}
+
+main().catch((error) => {
+  console.error("[build] unexpected error", error);
+  process.exit(1);
+});

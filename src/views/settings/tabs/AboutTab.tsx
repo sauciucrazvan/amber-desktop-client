@@ -1,7 +1,15 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { BUILD_LABEL, BUILD_VERSION } from "@/build-info";
+import { API_BASE_URL, WS_BASE_URL, applyServerConfig } from "@/config";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -24,14 +32,28 @@ type UpdaterStatus = {
   updateVersion?: string;
 };
 
+type SelectableServer = {
+  id: string;
+  name: string;
+  apiBaseUrl: string;
+  wsBaseUrl: string;
+};
+
 export default function AboutTab() {
   const { t } = useTranslation();
+  const isDevelopmentBuild = import.meta.env.DEV;
   const majorVersion = BUILD_VERSION.split(".")[0] ?? BUILD_VERSION;
   const [runtimeInfo, setRuntimeInfo] = useState<RuntimeInfo | null>(null);
   const [updaterStatus, setUpdaterStatus] = useState<UpdaterStatus | null>(
     null,
   );
   const [isChecking, setIsChecking] = useState(false);
+  const [isApplyingServer, setIsApplyingServer] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [availableServers, setAvailableServers] = useState<SelectableServer[]>(
+    [],
+  );
+  const [activeServerId, setActiveServerId] = useState("");
   const [activePanel, setActivePanel] = useState("about");
 
   useEffect(() => {
@@ -82,6 +104,34 @@ export default function AboutTab() {
     };
   }, [t]);
 
+  useEffect(() => {
+    if (!isDevelopmentBuild) return;
+
+    let isMounted = true;
+
+    window.serverConfig
+      .get()
+      .then((payload) => {
+        if (!isMounted) return;
+        setAvailableServers(payload.servers ?? []);
+        setActiveServerId(payload.activeServerId ?? "");
+      })
+      .catch(() => {
+        if (isMounted) {
+          setServerError(
+            t(
+              "settings.about.developer.unableToLoad",
+              "Unable to load server configuration.",
+            ),
+          );
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isDevelopmentBuild, t]);
+
   const canCheckForUpdates = Boolean(
     updaterStatus?.canAutoUpdate && !isChecking,
   );
@@ -97,6 +147,40 @@ export default function AboutTab() {
 
   const onInstallUpdate = async () => {
     await window.autoUpdater.quitAndInstall();
+  };
+
+  const onSelectServer = async (serverId: string) => {
+    if (!serverId) return;
+    setIsApplyingServer(true);
+    setServerError("");
+
+    try {
+      const result = await window.serverConfig.setActive(serverId);
+      if (!result.ok || !result.activeServer) {
+        setServerError(
+          result.message ||
+            t(
+              "settings.about.developer.unableToApply",
+              "Unable to apply selected server.",
+            ),
+        );
+        return;
+      }
+
+      setActiveServerId(result.activeServerId);
+      setAvailableServers(result.servers ?? []);
+      applyServerConfig(result.activeServer);
+      window.location.reload();
+    } catch {
+      setServerError(
+        t(
+          "settings.about.developer.unableToApply",
+          "Unable to apply selected server.",
+        ),
+      );
+    } finally {
+      setIsApplyingServer(false);
+    }
   };
 
   const statusLabel = updaterStatus
@@ -133,6 +217,11 @@ export default function AboutTab() {
           <TabsTrigger value="updates" className="flex-1 cursor-pointer">
             {t("settings.about.tabs.updates")}
           </TabsTrigger>
+          {isDevelopmentBuild ? (
+            <TabsTrigger value="developer" className="flex-1 cursor-pointer">
+              {t("settings.about.tabs.developer", "Developer")}
+            </TabsTrigger>
+          ) : null}
         </TabsList>
 
         <TabsContent value="about">
@@ -183,14 +272,6 @@ export default function AboutTab() {
               {updaterStatus?.message || t("settings.about.updaterUnavailable")}
             </p>
 
-            {/* {updaterStatus?.status === "downloading" ? (
-              <p className="text-xs text-muted-foreground">
-                {t("settings.about.downloadedProgress", {
-                  progress: Math.round(updaterStatus.progress),
-                })}
-              </p>
-            ) : null} */}
-
             <div className="flex flex-wrap items-center gap-2">
               <Button
                 size="sm"
@@ -219,6 +300,56 @@ export default function AboutTab() {
             </div>
           </section>
         </TabsContent>
+
+        {isDevelopmentBuild ? (
+          <TabsContent value="developer" className="w-full">
+            <section className="w-full flex flex-col gap-3 rounded-md border p-3 text-sm">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-muted-foreground">
+                  {t("settings.about.developer.server", "Server")}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {t("settings.about.developer.debugOnly", "Debug builds only")}
+                </span>
+              </div>
+
+              <Select
+                value={activeServerId}
+                disabled={isApplyingServer || availableServers.length === 0}
+                onValueChange={(value) => {
+                  void onSelectServer(value);
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder={t(
+                      "settings.about.developer.selectServer",
+                      "Select a server",
+                    )}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableServers.map((server) => (
+                    <SelectItem key={server.id} value={server.id}>
+                      {server.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <div className="text-xs text-muted-foreground">
+                <p>{`API: ${API_BASE_URL}`}</p>
+                <p>{`WS: ${WS_BASE_URL}`}</p>
+              </div>
+
+              {serverError ? (
+                <p className="text-xs text-red-500 wrap-break-word">
+                  {serverError}
+                </p>
+              ) : null}
+            </section>
+          </TabsContent>
+        ) : null}
       </Tabs>
     </>
   );

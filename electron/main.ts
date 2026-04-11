@@ -90,12 +90,28 @@ type AppSettings = {
   preferredMicrophoneId?: string;
   preferredCameraId?: string;
   preferredSpeakerId?: string;
+  selectedServerId?: string;
+};
+
+type ServerDefinition = {
+  id: string;
+  name: string;
+  apiBaseUrl: string;
+  wsBaseUrl: string;
+};
+
+type ServerConfigFile = {
+  defaultServerId?: string;
+  servers?: ServerDefinition[];
 };
 
 let preferredMicrophoneId = "";
 let preferredCameraId = "";
 let preferredSpeakerId = "";
 let startOnBoot = false;
+let selectedServerId = "";
+
+const AMBER_SERVER_ID = "default";
 
 function getSettingsPath() {
   return path.join(app.getPath("userData"), SETTINGS_FILE);
@@ -110,12 +126,14 @@ function loadSettings() {
     preferredMicrophoneId = parsed.preferredMicrophoneId ?? "";
     preferredCameraId = parsed.preferredCameraId ?? "";
     preferredSpeakerId = parsed.preferredSpeakerId ?? "";
+    selectedServerId = parsed.selectedServerId ?? "";
   } catch {
     allowTray = true;
     startOnBoot = false;
     preferredMicrophoneId = "";
     preferredCameraId = "";
     preferredSpeakerId = "";
+    selectedServerId = "";
   }
 }
 
@@ -126,8 +144,112 @@ function saveSettings() {
     preferredMicrophoneId,
     preferredCameraId,
     preferredSpeakerId,
+    selectedServerId,
   };
   writeFileSync(getSettingsPath(), JSON.stringify(payload, null, 2), "utf8");
+}
+
+function getServersFilePath() {
+  return path.join(process.env.APP_ROOT, "servers.json");
+}
+
+function normalizeServerDefinition(value: unknown): ServerDefinition | null {
+  if (!value || typeof value !== "object") return null;
+
+  const item = value as Partial<ServerDefinition>;
+  const id = typeof item.id === "string" ? item.id.trim() : "";
+  const name = typeof item.name === "string" ? item.name.trim() : "";
+  const apiBaseUrl =
+    typeof item.apiBaseUrl === "string" ? item.apiBaseUrl.trim() : "";
+  const wsBaseUrl =
+    typeof item.wsBaseUrl === "string" ? item.wsBaseUrl.trim() : "";
+
+  if (!id || !name || !apiBaseUrl || !wsBaseUrl) return null;
+
+  return {
+    id,
+    name,
+    apiBaseUrl,
+    wsBaseUrl,
+  };
+}
+
+function loadServerConfigFile() {
+  try {
+    const raw = readFileSync(getServersFilePath(), "utf8");
+    const parsed = JSON.parse(raw) as ServerConfigFile;
+    const servers = Array.isArray(parsed.servers)
+      ? parsed.servers
+          .map((server) => normalizeServerDefinition(server))
+          .filter((server): server is ServerDefinition => Boolean(server))
+      : [];
+
+    if (servers.length === 0) {
+      return {
+        defaultServerId: AMBER_SERVER_ID,
+        servers: [],
+      };
+    }
+
+    const defaultServerId =
+      typeof parsed.defaultServerId === "string" &&
+      servers.some((server) => server.id === parsed.defaultServerId)
+        ? parsed.defaultServerId
+        : servers[0].id;
+
+    return {
+      defaultServerId,
+      servers,
+    };
+  } catch {
+    return {
+      defaultServerId: AMBER_SERVER_ID,
+      servers: [],
+    };
+  }
+}
+
+function getResolvedServerConfig() {
+  const { defaultServerId, servers } = loadServerConfigFile();
+
+  if (servers.length === 0) {
+    return {
+      servers,
+      activeServerId: "",
+      activeServer: undefined,
+    };
+  }
+
+  const packagedServerId = servers.some(
+    (server) => server.id === AMBER_SERVER_ID,
+  )
+    ? AMBER_SERVER_ID
+    : defaultServerId;
+
+  // Packaged builds are fixed to Amber/default and cannot be switched.
+  if (app.isPackaged) {
+    const activeServer =
+      servers.find((server) => server.id === packagedServerId) ?? servers[0];
+    return {
+      servers,
+      activeServerId: activeServer.id,
+      activeServer,
+    };
+  }
+
+  const activeServerId = servers.some(
+    (server) => server.id === selectedServerId,
+  )
+    ? selectedServerId
+    : defaultServerId;
+  const activeServer =
+    servers.find((server) => server.id === activeServerId) ?? servers[0];
+
+  return {
+    servers,
+    activeServerId,
+    activeServer,
+  };
 }
 
 function applyLoginItemSettings() {
@@ -603,6 +725,7 @@ ipcMain.handle("settings:get", () => {
     preferredMicrophoneId,
     preferredCameraId,
     preferredSpeakerId,
+    selectedServerId,
   };
 });
 
@@ -621,6 +744,10 @@ ipcMain.handle("settings:set", (_event, next: AppSettings) => {
     typeof next.preferredSpeakerId === "string"
       ? next.preferredSpeakerId
       : preferredSpeakerId;
+  selectedServerId =
+    typeof next.selectedServerId === "string"
+      ? next.selectedServerId
+      : selectedServerId;
 
   if (!allowTray && tray) {
     tray.destroy();
@@ -633,7 +760,50 @@ ipcMain.handle("settings:set", (_event, next: AppSettings) => {
 
   applyLoginItemSettings();
   saveSettings();
-  return { allowTray, startOnBoot };
+  return { allowTray, startOnBoot, selectedServerId };
+});
+
+ipcMain.handle("server-config:get", () => {
+  return getResolvedServerConfig();
+});
+
+ipcMain.handle("server-config:set-active", (_event, nextServerId: string) => {
+  if (!VITE_DEV_SERVER_URL || app.isPackaged) {
+    const { servers, activeServerId, activeServer } = getResolvedServerConfig();
+    return {
+      ok: false,
+      activeServerId,
+      activeServer,
+      servers,
+      message: "Server switching is only available in development runs.",
+    };
+  }
+
+  const requestedId =
+    typeof nextServerId === "string" ? nextServerId.trim() : "";
+  const { servers, activeServerId } = getResolvedServerConfig();
+
+  if (!requestedId || !servers.some((server) => server.id === requestedId)) {
+    return {
+      ok: false,
+      activeServerId,
+      activeServer: servers.find((server) => server.id === activeServerId),
+      servers,
+      message: "Invalid server id.",
+    };
+  }
+
+  selectedServerId = requestedId;
+  saveSettings();
+
+  const activeServer = servers.find((server) => server.id === selectedServerId);
+
+  return {
+    ok: true,
+    activeServerId: selectedServerId,
+    activeServer,
+    servers,
+  };
 });
 
 ipcMain.handle("window:platform", () => process.platform);

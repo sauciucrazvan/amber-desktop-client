@@ -24,6 +24,42 @@ declare namespace NodeJS {
 // Used in Renderer process, expose in `preload.ts`
 interface Window {
   ipcRenderer: import("electron").IpcRenderer;
+  serverConfig: {
+    get: () => Promise<{
+      servers: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      }[];
+      activeServerId: string;
+      activeServer: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      };
+    }>;
+    setActive: (
+      serverId: string,
+    ) => Promise<{
+      ok: boolean;
+      activeServerId: string;
+      activeServer?: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      };
+      servers: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      }[];
+      message?: string;
+    }>;
+  };
   windowControls: {
     minimize: () => void;
     toggleMaximize: () => void;

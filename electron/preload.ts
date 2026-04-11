@@ -75,3 +75,42 @@ contextBridge.exposeInMainWorld("autoUpdater", {
     };
   },
 });
+
+contextBridge.exposeInMainWorld("serverConfig", {
+  get() {
+    return ipcRenderer.invoke("server-config:get") as Promise<{
+      servers: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      }[];
+      activeServerId: string;
+      activeServer: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      };
+    }>;
+  },
+  setActive(serverId: string) {
+    return ipcRenderer.invoke("server-config:set-active", serverId) as Promise<{
+      ok: boolean;
+      activeServerId: string;
+      activeServer?: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      };
+      servers: {
+        id: string;
+        name: string;
+        apiBaseUrl: string;
+        wsBaseUrl: string;
+      }[];
+      message?: string;
+    }>;
+  },
+});

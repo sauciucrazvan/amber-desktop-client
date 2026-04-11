@@ -1,0 +1,17 @@
+{
+  "defaultServerId": "default",
+  "servers": [
+    {
+      "id": "default",
+      "name": "Default (Amber)",
+      "apiBaseUrl": "https://api.amber.razvansauciuc.dev/api",
+      "wsBaseUrl": "https://api.amber.razvansauciuc.dev/ws"
+    },
+    {
+      "id": "local",
+      "name": "Local",
+      "apiBaseUrl": "http://localhost/api",
+      "wsBaseUrl": "http://localhost/ws"
+    }
+  ]
+}

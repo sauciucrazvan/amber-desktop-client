@@ -8,12 +8,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { ChevronRight, KeyRound, Mail, UserRound } from "lucide-react";
+import { ChevronRight, KeyRound, Mail, Trash2, UserRound } from "lucide-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import ChangeEmail from "./ChangeEmail";
 import ChangeName from "./ChangeName";
 import ChangePassword from "./ChangePassword";
+import DeleteAccount from "./DeleteAccount";
 
 interface Props {
   children?: React.ReactNode;
@@ -99,6 +100,22 @@ export default function ManageAccountData({ children }: Props) {
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                 </div>
               </ChangePassword>
+
+              <Separator className="my-1" />
+
+              <DeleteAccount>
+                <div className={rowClassName}>
+                  <div className="min-w-0 flex items-center gap-2">
+                    <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </div>
+                    <p className="truncate text-xs font-medium">
+                      {t("settings.account.delete.title")}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                </div>
+              </DeleteAccount>
             </div>
           </div>
         </div>

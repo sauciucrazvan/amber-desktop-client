@@ -27,3 +27,4 @@ dist-ssr
 release
 
 .env
+.tmp-github-release-notes.md

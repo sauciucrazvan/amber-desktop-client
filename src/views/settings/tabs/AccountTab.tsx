@@ -9,12 +9,10 @@ import {
   LogOut,
   Shield,
   ShieldBan,
-  Trash2,
   UserCog,
 } from "lucide-react";
 import RequestData from "./dialogs/RequestData";
 import SignOut from "./dialogs/SignOut";
-import DeleteAccount from "./dialogs/DeleteAccount";
 import ManageAccountData from "./dialogs/ManageAccountData";
 import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
@@ -140,22 +138,6 @@ export default function AccountTab() {
               <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
           </SignOut>
-
-          <Separator className="my-1" />
-
-          <DeleteAccount>
-            <div className="group w-full min-w-0 cursor-pointer flex items-center justify-between rounded-lg px-2.5 py-2 transition-colors hover:bg-secondary/70">
-              <div className="min-w-0 flex items-center gap-2">
-                <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
-                  <Trash2 className="h-3.5 w-3.5" />
-                </div>
-                <p className="truncate text-xs font-medium">
-                  {t("settings.account.delete.title")}
-                </p>
-              </div>
-              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-            </div>
-          </DeleteAccount>
 
           <Separator className="my-1" />
 

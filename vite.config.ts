@@ -9,6 +9,12 @@ export default defineConfig({
   // Electron production loads the renderer via file://, so absolute /asset URLs break.
   // Using a relative base ensures scripts/styles resolve correctly from dist/index.html.
   base: "./",
+  server: {
+    watch: {
+      // Keep dev watchers away from generated artifacts and historical release payloads.
+      ignored: ["**/release/**", "**/dist/**", "**/dist-electron/**", "**/build/**"],
+    },
+  },
   define: {
     global: "globalThis",
   },
@@ -34,6 +40,10 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 700,
+    watch: {
+      // vite-plugin-electron uses build watch mode for main/preload in dev.
+      exclude: ["release/**", "dist/**", "dist-electron/**", "build/**"],
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {

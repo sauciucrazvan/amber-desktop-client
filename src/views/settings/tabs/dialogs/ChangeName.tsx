@@ -14,7 +14,6 @@ import { API_BASE_URL } from "@/config";
 import React, { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
 
 interface Props {
   children: React.ReactNode;
@@ -23,7 +22,6 @@ interface Props {
 export default function ChangeName({ children }: Props) {
   const { t, i18n } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
-  const { mutate } = useSWRConfig();
 
   const [open, setOpen] = useState(false);
 
@@ -69,7 +67,6 @@ export default function ChangeName({ children }: Props) {
       }
 
       toast.success(t("settings.account.name.updated"));
-      await mutate("/account/me");
       setOpen(false);
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occured");

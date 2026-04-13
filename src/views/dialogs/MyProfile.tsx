@@ -1,4 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
+import { useAccount } from "@/account/AccountContext";
 import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -15,7 +16,6 @@ import { API_BASE_URL } from "@/config";
 import { Pencil, Quote } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import useSWR from "swr";
 import ChangeName from "../settings/tabs/dialogs/ChangeName";
 
 interface MyProfileProps {
@@ -42,6 +42,7 @@ async function readErrorMessage(res: Response) {
 export default function MyProfile({ trigger }: MyProfileProps) {
   const { t } = useTranslation();
   const { isAuthenticated, authFetch } = useAuth();
+  const { account, error, isLoading } = useAccount();
 
   const [open, setOpen] = useState<boolean>(false);
   const [isEditingBio, setIsEditingBio] = useState(false);
@@ -49,12 +50,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
   const [bioErrorKey, setBioErrorKey] = useState<string | null>(null);
   const [isSavingBio, setIsSavingBio] = useState(false);
 
-  const {
-    data: user,
-    error: error,
-    isLoading: isLoading,
-    mutate: mutateProfile,
-  } = useSWR<Profile>(isAuthenticated && "/account/me");
+  const user = account as Profile | null;
 
   useEffect(() => {
     if (!open || !user) return;
@@ -86,7 +82,6 @@ export default function MyProfile({ trigger }: MyProfileProps) {
         throw new Error(await readErrorMessage(res));
       }
 
-      await mutateProfile();
       setIsEditingBio(false);
     } catch (e) {
       setBioErrorKey(e instanceof Error ? e.message : "common.info");

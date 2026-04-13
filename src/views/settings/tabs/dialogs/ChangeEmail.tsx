@@ -23,7 +23,6 @@ import React from "react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
 
 interface Props {
   children?: React.ReactNode;
@@ -32,7 +31,6 @@ interface Props {
 export default function ChangeEmail({ children }: Props) {
   const { t } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
-  const { mutate } = useSWRConfig();
 
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -153,8 +151,6 @@ export default function ChangeEmail({ children }: Props) {
           setPassword("");
           setConfirmCode("");
           setVerifyCode("");
-
-          await mutate("/account/me");
           break;
         }
         default: {

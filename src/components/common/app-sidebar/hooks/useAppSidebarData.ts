@@ -4,10 +4,11 @@ import {
   WS_MESSAGE_EVENT_NAME,
   type PresenceEventPayload,
 } from "@/auth/AuthContext";
+import { useAccount } from "@/account/AccountContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { toast } from "sonner";
-import type { AccountMe, CallHistoryItem, ContactListItem } from "../types";
+import type { CallHistoryItem, ContactListItem } from "../types";
 
 type UseAppSidebarDataParams = {
   isAuthenticated: boolean;
@@ -21,15 +22,7 @@ export function useAppSidebarData({
   openDirectChat,
 }: UseAppSidebarDataParams) {
   const CALL_HISTORY_LIMIT = 15;
-
-  const { data: account, isLoading: isAccountLoading } = useSWR<AccountMe>(
-    isAuthenticated ? "/account/me" : null,
-    {
-      refreshInterval: 60000,
-      revalidateOnFocus: true,
-      revalidateOnReconnect: true,
-    },
-  );
+  const { account, isLoading: isAccountLoading } = useAccount();
 
   const [contactsState, setContactsState] = useState<ContactListItem[]>([]);
   const [contactsError, setContactsError] = useState<unknown>(null);

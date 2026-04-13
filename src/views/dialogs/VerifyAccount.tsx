@@ -19,7 +19,6 @@ import { API_BASE_URL } from "@/config";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
 
 interface VerifyAccountProps {
   children?: React.ReactNode;
@@ -34,7 +33,6 @@ export default function VerifyAccount({ children }: VerifyAccountProps) {
 
   const { t } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
-  const { mutate } = useSWRConfig();
 
   const onSubmit = async () => {
     setError(null);
@@ -95,8 +93,6 @@ export default function VerifyAccount({ children }: VerifyAccountProps) {
           setStage(0);
           setCode("");
           setOpen(false);
-
-          await mutate("/account/me");
           break;
         }
       }

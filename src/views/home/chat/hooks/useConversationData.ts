@@ -1,10 +1,11 @@
 import { API_BASE_URL } from "@/config";
 import { WS_SEND_EVENT_NAME } from "@/auth/AuthContext";
+import { useAccount } from "@/account/AccountContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TFunction } from "i18next";
 import { toast } from "sonner";
 import { readErrorMessage } from "../errors";
-import type { AccountMe, MarkSeenResponse, MessageItem } from "../types";
+import type { MarkSeenResponse, MessageItem } from "../types";
 
 type UseConversationDataParams = {
   conversationId?: string;
@@ -23,6 +24,7 @@ export function useConversationData({
   isWsConnected,
   setIsWsConnected,
 }: UseConversationDataParams) {
+  const { account } = useAccount();
   const MESSAGE_PAGE_SIZE = 20;
   const DISCONNECTED_REFRESH_MS = 45_000;
   const READ_CURSOR_DEBOUNCE_MS = 450;
@@ -423,15 +425,9 @@ export function useConversationData({
 
   useEffect(() => {
     if (!conversationId) return;
-
-    authFetch(`${API_BASE_URL}/account/me`)
-      .then(async (res) => {
-        if (!res.ok) return;
-        const me = (await res.json()) as AccountMe;
-        if (typeof me.id === "number") setMyUserId(me.id);
-      })
-      .catch(() => null);
-  }, [authFetch, conversationId]);
+    if (typeof account?.id !== "number") return;
+    setMyUserId(account.id);
+  }, [account?.id, conversationId]);
 
   useEffect(() => {
     if (isLoading) return;

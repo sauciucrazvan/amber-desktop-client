@@ -5,6 +5,7 @@ import {
   WS_STATUS_EVENT_NAME,
   type SharedWsStatusPayload,
 } from "./auth/AuthContext";
+import { AccountProvider } from "./account/AccountContext";
 import { Toaster } from "./components/ui/sonner";
 import { Progress } from "./components/ui/progress";
 import Titlebar from "./components/common/Titlebar";
@@ -144,17 +145,19 @@ export default function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <CallProvider>
-          <UpdaterNotifications />
-          <div className="flex h-screen flex-col overflow-hidden">
-            <Titlebar />
-            <ConnectionStatusBar />
-            <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
-              <Tree />
+        <AccountProvider>
+          <CallProvider>
+            <UpdaterNotifications />
+            <div className="flex h-screen flex-col overflow-hidden">
+              <Titlebar />
+              <ConnectionStatusBar />
+              <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+                <Tree />
+              </div>
             </div>
-          </div>
-          <CallOverlay />
-        </CallProvider>
+            <CallOverlay />
+          </CallProvider>
+        </AccountProvider>
         <Toaster />
       </AuthProvider>
     </ThemeProvider>

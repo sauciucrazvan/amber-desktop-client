@@ -1,6 +1,6 @@
 import { useAuth } from "@/auth/AuthContext";
+import { useAccount } from "@/account/AccountContext";
 import { Separator } from "@/components/ui/separator";
-import useSWR from "swr";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/components/common/user-avatar";
 import {
@@ -17,21 +17,10 @@ import ManageAccountData from "./dialogs/ManageAccountData";
 import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 
-type AccountMe = {
-  username: string;
-  full_name?: string | null;
-  email?: string | null;
-  verified?: boolean | null;
-};
-
 export default function AccountTab() {
   const { isAuthenticated } = useAuth();
+  const { account, error, isLoading } = useAccount();
   const { t } = useTranslation();
-  const {
-    data: account,
-    error,
-    isLoading,
-  } = useSWR<AccountMe>(isAuthenticated ? "/account/me" : null);
 
   if (!isAuthenticated) return <>Unauthorized.</>;
 

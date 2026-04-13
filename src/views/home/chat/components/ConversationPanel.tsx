@@ -6,11 +6,25 @@ import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCalls } from "@/views/home/calls";
 import { Edit2, Phone, Reply, Send, Video, X } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useChat } from "../context/ChatContext";
 import ChatBubble from "./ChatBubble";
 import { useConversationLogic } from "../hooks/useConversationLogic";
+import type { MessageItem } from "../types";
+
+type ConversationRow =
+  | {
+      type: "date";
+      key: string;
+      date: string;
+    }
+  | {
+      type: "message";
+      key: string;
+      message: MessageItem;
+    };
 
 export default function ConversationPanel() {
   const { accessToken, authFetch } = useAuth();
@@ -69,6 +83,82 @@ export default function ConversationPanel() {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [cancelComposerModes, editing, replyTo]);
+
+  const VIRTUALIZE_MESSAGES_THRESHOLD = 120;
+  const shouldVirtualize = messages.length >= VIRTUALIZE_MESSAGES_THRESHOLD;
+
+  const rows = useMemo<ConversationRow[]>(() => {
+    const nextRows: ConversationRow[] = [];
+    let previousDate: string | null = null;
+
+    for (const message of messages) {
+      const currentDate = formatMessageDate(message.created_at);
+      if (currentDate !== previousDate) {
+        nextRows.push({
+          type: "date",
+          key: `date-${currentDate}-${message.id}`,
+          date: currentDate,
+        });
+      }
+
+      nextRows.push({
+        type: "message",
+        key: message.id,
+        message,
+      });
+
+      previousDate = currentDate;
+    }
+
+    return nextRows;
+  }, [formatMessageDate, messages]);
+
+  const messageRowIndexById = useMemo(() => {
+    const indexMap = new Map<string, number>();
+    rows.forEach((row, index) => {
+      if (row.type !== "message") return;
+      indexMap.set(row.message.id, index);
+    });
+    return indexMap;
+  }, [rows]);
+
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => scrollContainerRef.current,
+    estimateSize: (index) => (rows[index]?.type === "date" ? 34 : 88),
+    overscan: 10,
+  });
+
+  const scrollToMessage = useCallback(
+    (messageId: string) => {
+      const rowIndex = messageRowIndexById.get(messageId);
+      if (rowIndex === undefined) return;
+
+      if (shouldVirtualize) {
+        rowVirtualizer.scrollToIndex(rowIndex, {
+          align: "center",
+        });
+
+        window.requestAnimationFrame(() => {
+          const element = document.getElementById(`message-${messageId}`);
+          if (!element) return;
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        });
+        return;
+      }
+
+      const element = document.getElementById(`message-${messageId}`);
+      if (!element) return;
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    },
+    [messageRowIndexById, rowVirtualizer, shouldVirtualize],
+  );
 
   if (!activeChat) return null;
 
@@ -179,6 +269,64 @@ export default function ConversationPanel() {
           <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
             {t("conversations.no_messages")}
           </div>
+        ) : shouldVirtualize ? (
+          <div className="relative w-full py-1" style={{ minHeight: "100%" }}>
+            {isLoadingMore ? (
+              <div className="flex justify-center py-2 text-muted-foreground">
+                <Spinner />
+              </div>
+            ) : null}
+
+            <div
+              className="relative w-full"
+              style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const row = rows[virtualRow.index];
+                if (!row) return null;
+
+                return (
+                  <div
+                    key={row.key}
+                    data-index={virtualRow.index}
+                    ref={rowVirtualizer.measureElement}
+                    className={`absolute left-0 top-0 w-full ${row.type === "message" ? "pb-2" : ""}`}
+                    style={{ transform: `translateY(${virtualRow.start}px)` }}
+                    id={
+                      row.type === "message"
+                        ? `message-${row.message.id}`
+                        : undefined
+                    }
+                  >
+                    {row.type === "date" ? (
+                      <div className="flex items-center gap-3 py-2">
+                        <div className="flex-1 h-px bg-border" />
+                        <div className="text-xs text-muted-foreground px-2">
+                          {row.date}
+                        </div>
+                        <div className="flex-1 h-px bg-border" />
+                      </div>
+                    ) : (
+                      <ChatBubble
+                        myUserId={myUserId}
+                        message={row.message}
+                        otherUserName={activeChat.otherUser.full_name}
+                        onScrollToMessage={scrollToMessage}
+                        edit_func={() => onEdit(row.message.id)}
+                        reply_func={() => onReply(row.message.id)}
+                        delete_func={() => onDelete(row.message.id)}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+              <div
+                ref={bottomRef}
+                className="absolute left-0 h-px w-full"
+                style={{ top: `${rowVirtualizer.getTotalSize()}px` }}
+              />
+            </div>
+          </div>
         ) : (
           <div className="flex min-h-full flex-col justify-end gap-2 py-1">
             {isLoadingMore ? (
@@ -209,17 +357,7 @@ export default function ConversationPanel() {
                     myUserId={myUserId}
                     message={message}
                     otherUserName={activeChat.otherUser.full_name}
-                    onScrollToMessage={(messageId) => {
-                      const element = document.getElementById(
-                        `message-${messageId}`,
-                      );
-                      if (element) {
-                        element.scrollIntoView({
-                          behavior: "smooth",
-                          block: "center",
-                        });
-                      }
-                    }}
+                    onScrollToMessage={scrollToMessage}
                     edit_func={() => onEdit(message.id)}
                     reply_func={() => onReply(message.id)}
                     delete_func={() => onDelete(message.id)}

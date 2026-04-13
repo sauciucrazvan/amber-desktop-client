@@ -12,7 +12,12 @@ export default defineConfig({
   server: {
     watch: {
       // Keep dev watchers away from generated artifacts and historical release payloads.
-      ignored: ["**/release/**", "**/dist/**", "**/dist-electron/**", "**/build/**"],
+      ignored: [
+        "**/release/**",
+        "**/dist/**",
+        "**/dist-electron/**",
+        "**/build/**",
+      ],
     },
   },
   define: {
@@ -25,11 +30,35 @@ export default defineConfig({
       main: {
         // Shortcut of `build.lib.entry`.
         entry: "electron/main.ts",
+        vite: {
+          build: {
+            watch: {
+              exclude: [
+                "release/**",
+                "dist/**",
+                "dist-electron/**",
+                "build/**",
+              ],
+            },
+          },
+        },
       },
       preload: {
         // Shortcut of `build.rollupOptions.input`.
         // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
         input: path.join(__dirname, "electron/preload.ts"),
+        vite: {
+          build: {
+            watch: {
+              exclude: [
+                "release/**",
+                "dist/**",
+                "dist-electron/**",
+                "build/**",
+              ],
+            },
+          },
+        },
       },
     }),
   ],

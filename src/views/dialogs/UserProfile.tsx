@@ -16,6 +16,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import { dispatchContactsEvent } from "@/lib/contact-events";
+import { Spinner } from "@/components/ui/spinner";
 
 interface UserProfileProps {
   username: string;
@@ -116,22 +117,29 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
         <DialogContent className="sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
-          {!isLoading && (
+          {open && isLoading && !error && (
+            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <Spinner />
+              <span>{t("common.info")}</span>
+            </div>
+          )}
+
+          {open && !isLoading && user && (
             <>
               <DialogHeader className="w-full">
                 <DialogTitle className="w-full flex flex-col items-center justify-center gap-2 text-center">
                   <UserAvatar
-                    full_name={user!.full_name}
-                    username={user!.username}
-                    isOnline={user!.online}
+                    full_name={user.full_name}
+                    username={user.username}
+                    isOnline={user.online}
                     size="xl"
                   />
                   <div className="flex flex-row items-start justify-start gap-1">
                     <div className="flex flex-row items-center gap-1">
                       <h3 className="text-lg leading-tight">
-                        {user!.full_name}
+                        {user.full_name}
                         <p className="text-sm text-muted-foreground">
-                          @{user!.username}
+                          @{user.username}
                         </p>
                       </h3>
                     </div>
@@ -170,7 +178,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
           {error && (
             <p className="text-red-500">
-              <Trans i18nKey={error} values={{ user: username }} />
+              <Trans i18nKey={error.message} values={{ user: username }} />
             </p>
           )}
         </DialogContent>

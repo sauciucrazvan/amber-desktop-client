@@ -16,7 +16,7 @@ type SidebarRailProps = {
   railPaddingClass: string;
   tooltipSide: "left" | "right";
   requestCount: number;
-  account?: AccountMe;
+  account: AccountMe | null;
   isAccountLoading: boolean;
   t: TFunction;
 };

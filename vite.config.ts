@@ -30,35 +30,11 @@ export default defineConfig({
       main: {
         // Shortcut of `build.lib.entry`.
         entry: "electron/main.ts",
-        vite: {
-          build: {
-            watch: {
-              exclude: [
-                "release/**",
-                "dist/**",
-                "dist-electron/**",
-                "build/**",
-              ],
-            },
-          },
-        },
       },
       preload: {
         // Shortcut of `build.rollupOptions.input`.
         // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
         input: path.join(__dirname, "electron/preload.ts"),
-        vite: {
-          build: {
-            watch: {
-              exclude: [
-                "release/**",
-                "dist/**",
-                "dist-electron/**",
-                "build/**",
-              ],
-            },
-          },
-        },
       },
     }),
   ],
@@ -69,10 +45,6 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 700,
-    watch: {
-      // vite-plugin-electron uses build watch mode for main/preload in dev.
-      exclude: ["release/**", "dist/**", "dist-electron/**", "build/**"],
-    },
     rollupOptions: {
       output: {
         manualChunks(id) {

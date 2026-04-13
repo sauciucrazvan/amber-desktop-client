@@ -50,7 +50,9 @@ export default function BlockedAccounts({ children }: Props) {
     data: blockedAccounts,
     error: blockedAccountsError,
     isLoading: isBlockedAccountsLoading,
-  } = useSWR<BlockedItem[]>(isAuthenticated ? "/contacts/blocked" : null);
+  } = useSWR<BlockedItem[]>(
+    isAuthenticated && open ? "/contacts/blocked" : null,
+  );
 
   const performUnblock = async (target: { id: number; username: string }) => {
     setActionUserId(target.id);

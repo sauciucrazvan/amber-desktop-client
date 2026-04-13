@@ -42,7 +42,9 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     data: user,
     error: error,
     isLoading: isLoading,
-  } = useSWR<Profile>(isAuthenticated ? "/contacts/profile/" + username : null);
+  } = useSWR<Profile>(
+    isAuthenticated && open ? "/contacts/profile/" + username : null,
+  );
 
   const onBlock = async () => {
     try {

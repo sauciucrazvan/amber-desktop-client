@@ -60,7 +60,7 @@ function ConnectionStatusBar() {
         handleStatus as EventListener,
       );
     };
-  }, []);
+  }, [t]);
 
   if (!status) return null;
   if (status.phase === "connected" || status.phase === "disconnected") {

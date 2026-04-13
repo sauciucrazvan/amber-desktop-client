@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+/* eslint-disable react-refresh/only-export-components */
 import { API_BASE_URL } from "@/config";
 import { useAuth, WS_MESSAGE_EVENT_NAME } from "@/auth/AuthContext";
 

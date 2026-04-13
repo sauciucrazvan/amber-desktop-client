@@ -572,7 +572,7 @@ function createWindow(options?: { startHidden?: boolean }) {
     console.error("[renderer] render-process-gone", details);
   });
 
-  win.webContents.openDevTools({ mode: "detach" });
+  // win.webContents.openDevTools({ mode: "detach" });
 
   win.once("ready-to-show", () => {
     if (startHidden) return;

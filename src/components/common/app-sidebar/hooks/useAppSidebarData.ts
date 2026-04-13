@@ -4,15 +4,10 @@ import {
   WS_MESSAGE_EVENT_NAME,
   type PresenceEventPayload,
 } from "@/auth/AuthContext";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { toast } from "sonner";
-import type {
-  AccountMe,
-  CallHistoryItem,
-  ContactListItem,
-  DirectConversationSummary,
-} from "../types";
+import type { AccountMe, CallHistoryItem, ContactListItem } from "../types";
 
 type UseAppSidebarDataParams = {
   isAuthenticated: boolean;
@@ -39,6 +34,8 @@ export function useAppSidebarData({
   const [contactsState, setContactsState] = useState<ContactListItem[]>([]);
   const [contactsError, setContactsError] = useState<unknown>(null);
   const [isContactsLoading, setIsContactsLoading] = useState(false);
+  const [conversationUnseenCountByUserId, setConversationUnseenCountByUserId] =
+    useState<Record<number, number>>({});
 
   const sortContactsByLastAction = (contacts: ContactListItem[]) => {
     return [...contacts].sort((a, b) => {
@@ -242,46 +239,50 @@ export function useAppSidebarData({
   const stableContactIds = Array.from(
     new Set((contacts ?? []).map((contact) => contact.user.id)),
   ).sort((a, b) => a - b);
-  const contactIdsKey = stableContactIds.join(",");
 
-  const { data: conversationUnseenCountByUserId } = useSWR<
-    Record<number, number>
-  >(
-    isAuthenticated && contactIdsKey
-      ? `contacts-unseen-count:${contactIdsKey}`
-      : null,
-    async () => {
-      if (stableContactIds.length === 0) return {};
+  useEffect(() => {
+    const onWsMessage = (event: Event) => {
+      const customEvent = event as CustomEvent<unknown>;
+      const detail = customEvent.detail;
+      if (!detail || typeof detail !== "object") return;
 
-      const results = await Promise.all(
-        stableContactIds.map(async (userId) => {
-          try {
-            const res = await authFetch(
-              `${API_BASE_URL}/chats/direct/${userId}`,
-              {
-                method: "POST",
-              },
-            );
+      const payload = detail as {
+        event?: string;
+        conversation_id?: string;
+        payload?: {
+          message?: {
+            sender_id?: number;
+          };
+        };
+      };
 
-            if (!res.ok) return [userId, 0] as const;
+      if (payload.event !== "message.created") return;
+      if (!payload.conversation_id) return;
 
-            const data = (await res.json()) as DirectConversationSummary;
-            return [userId, Math.max(0, data.notifications ?? 0)] as const;
-          } catch {
-            return [userId, 0] as const;
-          }
-        }),
+      const message = payload.payload?.message;
+      const senderId = message?.sender_id;
+      if (!senderId) return;
+
+      if (stableContactIds.includes(senderId)) {
+        setConversationUnseenCountByUserId((current) => ({
+          ...current,
+          [senderId]: (current[senderId] ?? 0) + 1,
+        }));
+      }
+    };
+
+    window.addEventListener(
+      WS_MESSAGE_EVENT_NAME,
+      onWsMessage as EventListener,
+    );
+
+    return () => {
+      window.removeEventListener(
+        WS_MESSAGE_EVENT_NAME,
+        onWsMessage as EventListener,
       );
-
-      return Object.fromEntries(results);
-    },
-    {
-      refreshInterval: 5000,
-      dedupingInterval: 1000,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: true,
-    },
-  );
+    };
+  }, [stableContactIds]);
 
   const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
@@ -321,10 +322,21 @@ export function useAppSidebarData({
   const handleOpenDirectChat = async (contact: ContactListItem["user"]) => {
     try {
       await openDirectChat(contact);
+      setConversationUnseenCountByUserId((current) => ({
+        ...current,
+        [contact.id]: 0,
+      }));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed opening chat");
     }
   };
+
+  const clearUnseenCount = useCallback((userId: number) => {
+    setConversationUnseenCountByUserId((current) => ({
+      ...current,
+      [userId]: 0,
+    }));
+  }, []);
 
   return {
     account,
@@ -339,5 +351,6 @@ export function useAppSidebarData({
     isCallHistoryLoading,
     showVerifyAccount,
     handleOpenDirectChat,
+    clearUnseenCount,
   };
 }

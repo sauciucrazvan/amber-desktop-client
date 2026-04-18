@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { Ban, Quote, X } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -44,12 +44,12 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     error: error,
     isLoading: isLoading,
   } = useSWR<Profile>(
-    isAuthenticated && open ? "/contacts/profile/" + username : null,
+    isAuthenticated && open ? "/contacts/v1/profile/" + username : null,
   );
 
   const onBlock = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/contacts/block", {
+      const res = await fetch(apiUrl("/contacts/v1/block"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/contacts/list");
+        await mutate("/contacts/v1/list");
         dispatchContactsEvent({
           type: "contacts",
           event: "contact.removed",
@@ -80,7 +80,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
   const onRemove = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/contacts/remove", {
+      const res = await fetch(apiUrl("/contacts/v1/remove"), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/contacts/list");
+        await mutate("/contacts/v1/list");
         dispatchContactsEvent({
           type: "contacts",
           event: "contact.removed",

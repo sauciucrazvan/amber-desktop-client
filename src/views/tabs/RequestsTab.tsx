@@ -3,7 +3,7 @@ import ErrorBox from "@/components/common/error-box";
 import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { Check, X } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -93,7 +93,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
     error: requestsError,
     isLoading: isRequestsLoading,
   } = useSWR<ContactRequestItem[]>(
-    isAuthenticated ? "/contacts/requests" : null,
+    isAuthenticated ? "/contacts/v1/requests" : null,
     {
       revalidateOnFocus: true,
       revalidateOnReconnect: true,
@@ -106,7 +106,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
   ) => {
     setActionUserId(target.id);
     try {
-      const res = await authFetch(API_BASE_URL + `/contacts/${action}`, {
+      const res = await authFetch(apiUrl(`/contacts/v1/${action}`), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -142,7 +142,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       toast.success(
         resolveMessage(message, fallbackMessageKey, { user: target.username }),
       );
-      await mutate("/contacts/requests");
+      await mutate("/contacts/v1/requests");
 
       if (action === "accept") {
         const now = new Date().toISOString();

@@ -21,6 +21,13 @@ export function setServerBaseUrls(apiBaseUrl: string, wsBaseUrl: string) {
   WS_BASE_URL = nextWsBaseUrl;
 }
 
+export function apiUrl(path: string) {
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE_URL}${normalizedPath}`;
+}
+
 export function applyServerConfig(server: SelectableServer) {
   setServerBaseUrls(server.apiBaseUrl, server.wsBaseUrl);
 }

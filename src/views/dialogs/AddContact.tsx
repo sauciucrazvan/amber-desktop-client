@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -43,7 +43,7 @@ export default function AddContact({ children }: Props) {
         return;
       }
 
-      const res = await fetch(API_BASE_URL + "/contacts/request", {
+      const res = await fetch(apiUrl("/contacts/v1/request"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

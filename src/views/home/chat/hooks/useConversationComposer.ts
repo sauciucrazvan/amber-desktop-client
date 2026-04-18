@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { TFunction } from "i18next";
 import { toast } from "sonner";
@@ -110,7 +110,7 @@ export function useConversationComposer({
       if (replyTo) {
         const payload = { message_id: replyTo.id, text: trimmedMessage };
         const res = await authFetch(
-          `${API_BASE_URL}/chats/${conversationId}/reply`,
+          apiUrl(`/chats/v1/${conversationId}/reply`),
           {
             method: "POST",
             headers: {
@@ -128,7 +128,7 @@ export function useConversationComposer({
       } else if (editing) {
         const payload = { message_id: editing.id, text: trimmedMessage };
         const res = await authFetch(
-          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          apiUrl(`/chats/v1/${conversationId}/messages`),
           {
             method: "PATCH",
             headers: {
@@ -147,7 +147,7 @@ export function useConversationComposer({
       } else {
         const payload = { text: trimmedMessage };
         const res = await authFetch(
-          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          apiUrl(`/chats/v1/${conversationId}/messages`),
           {
             method: "POST",
             headers: {
@@ -198,7 +198,7 @@ export function useConversationComposer({
       try {
         const payload = { message_id: id };
         const res = await authFetch(
-          `${API_BASE_URL}/chats/${conversationId}/messages`,
+          apiUrl(`/chats/v1/${conversationId}/messages`),
           {
             method: "DELETE",
             headers: {

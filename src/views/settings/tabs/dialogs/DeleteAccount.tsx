@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -33,7 +33,7 @@ export default function DeleteAccount({ children }: Props) {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(API_BASE_URL + "/account/delete", {
+      const res = await fetch(apiUrl("/account/v1/delete"), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

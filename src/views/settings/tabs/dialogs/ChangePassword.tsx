@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -44,7 +44,7 @@ export default function ChangePassword({ children }: Props) {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch(API_BASE_URL + "/account/modify/password", {
+      const res = await fetch(apiUrl("/account/v1/modify/password"), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

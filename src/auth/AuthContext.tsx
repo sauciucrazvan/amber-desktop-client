@@ -10,7 +10,7 @@ import React, {
 /* eslint-disable react-refresh/only-export-components */
 import { SWRConfig } from "swr";
 import useSWRMutation from "swr/mutation";
-import { API_BASE_URL, WS_BASE_URL } from "@/config";
+import { API_BASE_URL, WS_BASE_URL, apiUrl } from "@/config";
 import {
   clearStoredTokens,
   getStoredTokens,
@@ -178,7 +178,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Error,
     string,
     { username: string; password: string }
-  >(`${API_BASE_URL}/auth/login`, async (url, { arg }) => {
+  >(apiUrl("/auth/v1/login"), async (url, { arg }) => {
     const body = new URLSearchParams();
     body.set("username", arg.username);
     body.set("password", arg.password);
@@ -199,7 +199,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Error,
     string,
     RegisterRequest
-  >(`${API_BASE_URL}/auth/register`, async (url, { arg }) => {
+  >(apiUrl("/auth/v1/register"), async (url, { arg }) => {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -220,7 +220,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     Error,
     string,
     { refreshToken: string }
-  >(`${API_BASE_URL}/auth/refresh`, async (url, { arg }) => {
+  >(apiUrl("/auth/v1/refresh"), async (url, { arg }) => {
     const res = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

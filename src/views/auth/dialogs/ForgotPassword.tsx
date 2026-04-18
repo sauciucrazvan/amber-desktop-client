@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -32,7 +32,7 @@ export default function ForgotPassword() {
     try {
       switch (stage) {
         case 0: {
-          const res = await fetch(API_BASE_URL + "/account/recovery/request", {
+          const res = await fetch(apiUrl("/account/v1/recovery/request"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function ForgotPassword() {
           break;
         }
         case 2: {
-          const res = await fetch(API_BASE_URL + "/account/recovery/reset", {
+          const res = await fetch(apiUrl("/account/v1/recovery/reset"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -8,7 +8,7 @@ import {
 } from "../ui/context-menu";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { useAuth } from "@/auth/AuthContext";
 import { mutate } from "swr";
 import { cn } from "@/lib/utils";
@@ -41,7 +41,7 @@ export default function Contact({
 
   const onBlock = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/contacts/block", {
+      const res = await fetch(apiUrl("/contacts/v1/block"), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export default function Contact({
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/contacts/list");
+        await mutate("/contacts/v1/list");
         dispatchContactsEvent({
           type: "contacts",
           event: "contact.removed",
@@ -72,7 +72,7 @@ export default function Contact({
 
   const onRemove = async () => {
     try {
-      const res = await fetch(API_BASE_URL + "/contacts/remove", {
+      const res = await fetch(apiUrl("/contacts/v1/remove"), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export default function Contact({
 
       if (res.ok) {
         toast.success(t(data.message).replace("{{user}}", username));
-        await mutate("/contacts/list");
+        await mutate("/contacts/v1/list");
         dispatchContactsEvent({
           type: "contacts",
           event: "contact.removed",

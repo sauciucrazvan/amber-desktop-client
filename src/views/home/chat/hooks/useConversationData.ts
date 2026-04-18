@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { WS_SEND_EVENT_NAME } from "@/auth/AuthContext";
 import { useAccount } from "@/account/AccountContext";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -142,7 +142,7 @@ export function useConversationData({
       if (before) params.set("before", before);
 
       const res = await authFetch(
-        `${API_BASE_URL}/chats/${conversationId}/messages?${params.toString()}`,
+        apiUrl(`/chats/v1/${conversationId}/messages?${params.toString()}`),
       );
 
       if (!res.ok) throw new Error(await readErrorMessage(res));
@@ -171,7 +171,9 @@ export function useConversationData({
     async (targetConversationId: string) => {
       const params = new URLSearchParams({ limit: String(MESSAGE_PAGE_SIZE) });
       const res = await authFetch(
-        `${API_BASE_URL}/chats/${targetConversationId}/messages?${params.toString()}`,
+        apiUrl(
+          `/chats/v1/${targetConversationId}/messages?${params.toString()}`,
+        ),
       );
 
       if (!res.ok) return;
@@ -208,7 +210,7 @@ export function useConversationData({
         lastSentReadSeqRef.current = pendingSeq;
       } catch {
         const res = await authFetch(
-          `${API_BASE_URL}/chats/${targetConversationId}/read-cursor`,
+          apiUrl(`/chats/v1/${targetConversationId}/read-cursor`),
           {
             method: "POST",
             headers: {

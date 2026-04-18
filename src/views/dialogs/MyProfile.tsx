@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { Pencil, Quote } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -65,7 +65,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
     setIsSavingBio(true);
 
     try {
-      const res = await authFetch(API_BASE_URL + "/account/modify/bio", {
+      const res = await authFetch(apiUrl("/account/v1/modify/bio"), {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

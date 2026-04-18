@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import React from "react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -50,20 +50,17 @@ export default function ChangeEmail({ children }: Props) {
     try {
       switch (stage) {
         case 0: {
-          const res = await fetch(
-            API_BASE_URL + "/account/modify/email/request",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-              body: JSON.stringify({
-                new_email: email,
-                password: password,
-              }),
+          const res = await fetch(apiUrl("/account/v1/modify/email/request"), {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
             },
-          );
+            body: JSON.stringify({
+              new_email: email,
+              password: password,
+            }),
+          });
 
           const data = await res.json().catch(() => null);
 
@@ -86,19 +83,16 @@ export default function ChangeEmail({ children }: Props) {
             break;
           }
 
-          const res = await fetch(
-            API_BASE_URL + "/account/modify/email/confirm",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-              body: JSON.stringify({
-                code: confirmCode,
-              }),
+          const res = await fetch(apiUrl("/account/v1/modify/email/confirm"), {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
             },
-          );
+            body: JSON.stringify({
+              code: confirmCode,
+            }),
+          });
 
           const data = await res.json().catch(() => null);
 
@@ -116,19 +110,16 @@ export default function ChangeEmail({ children }: Props) {
           break;
         }
         case 2: {
-          const res = await fetch(
-            API_BASE_URL + "/account/modify/email/verify",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-              },
-              body: JSON.stringify({
-                code: verifyCode,
-              }),
+          const res = await fetch(apiUrl("/account/v1/modify/email/verify"), {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
             },
-          );
+            body: JSON.stringify({
+              code: verifyCode,
+            }),
+          });
 
           const data = await res.json().catch(() => null);
 

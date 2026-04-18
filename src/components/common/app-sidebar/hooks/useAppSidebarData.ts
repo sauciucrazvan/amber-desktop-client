@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import {
   PRESENCE_EVENT_NAME,
   WS_MESSAGE_EVENT_NAME,
@@ -54,7 +54,7 @@ export function useAppSidebarData({
       setContactsError(null);
 
       try {
-        const res = await authFetch(`${API_BASE_URL}/contacts/list`);
+        const res = await authFetch(apiUrl("/contacts/v1/list"));
         if (!res.ok) {
           throw new Error(`Request failed (${res.status})`);
         }
@@ -127,7 +127,7 @@ export function useAppSidebarData({
         payload.event === "contact.request.removed" ||
         payload.event === "contact.accepted"
       ) {
-        void mutate("/contacts/requests");
+        void mutate("/contacts/v1/requests");
       }
 
       const eventPayload = payload.payload as {
@@ -279,7 +279,7 @@ export function useAppSidebarData({
 
   const { data: contactRequests, error: contactRequestsError } = useSWR<
     Array<{ user: { id: number }; created_at: string }>
-  >(isAuthenticated ? "/contacts/requests" : null, {
+  >(isAuthenticated ? "/contacts/v1/requests" : null, {
     revalidateOnFocus: true,
     revalidateOnReconnect: true,
   });
@@ -296,7 +296,7 @@ export function useAppSidebarData({
     calls: CallHistoryItem[];
   }>(
     isAuthenticated
-      ? `/calls/history?limit=${CALL_HISTORY_LIMIT}&offset=0`
+      ? `/calls/v1/history?limit=${CALL_HISTORY_LIMIT}&offset=0`
       : null,
     {
       refreshInterval: 30000,

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 /* eslint-disable react-refresh/only-export-components */
 import {
   PRESENCE_EVENT_NAME,
@@ -63,12 +63,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     async (target: ActiveChat["otherUser"]) => {
       setOpeningChatUserId(target.id);
       try {
-        const res = await authFetch(
-          `${API_BASE_URL}/chats/direct/${target.id}`,
-          {
-            method: "POST",
-          },
-        );
+        const res = await authFetch(apiUrl(`/chats/v1/direct/${target.id}`), {
+          method: "POST",
+        });
 
         if (!res.ok) throw new Error(await readErrorMessage(res));
 

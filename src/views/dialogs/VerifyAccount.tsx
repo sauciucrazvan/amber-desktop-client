@@ -15,7 +15,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Separator } from "@/components/ui/separator";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -41,7 +41,7 @@ export default function VerifyAccount({ children }: VerifyAccountProps) {
     try {
       switch (stage) {
         case 0: {
-          const res = await fetch(API_BASE_URL + "/auth/verify/request", {
+          const res = await fetch(apiUrl("/auth/v1/verify/request"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export default function VerifyAccount({ children }: VerifyAccountProps) {
           break;
         }
         case 1: {
-          const res = await fetch(API_BASE_URL + "/auth/verify", {
+          const res = await fetch(apiUrl("/auth/v1/verify"), {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

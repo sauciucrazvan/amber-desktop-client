@@ -1,12 +1,12 @@
 {
   "name": "amber-desktop-app",
   "private": true,
-  "version": "26.5.0",
+  "version": "26.0.0",
   "author": "Răzvan Sauciuc",
   "description": "The last communication app you'll ever need.",
   "type": "module",
   "scripts": {
-    "dev": "NODE_OPTIONS=--max-old-space-size=4096 vite",
+    "dev": "vite",
     "build": "node scripts/build.mjs",
     "build:all": "node scripts/build.mjs --all",
     "build:linux": "node scripts/build.mjs --linux",

@@ -50,7 +50,7 @@ export function useConversationLogic({
     noteReadCursorSynced: data.noteReadCursorSynced,
     shouldAutoScrollRef: data.shouldAutoScrollRef,
     onMessageActivity: () => {
-      void mutate("/contacts/list");
+      void mutate("/contacts/v1/list");
     },
   });
 
@@ -65,7 +65,7 @@ export function useConversationLogic({
     replaceMessageById: data.replaceMessageById,
     shouldAutoScrollRef: data.shouldAutoScrollRef,
     onMessageActivity: () => {
-      void mutate("/contacts/list");
+      void mutate("/contacts/v1/list");
     },
   });
 

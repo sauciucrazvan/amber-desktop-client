@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 /* eslint-disable react-refresh/only-export-components */
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { useAuth, WS_MESSAGE_EVENT_NAME } from "@/auth/AuthContext";
 
 export type AccountMe = {
@@ -85,7 +85,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      const res = await authFetch(`${API_BASE_URL}/account/me`);
+      const res = await authFetch(apiUrl("/account/v1/me"));
       if (!res.ok) {
         throw new Error(await readErrorMessage(res));
       }

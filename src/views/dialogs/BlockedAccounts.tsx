@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-import { API_BASE_URL } from "@/config";
+import { apiUrl } from "@/config";
 import { X } from "lucide-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,13 +51,13 @@ export default function BlockedAccounts({ children }: Props) {
     error: blockedAccountsError,
     isLoading: isBlockedAccountsLoading,
   } = useSWR<BlockedItem[]>(
-    isAuthenticated && open ? "/contacts/blocked" : null,
+    isAuthenticated && open ? "/contacts/v1/blocked" : null,
   );
 
   const performUnblock = async (target: { id: number; username: string }) => {
     setActionUserId(target.id);
     try {
-      const res = await authFetch(API_BASE_URL + `/contacts/unblock`, {
+      const res = await authFetch(apiUrl("/contacts/v1/unblock"), {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default function BlockedAccounts({ children }: Props) {
       }
 
       toast.success(t("contacts.unblocked", { user: target.username }));
-      await mutate("/contacts/blocked");
+      await mutate("/contacts/v1/blocked");
     } catch (e) {
       const message = e instanceof Error ? e.message : "An error occured";
       const looksLikeI18nKey =

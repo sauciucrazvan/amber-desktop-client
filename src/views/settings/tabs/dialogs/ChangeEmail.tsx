@@ -65,11 +65,11 @@ export default function ChangeEmail({ children }: Props) {
           const data = await res.json().catch(() => null);
 
           if (!res.ok) {
+            const detail = data?.detail;
             if (res.status === 429) {
-              throw new Error("common.errors.too_many_requests");
+              throw new Error(detail || "common.errors.too_many_requests");
             }
 
-            const detail = data?.detail;
             throw new Error(detail);
           }
 
@@ -97,11 +97,11 @@ export default function ChangeEmail({ children }: Props) {
           const data = await res.json().catch(() => null);
 
           if (!res.ok) {
+            const detail = data?.detail;
             if (res.status === 429) {
-              throw new Error("common.errors.too_many_requests");
+              throw new Error(detail || "common.errors.too_many_requests");
             }
 
-            const detail = data?.detail;
             throw new Error(detail);
           }
 
@@ -124,11 +124,11 @@ export default function ChangeEmail({ children }: Props) {
           const data = await res.json().catch(() => null);
 
           if (!res.ok) {
+            const detail = data?.detail;
             if (res.status === 429) {
-              throw new Error("common.errors.too_many_requests");
+              throw new Error(detail || "common.errors.too_many_requests");
             }
 
-            const detail = data?.detail;
             throw new Error(detail);
           }
 

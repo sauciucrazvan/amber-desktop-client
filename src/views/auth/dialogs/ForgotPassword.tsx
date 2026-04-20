@@ -7,6 +7,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiUrl } from "@/config";
@@ -45,11 +51,11 @@ export default function ForgotPassword() {
           const data = await res.json().catch(() => null);
 
           if (!res.ok) {
+            const detail = data?.detail;
             if (res.status === 429) {
-              throw new Error("common.errors.too_many_requests");
+              throw new Error(detail || "common.errors.too_many_requests");
             }
 
-            const detail = data?.detail;
             throw new Error(detail);
           }
 
@@ -78,11 +84,11 @@ export default function ForgotPassword() {
           const data = await res.json().catch(() => null);
 
           if (!res.ok) {
+            const detail = data?.detail;
             if (res.status === 429) {
-              throw new Error("common.errors.too_many_requests");
+              throw new Error(detail || "common.errors.too_many_requests");
             }
 
-            const detail = data?.detail;
             throw new Error(detail);
           }
 
@@ -149,17 +155,19 @@ export default function ForgotPassword() {
             {stage == 1 && (
               <>
                 <Label>{t("login.recovery.code")}</Label>
-                <Input
-                  placeholder={t("login.recovery.code")}
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  disabled={isSubmitting}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      onSubmit();
-                    }
-                  }}
-                />
+                <InputOTP value={code} onChange={setCode} maxLength={6}>
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                  </InputOTPGroup>
+                  <InputOTPSeparator />
+                  <InputOTPGroup>
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
               </>
             )}
             {stage == 2 && (
@@ -236,7 +244,7 @@ export default function ForgotPassword() {
                 <Button
                   variant="default"
                   className="cursor-pointer"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || (stage === 1 && code.length !== 6)}
                   type="button"
                   onClick={onSubmit}
                 >

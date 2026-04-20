@@ -39,6 +39,7 @@
       "invalid_username": "Ungültiger Benutzername",
       "invalid_code": "Der Code, den du eingegeben hast, ist abgelaufen oder ungültig.",
       "invalid_password": "Ungültiges Passwort",
+      "locked": "Passwortwiederherstellung ist vorübergehend gesperrt. Bitte versuche es später erneut.",
       "too_soon": "Du kannst ein Passwort-Reset alle 30 Minuten anfordern.",
       "too_late": "Der Code, den du verwendet hast, ist bereits abgelaufen. Fordere eine neue Passwort-Änderung an.",
       "different_passwords": "Die Passwörter stimmen nicht überein.",
@@ -87,6 +88,7 @@
       "too_soon": "Es wurde bereits eine Bestätigungs-E-Mail gesendet. Versuche es in 30 Minuten erneut.",
       "email_sent": "Eine Bestätigungs-E-Mail wurde gesendet. Bitte überprüfe deinen Posteingang (auch Spam!).",
       "invalid_code": "Der Code, den du eingegeben hast, ist ungültig",
+      "locked": "Dein Konto ist aufgrund zu vieler fehlgeschlagener Versuche vorübergehend gesperrt. Bitte versuche es später erneut.",
       "too_late": "Dein Bestätigungscode ist abgelaufen. Versuche es bitte erneut.",
       "success": "Dein Konto ist verifiziert. Es kann einen Moment dauern, bis es aktualisiert wird.",
       "action": {
@@ -236,6 +238,7 @@
         "not_confirmed": "Die E-Mail-Änderung wurde noch nicht bestätigt.",
         "already_confirmed": "Die E-Mail-Änderung wurde bereits bestätigt.",
         "too_late": "Dein Verifizierungscode ist abgelaufen. Bitte erneut starten.",
+        "locked": "E-Mail-Änderungen sind aufgrund zu vieler fehlgeschlagener Versuche vorübergehend gesperrt. Bitte versuche es später erneut.",
         "too_soon": "Du kannst alle halbe Stunde eine neue E-Mail-Änderung anfordern.",
         "invalid_code": "Ungültiger Verifizierungscode.",
         "verify_sent": "Ein Verifizierungscode wurde an deine E-Mail gesendet. Bitte überprüfe deinen Posteingang (auch Spam!).",

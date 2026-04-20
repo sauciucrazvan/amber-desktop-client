@@ -39,6 +39,7 @@
       "invalid_username": "Nombre de usuario inválido",
       "invalid_code": "El código que ingresaste ha expirado o es inválido.",
       "invalid_password": "Contraseña inválida",
+      "locked": "La recuperación de contraseña está temporalmente bloqueada. Por favor, intenta de nuevo más tarde.",
       "too_soon": "Puedes solicitar un cambio de contraseña cada 30 minutos.",
       "too_late": "El código que usaste ya expiró. Solicita un nuevo cambio de contraseña.",
       "different_passwords": "Las contraseñas no coinciden.",
@@ -87,6 +88,7 @@
       "too_soon": "Ya se ha enviado un correo de verificación. Reintenta en 30 minutos.",
       "email_sent": "Se ha enviado un correo de verificación. Por favor, revisa tu bandeja de entrada (¡incluso spam!).",
       "invalid_code": "El código que proporcionaste es inválido",
+      "locked": "Tu cuenta está temporalmente bloqueada debido a demasiados intentos fallidos. Por favor, intenta de nuevo más tarde.",
       "too_late": "Tu código de verificación ya ha expirado, por favor reintenta.",
       "success": "Tu cuenta está verificada. Podría tomar un momento actualizarse.",
       "action": {
@@ -236,6 +238,7 @@
         "not_confirmed": "El cambio de correo aún no está confirmado.",
         "already_confirmed": "El cambio de correo ya está confirmado.",
         "too_late": "Tu código de verificación ha caducado. Por favor, vuelve a intentarlo.",
+        "locked": "Los cambios de correo electrónico están temporalmente bloqueados debido a demasiados intentos fallidos. Por favor, intenta de nuevo más tarde.",
         "too_soon": "Puedes solicitar un nuevo cambio de correo cada media hora.",
         "invalid_code": "Código de verificación inválido.",
         "verify_sent": "Se envió un código de verificación a tu correo. Revisa tu bandeja de entrada (¡también spam!).",

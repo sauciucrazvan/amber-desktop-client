@@ -39,6 +39,7 @@
       "invalid_username": "Invalid username",
       "invalid_code": "The code you entered either expired or is invalid.",
       "invalid_password": "Invalid password",
+      "locked": "Password recovery is temporarily locked. Please try again later.",
       "too_soon": "You can request a password change every 30 minutes.",
       "too_late": "The code you used already expired. Request a new password change.",
       "different_passwords": "The passwords do not match.",
@@ -88,6 +89,7 @@
       "email_sent": "A verification email has been sent. Please check your inbox (spam too!)",
       "invalid_code": "The code you provided is invalid",
       "too_late": "Your verification code has already expired, please retry.",
+      "locked": "Your account is temporarily locked due to too many failed attempts. Please try again later.",
       "success": "Your account is verified. It might take a moment to update.",
       "action": {
         "back": "Back",
@@ -236,6 +238,7 @@
         "not_confirmed": "The email change has not been confirmed yet.",
         "already_confirmed": "The email change has already been confirmed.",
         "too_late": "Your verification code has expired. Please start again.",
+        "locked": "Email changes are temporarily locked due to too many failed attempts. Please try again later.",
         "too_soon": "You can request a new email change every half an hour.",
         "invalid_code": "Invalid verification code.",
         "verify_sent": "A verification code has been sent to your email. Please check your inbox (spam too!)",

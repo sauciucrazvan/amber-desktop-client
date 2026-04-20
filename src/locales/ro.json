@@ -39,6 +39,7 @@
       "invalid_username": "Nume de utilizator invalid",
       "invalid_code": "Codul pe care l-ai introdus a expirat sau este invalid.",
       "invalid_password": "Parolă invalidă",
+      "locked": "Recuperarea parolei este temporar blocată. Te rugăm să încerci din nou mai târziu.",
       "too_soon": "Poți cere o schimbare de parolă la fiecare 30 de minute.",
       "too_late": "Codul pe care l-ai folosit a expirat deja. Cere o nouă schimbare de parolă.",
       "different_passwords": "Parolele nu se potrivesc.",
@@ -87,6 +88,7 @@
       "too_soon": "Un e-mail de verificare a fost deja trimis. Încearcă din nou în 30 de minute.",
       "email_sent": "Un e-mail de verificare a fost trimis. Te rog să-ți verifica inboxul (și spam!).",
       "invalid_code": "Codul pe care l-ai furnizat este invalid",
+      "locked": "Contul tău este temporar blocat din cauza prea multor încercări eșuate. Te rugăm să încerci din nou mai târziu.",
       "too_late": "Codul tău de verificare a expirat, încearcă din nou.",
       "success": "Contul tău este verificat. Ar putea dura puțin timp pentru a se actualiza.",
       "action": {
@@ -236,6 +238,7 @@
         "not_confirmed": "Schimbarea emailului nu a fost încă confirmată.",
         "already_confirmed": "Schimbarea emailului a fost deja confirmată.",
         "too_late": "Codul de verificare a expirat. Te rog încearcă din nou.",
+        "locked": "Schimbările de email sunt temporar blocate din cauza prea multor încercări eșuate. Te rugăm să încerci din nou mai târziu.",
         "too_soon": "Poți solicita o nouă schimbare de email la fiecare jumătate de oră.",
         "invalid_code": "Cod de verificare invalid.",
         "verify_sent": "Un cod de verificare a fost trimis la emailul tău. Te rog să-ți verifica inboxul (și spam!)",

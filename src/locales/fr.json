@@ -39,6 +39,7 @@
       "invalid_username": "Nom d'utilisateur invalide",
       "invalid_code": "Le code que vous avez saisi a expiré ou est invalide.",
       "invalid_password": "Mot de passe invalide",
+      "locked": "La récupération du mot de passe est temporairement verrouillée. Veuillez réessayer plus tard.",
       "too_soon": "Vous pouvez demander un changement de mot de passe toutes les 30 minutes.",
       "too_late": "Le code que vous avez utilisé a déjà expiré. Demandez un nouveau changement de mot de passe.",
       "different_passwords": "Les mots de passe ne correspondent pas.",
@@ -87,6 +88,7 @@
       "too_soon": "Un e-mail de vérification a déjà été envoyé. Réessayez dans 30 minutes.",
       "email_sent": "Un e-mail de vérification a été envoyé. Veuillez consulter votre boîte de réception (spam aussi !).",
       "invalid_code": "Le code que vous avez fourni est invalide",
+      "locked": "Votre compte est temporairement verrouillé en raison de trop de tentatives échouées. Veuillez réessayer plus tard.",
       "too_late": "Votre code de vérification a expiré, veuillez réessayer.",
       "success": "Votre compte est vérifié. Cela peut prendre un moment à mettre à jour.",
       "action": {
@@ -236,6 +238,7 @@
         "not_confirmed": "Le changement d'e-mail n'a pas encore été confirmé.",
         "already_confirmed": "Le changement d'e-mail a déjà été confirmé.",
         "too_late": "Votre code de vérification a expiré. Veuillez recommencer.",
+        "locked": "Les modifications d'e-mail sont temporairement verrouillées en raison de trop de tentatives échouées. Veuillez réessayer plus tard.",
         "too_soon": "Vous pouvez demander un nouveau changement d'e-mail toutes les demi-heures.",
         "invalid_code": "Code de vérification invalide.",
         "verify_sent": "Un code de vérification a été envoyé à votre e-mail. Veuillez vérifier votre boîte de réception (spam aussi !)",

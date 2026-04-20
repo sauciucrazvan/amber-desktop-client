@@ -39,6 +39,7 @@
       "invalid_username": "Nome utente non valido",
       "invalid_code": "Il codice che hai inserito è scaduto o non valido.",
       "invalid_password": "Password non valida",
+      "locked": "Il recupero della password è temporaneamente bloccato. Riprova più tardi.",
       "too_soon": "Puoi richiedere un cambio di password ogni 30 minuti.",
       "too_late": "Il codice che hai utilizzato è già scaduto. Richiedi un nuovo cambio di password.",
       "different_passwords": "Le password non corrispondono.",
@@ -87,6 +88,7 @@
       "too_soon": "Un'email di verifica è già stata inviata. Riprova tra 30 minuti.",
       "email_sent": "Un'email di verifica è stata inviata. Controlla la tua casella di posta (incluso lo spam!).",
       "invalid_code": "Il codice che hai fornito non è valido",
+      "locked": "Il tuo account è temporaneamente bloccato a causa di troppi tentativi falliti. Riprova più tardi.",
       "too_late": "Il tuo codice di verifica è scaduto, riprova.",
       "success": "Il tuo account è verificato. Potrebbe volerci un momento per aggiornare.",
       "action": {
@@ -236,6 +238,7 @@
         "not_confirmed": "Il cambio email non è stato ancora confermato.",
         "already_confirmed": "Il cambio email è già stato confermato.",
         "too_late": "Il tuo codice di verifica è scaduto. Per favore riprova.",
+        "locked": "I cambi di email sono temporaneamente bloccati a causa di troppi tentativi falliti. Riprova più tardi.",
         "too_soon": "Puoi richiedere un nuovo cambio email ogni mezz'ora.",
         "invalid_code": "Codice di verifica non valido.",
         "verify_sent": "Un codice di verifica è stato inviato alla tua email. Controlla la tua casella di posta (incluso lo spam!)",

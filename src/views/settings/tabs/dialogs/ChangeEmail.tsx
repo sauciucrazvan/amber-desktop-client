@@ -178,7 +178,7 @@ export default function ChangeEmail({ children }: Props) {
             )}
           </DialogTrigger>
           <DialogContent className="w-[calc(100vw-2rem)] max-h-[85vh] min-h-25 overflow-hidden sm:max-w-125 flex flex-col gap-4 p-0">
-            <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 pt-6">
+            <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overflow-x-hidden px-6 pt-6">
               <DialogHeader>
                 <DialogTitle>{t("settings.account.email.title")}</DialogTitle>
                 <DialogDescription>
@@ -223,6 +223,7 @@ export default function ChangeEmail({ children }: Props) {
                 <>
                   <Label>{t("settings.account.email.confirm_code")}</Label>
                   <InputOTP
+                    className="w-full min-w-0 justify-center"
                     maxLength={6}
                     value={confirmCode}
                     onChange={setConfirmCode}
@@ -253,6 +254,7 @@ export default function ChangeEmail({ children }: Props) {
                 <>
                   <Label>{t("settings.account.email.verify_code")}</Label>
                   <InputOTP
+                    className="w-full min-w-0 justify-center"
                     maxLength={6}
                     value={verifyCode}
                     onChange={setVerifyCode}

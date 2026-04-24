@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { apiUrl } from "@/config";
-import { Pencil, Quote } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
+import { Pencil, Quote, Upload } from "lucide-react";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import ChangeName from "../settings/tabs/dialogs/ChangeName";
 import type { AccountMe } from "@/account/AccountContext";
+import { mutate } from "swr";
 
 interface MyProfileProps {
   trigger: ReactNode;
@@ -43,6 +44,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
   const [bioDraft, setBioDraft] = useState("");
   const [bioErrorKey, setBioErrorKey] = useState<string | null>(null);
   const [isSavingBio, setIsSavingBio] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 
   const user = account as AccountMe | null;
 
@@ -84,6 +86,36 @@ export default function MyProfile({ trigger }: MyProfileProps) {
     }
   };
 
+  const changeAvatar = async (ev: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = ev.target.files?.[0];
+    if (!selectedFile) return;
+
+    setBioErrorKey(null);
+    setIsUploadingAvatar(true);
+
+    try {
+      const body = new FormData();
+      body.append("file", selectedFile);
+
+      const res = await authFetch(apiUrl("/account/v1/upload/avatar"), {
+        method: "POST",
+        body,
+      });
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          throw new Error("common.errors.too_many_requests");
+        }
+        throw new Error(await readErrorMessage(res));
+      }
+    } catch (e) {
+      setBioErrorKey(e instanceof Error ? e.message : "common.info");
+    } finally {
+      ev.target.value = "";
+      setIsUploadingAvatar(false);
+    }
+  };
+
   if (!isAuthenticated) return <>Unauthorized.</>;
 
   return (
@@ -96,12 +128,28 @@ export default function MyProfile({ trigger }: MyProfileProps) {
             <>
               <DialogHeader className="w-full">
                 <DialogTitle className="w-full flex flex-col items-center justify-center gap-2 text-center">
-                  <UserAvatar
-                    full_name={user.full_name}
-                    username={user.username}
-                    avatarUrl={user.avatar_url}
-                    size="xl"
-                  />
+                  <label
+                    htmlFor="avatar-upload-input"
+                    className="relative cursor-pointer group/avatar"
+                  >
+                    <UserAvatar
+                      full_name={user.full_name}
+                      username={user.username}
+                      avatarUrl={user.avatar_url}
+                      size="xl"
+                    />
+                    <span className="pointer-events-none absolute inset-0 grid place-items-center rounded-full bg-black/35 opacity-0 transition-opacity group-hover/avatar:opacity-100">
+                      <Upload className="size-5 text-white" />
+                    </span>
+                    <input
+                      id="avatar-upload-input"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="sr-only"
+                      onChange={changeAvatar}
+                      disabled={isUploadingAvatar}
+                    />
+                  </label>
                   <div className="flex flex-row items-start justify-start gap-1">
                     <div className="flex flex-row items-center gap-1">
                       <h3 className="text-lg leading-tight">

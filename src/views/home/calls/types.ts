@@ -4,6 +4,7 @@ export type ContactPeer = {
   id?: number;
   username: string;
   displayName: string;
+  avatar_url?: string | null;
   online?: boolean;
 };
 
@@ -30,6 +31,8 @@ export type CallSummaryPayload = {
     id?: number;
     username: string;
     display_name?: string;
+    full_name?: string;
+    avatar_url?: string | null;
   };
   duration_seconds?: number;
   end_reason?: string | null;
@@ -39,6 +42,7 @@ export type StartCallTarget = {
   id?: number;
   username: string;
   full_name?: string;
+  avatar_url?: string | null;
   online?: boolean;
 };
 

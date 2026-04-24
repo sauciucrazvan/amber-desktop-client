@@ -104,6 +104,7 @@ export default function CallHistoryTabContent({
                         id: call.peer.id,
                         username: call.peer.username,
                         full_name: call.peer.display_name || call.peer.username,
+                        avatar_url: call.peer.avatar_url,
                         online: undefined,
                       })
                     }
@@ -113,6 +114,7 @@ export default function CallHistoryTabContent({
                       <UserAvatar
                         full_name={call.peer.display_name || call.peer.username}
                         username={call.peer.username}
+                        avatarUrl={call.peer.avatar_url}
                         size="sm"
                       />
 

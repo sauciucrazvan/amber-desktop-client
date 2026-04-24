@@ -75,6 +75,7 @@ export default function ContactsTabContent({
                     username={contact.user.username}
                     full_name={contact.user.full_name}
                     online={contact.user.online}
+                    avatar_url={contact.user.avatar_url}
                     unseen_messages={unseen_messages}
                     isActive={isActive}
                     onClick={() => onOpenDirectChat(contact.user)}

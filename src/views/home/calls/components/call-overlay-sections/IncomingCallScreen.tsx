@@ -9,6 +9,7 @@ export function IncomingCallScreen({
   peerDisplayName,
   peerFallback,
   peerOnline,
+  peerAvatar,
   incomingBadgeLabel,
   incomingCallMode,
   declineLabel,
@@ -35,6 +36,7 @@ export function IncomingCallScreen({
             peerDisplayName={peerDisplayName}
             peerFallback={peerFallback}
             peerOnline={peerOnline}
+            peerAvatar={peerAvatar}
           />
         </CardHeader>
 

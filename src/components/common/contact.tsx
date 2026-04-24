@@ -21,6 +21,7 @@ type ContactProps = {
   username: string;
   full_name: string;
   online?: boolean;
+  avatar_url?: string | null;
   unseen_messages: number;
   isActive?: boolean;
 } & ComponentPropsWithoutRef<"section">;
@@ -29,6 +30,7 @@ export default function Contact({
   username,
   full_name,
   online,
+  avatar_url,
   unseen_messages,
   isActive = false,
   className,
@@ -116,6 +118,7 @@ export default function Contact({
             <UserAvatar
               full_name={full_name}
               username={username}
+              avatarUrl={avatar_url}
               isOnline={isOnline}
             />
             <div className="flex min-w-0 flex-1 flex-row items-center justify-between gap-1">

@@ -27,6 +27,7 @@ type Profile = {
   id: number;
   username: string;
   full_name: string;
+  avatar_url?: string | null;
   bio?: string;
   online: boolean;
   verified: boolean;
@@ -132,6 +133,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                     full_name={user.full_name}
                     username={user.username}
                     isOnline={user.online}
+                    avatarUrl={user.avatar_url}
                     size="xl"
                   />
                   <div className="flex flex-row items-start justify-start gap-1">

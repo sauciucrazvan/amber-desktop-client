@@ -4,6 +4,7 @@ export type PeerHeaderProps = {
   peerDisplayName: string;
   peerFallback: string;
   peerOnline?: boolean;
+  peerAvatar?: string | null;
 };
 
 export type OutgoingCallScreenProps = PeerHeaderProps & {

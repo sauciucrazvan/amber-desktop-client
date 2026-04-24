@@ -14,6 +14,7 @@ export function OutgoingCallScreen({
   peerDisplayName,
   peerFallback,
   peerOnline,
+  peerAvatar,
   outgoingBadge,
   waitingLabel,
   cancelLabel,
@@ -30,6 +31,7 @@ export function OutgoingCallScreen({
             peerDisplayName={peerDisplayName}
             peerFallback={peerFallback}
             peerOnline={peerOnline}
+            peerAvatar={peerAvatar}
           />
         </CardHeader>
 

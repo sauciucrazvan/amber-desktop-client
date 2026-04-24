@@ -16,6 +16,7 @@ type ContactRequestItem = {
     id: number;
     username: string;
     full_name: string;
+    avatar_url?: string;
   };
   created_at: string;
 };
@@ -215,6 +216,7 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
                           <UserAvatar
                             full_name={req.user.full_name}
                             username={req.user.username}
+                            avatarUrl={req.user.avatar_url}
                             size="md"
                           />
                         </div>

@@ -884,6 +884,18 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
 
           const fromId =
             typeof fromRaw.id === "number" ? fromRaw.id : undefined;
+          const fromAvatarUrl =
+            typeof fromRaw.avatar_url === "string"
+              ? fromRaw.avatar_url
+              : typeof fromRaw.avatarUrl === "string"
+                ? fromRaw.avatarUrl
+                : typeof fromRaw.avatar === "string"
+                  ? fromRaw.avatar
+                  : typeof payload.avatar_url === "string"
+                    ? String(payload.avatar_url)
+                    : typeof payload.avatarUrl === "string"
+                      ? String(payload.avatarUrl)
+                      : undefined;
 
           const incomingCallId = String(payload.call_id || payload.id || "");
           const incomingMode =
@@ -909,6 +921,7 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
               id: fromId,
               username: callerUsername,
               display_name: fromDisplayName,
+              avatar_url: fromAvatarUrl,
             }),
           );
           setLastEndReason(null);
@@ -935,12 +948,17 @@ export function CallProvider({ children }: { children: React.ReactNode }) {
           setCallId(acceptedCallId);
           activeCallIdRef.current = acceptedCallId;
 
-          if (summary.peer?.username) {
-            setPeer(
+          const acceptedPeer = summary.peer;
+          if (acceptedPeer?.username) {
+            setPeer((currentPeer) =>
               formatPeer({
-                id: summary.peer.id,
-                username: summary.peer.username,
-                display_name: summary.peer.display_name,
+                id: acceptedPeer.id,
+                username: acceptedPeer.username,
+                display_name:
+                  acceptedPeer.display_name ?? currentPeer?.displayName,
+                full_name: acceptedPeer.full_name,
+                avatar_url: acceptedPeer.avatar_url ?? currentPeer?.avatar_url,
+                online: currentPeer?.online,
               }),
             );
           }

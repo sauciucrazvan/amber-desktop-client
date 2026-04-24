@@ -13,6 +13,7 @@ export function EndedCallScreen({
   peerDisplayName,
   peerFallback,
   peerOnline,
+  peerAvatar,
   endedTitle,
   durationLabel,
   isRejected,
@@ -33,6 +34,7 @@ export function EndedCallScreen({
             peerDisplayName={peerDisplayName}
             peerFallback={peerFallback}
             peerOnline={peerOnline}
+            peerAvatar={peerAvatar}
           />
         </CardHeader>
 

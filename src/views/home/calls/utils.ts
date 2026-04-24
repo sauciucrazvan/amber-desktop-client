@@ -28,6 +28,7 @@ export function formatPeer(target: {
   username: string;
   display_name?: string;
   full_name?: string;
+  avatar_url?: string | null;
   online?: boolean;
 }): ContactPeer {
   const displayName =
@@ -37,6 +38,7 @@ export function formatPeer(target: {
     id: target.id,
     username: target.username,
     displayName,
+    avatar_url: target.avatar_url ?? null,
     online: target.online,
   };
 }

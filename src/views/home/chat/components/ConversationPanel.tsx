@@ -178,6 +178,7 @@ export default function ConversationPanel() {
                     full_name={activeChat.otherUser.full_name}
                     username={activeChat.otherUser.username}
                     isOnline={activeChat.otherUser.online}
+                    avatarUrl={activeChat.otherUser.avatar_url}
                     size="sm"
                   />
                   <div className="min-w-0">
@@ -205,6 +206,7 @@ export default function ConversationPanel() {
                     id: activeChat.otherUser.id,
                     username: activeChat.otherUser.username,
                     full_name: activeChat.otherUser.full_name,
+                    avatar_url: activeChat.otherUser.avatar_url,
                     online: activeChat.otherUser.online,
                   },
                   "audio",
@@ -230,6 +232,7 @@ export default function ConversationPanel() {
                     id: activeChat.otherUser.id,
                     username: activeChat.otherUser.username,
                     full_name: activeChat.otherUser.full_name,
+                    avatar_url: activeChat.otherUser.avatar_url,
                     online: activeChat.otherUser.online,
                   },
                   "video",

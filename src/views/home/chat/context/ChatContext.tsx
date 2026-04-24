@@ -29,6 +29,7 @@ export type ActiveChat = {
     id: number;
     username: string;
     full_name: string;
+    avatar_url: string;
     online?: boolean;
   };
 };

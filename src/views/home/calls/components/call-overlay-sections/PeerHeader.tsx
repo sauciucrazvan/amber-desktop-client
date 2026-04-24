@@ -6,6 +6,7 @@ export function PeerHeader({
   peerDisplayName,
   peerFallback,
   peerOnline,
+  peerAvatar,
 }: PeerHeaderProps) {
   return (
     <div className="mx-auto flex w-full max-w-xs items-center justify-center gap-3 text-left">
@@ -13,6 +14,7 @@ export function PeerHeader({
         full_name={peerDisplayName}
         username={peerFallback}
         isOnline={peerOnline}
+        avatarUrl={peerAvatar}
         size="md"
       />
       <div className="min-w-0">

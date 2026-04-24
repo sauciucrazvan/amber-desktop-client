@@ -51,6 +51,7 @@ export default function AccountTab() {
             <UserAvatar
               full_name={account?.full_name}
               username={account?.username}
+              avatarUrl={account?.avatar_url}
               size="md"
             />
             <div className="min-w-0 flex flex-col justify-start items-start gap-0">

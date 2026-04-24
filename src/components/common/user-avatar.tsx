@@ -1,11 +1,12 @@
 import { cn, initialsFromName, stringToColor } from "@/lib/utils";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface UserAvatarProps {
   full_name?: string | null;
   username?: string | null;
+  avatarUrl?: string | null;
   isLoading?: boolean | null;
   isOnline?: boolean | null;
   size?: AvatarSize | null;
@@ -30,6 +31,7 @@ const avatarTextSizeClasses: Record<AvatarSize, string> = {
 export default function UserAvatar({
   full_name,
   username,
+  avatarUrl,
   isLoading,
   isOnline,
   size,
@@ -41,6 +43,7 @@ export default function UserAvatar({
   return (
     <div className="relative">
       <Avatar className={avatarSizeClass}>
+        {avatarUrl && <AvatarImage src={avatarUrl} />}
         <AvatarFallback
           className={avatarTextSizeClass}
           style={

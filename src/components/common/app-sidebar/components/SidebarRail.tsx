@@ -128,6 +128,7 @@ export default function SidebarRail({
                 <UserAvatar
                   full_name={account?.full_name}
                   username={account?.username}
+                  avatarUrl={account?.avatar_url}
                   isLoading={isAccountLoading}
                   size="sm"
                 />

@@ -17,17 +17,11 @@ import { Pencil, Quote } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import ChangeName from "../settings/tabs/dialogs/ChangeName";
+import type { AccountMe } from "@/account/AccountContext";
 
 interface MyProfileProps {
   trigger: ReactNode;
 }
-
-type Profile = {
-  id: number;
-  username: string;
-  full_name: string;
-  bio?: string | null;
-};
 
 async function readErrorMessage(res: Response) {
   try {
@@ -50,7 +44,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
   const [bioErrorKey, setBioErrorKey] = useState<string | null>(null);
   const [isSavingBio, setIsSavingBio] = useState(false);
 
-  const user = account as Profile | null;
+  const user = account as AccountMe | null;
 
   useEffect(() => {
     if (!open || !user) return;
@@ -105,6 +99,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                   <UserAvatar
                     full_name={user.full_name}
                     username={user.username}
+                    avatarUrl={user.avatar_url}
                     size="xl"
                   />
                   <div className="flex flex-row items-start justify-start gap-1">

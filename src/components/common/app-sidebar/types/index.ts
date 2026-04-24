@@ -1,6 +1,7 @@
 export type AccountMe = {
   username: string;
   full_name?: string | null;
+  avatar_url?: string | null;
   verified?: boolean | null;
 };
 
@@ -9,6 +10,7 @@ export type ContactListItem = {
     id: number;
     username: string;
     full_name: string;
+    avatar_url?: string | null;
     online?: boolean;
   };
   created_at: string;

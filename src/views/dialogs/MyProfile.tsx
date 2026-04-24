@@ -18,7 +18,6 @@ import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import ChangeName from "../settings/tabs/dialogs/ChangeName";
 import type { AccountMe } from "@/account/AccountContext";
-import { mutate } from "swr";
 
 interface MyProfileProps {
   trigger: ReactNode;

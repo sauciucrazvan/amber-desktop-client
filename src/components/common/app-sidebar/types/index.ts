@@ -15,6 +15,7 @@ export type ContactListItem = {
   };
   created_at: string;
   last_action_at?: string;
+  notifications?: number;
 };
 
 export type DirectConversationSummary = {

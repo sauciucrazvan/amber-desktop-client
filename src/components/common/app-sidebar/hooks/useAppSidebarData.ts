@@ -63,6 +63,14 @@ export function useAppSidebarData({
         if (cancelled) return;
 
         setContactsState(sortContactsByLastAction(data ?? []));
+        setConversationUnseenCountByUserId(
+          Object.fromEntries(
+            (data ?? []).map((contact) => [
+              contact.user.id,
+              Math.max(0, contact.notifications ?? 0),
+            ]),
+          ),
+        );
       } catch (error) {
         if (cancelled) return;
         setContactsError(error);
@@ -149,6 +157,7 @@ export function useAppSidebarData({
               id: eventPayload.user!.id,
               username: eventPayload.user!.username,
               full_name: eventPayload.user!.full_name,
+              avatar_url: eventPayload.user!.avatar_url,
               online: eventPayload.user!.online,
             },
             created_at: eventPayload.created_at ?? new Date().toISOString(),

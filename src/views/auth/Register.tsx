@@ -29,6 +29,7 @@ import React from "react";
 import Autoplay from "embla-carousel-autoplay";
 import TermsView from "./dialogs/legal/Terms";
 import PrivacyView from "./dialogs/legal/Privacy";
+import ErrorBox from "@/components/common/error-box";
 
 export default function RegisterView() {
   const [, setLocation] = useLocation();
@@ -182,7 +183,9 @@ export default function RegisterView() {
               />
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-2 mt-4 w-75">
+            <div className="flex flex-col items-center justify-center gap-4 mt-4 w-75">
+              {error ? <ErrorBox>{t(error)}</ErrorBox> : null}
+
               {/* Create Account */}
               <Button
                 className="cursor-pointer"
@@ -191,12 +194,6 @@ export default function RegisterView() {
               >
                 {t("register.createAccount")}
               </Button>
-
-              {error ? (
-                <p className="text-destructive text-sm px-6 text-center">
-                  {t(error)}
-                </p>
-              ) : null}
 
               <p
                 data-slot="field-description"

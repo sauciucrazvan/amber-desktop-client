@@ -16,6 +16,7 @@ import {
   CarouselPrevious,
   CarouselNext,
 } from "@/components/ui/carousel";
+import ErrorBox from "@/components/common/error-box";
 
 export default function LoginView() {
   const [, setLocation] = useLocation();
@@ -123,8 +124,10 @@ export default function LoginView() {
               />
             </div>
 
-            <div className="flex flex-col items-center justify-center gap-2 mt-4 w-75">
-              {/* Create Account */}
+            <div className="flex flex-col items-center justify-center gap-4 mt-4 w-75">
+              {error ? <ErrorBox>{t(error)}</ErrorBox> : null}
+
+              {/* Login */}
               <Button
                 className="cursor-pointer"
                 onClick={onSubmit}
@@ -132,12 +135,6 @@ export default function LoginView() {
               >
                 {t("login.signIn")}
               </Button>
-
-              {error ? (
-                <p className="text-destructive text-sm px-6 text-center">
-                  {t(error)}
-                </p>
-              ) : null}
             </div>
 
             <ForgotPassword />

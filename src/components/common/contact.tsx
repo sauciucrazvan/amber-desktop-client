@@ -16,6 +16,7 @@ import { ComponentPropsWithoutRef } from "react";
 import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
 import { dispatchContactsEvent } from "@/lib/contact-events";
+import { useChat } from "@/views/home/chat";
 
 type ContactProps = {
   username: string;
@@ -38,8 +39,10 @@ export default function Contact({
 }: ContactProps) {
   const { t } = useTranslation();
   const { accessToken } = useAuth();
+  const { closeChat, activeChat } = useChat();
 
   const isOnline = Boolean(online);
+  const shouldCloseChat = activeChat?.otherUser.username === username;
 
   const onBlock = async () => {
     try {
@@ -69,6 +72,10 @@ export default function Contact({
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
+    } finally {
+      if (shouldCloseChat) {
+        closeChat();
+      }
     }
   };
 
@@ -100,6 +107,10 @@ export default function Contact({
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
+    } finally {
+      if (shouldCloseChat) {
+        closeChat();
+      }
     }
   };
 

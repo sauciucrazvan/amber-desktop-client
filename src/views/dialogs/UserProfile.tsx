@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import { dispatchContactsEvent } from "@/lib/contact-events";
 import { Spinner } from "@/components/ui/spinner";
+import { useChat } from "../home/chat";
 
 interface UserProfileProps {
   username: string;
@@ -37,6 +38,7 @@ type Profile = {
 export default function UserProfile({ username, trigger }: UserProfileProps) {
   const { t } = useTranslation();
   const { isAuthenticated, accessToken } = useAuth();
+  const { activeChat, closeChat } = useChat();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -47,6 +49,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
   } = useSWR<Profile>(
     isAuthenticated && open ? "/contacts/v1/profile/" + username : null,
   );
+  const shouldCloseChat = activeChat?.otherUser.username === username;
 
   const onBlock = async () => {
     try {
@@ -77,6 +80,9 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
     } finally {
+      if (shouldCloseChat) {
+        closeChat();
+      }
       setOpen(false);
     }
   };
@@ -110,6 +116,9 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
     } finally {
+      if (shouldCloseChat) {
+        closeChat();
+      }
       setOpen(false);
     }
   };

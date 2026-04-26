@@ -76,6 +76,8 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
+    } finally {
+      setOpen(false);
     }
   };
 
@@ -107,6 +109,8 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
       }
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "An error occured");
+    } finally {
+      setOpen(false);
     }
   };
 

@@ -9,14 +9,14 @@ import { type ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
-import { dispatchContactsEvent } from "@/lib/contact-events";
 
 type ContactRequestItem = {
   user: {
     id: number;
     username: string;
     full_name: string;
-    avatar_url?: string;
+    avatar_url?: string | null;
+    online?: boolean;
   };
   created_at: string;
 };
@@ -103,7 +103,13 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
 
   const performAction = async (
     action: "accept" | "decline",
-    target: { id: number; username: string; full_name: string },
+    target: {
+      id: number;
+      username: string;
+      full_name: string;
+      avatar_url?: string | null;
+      online?: boolean;
+    },
   ) => {
     setActionUserId(target.id);
     try {
@@ -144,24 +150,6 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
         resolveMessage(message, fallbackMessageKey, { user: target.username }),
       );
       await mutate("/contacts/v1/requests");
-
-      if (action === "accept") {
-        const now = new Date().toISOString();
-        dispatchContactsEvent({
-          type: "contacts",
-          event: "contact.accepted",
-          payload: {
-            user: {
-              id: target.id,
-              username: target.username,
-              full_name: target.full_name || target.username,
-              online: false,
-            },
-            created_at: now,
-            last_action_at: now,
-          },
-        });
-      }
     } catch (e) {
       const message = e instanceof Error ? e.message : "common.errors.generic";
       toast.error(resolveMessage(message, "common.errors.generic"));
@@ -239,6 +227,8 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
                                   id: req.user.id,
                                   username: req.user.username,
                                   full_name: req.user.full_name,
+                                  avatar_url: req.user.avatar_url ?? null,
+                                  online: req.user.online ?? false,
                                 })
                               }
                               disabled={actionUserId === req.user.id}
@@ -254,6 +244,8 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
                                   id: req.user.id,
                                   username: req.user.username,
                                   full_name: req.user.full_name,
+                                  avatar_url: req.user.avatar_url ?? null,
+                                  online: req.user.online ?? false,
                                 })
                               }
                               disabled={actionUserId === req.user.id}

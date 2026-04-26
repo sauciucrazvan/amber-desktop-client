@@ -419,6 +419,20 @@
       "title": "Istoric apeluri",
       "empty": "Niciun apel încă",
       "failedLoading": "Încărcarea istoricului apelurilor a eșuat",
+      "relative": {
+        "now": "acum",
+        "minutesAgo": "acum {{count}} min",
+        "hoursAgo": "acum {{count}} h",
+        "daysAgo": "acum {{count}} zile",
+        "weeksAgo": "acum {{count}} săpt"
+      },
+      "reasons": {
+        "timeout": "Timp expirat",
+        "canceled": "Anulat",
+        "cancelled": "Anulat",
+        "no_answer": "Fără răspuns",
+        "busy": "Ocupat"
+      },
       "previousPage": "Pagina anterioară",
       "nextPage": "Pagina următoare",
       "page": "Pagina {{current}} / {{total}}"

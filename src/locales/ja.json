@@ -416,6 +416,20 @@
       "title": "Call history",
       "empty": "No calls yet",
       "failedLoading": "Failed loading call history",
+      "relative": {
+        "now": "たった今",
+        "minutesAgo": "{{count}}分前",
+        "hoursAgo": "{{count}}時間前",
+        "daysAgo": "{{count}}日前",
+        "weeksAgo": "{{count}}週間前"
+      },
+      "reasons": {
+        "timeout": "タイムアウト",
+        "canceled": "キャンセル",
+        "cancelled": "キャンセル",
+        "no_answer": "応答なし",
+        "busy": "通話中"
+      },
       "previousPage": "Previous page",
       "nextPage": "Next page",
       "page": "Page {{current}} / {{total}}"

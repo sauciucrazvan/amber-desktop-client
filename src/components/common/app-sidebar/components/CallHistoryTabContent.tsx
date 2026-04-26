@@ -6,7 +6,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Spinner } from "@/components/ui/spinner";
-import { Phone, Video } from "lucide-react";
 import type { TFunction } from "i18next";
 import type { CallHistoryItem, ContactListItem } from "../types";
 
@@ -26,7 +25,7 @@ function formatDuration(totalSeconds?: number) {
   return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
 }
 
-function formatRelativeTime(dateValue?: string | null) {
+function formatRelativeTime(t: TFunction, dateValue?: string | null) {
   if (!dateValue) return "";
 
   const date = new Date(dateValue);
@@ -34,17 +33,39 @@ function formatRelativeTime(dateValue?: string | null) {
 
   const diffMs = Date.now() - date.getTime();
   const diffMinutes = Math.floor(diffMs / 60000);
-  if (diffMinutes < 1) return "now";
-  if (diffMinutes < 60) return `${diffMinutes}m ago`;
+  if (diffMinutes < 1)
+    return t("calls.history.relative.now", { defaultValue: "now" });
+  if (diffMinutes < 60)
+    return t("calls.history.relative.minutesAgo", {
+      count: diffMinutes,
+      defaultValue: "{{count}}m ago",
+    });
 
   const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffHours < 24)
+    return t("calls.history.relative.hoursAgo", {
+      count: diffHours,
+      defaultValue: "{{count}}h ago",
+    });
 
   const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 7)
+    return t("calls.history.relative.daysAgo", {
+      count: diffDays,
+      defaultValue: "{{count}}d ago",
+    });
 
   const diffWeeks = Math.floor(diffDays / 7);
-  return `${diffWeeks}w ago`;
+  return t("calls.history.relative.weeksAgo", {
+    count: diffWeeks,
+    defaultValue: "{{count}}w ago",
+  });
+}
+
+function getCallReasonLabel(t: TFunction, reason: string) {
+  return t([`calls.history.reasons.${reason}`, `calls.status.${reason}`], {
+    defaultValue: reason.replace(/_/g, " "),
+  });
 }
 
 export default function CallHistoryTabContent({
@@ -65,7 +86,7 @@ export default function CallHistoryTabContent({
 
   return (
     <>
-      <div className="px-4 pt-4 shrink-0">
+      <div className="px-4 pt-4 gap-3 shrink-0">
         <h2 className="text-lg font-semibold">
           {t("calls.history.title", "Call history")}
         </h2>
@@ -85,13 +106,17 @@ export default function CallHistoryTabContent({
           ) : callHistory.length > 0 ? (
             callHistory.map((call) => {
               const relativeTimeLabel = formatRelativeTime(
+                t,
                 call.started_at || call.ended_at,
               );
+              const reason = call.end_reason || call.status;
+              const reasonLabel = getCallReasonLabel(t, reason);
               const isMissed =
                 call.status === "missed" ||
                 call.end_reason === "missed" ||
                 call.end_reason === "timeout" ||
                 call.end_reason === "failed" ||
+                call.end_reason === "rejected" ||
                 call.status === "failed";
 
               return (
@@ -119,31 +144,23 @@ export default function CallHistoryTabContent({
                       />
 
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="truncate text-sm font-medium">
-                            {call.peer.display_name || call.peer.username}
-                          </p>
-                          <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground shrink-0">
-                            {call.call_mode === "audio" ? (
-                              <Phone className="size-3.5" />
-                            ) : (
-                              <Video className="size-3.5" />
-                            )}
-                          </span>
-                        </div>
+                        <p className="truncate text-sm font-medium">
+                          {call.peer.display_name || call.peer.username}
+                        </p>
 
                         <div className="mt-0.5 flex items-center justify-between gap-2 text-[12px] text-muted-foreground">
                           <span
                             className={`capitalize ${isMissed ? "text-red-400 font-medium" : ""}`}
                           >
-                            {call.status.replace(/_/g, " ")}
-                          </span>
-                          <span>
-                            {relativeTimeLabel && relativeTimeLabel} {" • "}
-                            {formatDuration(call.duration_seconds)}
+                            {reasonLabel}
                           </span>
                         </div>
                       </div>
+                      <span className="text-xs text-muted-foreground">
+                        {relativeTimeLabel && relativeTimeLabel}
+                        {call.duration_seconds !== 0 &&
+                          ` • ${formatDuration(call.duration_seconds)}`}
+                      </span>
                     </div>
                   </button>
                 </SidebarMenuItem>

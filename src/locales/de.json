@@ -416,6 +416,20 @@
       "title": "Call history",
       "empty": "No calls yet",
       "failedLoading": "Failed loading call history",
+      "relative": {
+        "now": "gerade eben",
+        "minutesAgo": "vor {{count}} Min.",
+        "hoursAgo": "vor {{count}} Std.",
+        "daysAgo": "vor {{count}} Tg.",
+        "weeksAgo": "vor {{count}} Wo."
+      },
+      "reasons": {
+        "timeout": "Zeitüberschreitung",
+        "canceled": "Abgebrochen",
+        "cancelled": "Abgebrochen",
+        "no_answer": "Keine Antwort",
+        "busy": "Besetzt"
+      },
       "previousPage": "Previous page",
       "nextPage": "Next page",
       "page": "Page {{current}} / {{total}}"

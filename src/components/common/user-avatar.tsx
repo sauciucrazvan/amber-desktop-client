@@ -43,7 +43,7 @@ export default function UserAvatar({
   return (
     <div className="relative">
       <Avatar className={avatarSizeClass}>
-        {avatarUrl && <AvatarImage src={avatarUrl} />}
+        <AvatarImage src={avatarUrl || ""} alt={full_name || username || ""} />
         <AvatarFallback
           className={avatarTextSizeClass}
           style={

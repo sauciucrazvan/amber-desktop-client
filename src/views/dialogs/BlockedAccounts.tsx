@@ -114,9 +114,8 @@ export default function BlockedAccounts({ children }: Props) {
               {t("contacts.failed_loading")}
             </p>
           ) : isBlockedAccountsLoading ? (
-            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="inline-flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Spinner />
-              <span>{t("common.info")}</span>
             </div>
           ) : blockedAccounts && blockedAccounts.length > 0 ? (
             <div className="w-full min-h-0 flex-1 overflow-y-auto pr-1">

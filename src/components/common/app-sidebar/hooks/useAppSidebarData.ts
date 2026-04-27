@@ -323,7 +323,18 @@ export function useAppSidebarData({
 
   const handleOpenDirectChat = async (contact: ContactListItem["user"]) => {
     try {
-      await openDirectChat(contact);
+      const knownContact = contactsState.find(
+        (item) =>
+          item.user.id === contact.id ||
+          item.user.username === contact.username,
+      );
+
+      const resolvedContact: ContactListItem["user"] = {
+        ...contact,
+        online: contact.online ?? knownContact?.user.online,
+      };
+
+      await openDirectChat(resolvedContact);
       setConversationUnseenCountByUserId((current) => ({
         ...current,
         [contact.id]: 0,

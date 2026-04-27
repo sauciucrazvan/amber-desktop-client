@@ -132,9 +132,8 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
         <DialogContent className="sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
           {open && isLoading && !error && (
-            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="inline-flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Spinner />
-              <span>{t("common.info")}</span>
             </div>
           )}
 

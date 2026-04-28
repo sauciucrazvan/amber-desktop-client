@@ -18,6 +18,7 @@ interface ConfirmationDialogProps {
   confirmText?: string;
   cancelText?: string;
   children?: ReactNode;
+  content?: ReactNode;
   isDestructive?: boolean;
   isLoading?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -30,6 +31,7 @@ export function ConfirmationDialog({
   onConfirm,
   confirmText,
   cancelText,
+  content,
   children,
   isDestructive = false,
   isLoading = false,
@@ -73,6 +75,11 @@ export function ConfirmationDialog({
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
+            {content && (
+              <div className="flex flex-col items-center justify-center">
+                {content}
+              </div>
+            )}
           </DialogHeader>
         </div>
         <section className="mt-auto w-full flex flex-wrap items-center justify-end gap-1 border-t bg-muted/50 px-4 py-3 sm:px-6 sm:py-4">

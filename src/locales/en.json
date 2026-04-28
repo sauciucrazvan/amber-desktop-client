@@ -267,6 +267,15 @@
       "bio": {
         "too_long": "Limit yourself to 256 characters.",
         "updated": "Successfully updated your bio!"
+      },
+      "avatar": {
+        "uploaded": "Avatar uploaded successfully!",
+        "error": "Failed to upload avatar. Please try again.",
+        "confirm": {
+          "title": "Upload Avatar",
+          "description": "Are you sure you want to use this image as your avatar?",
+          "upload": "Upload"
+        }
       }
     },
     "about": {

@@ -11,11 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { apiUrl } from "@/config";
 import { Pencil, Quote, Upload } from "lucide-react";
 import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import ChangeName from "../settings/tabs/dialogs/ChangeName";
 import type { AccountMe } from "@/account/AccountContext";
 
@@ -44,6 +46,10 @@ export default function MyProfile({ trigger }: MyProfileProps) {
   const [bioErrorKey, setBioErrorKey] = useState<string | null>(null);
   const [isSavingBio, setIsSavingBio] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [selectedAvatarFile, setSelectedAvatarFile] = useState<File | null>(
+    null,
+  );
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const user = account as AccountMe | null;
 
@@ -89,12 +95,25 @@ export default function MyProfile({ trigger }: MyProfileProps) {
     const selectedFile = ev.target.files?.[0];
     if (!selectedFile) return;
 
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewUrl(e.target?.result as string);
+    };
+    reader.readAsDataURL(selectedFile);
+
+    setSelectedAvatarFile(selectedFile);
+    ev.target.value = "";
+  };
+
+  const uploadAvatar = async () => {
+    if (!selectedAvatarFile) return;
+
     setBioErrorKey(null);
     setIsUploadingAvatar(true);
 
     try {
       const body = new FormData();
-      body.append("file", selectedFile);
+      body.append("file", selectedAvatarFile);
 
       const res = await authFetch(apiUrl("/account/v1/upload/avatar"), {
         method: "POST",
@@ -107,10 +126,16 @@ export default function MyProfile({ trigger }: MyProfileProps) {
         }
         throw new Error(await readErrorMessage(res));
       }
+
+      toast.success(t("settings.account.avatar.uploaded"));
+      setSelectedAvatarFile(null);
+      setPreviewUrl(null);
     } catch (e) {
       setBioErrorKey(e instanceof Error ? e.message : "common.info");
+      toast.error(
+        e instanceof Error ? t(e.message) : t("settings.account.avatar.error"),
+      );
     } finally {
-      ev.target.value = "";
       setIsUploadingAvatar(false);
     }
   };
@@ -250,6 +275,32 @@ export default function MyProfile({ trigger }: MyProfileProps) {
           )}
         </DialogContent>
       </Dialog>
+
+      {previewUrl && selectedAvatarFile && (
+        <ConfirmationDialog
+          open={true}
+          title={t("settings.account.avatar.confirm.title")}
+          description={t("settings.account.avatar.confirm.description")}
+          onConfirm={uploadAvatar}
+          confirmText={t("settings.account.avatar.confirm.upload")}
+          isDestructive={false}
+          isLoading={isUploadingAvatar}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              setSelectedAvatarFile(null);
+              setPreviewUrl(null);
+            }
+          }}
+          content={
+            <img
+              src={previewUrl}
+              alt="Avatar preview"
+              draggable={false}
+              className="h-48 w-48 rounded-full object-cover border-4 border-primary/20"
+            />
+          }
+        />
+      )}
     </>
   );
 }

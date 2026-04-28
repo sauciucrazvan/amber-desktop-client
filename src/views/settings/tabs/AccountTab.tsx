@@ -1,6 +1,7 @@
 import { useAuth } from "@/auth/AuthContext";
 import { useAccount } from "@/account/AccountContext";
 import { Separator } from "@/components/ui/separator";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/components/common/user-avatar";
 import {
@@ -19,6 +20,7 @@ import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { ChangeEvent, useState } from "react";
 import { apiUrl } from "@/config";
+import { toast } from "sonner";
 
 export default function AccountTab() {
   const { isAuthenticated, authFetch } = useAuth();
@@ -26,6 +28,10 @@ export default function AccountTab() {
   const { t } = useTranslation();
 
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [selectedAvatarFile, setSelectedAvatarFile] = useState<File | null>(
+    null,
+  );
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   if (!isAuthenticated) return <>Unauthorized.</>;
 
@@ -50,11 +56,24 @@ export default function AccountTab() {
     const selectedFile = ev.target.files?.[0];
     if (!selectedFile) return;
 
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewUrl(e.target?.result as string);
+    };
+    reader.readAsDataURL(selectedFile);
+
+    setSelectedAvatarFile(selectedFile);
+    ev.target.value = "";
+  };
+
+  const uploadAvatar = async () => {
+    if (!selectedAvatarFile) return;
+
     setIsUploadingAvatar(true);
 
     try {
       const body = new FormData();
-      body.append("file", selectedFile);
+      body.append("file", selectedAvatarFile);
 
       const res = await authFetch(apiUrl("/account/v1/upload/avatar"), {
         method: "POST",
@@ -67,9 +86,15 @@ export default function AccountTab() {
         }
         throw new Error(res.statusText);
       }
+
+      toast.success(t("settings.account.avatar.uploaded"));
+      setSelectedAvatarFile(null);
+      setPreviewUrl(null);
     } catch (e) {
+      toast.error(
+        e instanceof Error ? t(e.message) : t("settings.account.avatar.error"),
+      );
     } finally {
-      ev.target.value = "";
       setIsUploadingAvatar(false);
     }
   };
@@ -196,6 +221,32 @@ export default function AccountTab() {
           </RequestData>
         </div>
       </section>
+
+      {previewUrl && selectedAvatarFile && (
+        <ConfirmationDialog
+          open={true}
+          title={t("settings.account.avatar.confirm.title")}
+          description={t("settings.account.avatar.confirm.description")}
+          onConfirm={uploadAvatar}
+          confirmText={t("settings.account.avatar.confirm.upload")}
+          isDestructive={false}
+          isLoading={isUploadingAvatar}
+          onOpenChange={(isOpen) => {
+            if (!isOpen) {
+              setSelectedAvatarFile(null);
+              setPreviewUrl(null);
+            }
+          }}
+          content={
+            <img
+              src={previewUrl}
+              alt="Avatar preview"
+              draggable={false}
+              className="h-48 w-48 rounded-full object-cover border-4 border-primary/20"
+            />
+          }
+        />
+      )}
     </div>
   );
 }

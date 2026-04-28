@@ -6,9 +6,11 @@ import {
   ContextMenuTrigger,
   ContextMenuSeparator,
 } from "@/components/ui/context-menu";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { formatHHmm } from "@/lib/utils";
 import { Check, CheckCheck, Pencil, Reply, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import type { MessageItem } from "../types";
 import MessageEditHistoryDialog from "./MessageEditHistoryDialog";
 
@@ -49,6 +51,7 @@ export default function ChatBubble({
   edit_func,
 }: Props) {
   const { t } = useTranslation();
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const isMine = myUserId !== null && message.sender_id === myUserId;
   const text = message.content?.text ?? "";
@@ -171,7 +174,7 @@ export default function ChatBubble({
                   <ContextMenuItem
                     variant="destructive"
                     className="cursor-pointer"
-                    onClick={() => delete_func(message.id)}
+                    onClick={() => setConfirmingDelete(true)}
                   >
                     <Trash2 /> {t("conversations.actions.delete")}
                   </ContextMenuItem>
@@ -180,6 +183,20 @@ export default function ChatBubble({
             </ContextMenuGroup>
           </ContextMenuContent>
         </ContextMenu>
+      )}
+
+      {confirmingDelete && (
+        <ConfirmationDialog
+          open={true}
+          title={t("conversations.deleteMessage.confirm.title")}
+          description={t("conversations.deleteMessage.confirm.description")}
+          onConfirm={() => delete_func(message.id)}
+          confirmText={t("common.delete")}
+          isDestructive
+          onOpenChange={(isOpen) => {
+            if (!isOpen) setConfirmingDelete(false);
+          }}
+        />
       )}
     </div>
   );

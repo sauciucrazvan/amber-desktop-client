@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { apiUrl } from "@/config";
 import { Ban, Quote, X } from "lucide-react";
 import { ReactNode, useState } from "react";
@@ -173,19 +174,43 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
 
               {/* content */}
               <section className="w-full inline-flex items-center justify-center gap-2">
-                <a
-                  onClick={onRemove}
-                  className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
+                <ConfirmationDialog
+                  title={t("contacts.removeConfirm.title")}
+                  description={t("contacts.removeConfirm.description", {
+                    user: user.full_name || user.username,
+                  })}
+                  onConfirm={onRemove}
+                  confirmText={t("common.remove")}
+                  isDestructive
+                  onOpenChange={(isOpen) => {
+                    if (!isOpen) {
+                      // Dialog closed, update parent state if needed
+                    }
+                  }}
                 >
-                  <X /> {t("contacts.remove")}
-                </a>
+                  <a className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center">
+                    <X /> {t("contacts.remove")}
+                  </a>
+                </ConfirmationDialog>
 
-                <a
-                  onClick={onBlock}
-                  className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center"
+                <ConfirmationDialog
+                  title={t("contacts.blockConfirm.title")}
+                  description={t("contacts.blockConfirm.description", {
+                    user: user.full_name || user.username,
+                  })}
+                  onConfirm={onBlock}
+                  confirmText={t("common.block")}
+                  isDestructive
+                  onOpenChange={(isOpen) => {
+                    if (!isOpen) {
+                      // Dialog closed, update parent state if needed
+                    }
+                  }}
                 >
-                  <Ban /> {t("contacts.block")}
-                </a>
+                  <a className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center">
+                    <Ban /> {t("contacts.block")}
+                  </a>
+                </ConfirmationDialog>
               </section>
             </>
           )}

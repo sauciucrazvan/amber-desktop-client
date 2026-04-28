@@ -12,11 +12,12 @@ import { apiUrl } from "@/config";
 import { useAuth } from "@/auth/AuthContext";
 import { mutate } from "swr";
 import { cn } from "@/lib/utils";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, useState } from "react";
 import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
 import { dispatchContactsEvent } from "@/lib/contact-events";
 import { useChat } from "@/views/home/chat";
+import { ConfirmationDialog } from "../ui/confirmation-dialog";
 
 type ContactProps = {
   username: string;
@@ -40,6 +41,9 @@ export default function Contact({
   const { t } = useTranslation();
   const { accessToken } = useAuth();
   const { closeChat, activeChat } = useChat();
+  const [confirmingAction, setConfirmingAction] = useState<
+    "block" | "remove" | null
+  >(null);
 
   const isOnline = Boolean(online);
   const shouldCloseChat = activeChat?.otherUser.username === username;
@@ -167,20 +171,52 @@ export default function Contact({
           <ContextMenuSeparator />
           <ContextMenuItem
             variant={"destructive"}
-            onClick={onRemove}
+            onClick={() => setConfirmingAction("remove")}
             className="cursor-pointer"
           >
             <X /> {t("contacts.remove")}
           </ContextMenuItem>
           <ContextMenuItem
             variant={"destructive"}
-            onClick={onBlock}
+            onClick={() => setConfirmingAction("block")}
             className="cursor-pointer"
           >
             <Ban /> {t("contacts.block")}
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
+
+      {confirmingAction === "remove" && (
+        <ConfirmationDialog
+          open={true}
+          title={t("contacts.removeConfirm.title")}
+          description={t("contacts.removeConfirm.description", {
+            user: full_name,
+          })}
+          onConfirm={onRemove}
+          confirmText={t("common.remove")}
+          isDestructive
+          onOpenChange={(isOpen) => {
+            if (!isOpen) setConfirmingAction(null);
+          }}
+        />
+      )}
+
+      {confirmingAction === "block" && (
+        <ConfirmationDialog
+          open={true}
+          title={t("contacts.blockConfirm.title")}
+          description={t("contacts.blockConfirm.description", {
+            user: full_name,
+          })}
+          onConfirm={onBlock}
+          confirmText={t("common.block")}
+          isDestructive
+          onOpenChange={(isOpen) => {
+            if (!isOpen) setConfirmingAction(null);
+          }}
+        />
+      )}
     </>
   );
 }

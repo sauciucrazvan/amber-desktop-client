@@ -6,6 +6,9 @@
     "hide": "Hide",
     "submit": "Submit",
     "cancel": "Cancel",
+    "confirm": "Confirm",
+    "remove": "Remove",
+    "block": "Block",
     "verified": "Verified",
     "unverified": "Please verify your account first before you use this feature.",
     "errors": {
@@ -325,6 +328,14 @@
     "no_request": "You did not send a request to {{user}}.",
     "accepted": "You're now friends with {{user}}.",
     "declined": "You've declined {{user}}'s request.",
+    "removeConfirm": {
+      "title": "Remove Contact",
+      "description": "Are you sure you want to remove {{user}} from your contacts?"
+    },
+    "blockConfirm": {
+      "title": "Block Contact",
+      "description": "Are you sure you want to block {{user}}? You won't be able to chat with them and they won't be able to contact you."
+    },
     "add": {
       "title": "Add Friends",
       "description": "You can add friends with their Amber username.",

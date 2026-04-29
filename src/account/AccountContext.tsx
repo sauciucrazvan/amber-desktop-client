@@ -19,6 +19,8 @@ export type AccountMe = {
   bio: string | null;
   avatar_url: string | null;
   verified: boolean | null;
+  registered_at?: string | null;
+  last_active_at?: string | null;
 };
 
 type AccountWsPayload = {
@@ -47,6 +49,8 @@ function parseAccount(raw: unknown): AccountMe | null {
     bio?: unknown;
     avatar_url?: unknown;
     verified?: unknown;
+    registered_at?: unknown;
+    last_active_at?: unknown;
   };
 
   if (typeof payload.id !== "number") return null;
@@ -63,6 +67,12 @@ function parseAccount(raw: unknown): AccountMe | null {
     avatar_url:
       typeof payload.avatar_url === "string" ? payload.avatar_url : null,
     verified: typeof payload.verified === "boolean" ? payload.verified : null,
+    registered_at:
+      typeof payload.registered_at === "string" ? payload.registered_at : null,
+    last_active_at:
+      typeof payload.last_active_at === "string"
+        ? payload.last_active_at
+        : null,
   };
 }
 

@@ -24,7 +24,6 @@
     "subtitle": "Inserisci le credenziali qui sotto per accedere",
     "usernamePlaceholder": "Il tuo nome utente",
     "passwordPlaceholder": "La tua password",
-    "signIn": "Accedi",
     "forgotPassword": "Password dimenticata?",
     "fillInput": "Compila i campi",
     "incorrectCredentials": "Nome utente o password non corretti.",
@@ -468,5 +467,9 @@
         "title": "Modifica bio"
       }
     }
+  },
+  "stats": {
+    "member_since": "Membro da",
+    "last_active": "Ultima attività"
   }
 }

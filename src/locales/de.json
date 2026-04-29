@@ -24,7 +24,6 @@
     "subtitle": "Gib deine Zugangsdaten ein, um dich anzumelden",
     "usernamePlaceholder": "Dein Benutzername",
     "passwordPlaceholder": "Dein Passwort",
-    "signIn": "Anmelden",
     "forgotPassword": "Passwort vergessen?",
     "fillInput": "Fülle die Eingabefelder aus",
     "incorrectCredentials": "Falscher Benutzername oder Passwort.",
@@ -468,5 +467,9 @@
         "title": "Bio bearbeiten"
       }
     }
+  },
+  "stats": {
+    "member_since": "Mitglied seit",
+    "last_active": "Zuletzt aktiv"
   }
 }

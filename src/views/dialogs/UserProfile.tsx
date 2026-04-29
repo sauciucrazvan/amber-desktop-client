@@ -1,6 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
 import UserAvatar from "@/components/common/user-avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { apiUrl } from "@/config";
-import { Ban, Quote, X } from "lucide-react";
+import { Ban, X } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -19,6 +18,7 @@ import useSWR, { mutate } from "swr";
 import { dispatchContactsEvent } from "@/lib/contact-events";
 import { Spinner } from "@/components/ui/spinner";
 import { useChat } from "../home/chat";
+import { Button } from "@/components/ui/button";
 
 interface UserProfileProps {
   username: string;
@@ -34,12 +34,23 @@ type Profile = {
   online: boolean;
   verified: boolean;
   disabled: boolean;
+  registered_at?: string | null;
+  last_active_at?: string | null;
 };
 
 export default function UserProfile({ username, trigger }: UserProfileProps) {
   const { t } = useTranslation();
   const { isAuthenticated, accessToken } = useAuth();
   const { activeChat, closeChat } = useChat();
+  const formatMonthYear = (value?: string | null) => {
+    if (!value) return null;
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toLocaleDateString(undefined, {
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -141,7 +152,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
           {open && !isLoading && user && (
             <>
               <DialogHeader className="w-full">
-                <DialogTitle className="w-full flex flex-col items-center justify-center gap-2 text-center">
+                <DialogTitle className="w-full flex flex-col items-center justify-center gap-3 text-center">
                   <UserAvatar
                     full_name={user.full_name}
                     username={user.username}
@@ -149,31 +160,41 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                     avatarUrl={user.avatar_url}
                     size="xl"
                   />
-                  <div className="flex flex-row items-start justify-start gap-1">
-                    <div className="flex flex-row items-center gap-1">
-                      <h3 className="text-lg leading-tight">
-                        {user.full_name}
-                        <p className="text-sm text-muted-foreground">
-                          @{user.username}
-                        </p>
-                      </h3>
-                    </div>
+                  <div className="flex flex-col items-center gap-0">
+                    <h3 className="text-lg leading-tight">{user.full_name}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      @{user.username}
+                    </p>
                   </div>
                 </DialogTitle>
-                <DialogDescription className="inline-flex items-center justify-center gap-1">
-                  <Card className="w-full gap-0 mt-2 py-2">
-                    <CardHeader className="inline-flex items-start gap-1 text-md font-bold mt-1">
-                      <Quote size="12" /> {t("profile.bio.title")}
-                    </CardHeader>
-                    <CardContent className="text-start italic text-gray-400 mb-2">
-                      {user && user.bio ? user.bio : t("profile.bio.empty")}
-                    </CardContent>
-                  </Card>
+                <DialogDescription className="w-full">
+                  <div className="w-full mt-3 rounded-md border border-border/60 px-4 py-3">
+                    <p className="text-xs font-medium text-muted-foreground mb-1">
+                      {t("profile.bio.title")}
+                    </p>
+                    <p className="text-sm text-foreground/80 whitespace-pre-wrap wrap-break-word">
+                      {(user.bio ?? "").trim() || t("profile.bio.empty")}
+                    </p>
+                  </div>
                 </DialogDescription>
               </DialogHeader>
 
-              {/* content */}
-              <section className="w-full inline-flex items-center justify-center gap-2">
+              <section className="w-full flex flex-col gap-2 pt-3 text-sm">
+                <div className="flex flex-row justify-between gap-1">
+                  <span className="text-muted-foreground">
+                    {t("profile.stats.member_since", "Member since")}
+                  </span>
+                  <span>{formatMonthYear(user.registered_at) ?? "—"}</span>
+                </div>
+                <div className="flex flex-row  justify-between gap-1">
+                  <span className="text-muted-foreground">
+                    {t("profile.stats.last_active", "Last active")}
+                  </span>
+                  <span>{"-1 hours ago"}</span>
+                </div>
+              </section>
+
+              <section className="w-full inline-flex items-center justify-center gap-2 pt-4">
                 <ConfirmationDialog
                   title={t("contacts.removeConfirm.title")}
                   description={t("contacts.removeConfirm.description", {
@@ -182,15 +203,14 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                   onConfirm={onRemove}
                   confirmText={t("common.remove")}
                   isDestructive
-                  onOpenChange={(isOpen) => {
-                    if (!isOpen) {
-                      // Dialog closed, update parent state if needed
-                    }
-                  }}
                 >
-                  <a className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center">
-                    <X /> {t("contacts.remove")}
-                  </a>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer"
+                  >
+                    <X className="size-3.5" /> {t("contacts.remove")}
+                  </Button>
                 </ConfirmationDialog>
 
                 <ConfirmationDialog
@@ -201,15 +221,14 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                   onConfirm={onBlock}
                   confirmText={t("common.block")}
                   isDestructive
-                  onOpenChange={(isOpen) => {
-                    if (!isOpen) {
-                      // Dialog closed, update parent state if needed
-                    }
-                  }}
                 >
-                  <a className="cursor-pointer bg-background hover:bg-secondary w-20 py-2 border-border border-2 rounded-md flex flex-col items-center">
-                    <Ban /> {t("contacts.block")}
-                  </a>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="cursor-pointer"
+                  >
+                    <Ban className="size-3.5" /> {t("contacts.block")}
+                  </Button>
                 </ConfirmationDialog>
               </section>
             </>

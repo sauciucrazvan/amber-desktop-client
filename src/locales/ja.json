@@ -24,7 +24,6 @@
     "subtitle": "ログインするには認証情報を入力してください",
     "usernamePlaceholder": "ユーザー名",
     "passwordPlaceholder": "パスワード",
-    "signIn": "ログイン",
     "forgotPassword": "パスワードをお忘れですか？",
     "fillInput": "入力欄を埋めてください",
     "incorrectCredentials": "ユーザー名またはパスワードが正しくありません。",
@@ -467,6 +466,10 @@
       "edit": {
         "title": "自己紹介を編集"
       }
+    },
+    "stats": {
+      "member_since": "メンバー登録日",
+      "last_active": "最終活動"
     }
   }
 }

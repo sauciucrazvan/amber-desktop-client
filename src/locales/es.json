@@ -24,7 +24,6 @@
     "subtitle": "Introduce tus credenciales para iniciar sesión",
     "usernamePlaceholder": "Tu nombre de usuario",
     "passwordPlaceholder": "Tu contraseña",
-    "signIn": "Iniciar sesión",
     "forgotPassword": "¿Olvidaste tu contraseña?",
     "fillInput": "Rellena los campos",
     "incorrectCredentials": "Nombre de usuario o contraseña incorrectos.",
@@ -467,6 +466,10 @@
       "edit": {
         "title": "Editar biografía"
       }
+    },
+    "stats": {
+      "member_since": "Miembro desde",
+      "last_active": "Última actividad"
     }
   }
 }

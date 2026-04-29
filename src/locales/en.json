@@ -28,7 +28,6 @@
     "subtitle": "Enter your credentials below to login",
     "usernamePlaceholder": "Your username",
     "passwordPlaceholder": "Your password",
-    "signIn": "Sign in",
     "forgotPassword": "Forgot password?",
     "fillInput": "Fill in the input fields",
     "incorrectCredentials": "Incorrect username or password.",
@@ -517,5 +516,9 @@
         "title": "Edit bio"
       }
     }
+  },
+  "stats": {
+    "member_since": "Member since",
+    "last_active": "Last active"
   }
 }

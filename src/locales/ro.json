@@ -24,7 +24,6 @@
     "subtitle": "Introdu datele de mai jos pentru a te autentifica",
     "usernamePlaceholder": "Numele tău de utilizator",
     "passwordPlaceholder": "Parola ta",
-    "signIn": "Autentificare",
     "forgotPassword": "Ai uitat parola?",
     "fillInput": "Completează câmpurile",
     "incorrectCredentials": "Nume de utilizator sau parolă incorecte.",
@@ -481,6 +480,10 @@
       "edit": {
         "title": "Editează biografia"
       }
+    },
+    "stats": {
+      "member_since": "Membru din",
+      "last_active": "Ultima activitate"
     }
   }
 }

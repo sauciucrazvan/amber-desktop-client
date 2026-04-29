@@ -2,7 +2,6 @@ import { useAuth } from "@/auth/AuthContext";
 import { useAccount } from "@/account/AccountContext";
 import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,7 @@ import {
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { apiUrl } from "@/config";
-import { Pencil, Quote, Upload } from "lucide-react";
+import { Pencil, Upload } from "lucide-react";
 import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -39,6 +38,15 @@ export default function MyProfile({ trigger }: MyProfileProps) {
   const { t } = useTranslation();
   const { isAuthenticated, authFetch } = useAuth();
   const { account, error, isLoading } = useAccount();
+  const formatMonthYear = (value?: string | null) => {
+    if (!value) return null;
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return null;
+    return date.toLocaleDateString(undefined, {
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   const [open, setOpen] = useState<boolean>(false);
   const [isEditingBio, setIsEditingBio] = useState(false);
@@ -151,7 +159,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
           {!isLoading && user && (
             <>
               <DialogHeader className="w-full">
-                <DialogTitle className="w-full flex flex-col items-center justify-center gap-2 text-center">
+                <DialogTitle className="w-full flex flex-col items-center justify-center gap-3 text-center">
                   <label
                     htmlFor="avatar-upload-input"
                     className="relative cursor-pointer group/avatar"
@@ -174,29 +182,25 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                       disabled={isUploadingAvatar}
                     />
                   </label>
-                  <div className="flex flex-row items-start justify-start gap-1">
-                    <div className="flex flex-row items-center gap-1">
-                      <h3 className="text-lg leading-tight">
-                        <ChangeName>
-                          <p className="hover:underline cursor-pointer">
-                            {user.full_name}
-                          </p>
-                        </ChangeName>
-                        <p className="text-sm text-muted-foreground">
-                          @{user.username}
-                        </p>
-                      </h3>
-                    </div>
+                  <div className="flex flex-col items-center gap-0">
+                    <ChangeName>
+                      <p className="text-lg leading-tight hover:underline cursor-pointer">
+                        {user.full_name}
+                      </p>
+                    </ChangeName>
+                    <p className="text-sm text-muted-foreground">
+                      @{user.username}
+                    </p>
                   </div>
                 </DialogTitle>
-                <DialogDescription className="inline-flex items-center justify-center gap-1">
-                  <Card className="w-full gap-0 mt-2 py-2">
-                    <CardHeader className="w-full text-md font-bold inline-flex items-center justify-between">
-                      <div className="inline-flex items-center gap-1">
-                        <Quote size="12" /> {t("profile.bio.title")}
-                      </div>
+                <DialogDescription className="w-full">
+                  <div className="w-full mt-3 rounded-md border border-border/60 px-4 py-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-medium text-muted-foreground">
+                        {t("profile.bio.title")}
+                      </p>
                       <Button
-                        variant={"ghost"}
+                        variant="ghost"
                         size="icon-sm"
                         className="cursor-pointer"
                         title={t("profile.bio.edit.title")}
@@ -208,50 +212,48 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                       >
                         <Pencil />
                       </Button>
-                    </CardHeader>
-                    <CardContent className="mb-2">
-                      {isEditingBio ? (
-                        <div className="w-full flex flex-col gap-2">
-                          <Textarea
-                            value={bioDraft}
-                            onChange={(e) => setBioDraft(e.target.value)}
-                            placeholder={t("profile.bio.empty")}
-                            className="min-h-20"
-                            maxLength={100}
-                          />
-                          <div className="w-full flex items-center justify-end gap-2">
-                            <Button
-                              type="button"
-                              variant="outline"
-                              onClick={() => {
-                                setIsEditingBio(false);
-                                setBioDraft(user.bio ?? "");
-                                setBioErrorKey(null);
-                              }}
-                              disabled={isSavingBio}
-                              className="cursor-pointer"
-                            >
-                              {t("common.cancel")}
-                            </Button>
-                            <Button
-                              type="button"
-                              onClick={saveBio}
-                              disabled={
-                                isSavingBio || bioDraft === (user.bio ?? "")
-                              }
-                              className="cursor-pointer"
-                            >
-                              {t("common.submit")}
-                            </Button>
-                          </div>
+                    </div>
+                    {isEditingBio ? (
+                      <div className="w-full flex flex-col gap-2 pt-2">
+                        <Textarea
+                          value={bioDraft}
+                          onChange={(e) => setBioDraft(e.target.value)}
+                          placeholder={t("profile.bio.empty")}
+                          className="min-h-20"
+                          maxLength={100}
+                        />
+                        <div className="w-full flex items-center justify-end gap-2">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                              setIsEditingBio(false);
+                              setBioDraft(user.bio ?? "");
+                              setBioErrorKey(null);
+                            }}
+                            disabled={isSavingBio}
+                            className="cursor-pointer"
+                          >
+                            {t("common.cancel")}
+                          </Button>
+                          <Button
+                            type="button"
+                            onClick={saveBio}
+                            disabled={
+                              isSavingBio || bioDraft === (user.bio ?? "")
+                            }
+                            className="cursor-pointer"
+                          >
+                            {t("common.submit")}
+                          </Button>
                         </div>
-                      ) : (
-                        <p className="text-start italic text-gray-400">
-                          {(user.bio ?? "").trim() || t("profile.bio.empty")}
-                        </p>
-                      )}
-                    </CardContent>
-                  </Card>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-foreground/80 whitespace-pre-wrap wrap-break-word pt-1">
+                        {(user.bio ?? "").trim() || t("profile.bio.empty")}
+                      </p>
+                    )}
+                  </div>
                 </DialogDescription>
                 {bioErrorKey && (
                   <p className="text-red-500 text-xs">
@@ -263,8 +265,20 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                 )}
               </DialogHeader>
 
-              {/* content */}
-              <section className="w-full inline-flex items-center justify-center gap-2"></section>
+              <section className="w-full flex flex-col gap-2 pt-3 text-sm">
+                <div className="flex flex-row justify-between gap-1">
+                  <span className="text-muted-foreground">
+                    {t("profile.stats.member_since", "Member since")}
+                  </span>
+                  <span>{formatMonthYear(user.registered_at) ?? "—"}</span>
+                </div>
+                <div className="flex flex-row justify-between gap-1">
+                  <span className="text-muted-foreground">
+                    {t("profile.stats.last_active", "Last active")}
+                  </span>
+                  <span>{"2 hours ago"}</span>
+                </div>
+              </section>
             </>
           )}
 

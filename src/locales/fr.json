@@ -24,7 +24,6 @@
     "subtitle": "Saisissez vos identifiants ci-dessous pour vous connecter",
     "usernamePlaceholder": "Votre nom d'utilisateur",
     "passwordPlaceholder": "Votre mot de passe",
-    "signIn": "Se connecter",
     "forgotPassword": "Mot de passe oublié ?",
     "fillInput": "Remplissez les champs",
     "incorrectCredentials": "Nom d'utilisateur ou mot de passe incorrect.",
@@ -468,5 +467,9 @@
         "title": "Modifier la bio"
       }
     }
+  },
+  "stats": {
+    "member_since": "Membre depuis",
+    "last_active": "Dernière activité"
   }
 }

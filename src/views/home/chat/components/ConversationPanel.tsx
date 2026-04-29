@@ -400,10 +400,15 @@ export default function ConversationPanel() {
 
       <div className="border-t overflow-hidden">
         {editing && (
-          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-1 pb-0">
-            <div className="inline-flex items-center gap-1 wrap-normal truncate">
-              <Edit2 size="16" className="text-muted-foreground" />{" "}
-              {editing.content.text}
+          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2 pb-1">
+            <div className="inline-flex min-w-0 items-start gap-2">
+              <Edit2 className="size-8 mt-0.5 text-muted-foreground" />
+              <div className="w-full bg-primary/5 p-2 rounded-sm whitespace-pre-wrap break-all wrap-anywhere">
+                <p className="text-xs text-muted-foreground mb-1 font-medium">
+                  {t("conversations.you")}
+                </p>
+                <p className="text-sm">{editing.content.text}</p>
+              </div>
             </div>
             <Button
               variant={"ghost"}
@@ -415,12 +420,21 @@ export default function ConversationPanel() {
           </div>
         )}
         {replyTo && (
-          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-1 pb-0">
-            <div className="inline-flex items-center gap-1 wrap-normal truncate">
-              <Reply className="text-muted-foreground" /> {replyTo.content.text}
+          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2 pb-1">
+            <div className="inline-flex min-w-0 items-start gap-2">
+              <Reply className="size-8 mt-0.5 text-muted-foreground" />
+              <div className="w-full bg-primary/5 p-2 rounded-sm whitespace-pre-wrap break-all wrap-anywhere">
+                <p className="text-xs text-muted-foreground mb-1 font-medium">
+                  {replyTo.sender_id === myUserId
+                    ? t("conversations.you")
+                    : activeChat.otherUser.full_name}
+                </p>
+                <p className="text-sm">{replyTo.content.text}</p>
+              </div>
             </div>
             <Button
-              variant={"ghost"}
+              variant="outline"
+              size="icon"
               className="cursor-pointer"
               onClick={cancelComposerModes}
             >
@@ -428,36 +442,38 @@ export default function ConversationPanel() {
             </Button>
           </div>
         )}
-        <div className="flex min-w-0 items-center gap-2 px-4 pt-2 pb-2">
-          <Textarea
-            ref={textareaRef}
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            placeholder={t("conversations.type_message")}
-            className="min-h-8 max-h-10 min-w-0 max-w-full flex-1 resize-none field-sizing-fixed overflow-x-hidden wrap-break-word"
-            onKeyDown={(e) => {
-              if (e.key === "Escape") {
-                e.preventDefault();
-                cancelComposerModes();
-                return;
-              }
+        <div className="flex min-w-0 px-4 pt-2 pb-2">
+          <ButtonGroup className="w-full">
+            <Textarea
+              ref={textareaRef}
+              value={messageText}
+              onChange={(e) => setMessageText(e.target.value)}
+              placeholder={t("conversations.type_message")}
+              className="min-h-9 max-h-9 min-w-0 max-w-full w-full flex-1 resize-none field-sizing-fixed overflow-x-hidden overflow-y-hidden wrap-break-word"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  e.preventDefault();
+                  cancelComposerModes();
+                  return;
+                }
 
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                onSend();
-              }
-            }}
-          />
-          <Button
-            type="button"
-            size="icon"
-            onClick={onSend}
-            disabled={!canSend}
-            aria-label={t("conversations.send_message")}
-            className="shrink-0 cursor-pointer"
-          >
-            <Send className="size-4" />
-          </Button>
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  onSend();
+                }
+              }}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onSend}
+              disabled={!canSend}
+              aria-label={t("conversations.send_message")}
+              className="shrink-0 cursor-pointer"
+            >
+              <Send className="size-4" />
+            </Button>
+          </ButtonGroup>
         </div>
       </div>
     </section>

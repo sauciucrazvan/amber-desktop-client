@@ -19,6 +19,7 @@ import DevicesTab from "./tabs/DevicesTab";
 
 interface SettingsProps {
   minimalViews: boolean;
+  trigger?: React.ReactNode;
 }
 
 export default function Settings(props: SettingsProps) {
@@ -53,9 +54,13 @@ export default function Settings(props: SettingsProps) {
       <Dialog open={open} onOpenChange={setOpen}>
         <form>
           <DialogTrigger asChild>
-            <Button variant="ghost" className="cursor-pointer">
-              <SettingsIcon />
-            </Button>
+            {props.trigger ? (
+              props.trigger
+            ) : (
+              <Button variant="ghost" className="cursor-pointer">
+                <SettingsIcon />
+              </Button>
+            )}
           </DialogTrigger>
           <DialogContent className="sm:max-w-106.25 min-h-100 max-h-100 flex flex-col items-start justify-start">
             <DialogHeader>

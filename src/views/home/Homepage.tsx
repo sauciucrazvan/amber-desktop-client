@@ -1,6 +1,5 @@
 import AppSidebar from "@/components/common/app-sidebar";
-import Header from "@/components/common/header";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import GetStarted from "./dialogs/GetStarted";
 import { ChatProvider, ConversationPanel, useChat } from "./chat";
 
@@ -16,12 +15,6 @@ function HomepageContent() {
     <SidebarProvider>
       {sidebarSide == "left" ? <AppSidebar /> : null}
       <main className="min-w-0 flex-1 overflow-hidden border-t">
-        <Header
-          extra={
-            <SidebarTrigger variant={"ghost"} className="p-4 cursor-pointer" />
-          }
-        />
-
         {activeChat ? (
           <ConversationPanel />
         ) : (

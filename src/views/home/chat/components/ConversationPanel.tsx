@@ -169,9 +169,9 @@ export default function ConversationPanel() {
   if (!activeChat) return null;
 
   return (
-    <section className="flex h-[calc(100%-3rem)] w-full flex-col pt-4">
+    <section className="flex h-full w-full flex-col pt-2">
       <div className="border-b">
-        <div className="mb-1 flex items-center justify-between px-4 pb-2">
+        <div className="mb-1 flex items-center justify-between px-4 pb-1">
           <div className="flex min-w-0 items-center gap-2">
             <UserProfile
               username={activeChat.otherUser.username}
@@ -400,7 +400,7 @@ export default function ConversationPanel() {
 
       <div className="border-t overflow-hidden">
         {editing && (
-          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2.5 pb-0">
+          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-1 pb-0">
             <div className="inline-flex items-center gap-1 wrap-normal truncate">
               <Edit2 size="16" className="text-muted-foreground" />{" "}
               {editing.content.text}
@@ -415,7 +415,7 @@ export default function ConversationPanel() {
           </div>
         )}
         {replyTo && (
-          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-2.5 pb-0">
+          <div className="w-full inline-flex justify-between items-center gap-2 px-4 pt-1 pb-0">
             <div className="inline-flex items-center gap-1 wrap-normal truncate">
               <Reply className="text-muted-foreground" /> {replyTo.content.text}
             </div>
@@ -428,7 +428,7 @@ export default function ConversationPanel() {
             </Button>
           </div>
         )}
-        <div className="flex min-w-0 items-center gap-2 px-4 pt-2.5 pb-0">
+        <div className="flex min-w-0 items-center gap-2 px-4 pt-2 pb-2">
           <Textarea
             ref={textareaRef}
             value={messageText}

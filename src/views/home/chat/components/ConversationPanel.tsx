@@ -2,6 +2,11 @@ import { useAuth } from "@/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
 import { useCalls } from "@/views/home/calls";
@@ -13,6 +18,7 @@ import { useChat } from "../context/ChatContext";
 import ChatBubble from "./ChatBubble";
 import { useConversationLogic } from "../hooks/useConversationLogic";
 import type { MessageItem } from "../types";
+import { ButtonGroup } from "@/components/ui/button-group";
 
 type ConversationRow =
   | {
@@ -179,7 +185,7 @@ export default function ConversationPanel() {
                     username={activeChat.otherUser.username}
                     isOnline={activeChat.otherUser.online}
                     avatarUrl={activeChat.otherUser.avatar_url}
-                    size="sm"
+                    size="md"
                   />
                   <div className="min-w-0">
                     <h2 className="truncate text-lg font-semibold">
@@ -194,68 +200,87 @@ export default function ConversationPanel() {
             />
           </div>
 
-          <div className="inline-flex items-center">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="cursor-pointer"
-              onClick={() => {
-                if (!activeChat) return;
-                void startCall(
-                  {
-                    id: activeChat.otherUser.id,
-                    username: activeChat.otherUser.username,
-                    full_name: activeChat.otherUser.full_name,
-                    avatar_url: activeChat.otherUser.avatar_url,
-                    online: activeChat.otherUser.online,
-                  },
-                  "audio",
-                );
-              }}
-              disabled={screen !== "idle" || !activeChat.otherUser.online}
-              title={
-                activeChat.otherUser.online
-                  ? t("calls.actions.startAudio")
-                  : t("calls.actions.contactOffline")
-              }
-            >
-              <Phone className="size-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="cursor-pointer"
-              onClick={() => {
-                if (!activeChat) return;
-                void startCall(
-                  {
-                    id: activeChat.otherUser.id,
-                    username: activeChat.otherUser.username,
-                    full_name: activeChat.otherUser.full_name,
-                    avatar_url: activeChat.otherUser.avatar_url,
-                    online: activeChat.otherUser.online,
-                  },
-                  "video",
-                );
-              }}
-              disabled={screen !== "idle" || !activeChat.otherUser.online}
-              title={
-                activeChat.otherUser.online
-                  ? t("calls.actions.startVideo")
-                  : t("calls.actions.contactOffline")
-              }
-            >
-              <Video className="size-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="cursor-pointer"
-              onClick={closeChat}
-            >
-              <X className="size-4" />
-            </Button>
-          </div>
+          <ButtonGroup>
+            <ButtonGroup className="inline-flex items-center">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (!activeChat) return;
+                      void startCall(
+                        {
+                          id: activeChat.otherUser.id,
+                          username: activeChat.otherUser.username,
+                          full_name: activeChat.otherUser.full_name,
+                          avatar_url: activeChat.otherUser.avatar_url,
+                          online: activeChat.otherUser.online,
+                        },
+                        "audio",
+                      );
+                    }}
+                    disabled={screen !== "idle" || !activeChat.otherUser.online}
+                  >
+                    <Phone className="size-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {activeChat.otherUser.online
+                    ? t("calls.actions.startAudio")
+                    : t("calls.actions.contactOffline")}
+                </TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      if (!activeChat) return;
+                      void startCall(
+                        {
+                          id: activeChat.otherUser.id,
+                          username: activeChat.otherUser.username,
+                          full_name: activeChat.otherUser.full_name,
+                          avatar_url: activeChat.otherUser.avatar_url,
+                          online: activeChat.otherUser.online,
+                        },
+                        "video",
+                      );
+                    }}
+                    disabled={screen !== "idle" || !activeChat.otherUser.online}
+                  >
+                    <Video className="size-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {activeChat.otherUser.online
+                    ? t("calls.actions.startVideo")
+                    : t("calls.actions.contactOffline")}
+                </TooltipContent>
+              </Tooltip>
+            </ButtonGroup>
+            <ButtonGroup>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="cursor-pointer"
+                    onClick={closeChat}
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {t("conversations.close", "Close chat")}
+                </TooltipContent>
+              </Tooltip>
+            </ButtonGroup>
+          </ButtonGroup>
         </div>
       </div>
 

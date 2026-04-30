@@ -19,6 +19,11 @@ import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import ChangeName from "../settings/tabs/dialogs/ChangeName";
 import type { AccountMe } from "@/account/AccountContext";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface MyProfileProps {
   trigger: ReactNode;
@@ -199,19 +204,26 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                       <p className="text-xs font-medium text-muted-foreground">
                         {t("profile.bio.title")}
                       </p>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        className="cursor-pointer"
-                        title={t("profile.bio.edit.title")}
-                        onClick={() => {
-                          setBioDraft(user.bio ?? "");
-                          setBioErrorKey(null);
-                          setIsEditingBio((prev) => !prev);
-                        }}
-                      >
-                        <Pencil />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setBioDraft(user.bio ?? "");
+                              setBioErrorKey(null);
+                              setIsEditingBio((prev) => !prev);
+                            }}
+                          >
+                            <Pencil />
+                          </Button>
+                        </TooltipTrigger>
+
+                        <TooltipContent>
+                          {t("profile.bio.edit.title")}
+                        </TooltipContent>
+                      </Tooltip>
                     </div>
                     {isEditingBio ? (
                       <div className="w-full flex flex-col gap-2 pt-2">
@@ -277,7 +289,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                     <span className="text-muted-foreground">
                       {t("profile.stats.last_active", "Last active")}
                     </span>
-                    <span>{"2 hours ago"}</span>
+                    <span>{"—"}</span>
                   </div>
                 </section>
               )}

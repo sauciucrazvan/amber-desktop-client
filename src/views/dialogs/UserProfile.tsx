@@ -190,7 +190,7 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                   <span className="text-muted-foreground">
                     {t("profile.stats.last_active", "Last active")}
                   </span>
-                  <span>{"-1 hours ago"}</span>
+                  <span>{"—"}</span>
                 </div>
               </section>
 

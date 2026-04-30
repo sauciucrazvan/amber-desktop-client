@@ -28,7 +28,7 @@ export default function MessageEditHistoryDialog({ editedAt, history }: Props) {
   const entries = Array.isArray(history) ? [...history].reverse() : [];
 
   const formatHistoryDate = (value?: string) => {
-    if (!value) return "-";
+    if (!value) return "—";
     const parsed = new Date(value);
     if (Number.isNaN(parsed.getTime())) return value;
 
@@ -40,7 +40,6 @@ export default function MessageEditHistoryDialog({ editedAt, history }: Props) {
         hour: "2-digit",
         minute: "2-digit",
         timeZone,
-        timeZoneName: "short",
       }).format(parsed);
     } catch {
       return parsed.toLocaleString(i18n.language);
@@ -59,7 +58,7 @@ export default function MessageEditHistoryDialog({ editedAt, history }: Props) {
         </a>
       </DialogTrigger>
       <DialogContent
-        className="w-[calc(100vw-2rem)] max-h-[85vh] overflow-hidden sm:max-w-125 p-0"
+        className="flex h-[60vh] max-h-[85vh] w-[calc(100vw-2rem)] overflow-hidden sm:max-w-125 p-0"
         onContextMenu={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -82,13 +81,13 @@ export default function MessageEditHistoryDialog({ editedAt, history }: Props) {
               {entries.map((entry, index) => (
                 <div
                   key={`${entry?.date ?? "unknown"}-${index}`}
-                  className="rounded-md border bg-muted/30 p-3"
+                  className="flex items-start justify-between rounded-md border bg-secondary p-3"
                 >
-                  <div className="mb-1 text-xs text-muted-foreground">
-                    {formatHistoryDate(entry?.date)}
+                  <div className="w-full text-sm whitespace-pre-wrap break-all wrap-break-words select-text">
+                    {entry?.text || "—"}
                   </div>
-                  <div className="text-sm whitespace-pre-wrap break-all wrap-anywhere select-text">
-                    {entry?.text || "-"}
+                  <div className="text-xs text-muted-foreground w-[25%] text-right">
+                    {formatHistoryDate(entry?.date)}
                   </div>
                 </div>
               ))}

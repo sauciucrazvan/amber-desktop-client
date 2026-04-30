@@ -26,14 +26,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import {
-  Info,
-  Monitor,
-  Paintbrush,
-  SettingsIcon,
-  User,
-  Video,
-} from "lucide-react";
+import { Info, Paintbrush, SettingsIcon, User, Video } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AppearanceTab from "./tabs/AppearanceTab";

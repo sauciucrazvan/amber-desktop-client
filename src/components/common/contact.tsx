@@ -135,6 +135,7 @@ export default function Contact({
               username={username}
               avatarUrl={avatar_url}
               isOnline={isOnline}
+              size="sm"
             />
             <div className="flex min-w-0 flex-1 flex-row items-center justify-between gap-1">
               <h3

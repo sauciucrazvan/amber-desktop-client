@@ -24,6 +24,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { formatRelativeTime } from "@/lib/utils";
 
 interface MyProfileProps {
   trigger: ReactNode;
@@ -284,12 +285,6 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                       {t("profile.stats.member_since", "Member since")}
                     </span>
                     <span>{formatMonthYear(user.registered_at) ?? "—"}</span>
-                  </div>
-                  <div className="flex flex-row justify-between gap-1">
-                    <span className="text-muted-foreground">
-                      {t("profile.stats.last_active", "Last active")}
-                    </span>
-                    <span>{"—"}</span>
                   </div>
                 </section>
               )}

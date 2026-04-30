@@ -19,6 +19,7 @@ import { dispatchContactsEvent } from "@/lib/contact-events";
 import { Spinner } from "@/components/ui/spinner";
 import { useChat } from "../home/chat";
 import { Button } from "@/components/ui/button";
+import { formatRelativeTime } from "@/lib/utils";
 
 interface UserProfileProps {
   username: string;
@@ -190,7 +191,11 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                   <span className="text-muted-foreground">
                     {t("profile.stats.last_active", "Last active")}
                   </span>
-                  <span>{"—"}</span>
+                  <span>
+                    {user.last_active_at
+                      ? formatRelativeTime(t, user.last_active_at)
+                      : "—"}
+                  </span>
                 </div>
               </section>
 

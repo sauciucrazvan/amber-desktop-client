@@ -8,6 +8,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import type { TFunction } from "i18next";
 import type { CallHistoryItem, ContactListItem } from "../types";
+import { formatRelativeTime } from "../../../../lib/utils";
 
 type CallHistoryTabContentProps = {
   t: TFunction;
@@ -23,43 +24,6 @@ function formatDuration(totalSeconds?: number) {
   const minutes = Math.floor(seconds / 60);
   const remaining = seconds % 60;
   return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
-}
-
-function formatRelativeTime(t: TFunction, dateValue?: string | null) {
-  if (!dateValue) return "";
-
-  const date = new Date(dateValue);
-  if (Number.isNaN(date.getTime())) return "";
-
-  const diffMs = Date.now() - date.getTime();
-  const diffMinutes = Math.floor(diffMs / 60000);
-  if (diffMinutes < 1)
-    return t("calls.history.relative.now", { defaultValue: "now" });
-  if (diffMinutes < 60)
-    return t("calls.history.relative.minutesAgo", {
-      count: diffMinutes,
-      defaultValue: "{{count}}m ago",
-    });
-
-  const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24)
-    return t("calls.history.relative.hoursAgo", {
-      count: diffHours,
-      defaultValue: "{{count}}h ago",
-    });
-
-  const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7)
-    return t("calls.history.relative.daysAgo", {
-      count: diffDays,
-      defaultValue: "{{count}}d ago",
-    });
-
-  const diffWeeks = Math.floor(diffDays / 7);
-  return t("calls.history.relative.weeksAgo", {
-    count: diffWeeks,
-    defaultValue: "{{count}}w ago",
-  });
 }
 
 function getCallReasonLabel(t: TFunction, reason: string) {

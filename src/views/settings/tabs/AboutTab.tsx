@@ -1,4 +1,3 @@
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -175,9 +174,7 @@ export default function AboutTab() {
 
   return (
     <>
-      <Separator />
-
-      <section className="mt-3 mx-auto flex w-full max-w-md items-center gap-3 text-left">
+      <section className="mt-3 mx-auto flex flex-col w-full max-w-md items-center gap-2 text-center">
         <img
           src={`${import.meta.env.BASE_URL}amber.png`}
           alt={"Amber Logo"}

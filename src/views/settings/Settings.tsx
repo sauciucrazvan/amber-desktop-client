@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -7,9 +15,26 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SettingsIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "@/components/ui/sidebar";
+import {
+  Info,
+  Monitor,
+  Paintbrush,
+  SettingsIcon,
+  User,
+  Video,
+} from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AppearanceTab from "./tabs/AppearanceTab";
 import AccountTab from "./tabs/AccountTab";
@@ -25,6 +50,52 @@ interface SettingsProps {
 export default function Settings(props: SettingsProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("general");
+
+  const sections = useMemo(
+    () => [
+      {
+        id: "general",
+        label: t("settings.tabs.general"),
+        icon: SettingsIcon,
+        content: <GeneralTab />,
+      },
+      {
+        id: "appearance",
+        label: t("settings.tabs.appearance"),
+        icon: Paintbrush,
+        content: <AppearanceTab />,
+      },
+      {
+        id: "devices",
+        label: t("settings.tabs.devices"),
+        icon: Video,
+        content: <DevicesTab />,
+      },
+      {
+        id: "account",
+        label: t("settings.tabs.account"),
+        icon: User,
+        content: <AccountTab />,
+        disabled: props.minimalViews,
+      },
+      {
+        id: "about",
+        label: t("settings.tabs.about"),
+        icon: Info,
+        content: <AboutTab />,
+      },
+    ],
+    [props.minimalViews, t],
+  );
+
+  const currentSection =
+    sections.find((section) => section.id === activeSection) ?? sections[0];
+
+  useEffect(() => {
+    if (!currentSection?.disabled) return;
+    setActiveSection("general");
+  }, [currentSection]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -62,58 +133,64 @@ export default function Settings(props: SettingsProps) {
               </Button>
             )}
           </DialogTrigger>
-          <DialogContent className="sm:max-w-106.25 min-h-100 max-h-100 flex flex-col items-start justify-start">
-            <DialogHeader>
+          <DialogContent className="flex h-[75dvh] max-h-[75dvh] overflow-hidden p-0 sm:max-w-160">
+            <DialogHeader className="sr-only">
               <DialogTitle>{t("settings.title")}</DialogTitle>
-              <DialogDescription className="sr-only">
-                {t("settings.description")}
-              </DialogDescription>
+              <DialogDescription>{t("settings.description")}</DialogDescription>
             </DialogHeader>
-            {/* content */}
-            <Tabs
-              defaultValue="general"
-              className="w-full min-w-0 min-h-0 flex flex-1 flex-col"
+            <SidebarProvider
+              className="items-start h-full min-h-0 flex-1"
+              style={{ "--sidebar-width": "12rem" } as React.CSSProperties}
             >
-              <TabsList className="h-auto w-full flex-wrap justify-start gap-1">
-                <TabsTrigger value="general" className="cursor-pointer">
-                  {t("settings.tabs.general")}
-                </TabsTrigger>
-                <TabsTrigger value="appearance" className="cursor-pointer">
-                  {t("settings.tabs.appearance")}
-                </TabsTrigger>
-                <TabsTrigger value="devices" className="cursor-pointer">
-                  {t("settings.tabs.devices")}
-                </TabsTrigger>
-                <TabsTrigger
-                  value="account"
-                  disabled={props.minimalViews}
-                  className="cursor-pointer"
-                >
-                  {t("settings.tabs.account")}
-                </TabsTrigger>
-                <TabsTrigger value="about" className="cursor-pointer">
-                  {t("settings.tabs.about")}
-                </TabsTrigger>
-              </TabsList>
-              <TabsContent value="general" className="min-h-0 min-w-0 flex-1">
-                <GeneralTab />
-              </TabsContent>
-              <TabsContent
-                value="appearance"
-                className="min-h-0 min-w-0 flex-1"
-              >
-                <AppearanceTab />
-              </TabsContent>
-              <TabsContent value="devices" className="min-h-0 min-w-0 flex-1">
-                <DevicesTab />
-              </TabsContent>
-              <TabsContent value="account" className="min-h-0 min-w-0 flex-1">
-                <AccountTab />
-              </TabsContent>
-              <TabsContent value="about" className="min-h-0 min-w-0 flex-1">
-                <AboutTab />
-              </TabsContent>
-            </Tabs>
+              <Sidebar collapsible="none" className="hidden md:flex">
+                <SidebarContent>
+                  <SidebarGroup>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {sections.map((section) => (
+                          <SidebarMenuItem key={section.id}>
+                            <SidebarMenuButton
+                              size="default"
+                              onClick={() =>
+                                !section.disabled &&
+                                setActiveSection(section.id)
+                              }
+                              isActive={section.id === currentSection?.id}
+                              disabled={section.disabled}
+                              tooltip={section.label}
+                              className="cursor-pointer"
+                            >
+                              <section.icon />
+                              <span>{section.label}</span>
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        ))}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                </SidebarContent>
+              </Sidebar>
+              <SidebarInset className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+                <header className="flex h-14 shrink-0 items-center px-4">
+                  <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink asChild>
+                          <span>{t("settings.title")}</span>
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>{currentSection?.label}</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </header>
+                <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 pb-4">
+                  {currentSection?.content}
+                </div>
+              </SidebarInset>
+            </SidebarProvider>
           </DialogContent>
         </form>
       </Dialog>

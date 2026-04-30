@@ -8,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -30,14 +29,14 @@ export default function AppearanceTab() {
       { value: "150", label: "1.5x" },
       { value: "200", label: "2x" },
     ],
-    [t]
+    [t],
   );
 
   const [sidebarPos, setSidebarPos] = useState<string>(
-    () => localStorage.getItem("amber.sidebarPos") ?? "left"
+    () => localStorage.getItem("amber.sidebarPos") ?? "left",
   );
   const [fontScale, setFontScale] = useState<string>(
-    () => localStorage.getItem("amber.fontScale") ?? "100"
+    () => localStorage.getItem("amber.fontScale") ?? "100",
   );
 
   useEffect(() => {
@@ -51,8 +50,6 @@ export default function AppearanceTab() {
 
   return (
     <>
-      <Separator />
-
       {/* Theme */}
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
@@ -135,13 +132,14 @@ export default function AppearanceTab() {
         <Select
           value={sidebarPos}
           onValueChange={(value) => (
-            setSidebarPos(value), window.location.reload()
+            setSidebarPos(value),
+            window.location.reload()
           )}
         >
           <SelectTrigger className="w-45">
             <SelectValue
               placeholder={t(
-                "settings.appearance.sidebarPosition.options.left"
+                "settings.appearance.sidebarPosition.options.left",
               )}
             />
           </SelectTrigger>

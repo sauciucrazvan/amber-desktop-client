@@ -5,7 +5,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -208,8 +207,6 @@ export default function DevicesTab() {
 
   return (
     <div className="flex min-h-0 h-full w-full min-w-0 flex-col">
-      <Separator />
-
       <div className="mt-2 space-y-3 min-w-0">
         <DeviceRow
           title={t("settings.general.devices.microphone.title")}

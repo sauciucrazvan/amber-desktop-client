@@ -1,6 +1,5 @@
 import { useAuth } from "@/auth/AuthContext";
 import { useAccount } from "@/account/AccountContext";
-import { Separator } from "@/components/ui/separator";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/components/common/user-avatar";
@@ -8,19 +7,26 @@ import {
   BadgeAlert,
   ChevronRight,
   LogOut,
+  KeyRound,
+  Mail,
   Shield,
   ShieldBan,
+  Trash2,
   Upload,
-  UserCog,
+  UserRound,
 } from "lucide-react";
 import RequestData from "./dialogs/RequestData";
 import SignOut from "./dialogs/SignOut";
-import ManageAccountData from "./dialogs/ManageAccountData";
 import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { ChangeEvent, useState } from "react";
 import { apiUrl } from "@/config";
 import { toast } from "sonner";
+import { Separator } from "@/components/ui/separator";
+import ChangeEmail from "./dialogs/ChangeEmail";
+import ChangeName from "./dialogs/ChangeName";
+import ChangePassword from "./dialogs/ChangePassword";
+import DeleteAccount from "./dialogs/DeleteAccount";
 
 export default function AccountTab() {
   const { isAuthenticated, authFetch } = useAuth();
@@ -100,11 +106,21 @@ export default function AccountTab() {
   };
 
   return (
-    <div className="space-y-3">
-      <Separator />
+    <div className="space-y-5 pr-1 pb-6">
+      <section className="space-y-2">
+        <div className="px-1">
+          <h3 className="text-sm font-medium">
+            {t("settings.account.details.title", "Account details")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              "settings.account.details.description",
+              "Your public profile and login identity.",
+            )}
+          </p>
+        </div>
 
-      <section className="overflow-hidden rounded-xl border border-border/60 bg-card/70 p-1.5 shadow-sm">
-        <div className="flex flex-row items-center justify-between gap-2 rounded-lg px-2.5 py-2">
+        <div className="flex flex-row items-center justify-between gap-2 rounded-lg px-2.5 py-2 hover:bg-secondary/50 transition-colors">
           <div className="min-w-0 flex flex-row items-center gap-2.5">
             <label
               htmlFor="avatar-upload-input"
@@ -130,28 +146,109 @@ export default function AccountTab() {
             </label>
 
             <div className="min-w-0 flex flex-col justify-start items-start gap-0">
-              <h3 className="truncate text-sm leading-tight">{displayName}</h3>
+              <h4 className="truncate text-sm leading-tight">{displayName}</h4>
               <p className="truncate text-muted-foreground text-xs text-start">
                 {username}
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          <ManageAccountData>
-            <div className="group cursor-pointer inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary/70 hover:text-foreground">
-              <UserCog className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">
-                {t("settings.account.manage.short_title", "Manage")}
-              </span>
+      <section className="space-y-2">
+        <div className="px-1">
+          <h3 className="text-sm font-medium">
+            {t("settings.account.manage.title", "Manage account details")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              "settings.account.manage.description",
+              "Update your display name, email, and password from one place.",
+            )}
+          </p>
+        </div>
+
+        <div>
+          <ChangeName>
+            <div className={rowClassName}>
+              <div className="min-w-0 flex items-center gap-2">
+                <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                  <UserRound className="h-3.5 w-3.5" />
+                </div>
+                <p className="truncate text-xs font-medium">
+                  {t("settings.account.name.title")}
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
-          </ManageAccountData>
+          </ChangeName>
+
+          <Separator className="my-1" />
+
+          <ChangeEmail>
+            <div className={rowClassName}>
+              <div className="min-w-0 flex items-center gap-2">
+                <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                  <Mail className="h-3.5 w-3.5" />
+                </div>
+                <p className="truncate text-xs font-medium">
+                  {t("settings.account.email.title")}
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            </div>
+          </ChangeEmail>
+
+          <Separator className="my-1" />
+
+          <ChangePassword>
+            <div className={rowClassName}>
+              <div className="min-w-0 flex items-center gap-2">
+                <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                  <KeyRound className="h-3.5 w-3.5" />
+                </div>
+                <p className="truncate text-xs font-medium">
+                  {t("settings.account.password.title")}
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            </div>
+          </ChangePassword>
+
+          <Separator className="my-1" />
+
+          <DeleteAccount>
+            <div className={rowClassName}>
+              <div className="min-w-0 flex items-center gap-2">
+                <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                  <Trash2 className="h-3.5 w-3.5" />
+                </div>
+                <p className="truncate text-xs font-medium">
+                  {t("settings.account.delete.title")}
+                </p>
+              </div>
+              <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            </div>
+          </DeleteAccount>
+        </div>
+      </section>
+
+      <section className="space-y-2">
+        <div className="px-1">
+          <h3 className="text-sm font-medium">
+            {t("settings.account.general.title", "General settings")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              "settings.account.general.description",
+              "Privacy, safety, and data management.",
+            )}
+          </p>
         </div>
 
         <div>
           {account?.verified === false && (
             <>
-              <Separator className="my-1" />
-
               <VerifyAccount>
                 <div className={rowClassName}>
                   <div className="min-w-0 flex items-center gap-2">
@@ -165,13 +262,12 @@ export default function AccountTab() {
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                 </div>
               </VerifyAccount>
+              <Separator className="my-1" />
             </>
           )}
 
           {account?.verified && (
             <>
-              <Separator className="my-1" />
-
               <BlockedAccounts>
                 <div className={rowClassName}>
                   <div className="min-w-0 flex items-center gap-2">
@@ -185,10 +281,9 @@ export default function AccountTab() {
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
                 </div>
               </BlockedAccounts>
+              <Separator className="my-1" />
             </>
           )}
-
-          <Separator className="my-1" />
 
           <SignOut>
             <div className={rowClassName}>

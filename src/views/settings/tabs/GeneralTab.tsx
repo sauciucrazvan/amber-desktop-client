@@ -6,7 +6,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import {
   changeAppLanguage,
   supportedLanguages,
@@ -77,8 +76,6 @@ export default function GeneralTab() {
 
   return (
     <div className="flex min-h-0 h-full w-full flex-col">
-      <Separator />
-
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
           <h3 className="text-md text-primary">

@@ -199,6 +199,10 @@
       }
     },
     "account": {
+      "details": {
+        "title": "Account details",
+        "description": "Your public profile and login identity."
+      },
       "signOut": {
         "title": "Sign out",
         "description": "Are you sure you want to sign out? You'll be redirected to the login page.",
@@ -259,6 +263,10 @@
         "title": "Manage account details",
         "short_title": "Manage",
         "description": "Update your display name, email, and password from one place."
+      },
+      "general": {
+        "title": "General settings",
+        "description": "Privacy, safety, and data management."
       },
       "actions": {
         "title": "Actions"

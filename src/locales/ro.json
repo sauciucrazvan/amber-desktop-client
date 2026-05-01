@@ -6,6 +6,10 @@
     "hide": "Ascunde",
     "submit": "Trimite",
     "cancel": "Anulează",
+    "confirm": "Confirm",
+    "remove": "Remove",
+    "block": "Block",
+    "delete": "Delete",
     "verified": "Verificat",
     "unverified": "Te rugăm să-ți verifici mai întâi contul!",
     "errors": {
@@ -87,8 +91,8 @@
       "too_soon": "Un e-mail de verificare a fost deja trimis. Încearcă din nou în 30 de minute.",
       "email_sent": "Un e-mail de verificare a fost trimis. Te rog să-ți verifica inboxul (și spam!).",
       "invalid_code": "Codul pe care l-ai furnizat este invalid",
-      "locked": "Contul tău este temporar blocat din cauza prea multor încercări eșuate. Te rugăm să încerci din nou mai târziu.",
       "too_late": "Codul tău de verificare a expirat, încearcă din nou.",
+      "locked": "Contul tău este temporar blocat din cauza prea multor încercări eșuate. Te rugăm să încerci din nou mai târziu.",
       "success": "Contul tău este verificat. Ar putea dura puțin timp pentru a se actualiza.",
       "action": {
         "back": "Înapoi",
@@ -195,6 +199,10 @@
       }
     },
     "account": {
+      "details": {
+        "title": "Account details",
+        "description": "Your public profile and login identity."
+      },
       "signOut": {
         "title": "Deconectare",
         "description": "Ești sigur că vrei să te deconectezi? Vei fi redirecționat către pagina de autentificare.",
@@ -253,7 +261,12 @@
       },
       "manage": {
         "title": "Gestionează detaliile contului",
+        "short_title": "Manage",
         "description": "Actualizează numele afișat, emailul și parola dintr-un singur loc."
+      },
+      "general": {
+        "title": "General settings",
+        "description": "Privacy, safety, and data management."
       },
       "actions": {
         "title": "Acțiuni"
@@ -261,6 +274,15 @@
       "bio": {
         "too_long": "Limitează-te la 256 de caractere.",
         "updated": "Biografia ta a fost actualizată cu succes!"
+      },
+      "avatar": {
+        "uploaded": "Avatar uploaded successfully!",
+        "error": "Failed to upload avatar. Please try again.",
+        "confirm": {
+          "title": "Upload Avatar",
+          "description": "Are you sure you want to use this image as your avatar?",
+          "upload": "Upload"
+        }
       }
     },
     "about": {
@@ -323,6 +345,14 @@
     "no_request": "Nu ai trimis o cerere către {{user}}.",
     "accepted": "Acum ești prieten cu {{user}}.",
     "declined": "Ai refuzat cererea lui {{user}}.",
+    "removeConfirm": {
+      "title": "Remove Contact",
+      "description": "Are you sure you want to remove {{user}} from your contacts?"
+    },
+    "blockConfirm": {
+      "title": "Block Contact",
+      "description": "Are you sure you want to block {{user}}? You won't be able to chat with them and they won't be able to contact you."
+    },
     "add": {
       "title": "Adaugă un contact",
       "description": "Poți adăuga contacte folosind numele lor de utilizator Amber.",
@@ -381,9 +411,22 @@
       "edit": "Editează",
       "delete": "Șterge"
     },
-    "failed_loading": "Nu s-a putut încărca conversația",
-    "failed_sending": "Nu s-a putut trimite mesajul",
-    "not_participating": "Nu participi în această conversație."
+    "deleted_message": "Successfully deleted the message.",
+    "deleteMessage": {
+      "confirm": {
+        "title": "Delete Message",
+        "description": "Are you sure you want to delete this message? This action cannot be undone."
+      }
+    },
+    "error": {
+      "failed_loading": "Failed loading chat",
+      "failed_sending": "Failed sending message",
+      "not_participating": "You are not participating in this conversation.",
+      "too_long": "The message can not exceed 2048 characters.",
+      "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
+      "no_permission": "You do not have permission to do that!",
+      "no_relation": "You are not friends with this users or they've blocked you."
+    }
   },
   "calls": {
     "unknown": "Necunoscut",
@@ -480,10 +523,10 @@
       "edit": {
         "title": "Editează biografia"
       }
-    },
-    "stats": {
-      "member_since": "Membru din",
-      "last_active": "Ultima activitate"
     }
+  },
+  "stats": {
+    "member_since": "Member since",
+    "last_active": "Last active"
   }
 }

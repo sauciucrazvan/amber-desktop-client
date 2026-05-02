@@ -12,6 +12,7 @@ export type ContactListItem = {
     full_name: string;
     avatar_url?: string | null;
     online?: boolean;
+    last_active_at?: string | null;
   };
   created_at: string;
   last_action_at?: string;

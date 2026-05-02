@@ -31,6 +31,7 @@ export type ActiveChat = {
     full_name: string;
     avatar_url?: string | null;
     online?: boolean;
+    last_active_at?: string | null;
   };
 };
 

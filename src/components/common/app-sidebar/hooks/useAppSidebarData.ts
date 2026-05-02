@@ -159,6 +159,7 @@ export function useAppSidebarData({
               full_name: eventPayload.user!.full_name,
               avatar_url: eventPayload.user!.avatar_url,
               online: eventPayload.user!.online,
+              last_active_at: eventPayload.user!.last_active_at ?? null,
             },
             created_at: eventPayload.created_at ?? new Date().toISOString(),
             last_action_at:

@@ -12,13 +12,14 @@ import UserProfile from "@/views/dialogs/UserProfile";
 import { useCalls } from "@/views/home/calls";
 import { Edit2, Phone, Reply, Send, Video, X } from "lucide-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useChat } from "../context/ChatContext";
 import ChatBubble from "./ChatBubble";
 import { useConversationLogic } from "../hooks/useConversationLogic";
 import type { MessageItem } from "../types";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { cn, formatRelativeTime } from "@/lib/utils";
 
 type ConversationRow =
   | {
@@ -166,6 +167,29 @@ export default function ConversationPanel() {
     [messageRowIndexById, rowVirtualizer, shouldVirtualize],
   );
 
+  const isOnline = Boolean(activeChat?.otherUser.online);
+  const lastActiveLabel = formatRelativeTime(
+    t,
+    activeChat?.otherUser.last_active_at,
+  );
+  const [showLastActivity, setShowLastActivity] = useState(false);
+
+  useEffect(() => {
+    if (isOnline || !lastActiveLabel) {
+      setShowLastActivity(false);
+      return;
+    }
+
+    setShowLastActivity(false);
+    const intervalId = window.setInterval(() => {
+      setShowLastActivity((current) => !current);
+    }, 30000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [isOnline, lastActiveLabel]);
+
   if (!activeChat) return null;
 
   return (
@@ -191,9 +215,28 @@ export default function ConversationPanel() {
                     <h2 className="truncate text-lg font-semibold">
                       {activeChat.otherUser.full_name}
                     </h2>
-                    <p className="truncate text-xs text-muted-foreground">
-                      @{activeChat.otherUser.username}
-                    </p>
+                    <div className="relative h-4 truncate text-xs text-muted-foreground">
+                      <span
+                        className={cn(
+                          "absolute inset-0 transition-opacity duration-500",
+                          showLastActivity && lastActiveLabel
+                            ? "opacity-0"
+                            : "opacity-100",
+                        )}
+                      >
+                        @{activeChat.otherUser.username}
+                      </span>
+                      <span
+                        className={cn(
+                          "absolute inset-0 transition-opacity duration-500",
+                          showLastActivity && lastActiveLabel
+                            ? "opacity-100"
+                            : "opacity-0",
+                        )}
+                      >
+                        {t("last_active", "Last active")} {lastActiveLabel}
+                      </span>
+                    </div>
                   </div>
                 </button>
               }

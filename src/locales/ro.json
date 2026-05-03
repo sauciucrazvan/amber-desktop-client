@@ -353,6 +353,11 @@
       "title": "Block Contact",
       "description": "Are you sure you want to block {{user}}? You won't be able to chat with them and they won't be able to contact you."
     },
+    "last_message": {
+      "attachment": "Atasament",
+      "call": "Apel",
+      "unknown": "Mesaj"
+    },
     "add": {
       "title": "Adaugă un contact",
       "description": "Poți adăuga contacte folosind numele lor de utilizator Amber.",

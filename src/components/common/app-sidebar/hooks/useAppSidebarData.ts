@@ -145,6 +145,7 @@ export function useAppSidebarData({
         username?: string;
         created_at?: string;
         last_action_at?: string;
+        last_message?: ContactListItem["last_message"];
       };
 
       if (payload.event === "contact.accepted" && eventPayload.user) {
@@ -164,6 +165,7 @@ export function useAppSidebarData({
             created_at: eventPayload.created_at ?? new Date().toISOString(),
             last_action_at:
               eventPayload.last_action_at ?? eventPayload.created_at,
+            last_message: null,
           });
           return sortContactsByLastAction(filtered);
         });
@@ -216,6 +218,21 @@ export function useAppSidebarData({
           );
           return sortContactsByLastAction(next);
         });
+      }
+
+      if (payload.event === "contact.last_message.updated") {
+        if (typeof eventPayload.user_id !== "number") return;
+
+        setContactsState((current) =>
+          current.map((contact) =>
+            contact.user.id === eventPayload.user_id
+              ? {
+                  ...contact,
+                  last_message: eventPayload.last_message ?? null,
+                }
+              : contact,
+          ),
+        );
       }
     };
 

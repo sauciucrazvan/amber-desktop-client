@@ -6,6 +6,7 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "../ui/context-menu";
+import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { apiUrl } from "@/config";
@@ -24,17 +25,75 @@ type ContactProps = {
   full_name: string;
   online?: boolean;
   avatar_url?: string | null;
+  last_message?: {
+    sender_id: number;
+    type: string;
+    content?: {
+      text?: string;
+      event?: string;
+      call_id?: string;
+      filename?: string;
+      name?: string;
+      file_name?: string;
+    };
+    created_at?: string | null;
+  } | null;
   unseen_messages: number;
   isActive?: boolean;
+  myUserId: number | null;
 } & ComponentPropsWithoutRef<"section">;
+
+const CALL_LOG_PREFIX = "call.";
+
+function buildLastMessagePreview(
+  t: TFunction,
+  lastMessage: ContactProps["last_message"],
+  myUserId: number | null,
+) {
+  if (!lastMessage) return "";
+
+  const content = lastMessage.content ?? {};
+  const isMine = myUserId !== null && lastMessage.sender_id === myUserId;
+  const prefix = isMine ? `${t("conversations.you")}: ` : "";
+
+  if (lastMessage.type === "text") {
+    const text = content.text?.trim() ?? "";
+    return text ? `${prefix}${text}` : "";
+  }
+
+  if (lastMessage.type === "file") {
+    const fileName =
+      content.filename || content.file_name || content.name || "";
+    const label = fileName || t("contacts.last_message.attachment");
+    return `${prefix}${label}`;
+  }
+
+  if (lastMessage.type === "log") {
+    const eventName = typeof content.event === "string" ? content.event : "";
+    if (eventName.startsWith(CALL_LOG_PREFIX)) {
+      const callEvent = eventName.slice(CALL_LOG_PREFIX.length);
+      const callLabel = t(`calls.logs.${callEvent}`, {
+        defaultValue: content.text ?? t("contacts.last_message.call"),
+      });
+      return `${prefix}${callLabel}`;
+    }
+
+    const text = content.text?.trim() ?? "";
+    return text ? `${prefix}${text}` : "";
+  }
+
+  return `${prefix}${t("contacts.last_message.unknown")}`;
+}
 
 export default function Contact({
   username,
   full_name,
   online,
   avatar_url,
+  last_message,
   unseen_messages,
   isActive = false,
+  myUserId,
   className,
   ...props
 }: ContactProps) {
@@ -47,6 +106,7 @@ export default function Contact({
 
   const isOnline = Boolean(online);
   const shouldCloseChat = activeChat?.otherUser.username === username;
+  const lastMessagePreview = buildLastMessagePreview(t, last_message, myUserId);
 
   const onBlock = async () => {
     try {
@@ -138,17 +198,19 @@ export default function Contact({
               size="sm"
             />
             <div className="flex min-w-0 flex-1 flex-row items-center justify-between gap-1">
-              <h3
-                className={cn(
-                  "text-sm leading-tight",
-                  !isActive && unseen_messages && "font-semibold",
-                )}
-              >
-                {full_name}
-                <p className="text-xs font-normal text-muted-foreground">
-                  @{username}
+              <div className="min-w-0">
+                <h3
+                  className={cn(
+                    "text-sm leading-tight",
+                    !isActive && unseen_messages && "font-semibold",
+                  )}
+                >
+                  {full_name}
+                </h3>
+                <p className="truncate text-xs font-normal text-muted-foreground">
+                  {lastMessagePreview || `@${username}`}
                 </p>
-              </h3>
+              </div>
               {!isActive && unseen_messages > 0 && (
                 <span className="mr-2 h-5 w-5 rounded-full bg-secondary text-white text-xs flex items-center justify-center font-medium">
                   {unseen_messages > 99 ? "99+" : unseen_messages}

@@ -81,6 +81,7 @@ export default function AppSidebar() {
                 showVerifyAccount={showVerifyAccount}
                 activeChat={activeChat}
                 openingChatUserId={openingChatUserId}
+                myUserId={account?.id ?? null}
                 conversationUnseenCountByUserId={
                   conversationUnseenCountByUserId
                 }

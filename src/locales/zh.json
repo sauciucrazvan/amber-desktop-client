@@ -353,6 +353,11 @@
       "title": "Block Contact",
       "description": "Are you sure you want to block {{user}}? You won't be able to chat with them and they won't be able to contact you."
     },
+    "last_message": {
+      "attachment": "附件",
+      "call": "通话",
+      "unknown": "消息"
+    },
     "add": {
       "title": "添加联系人",
       "description": "你可以使用对方的 Amber 用户名添加联系人。",

@@ -353,6 +353,11 @@
       "title": "Block Contact",
       "description": "Are you sure you want to block {{user}}? You won't be able to chat with them and they won't be able to contact you."
     },
+    "last_message": {
+      "attachment": "Allegato",
+      "call": "Chiamata",
+      "unknown": "Messaggio"
+    },
     "add": {
       "title": "Aggiungi un contatto",
       "description": "Puoi aggiungere contatti usando il loro nome utente Amber.",

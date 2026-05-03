@@ -17,6 +17,19 @@ export type ContactListItem = {
   created_at: string;
   last_action_at?: string;
   notifications?: number;
+  last_message?: {
+    sender_id: number;
+    type: string;
+    content?: {
+      text?: string;
+      event?: string;
+      call_id?: string;
+      filename?: string;
+      name?: string;
+      file_name?: string;
+    };
+    created_at?: string | null;
+  } | null;
 };
 
 export type DirectConversationSummary = {

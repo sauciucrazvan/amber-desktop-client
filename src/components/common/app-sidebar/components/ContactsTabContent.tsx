@@ -19,6 +19,7 @@ type ContactsTabContentProps = {
   showVerifyAccount: boolean;
   activeChat: ActiveChat | null;
   openingChatUserId: number | null;
+  myUserId: number | null;
   conversationUnseenCountByUserId?: Record<number, number>;
   onOpenDirectChat: (contact: ContactListItem["user"]) => Promise<void>;
 };
@@ -31,6 +32,7 @@ export default function ContactsTabContent({
   showVerifyAccount,
   activeChat,
   openingChatUserId,
+  myUserId,
   conversationUnseenCountByUserId,
   onOpenDirectChat,
 }: ContactsTabContentProps) {
@@ -76,8 +78,10 @@ export default function ContactsTabContent({
                     full_name={contact.user.full_name}
                     online={contact.user.online}
                     avatar_url={contact.user.avatar_url}
+                    last_message={contact.last_message}
                     unseen_messages={unseen_messages}
                     isActive={isActive}
+                    myUserId={myUserId}
                     onClick={() => onOpenDirectChat(contact.user)}
                     aria-busy={openingChatUserId === contact.user.id}
                   />

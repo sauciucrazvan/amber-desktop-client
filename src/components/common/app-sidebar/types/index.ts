@@ -53,5 +53,6 @@ export type CallHistoryItem = {
     username: string;
     avatar_url: string;
     display_name?: string;
+    last_active_at?: string | null;
   };
 };

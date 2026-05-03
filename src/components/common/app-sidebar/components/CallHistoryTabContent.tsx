@@ -95,6 +95,7 @@ export default function CallHistoryTabContent({
                         full_name: call.peer.display_name || call.peer.username,
                         avatar_url: call.peer.avatar_url,
                         online: undefined,
+                        last_active_at: call.peer.last_active_at ?? null,
                       })
                     }
                     aria-busy={openingChatUserId === call.peer.id}

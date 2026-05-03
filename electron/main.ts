@@ -529,6 +529,8 @@ function createWindow(options?: { startHidden?: boolean }) {
   win = new BrowserWindow({
     width: 900,
     height: 600,
+    minWidth: 900,
+    minHeight: 600,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     frame: false,
     titleBarStyle: "hidden",
@@ -572,7 +574,7 @@ function createWindow(options?: { startHidden?: boolean }) {
     console.error("[renderer] render-process-gone", details);
   });
 
-  win.webContents.openDevTools({ mode: "detach" });
+  // win.webContents.openDevTools({ mode: "detach" });
 
   win.once("ready-to-show", () => {
     if (startHidden) return;

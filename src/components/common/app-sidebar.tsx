@@ -54,7 +54,7 @@ export default function AppSidebar() {
 
   return (
     <>
-      <Sidebar side={sidebarSide} className="relative">
+      <Sidebar collapsible="offcanvas" side={sidebarSide} className="relative">
         <SidebarContent className="min-h-0 overflow-hidden">
           <Tabs
             defaultValue="contacts"

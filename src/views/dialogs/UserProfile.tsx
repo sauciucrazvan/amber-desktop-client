@@ -144,15 +144,9 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
         <DialogTrigger asChild>{trigger}</DialogTrigger>
 
         <DialogContent className="sm:max-w-85 min-h-25 max-h-100 flex flex-col items-start justify-start">
-          {open && isLoading && !error && (
-            <div className="inline-flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <Spinner />
-            </div>
-          )}
-
-          {open && !isLoading && user && (
-            <>
-              <DialogHeader className="w-full">
+          <DialogHeader className="w-full">
+            {open && !isLoading && user ? (
+              <>
                 <DialogTitle className="w-full flex flex-col items-center justify-center gap-3 text-center">
                   <UserAvatar
                     full_name={user.full_name}
@@ -170,16 +164,30 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                 </DialogTitle>
                 <DialogDescription className="w-full">
                   <div className="w-full mt-3 rounded-md border border-border/60 px-4 py-3">
-                    <p className="text-xs font-medium text-muted-foreground mb-1">
+                    <div className="text-xs font-medium text-muted-foreground mb-1">
                       {t("profile.bio.title")}
-                    </p>
-                    <p className="text-sm text-foreground/80 whitespace-pre-wrap wrap-break-word">
+                    </div>
+                    <div className="text-sm text-foreground/80 whitespace-pre-wrap wrap-break-word">
                       {(user.bio ?? "").trim() || t("profile.bio.empty")}
-                    </p>
+                    </div>
                   </div>
                 </DialogDescription>
-              </DialogHeader>
+              </>
+            ) : (
+              <DialogTitle className="sr-only">
+                {t("contacts.profile", "Profile")}
+              </DialogTitle>
+            )}
+          </DialogHeader>
 
+          {open && isLoading && !error && (
+            <div className="inline-flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Spinner />
+            </div>
+          )}
+
+          {open && !isLoading && user && (
+            <>
               <section className="w-full flex flex-col gap-2 pt-3 text-sm">
                 <div className="flex flex-row justify-between gap-1">
                   <span className="text-muted-foreground">

@@ -191,13 +191,13 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
               <section className="w-full flex flex-col gap-2 pt-3 text-sm">
                 <div className="flex flex-row justify-between gap-1">
                   <span className="text-muted-foreground">
-                    {t("profile.stats.member_since", "Member since")}
+                    {t("stats.member_since", "Member since")}
                   </span>
                   <span>{formatMonthYear(user.registered_at) ?? "—"}</span>
                 </div>
                 <div className="flex flex-row  justify-between gap-1">
                   <span className="text-muted-foreground">
-                    {t("profile.stats.last_active", "Last active")}
+                    {t("stats.last_active", "Last active")}
                   </span>
                   <span>
                     {user.last_active_at

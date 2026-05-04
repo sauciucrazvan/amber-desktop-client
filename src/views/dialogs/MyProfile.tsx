@@ -281,7 +281,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                 <section className="w-full flex flex-col gap-2 pt-3 text-sm">
                   <div className="flex flex-row justify-between gap-1">
                     <span className="text-muted-foreground">
-                      {t("profile.stats.member_since", "Member since")}
+                      {t("stats.member_since", "Member since")}
                     </span>
                     <span>{formatMonthYear(user.registered_at) ?? "—"}</span>
                   </div>

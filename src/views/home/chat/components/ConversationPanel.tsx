@@ -234,7 +234,8 @@ export default function ConversationPanel() {
                             : "opacity-0",
                         )}
                       >
-                        {t("last_active", "Last active")} {lastActiveLabel}
+                        {t("stats.last_active", "Last active")}{" "}
+                        {lastActiveLabel}
                       </span>
                     </div>
                   </div>

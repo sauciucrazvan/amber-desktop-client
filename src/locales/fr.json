@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "Details du compte",
+        "description": "Votre profil public et votre identite de connexion."
       },
       "signOut": {
         "title": "Se déconnecter",
@@ -265,8 +265,8 @@
         "description": "Mettez à jour votre nom d'affichage, votre e-mail et votre mot de passe au même endroit."
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "Parametres generaux",
+        "description": "Confidentialite, securite et gestion des donnees."
       },
       "actions": {
         "title": "Actions"
@@ -411,6 +411,7 @@
     "no_messages": "Aucun message pour le moment.",
     "type_message": "Écrire un message",
     "send_message": "Envoyer le message",
+    "close": "Fermer le chat",
     "actions": {
       "reply": "Répondre",
       "edit": "Modifier",

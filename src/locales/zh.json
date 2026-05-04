@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "账户详情",
+        "description": "你的公开资料和登录身份。"
       },
       "signOut": {
         "title": "退出登录",
@@ -265,8 +265,8 @@
         "description": "在一个地方更新显示名称、邮箱和密码。"
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "常规设置",
+        "description": "隐私、安全和数据管理。"
       },
       "actions": {
         "title": "操作"
@@ -411,6 +411,7 @@
     "no_messages": "暂无消息。",
     "type_message": "输入消息",
     "send_message": "发送消息",
+    "close": "关闭聊天",
     "actions": {
       "reply": "回复",
       "edit": "编辑",
@@ -531,7 +532,7 @@
     }
   },
   "stats": {
-    "member_since": "Member since",
-    "last_active": "Last active"
+    "member_since": "注册时间",
+    "last_active": "上次活跃"
   }
 }

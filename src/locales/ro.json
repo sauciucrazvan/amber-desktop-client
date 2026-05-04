@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "Detalii cont",
+        "description": "Profilul tau public si identitatea de autentificare."
       },
       "signOut": {
         "title": "Deconectare",
@@ -265,8 +265,8 @@
         "description": "Actualizează numele afișat, emailul și parola dintr-un singur loc."
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "Setari generale",
+        "description": "Confidentialitate, siguranta si gestionarea datelor."
       },
       "actions": {
         "title": "Acțiuni"
@@ -411,6 +411,7 @@
     "no_messages": "Niciun mesaj momentan.",
     "type_message": "Scrie un mesaj",
     "send_message": "Trimite mesaj",
+    "close": "Inchide chatul",
     "actions": {
       "reply": "Răspunde",
       "edit": "Editează",
@@ -531,7 +532,7 @@
     }
   },
   "stats": {
-    "member_since": "Member since",
-    "last_active": "Last active"
+    "member_since": "Membru din",
+    "last_active": "Ultima activitate"
   }
 }

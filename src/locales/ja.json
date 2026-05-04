@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "アカウントの詳細",
+        "description": "公開プロフィールとログイン情報。"
       },
       "signOut": {
         "title": "サインアウト",
@@ -265,8 +265,8 @@
         "description": "表示名、メールアドレス、パスワードを1か所で更新できます。"
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "一般設定",
+        "description": "プライバシー、安全性、データ管理。"
       },
       "actions": {
         "title": "アクション"
@@ -411,6 +411,7 @@
     "no_messages": "まだメッセージはありません。",
     "type_message": "メッセージを入力",
     "send_message": "メッセージを送信",
+    "close": "チャットを閉じる",
     "actions": {
       "reply": "返信",
       "edit": "編集",
@@ -531,7 +532,7 @@
     }
   },
   "stats": {
-    "member_since": "Member since",
-    "last_active": "Last active"
+    "member_since": "参加日",
+    "last_active": "最終アクティブ"
   }
 }

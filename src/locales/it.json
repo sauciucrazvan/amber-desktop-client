@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "Dettagli account",
+        "description": "Il tuo profilo pubblico e la tua identita di accesso."
       },
       "signOut": {
         "title": "Disconnetti",
@@ -265,8 +265,8 @@
         "description": "Aggiorna nome visualizzato, email e password da un unico punto."
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "Impostazioni generali",
+        "description": "Privacy, sicurezza e gestione dei dati."
       },
       "actions": {
         "title": "Azioni"
@@ -411,6 +411,7 @@
     "no_messages": "Nessun messaggio al momento.",
     "type_message": "Scrivi un messaggio",
     "send_message": "Invia messaggio",
+    "close": "Chiudi chat",
     "actions": {
       "reply": "Rispondi",
       "edit": "Modifica",

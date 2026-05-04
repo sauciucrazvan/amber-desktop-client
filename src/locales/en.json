@@ -411,6 +411,7 @@
     "no_messages": "No messages yet.",
     "type_message": "Type a message",
     "send_message": "Send message",
+    "close": "Close chat",
     "actions": {
       "reply": "Reply",
       "edit": "Edit",

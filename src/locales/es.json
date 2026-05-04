@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "Detalles de la cuenta",
+        "description": "Tu perfil publico y tu identidad de inicio de sesion."
       },
       "signOut": {
         "title": "Cerrar sesión",
@@ -265,8 +265,8 @@
         "description": "Actualiza tu nombre para mostrar, correo electrónico y contraseña en un solo lugar."
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "Ajustes generales",
+        "description": "Privacidad, seguridad y gestion de datos."
       },
       "actions": {
         "title": "Acciones"
@@ -411,6 +411,7 @@
     "no_messages": "Aún no hay mensajes.",
     "type_message": "Escribe un mensaje",
     "send_message": "Enviar mensaje",
+    "close": "Cerrar chat",
     "actions": {
       "reply": "Responder",
       "edit": "Editar",
@@ -531,7 +532,7 @@
     }
   },
   "stats": {
-    "member_since": "Member since",
-    "last_active": "Last active"
+    "member_since": "Miembro desde",
+    "last_active": "Ultima actividad"
   }
 }

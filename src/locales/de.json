@@ -200,8 +200,8 @@
     },
     "account": {
       "details": {
-        "title": "Account details",
-        "description": "Your public profile and login identity."
+        "title": "Kontodetails",
+        "description": "Dein offentliches Profil und deine Anmeldeinformationen."
       },
       "signOut": {
         "title": "Abmelden",
@@ -265,8 +265,8 @@
         "description": "Aktualisiere deinen Anzeigenamen, deine E-Mail und dein Passwort an einem Ort."
       },
       "general": {
-        "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "title": "Allgemeine Einstellungen",
+        "description": "Datenschutz, Sicherheit und Datenverwaltung."
       },
       "actions": {
         "title": "Aktionen"
@@ -411,6 +411,7 @@
     "no_messages": "Noch keine Nachrichten.",
     "type_message": "Nachricht eingeben",
     "send_message": "Nachricht senden",
+    "close": "Chat schliessen",
     "actions": {
       "reply": "Antworten",
       "edit": "Bearbeiten",

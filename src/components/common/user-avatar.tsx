@@ -1,5 +1,5 @@
 import { cn, initialsFromName, stringToColor } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -28,6 +28,14 @@ const avatarTextSizeClasses: Record<AvatarSize, string> = {
   xl: "text-xl text-white",
 };
 
+const avatarBadgeSizeClasses: Record<AvatarSize, string> = {
+  xs: "size-1",
+  sm: "size-1.5",
+  md: "size-2",
+  lg: "size-2.5",
+  xl: "size-2.75",
+};
+
 export default function UserAvatar({
   full_name,
   username,
@@ -39,9 +47,10 @@ export default function UserAvatar({
   const resolvedSize = size ?? "sm";
   const avatarSizeClass = avatarSizeClasses[resolvedSize];
   const avatarTextSizeClass = avatarTextSizeClasses[resolvedSize];
+  const avatarBadgeSizeClass = avatarBadgeSizeClasses[resolvedSize];
 
   return (
-    <div className="relative">
+    <div className="relative inline-flex align-middle">
       <Avatar className={avatarSizeClass}>
         <AvatarImage src={avatarUrl || ""} alt={full_name || username || ""} />
         <AvatarFallback
@@ -64,11 +73,11 @@ export default function UserAvatar({
         </AvatarFallback>
       </Avatar>
       {isOnline != null && (
-        <span
+        <AvatarBadge
           aria-label={isOnline ? "Online" : "Offline"}
           title={isOnline ? "Online" : "Offline"}
           className={cn(
-            "absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-background",
+            avatarBadgeSizeClass,
             isOnline ? "bg-emerald-500" : "bg-red-500",
           )}
         />

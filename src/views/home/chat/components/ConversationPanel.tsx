@@ -196,13 +196,13 @@ export default function ConversationPanel() {
     <section className="flex h-full w-full flex-col pt-2">
       <div className="border-b">
         <div className="mb-1 flex items-center justify-between px-4 pb-1">
-          <div className="flex min-w-0 items-center gap-2">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
             <UserProfile
               username={activeChat.otherUser.username}
               trigger={
                 <button
                   type="button"
-                  className="min-w-0 inline-flex items-center gap-2 rounded-md px-1 py-1 text-left transition-colors cursor-pointer"
+                  className="flex min-w-0 w-full items-center gap-2 rounded-md px-1 py-1 text-left transition-colors cursor-pointer"
                 >
                   <UserAvatar
                     full_name={activeChat.otherUser.full_name}
@@ -211,7 +211,7 @@ export default function ConversationPanel() {
                     avatarUrl={activeChat.otherUser.avatar_url}
                     size="md"
                   />
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <h2 className="truncate text-lg font-semibold">
                       {activeChat.otherUser.full_name}
                     </h2>

@@ -174,7 +174,7 @@ export default function AboutTab() {
 
   return (
     <>
-      <section className="mt-3 mx-auto flex flex-col w-full max-w-md items-center gap-2 text-center">
+      <section className="mt-3 mx-auto flex flex-row w-full max-w-md items-center gap-2 text-start">
         <img
           src={`${import.meta.env.BASE_URL}amber.png`}
           alt={"Amber Logo"}
@@ -188,27 +188,13 @@ export default function AboutTab() {
         </div>
       </section>
 
-      <Tabs
-        value={activePanel}
-        onValueChange={setActivePanel}
-        className="mt-4 w-full max-w-md mx-auto"
-      >
-        <TabsList className="w-full">
-          <TabsTrigger value="about" className="flex-1 cursor-pointer">
+      <section className="my-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-sm font-semibold">
             {t("settings.about.tabs.data_for_nerds")}
-          </TabsTrigger>
-          <TabsTrigger value="updates" className="flex-1 cursor-pointer">
-            {t("settings.about.tabs.updates")}
-          </TabsTrigger>
-          {isDevelopmentBuild ? (
-            <TabsTrigger value="developer" className="flex-1 cursor-pointer">
-              {t("settings.about.tabs.developer")}
-            </TabsTrigger>
-          ) : null}
-        </TabsList>
+          </h1>
 
-        <TabsContent value="about">
-          <section className="w-full flex flex-col gap-2 rounded-md border p-3 text-sm">
+          <section className="w-full flex flex-col gap-2 text-sm rounded-md border p-3 mt-2">
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
                 {t("settings.about.buildNumber")}
@@ -239,10 +225,14 @@ export default function AboutTab() {
               <span>{runtimeInfo?.chromiumVersion ?? "—"}</span>
             </div>
           </section>
-        </TabsContent>
+        </div>
 
-        <TabsContent value="updates" className="w-full">
-          <section className="w-full overflow-hidden flex flex-col gap-3 rounded-md border p-3 text-sm">
+        <div className="flex flex-col gap-1 my-4">
+          <h1 className="text-sm font-semibold">
+            {t("settings.about.tabs.updates")}
+          </h1>
+
+          <section className="w-full overflow-hidden flex flex-col gap-3 rounded-md border p-3 text-sm mt-2">
             <div className="flex items-center justify-between gap-2">
               <span className="text-muted-foreground">
                 {t("settings.about.updatesLabel")}
@@ -282,10 +272,14 @@ export default function AboutTab() {
               </Button>
             </div>
           </section>
-        </TabsContent>
+        </div>
 
-        {isDevelopmentBuild ? (
-          <TabsContent value="developer" className="w-full">
+        {isDevelopmentBuild && (
+          <div className="flex flex-col gap-1 my-4">
+            <h1 className="text-sm font-semibold">
+              {t("settings.about.tabs.developer")}
+            </h1>
+
             <section className="w-full flex flex-col gap-3 rounded-md border p-3 text-sm">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-muted-foreground">
@@ -328,9 +322,9 @@ export default function AboutTab() {
                 </p>
               ) : null}
             </section>
-          </TabsContent>
-        ) : null}
-      </Tabs>
+          </div>
+        )}
+      </section>
     </>
   );
 }

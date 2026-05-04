@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -53,7 +54,7 @@ export default function AppearanceTab() {
       {/* Theme */}
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
-          <h3 className="text-md text-primary">
+          <h3 className="text-sm font-semibold text-primary">
             {t("settings.appearance.theme.title")}
           </h3>
           <p className="text-xs text-muted-foreground">
@@ -88,10 +89,12 @@ export default function AppearanceTab() {
         </Tabs>
       </div>
 
+      <Separator className="mt-4" />
+
       {/* Scaling */}
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
-          <h3 className="text-md text-primary">
+          <h3 className="text-sm font-semibold text-primary">
             {t("settings.appearance.scaling.title")}
           </h3>
           <p className="text-xs text-muted-foreground">
@@ -121,7 +124,7 @@ export default function AppearanceTab() {
       {/* Sidebar position */}
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
-          <h3 className="text-md text-primary">
+          <h3 className="text-sm font-semibold text-primary">
             {t("settings.appearance.sidebarPosition.title")}
           </h3>
           <p className="text-xs text-muted-foreground">

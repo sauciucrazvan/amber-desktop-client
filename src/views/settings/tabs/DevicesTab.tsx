@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -5,6 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Info } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -30,9 +33,11 @@ type DeviceRowProps = {
 
 function DeviceRow(props: DeviceRowProps) {
   return (
-    <div className="w-full flex flex-col gap-1">
-      <div className="min-w-0">
-        <h3 className="text-md text-primary leading-tight">{props.title}</h3>
+    <div className="w-full flex flex-row justify-between items-start gap-1">
+      <div className="min-w-0 w-full">
+        <h3 className="text-sm font-semibold text-primary leading-tight">
+          {props.title}
+        </h3>
         <p className="text-xs text-muted-foreground leading-snug">
           {props.description}
         </p>

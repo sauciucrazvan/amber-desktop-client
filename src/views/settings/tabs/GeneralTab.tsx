@@ -13,6 +13,7 @@ import {
 } from "@/i18n";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Separator } from "@/components/ui/separator";
 
 type AppSettingsPayload = {
   allowTray?: boolean;
@@ -78,7 +79,7 @@ export default function GeneralTab() {
     <div className="flex min-h-0 h-full w-full flex-col">
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
-          <h3 className="text-md text-primary">
+          <h3 className="text-sm font-semibold text-primary">
             {t("settings.general.language.title")}
           </h3>
           <p className="text-xs text-muted-foreground">
@@ -108,16 +109,21 @@ export default function GeneralTab() {
         </Select>
       </div>
 
-      <div className="flex flex-row items-center justify-between gap-1 mt-2">
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.general.tray.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("settings.general.tray.description")}
-          </p>
-        </div>
+      <Separator className="mt-4" />
 
+      <div className="mt-2">
+        <h1 className="text-sm font-semibold">
+          {t("settings.general.system.title", "System")}
+        </h1>
+        <p className="text-muted-foreground text-xs">
+          {t(
+            "settings.general.system.description",
+            "How the application works",
+          )}
+        </p>
+      </div>
+
+      <div className="flex flex-row items-center justify-start gap-3 mt-2">
         <Switch
           checked={allowTray}
           className="cursor-pointer"
@@ -129,21 +135,17 @@ export default function GeneralTab() {
             });
           }}
         />
-      </div>
-
-      <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
           <h3 className="text-md text-primary">
-            {t("settings.general.startOnBoot.title", "Start on boot")}
+            {t("settings.general.tray.title")}
           </h3>
           <p className="text-xs text-muted-foreground">
-            {t(
-              "settings.general.startOnBoot.description",
-              "Launch Amber automatically when you sign in.",
-            )}
+            {t("settings.general.tray.description")}
           </p>
         </div>
+      </div>
 
+      <div className="flex flex-row items-center justify-start gap-3 mt-2">
         <Switch
           checked={startOnBoot}
           className="cursor-pointer"
@@ -155,6 +157,17 @@ export default function GeneralTab() {
             });
           }}
         />
+        <div>
+          <h3 className="text-md text-primary">
+            {t("settings.general.startOnBoot.title", "Start on boot")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              "settings.general.startOnBoot.description",
+              "Launch Amber automatically when you sign in.",
+            )}
+          </p>
+        </div>
       </div>
 
       <div className="mt-auto w-full pt-4 text-left text-xs text-muted-foreground">

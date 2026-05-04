@@ -30,7 +30,7 @@ type DeviceRowProps = {
 
 function DeviceRow(props: DeviceRowProps) {
   return (
-    <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_12rem] md:grid-cols-[minmax(0,1fr)_13rem] sm:items-center sm:gap-3">
+    <div className="w-full flex flex-col gap-1">
       <div className="min-w-0">
         <h3 className="text-md text-primary leading-tight">{props.title}</h3>
         <p className="text-xs text-muted-foreground leading-snug">

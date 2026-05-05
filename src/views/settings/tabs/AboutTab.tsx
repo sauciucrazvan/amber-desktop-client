@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -53,7 +52,6 @@ export default function AboutTab() {
     [],
   );
   const [activeServerId, setActiveServerId] = useState("");
-  const [activePanel, setActivePanel] = useState("about");
 
   useEffect(() => {
     let isMounted = true;

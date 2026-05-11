@@ -8,11 +8,19 @@ import {
 } from "@/components/ui/context-menu";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { formatHHmm } from "@/lib/utils";
-import { Check, CheckCheck, Pencil, Reply, Trash2 } from "lucide-react";
+import {
+  Check,
+  CheckCheck,
+  Pencil,
+  Reply,
+  Trash2,
+  ChevronRight,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import type { MessageItem } from "../types";
 import MessageEditHistoryDialog from "./MessageEditHistoryDialog";
+import EmojiPanel from "./EmojiPanel";
 
 const LOG_SUFFIX_BY_EVENT: Record<string, string> = {
   initiated: " started a call",
@@ -39,6 +47,8 @@ interface Props {
   delete_func: (id: string) => void;
   reply_func: (id: string) => void;
   edit_func: (id: string) => void;
+  add_reaction_func?: (emoji: string) => void;
+  remove_reaction_func?: (emoji: string) => void;
 }
 
 export default function ChatBubble({
@@ -49,6 +59,8 @@ export default function ChatBubble({
   delete_func,
   reply_func,
   edit_func,
+  add_reaction_func,
+  remove_reaction_func,
 }: Props) {
   const { t } = useTranslation();
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -150,9 +162,77 @@ export default function ChatBubble({
                 )}
               </div>
             </div>
+
+            {message.reactions && Object.keys(message.reactions).length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {Object.entries(message.reactions).map(([emoji, count]) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded bg-muted hover:bg-muted/80 transition-colors cursor-pointer text-xs"
+                    onClick={() => remove_reaction_func?.(emoji)}
+                    title="Click to remove your reaction"
+                  >
+                    <span>{emoji}</span>
+                    <span className="text-muted-foreground">{count}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </ContextMenuTrigger>
           <ContextMenuContent className="max-w-xs">
             <ContextMenuGroup>
+              <div className="flex items-center gap-1 px-2 py-1.5">
+                <button
+                  type="button"
+                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                  onClick={() => add_reaction_func?.("👍")}
+                  title="Like"
+                >
+                  👍
+                </button>
+                <button
+                  type="button"
+                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                  onClick={() => add_reaction_func?.("❤️")}
+                  title="Love"
+                >
+                  ❤️
+                </button>
+                <button
+                  type="button"
+                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                  onClick={() => add_reaction_func?.("😊")}
+                  title="Smile"
+                >
+                  😊
+                </button>
+                <button
+                  type="button"
+                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                  onClick={() => add_reaction_func?.("😂")}
+                  title="Laugh"
+                >
+                  😂
+                </button>
+                <EmojiPanel
+                  onEmojiSelect={(emoji) => {
+                    add_reaction_func?.(emoji);
+                  }}
+                  customTrigger={
+                    <button
+                      type="button"
+                      className="ml-1 p-1 text-muted-foreground hover:bg-muted rounded transition-colors cursor-pointer"
+                      title="More reactions"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  }
+                />
+              </div>
+
+              <ContextMenuSeparator />
+
               <ContextMenuItem
                 className="cursor-pointer"
                 onClick={() => reply_func(message.id)}

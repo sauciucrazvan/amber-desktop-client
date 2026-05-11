@@ -414,6 +414,7 @@
     "close": "Inchide chatul",
     "actions": {
       "reply": "Răspunde",
+      "react": "Reacționează",
       "edit": "Editează",
       "delete": "Șterge"
     },

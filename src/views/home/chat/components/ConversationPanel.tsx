@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { useChat } from "../context/ChatContext";
 import ChatBubble from "./ChatBubble";
 import { useConversationLogic } from "../hooks/useConversationLogic";
+import { useReactions } from "../hooks/useReactions";
 import type { MessageItem } from "../types";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { cn, formatRelativeTime } from "@/lib/utils";
@@ -62,6 +63,7 @@ export default function ConversationPanel() {
     onReply,
     onEdit,
     onScroll,
+    setMessages,
   } = useConversationLogic({
     accessToken,
     authFetch,
@@ -69,6 +71,13 @@ export default function ConversationPanel() {
     peerUserId: activeChat?.otherUser.id,
     t,
     language: i18n.language,
+  });
+
+  const { addReaction, removeReaction } = useReactions({
+    conversationId,
+    authFetch,
+    t,
+    setMessages,
   });
 
   const cancelComposerModes = useCallback(() => {
@@ -388,6 +397,12 @@ export default function ConversationPanel() {
                         edit_func={() => onEdit(row.message.id)}
                         reply_func={() => onReply(row.message.id)}
                         delete_func={() => onDelete(row.message.id)}
+                        add_reaction_func={(emoji) =>
+                          addReaction(row.message.id, emoji)
+                        }
+                        remove_reaction_func={(emoji) =>
+                          removeReaction(row.message.id, emoji)
+                        }
                       />
                     )}
                   </div>
@@ -434,6 +449,12 @@ export default function ConversationPanel() {
                     edit_func={() => onEdit(message.id)}
                     reply_func={() => onReply(message.id)}
                     delete_func={() => onDelete(message.id)}
+                    add_reaction_func={(emoji) =>
+                      addReaction(message.id, emoji)
+                    }
+                    remove_reaction_func={(emoji) =>
+                      removeReaction(message.id, emoji)
+                    }
                   />
                 </div>
               );

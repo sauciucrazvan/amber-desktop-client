@@ -28,6 +28,7 @@ export type MessageItem = {
   created_at: string;
   edited_at: string | null;
   seen: boolean;
+  reactions?: Record<string, number>;
 };
 
 export type AccountMe = {

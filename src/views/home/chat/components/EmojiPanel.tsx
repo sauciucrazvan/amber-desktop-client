@@ -16,6 +16,7 @@ import { Smile } from "lucide-react";
 
 type EmojiPanelProps = {
   onEmojiSelect: (emoji: string) => void;
+  customTrigger?: React.ReactNode;
 };
 
 const categoryEmojiById: Record<string, string> = {
@@ -53,7 +54,10 @@ const categoryToTranslationKey: Record<string, string> = {
 
 const emojiData = emojiMartData as EmojiMartData;
 
-export default function EmojiPanel({ onEmojiSelect }: EmojiPanelProps) {
+export default function EmojiPanel({
+  onEmojiSelect,
+  customTrigger,
+}: EmojiPanelProps) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -125,13 +129,15 @@ export default function EmojiPanel({ onEmojiSelect }: EmojiPanelProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          className="shrink-0 cursor-pointer"
-        >
-          <Smile className="size-4" />
-        </Button>
+        {customTrigger || (
+          <Button
+            type="button"
+            variant="outline"
+            className="shrink-0 cursor-pointer"
+          >
+            <Smile className="size-4" />
+          </Button>
+        )}
       </PopoverTrigger>
 
       <PopoverContent className="w-80 p-0" align="center">

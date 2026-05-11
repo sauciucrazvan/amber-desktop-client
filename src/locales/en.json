@@ -415,6 +415,7 @@
     "close": "Close chat",
     "actions": {
       "reply": "Reply",
+      "react": "React",
       "edit": "Edit",
       "delete": "Delete"
     },

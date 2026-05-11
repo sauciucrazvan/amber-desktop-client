@@ -414,6 +414,7 @@
     "close": "关闭聊天",
     "actions": {
       "reply": "回复",
+      "react": "反应",
       "edit": "编辑",
       "delete": "删除"
     },

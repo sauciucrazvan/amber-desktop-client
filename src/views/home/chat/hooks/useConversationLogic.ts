@@ -91,5 +91,7 @@ export function useConversationLogic({
     onReply: composer.onReply,
     onEdit: composer.onEdit,
     onScroll: data.onScroll,
+    setMessages: data.setMessages,
+    replaceMessageById: data.replaceMessageById,
   };
 }

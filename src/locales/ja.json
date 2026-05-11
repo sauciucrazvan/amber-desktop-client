@@ -414,6 +414,7 @@
     "close": "チャットを閉じる",
     "actions": {
       "reply": "返信",
+      "react": "反応",
       "edit": "編集",
       "delete": "削除"
     },

@@ -9,6 +9,11 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { EmojiMartData } from "@emoji-mart/data";
 import emojiMartData from "@emoji-mart/data/sets/15/native.json";
@@ -17,6 +22,7 @@ import { Smile } from "lucide-react";
 type EmojiPanelProps = {
   onEmojiSelect: (emoji: string) => void;
   customTrigger?: React.ReactNode;
+  triggerTooltip?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
@@ -59,6 +65,7 @@ const emojiData = emojiMartData as EmojiMartData;
 export default function EmojiPanel({
   onEmojiSelect,
   customTrigger,
+  triggerTooltip,
   open,
   onOpenChange,
 }: EmojiPanelProps) {
@@ -145,17 +152,38 @@ export default function EmojiPanel({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
-        {customTrigger || (
-          <Button
-            type="button"
-            variant="outline"
-            className="shrink-0 cursor-pointer"
-          >
-            <Smile className="size-4" />
-          </Button>
-        )}
-      </PopoverTrigger>
+      {triggerTooltip ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <PopoverTrigger asChild>
+              {customTrigger || (
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="shrink-0 cursor-pointer"
+                >
+                  <Smile className="size-4" />
+                </Button>
+              )}
+            </PopoverTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{triggerTooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        <PopoverTrigger asChild>
+          {customTrigger || (
+            <Button
+              type="button"
+              variant="outline"
+              className="shrink-0 cursor-pointer"
+            >
+              <Smile className="size-4" />
+            </Button>
+          )}
+        </PopoverTrigger>
+      )}
 
       <PopoverContent className="w-80 p-0" align="center">
         <PopoverHeader className="border-b px-4 py-3">
@@ -216,7 +244,7 @@ export default function EmojiPanel({
               ))}
             </TabsList>
 
-            <div className="max-h-72 overflow-y-auto p-4">
+            <div className="max-h-48 overflow-y-auto p-4">
               {emojiCategories
                 .filter((category) => category.categoryId === activeCategoryId)
                 .map((category) => (

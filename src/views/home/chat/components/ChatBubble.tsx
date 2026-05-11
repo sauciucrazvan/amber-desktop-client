@@ -16,6 +16,11 @@ import {
   Trash2,
   ChevronRight,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import type { MessageItem, MessageReactionDetails } from "../types";
@@ -187,34 +192,38 @@ export default function ChatBubble({
                 {reactionDetails.map((reaction) => {
                   const hasReacted =
                     myUserId !== null && reaction.user_ids.includes(myUserId);
+                  const reactionTooltip = hasReacted
+                    ? t("conversations.reactions.remove")
+                    : t("conversations.reactions.add");
 
                   return (
-                    <button
-                      key={reaction.emoji}
-                      type="button"
-                      className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs transition-colors cursor-pointer ${
-                        hasReacted
-                          ? "border-primary/40 bg-primary/10"
-                          : "border-border bg-secondary hover:bg-muted"
-                      }`}
-                      onClick={() => {
-                        if (hasReacted) {
-                          remove_reaction_func?.(reaction.emoji);
-                          return;
-                        }
-                        add_reaction_func?.(reaction.emoji);
-                      }}
-                      title={
-                        hasReacted
-                          ? t("conversations.reactions.remove")
-                          : t("conversations.reactions.add")
-                      }
-                    >
-                      <span>{reaction.emoji}</span>
-                      <span className="text-muted-foreground">
-                        {reaction.count}
-                      </span>
-                    </button>
+                    <Tooltip key={reaction.emoji}>
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs transition-colors cursor-pointer ${
+                            hasReacted
+                              ? "border-primary/40 bg-primary/10"
+                              : "border-border bg-secondary hover:bg-muted"
+                          }`}
+                          onClick={() => {
+                            if (hasReacted) {
+                              remove_reaction_func?.(reaction.emoji);
+                              return;
+                            }
+                            add_reaction_func?.(reaction.emoji);
+                          }}
+                        >
+                          <span>{reaction.emoji}</span>
+                          <span className="text-muted-foreground">
+                            {reaction.count}
+                          </span>
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{reactionTooltip}</p>
+                      </TooltipContent>
+                    </Tooltip>
                   );
                 })}
               </div>
@@ -223,50 +232,74 @@ export default function ChatBubble({
           <ContextMenuContent className="max-w-xs">
             <ContextMenuGroup>
               <div className="flex items-center gap-1 px-2 py-1.5">
-                <button
-                  type="button"
-                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => {
-                    add_reaction_func?.("👍");
-                    closeReactionMenus();
-                  }}
-                  title={t("conversations.reactions.quick.like")}
-                >
-                  👍
-                </button>
-                <button
-                  type="button"
-                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => {
-                    add_reaction_func?.("❤️");
-                    closeReactionMenus();
-                  }}
-                  title={t("conversations.reactions.quick.love")}
-                >
-                  ❤️
-                </button>
-                <button
-                  type="button"
-                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => {
-                    add_reaction_func?.("😊");
-                    closeReactionMenus();
-                  }}
-                  title={t("conversations.reactions.quick.smile")}
-                >
-                  😊
-                </button>
-                <button
-                  type="button"
-                  className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => {
-                    add_reaction_func?.("😂");
-                    closeReactionMenus();
-                  }}
-                  title={t("conversations.reactions.quick.laugh")}
-                >
-                  😂
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                      onClick={() => {
+                        add_reaction_func?.("👍");
+                        closeReactionMenus();
+                      }}
+                    >
+                      👍
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("conversations.reactions.quick.like")}</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                      onClick={() => {
+                        add_reaction_func?.("❤️");
+                        closeReactionMenus();
+                      }}
+                    >
+                      ❤️
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("conversations.reactions.quick.love")}</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                      onClick={() => {
+                        add_reaction_func?.("😊");
+                        closeReactionMenus();
+                      }}
+                    >
+                      😊
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("conversations.reactions.quick.smile")}</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      className="text-xl hover:scale-110 transition-transform cursor-pointer"
+                      onClick={() => {
+                        add_reaction_func?.("😂");
+                        closeReactionMenus();
+                      }}
+                    >
+                      😂
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("conversations.reactions.quick.laugh")}</p>
+                  </TooltipContent>
+                </Tooltip>
                 <EmojiPanel
                   onEmojiSelect={(emoji) => {
                     add_reaction_func?.(emoji);
@@ -274,11 +307,11 @@ export default function ChatBubble({
                   }}
                   open={emojiPickerOpen}
                   onOpenChange={setEmojiPickerOpen}
+                  triggerTooltip={t("conversations.reactions.more")}
                   customTrigger={
                     <button
                       type="button"
                       className="ml-1 p-1 text-muted-foreground hover:bg-muted rounded transition-colors cursor-pointer"
-                      title={t("conversations.reactions.more")}
                     >
                       <ChevronRight size={16} />
                     </button>

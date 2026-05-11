@@ -534,5 +534,23 @@
   "stats": {
     "member_since": "参加日",
     "last_active": "最終アクティブ"
+  },
+  "emoji": {
+    "panel": {
+      "title": "絵文字！",
+      "search_placeholder": "絵文字を検索",
+      "no_results": "絵文字が見つかりません。",
+      "insert": "{{emoji}} を挿入"
+    },
+    "categories": {
+      "smileys": "スマイリー",
+      "animals": "動物",
+      "food": "食べ物",
+      "activities": "活動",
+      "travel": "旅行",
+      "objects": "オブジェクト",
+      "symbols": "シンボル",
+      "flags": "旗"
+    }
   }
 }

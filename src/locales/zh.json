@@ -534,5 +534,23 @@
   "stats": {
     "member_since": "注册时间",
     "last_active": "上次活跃"
+  },
+  "emoji": {
+    "panel": {
+      "title": "表情符号！",
+      "search_placeholder": "搜索表情符号",
+      "no_results": "未找到表情符号。",
+      "insert": "插入 {{emoji}}"
+    },
+    "categories": {
+      "smileys": "表情",
+      "animals": "动物",
+      "food": "食物",
+      "activities": "活动",
+      "travel": "旅行",
+      "objects": "物体",
+      "symbols": "符号",
+      "flags": "旗帜"
+    }
   }
 }

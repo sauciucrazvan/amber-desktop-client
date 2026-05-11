@@ -534,5 +534,23 @@
   "stats": {
     "member_since": "Membru din",
     "last_active": "Ultima activitate"
+  },
+  "emoji": {
+    "panel": {
+      "title": "Emoji-uri!",
+      "search_placeholder": "Cauta emoji",
+      "no_results": "Nu s-au găsit emoji-uri.",
+      "insert": "Inserează {{emoji}}"
+    },
+    "categories": {
+      "smileys": "Zâmbete",
+      "animals": "Animale",
+      "food": "Mâncare",
+      "activities": "Activități",
+      "travel": "Călătorii",
+      "objects": "Obiecte",
+      "symbols": "Simboluri",
+      "flags": "Steaguri"
+    }
   }
 }

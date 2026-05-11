@@ -534,5 +534,23 @@
   "stats": {
     "member_since": "Mitglied seit",
     "last_active": "Zuletzt aktiv"
+  },
+  "emoji": {
+    "panel": {
+      "title": "Emojis!",
+      "search_placeholder": "Emoji suchen",
+      "no_results": "Keine Emojis gefunden.",
+      "insert": "{{emoji}} einfügen"
+    },
+    "categories": {
+      "smileys": "Smileys",
+      "animals": "Tiere",
+      "food": "Essen",
+      "activities": "Aktivitäten",
+      "travel": "Reisen",
+      "objects": "Objekte",
+      "symbols": "Symbole",
+      "flags": "Flaggen"
+    }
   }
 }

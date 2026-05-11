@@ -20,6 +20,7 @@ import { useConversationLogic } from "../hooks/useConversationLogic";
 import type { MessageItem } from "../types";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { cn, formatRelativeTime } from "@/lib/utils";
+import EmojiPanel from "./EmojiPanel";
 
 type ConversationRow =
   | {
@@ -486,7 +487,24 @@ export default function ConversationPanel() {
             </Button>
           </div>
         )}
-        <div className="flex min-w-0 px-4 pt-2 pb-2">
+        <div className="flex min-w-0 px-4 pt-2 pb-2 gap-2">
+          <ButtonGroup>
+            {/* <Button
+              type="button"
+              variant="outline"
+              onClick={onSend}
+              aria-label={t("conversations.send_message")}
+              className="shrink-0 cursor-pointer"
+            >
+              <FileUp className="size-4" />
+            </Button> */}
+            <EmojiPanel
+              onEmojiSelect={(emoji) =>
+                setMessageText((current) => current + emoji)
+              }
+            />
+          </ButtonGroup>
+
           <ButtonGroup className="w-full">
             <Textarea
               ref={textareaRef}

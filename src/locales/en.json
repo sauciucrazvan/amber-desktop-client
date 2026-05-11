@@ -419,6 +419,17 @@
       "edit": "Edit",
       "delete": "Delete"
     },
+    "reactions": {
+      "add": "Click to react",
+      "remove": "Click to remove your reaction",
+      "more": "More reactions",
+      "quick": {
+        "like": "Like",
+        "love": "Love",
+        "smile": "Smile",
+        "laugh": "Laugh"
+      }
+    },
     "deleted_message": "Successfully deleted the message.",
     "deleteMessage": {
       "confirm": {
@@ -432,6 +443,8 @@
       "not_participating": "You are not participating in this conversation.",
       "too_long": "The message can not exceed 2048 characters.",
       "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
+      "too_many_reactions": "You can only use up to 16 different reactions per message.",
+      "invalid_reaction": "Invalid reaction.",
       "no_permission": "You do not have permission to do that!",
       "no_relation": "You are not friends with this users or they've blocked you."
     }

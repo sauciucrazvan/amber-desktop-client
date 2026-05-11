@@ -418,6 +418,17 @@
       "edit": "编辑",
       "delete": "删除"
     },
+    "reactions": {
+      "add": "点击以反应",
+      "remove": "点击以移除你的反应",
+      "more": "更多反应",
+      "quick": {
+        "like": "赞",
+        "love": "爱心",
+        "smile": "微笑",
+        "laugh": "大笑"
+      }
+    },
     "deleted_message": "Successfully deleted the message.",
     "deleteMessage": {
       "confirm": {
@@ -431,6 +442,8 @@
       "not_participating": "You are not participating in this conversation.",
       "too_long": "The message can not exceed 2048 characters.",
       "invalid_message": "An error occured and we couldn't find the message data. Try again later!",
+      "too_many_reactions": "每条消息最多只能使用16种不同的反应。",
+      "invalid_reaction": "无效的反应。",
       "no_permission": "You do not have permission to do that!",
       "no_relation": "You are not friends with this users or they've blocked you."
     }

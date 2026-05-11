@@ -195,7 +195,7 @@ export default function ChatBubble({
                       className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs transition-colors cursor-pointer ${
                         hasReacted
                           ? "border-primary/40 bg-primary/10"
-                          : "border-border bg-background hover:bg-muted"
+                          : "border-border bg-secondary hover:bg-muted"
                       }`}
                       onClick={() => {
                         if (hasReacted) {
@@ -206,8 +206,8 @@ export default function ChatBubble({
                       }}
                       title={
                         hasReacted
-                          ? "Click to remove your reaction"
-                          : "Click to react"
+                          ? t("conversations.reactions.remove")
+                          : t("conversations.reactions.add")
                       }
                     >
                       <span>{reaction.emoji}</span>
@@ -230,7 +230,7 @@ export default function ChatBubble({
                     add_reaction_func?.("👍");
                     closeReactionMenus();
                   }}
-                  title="Like"
+                  title={t("conversations.reactions.quick.like")}
                 >
                   👍
                 </button>
@@ -241,7 +241,7 @@ export default function ChatBubble({
                     add_reaction_func?.("❤️");
                     closeReactionMenus();
                   }}
-                  title="Love"
+                  title={t("conversations.reactions.quick.love")}
                 >
                   ❤️
                 </button>
@@ -252,7 +252,7 @@ export default function ChatBubble({
                     add_reaction_func?.("😊");
                     closeReactionMenus();
                   }}
-                  title="Smile"
+                  title={t("conversations.reactions.quick.smile")}
                 >
                   😊
                 </button>
@@ -263,7 +263,7 @@ export default function ChatBubble({
                     add_reaction_func?.("😂");
                     closeReactionMenus();
                   }}
-                  title="Laugh"
+                  title={t("conversations.reactions.quick.laugh")}
                 >
                   😂
                 </button>
@@ -278,7 +278,7 @@ export default function ChatBubble({
                     <button
                       type="button"
                       className="ml-1 p-1 text-muted-foreground hover:bg-muted rounded transition-colors cursor-pointer"
-                      title="More reactions"
+                      title={t("conversations.reactions.more")}
                     >
                       <ChevronRight size={16} />
                     </button>

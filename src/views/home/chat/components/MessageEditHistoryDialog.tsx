@@ -58,20 +58,19 @@ export default function MessageEditHistoryDialog({ editedAt, history }: Props) {
         </a>
       </DialogTrigger>
       <DialogContent
-        className="flex h-[60vh] max-h-[85vh] w-[calc(100vw-2rem)] overflow-hidden sm:max-w-125 p-0"
         onContextMenu={(event) => {
           event.preventDefault();
           event.stopPropagation();
         }}
       >
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-6 gap-4">
-          <DialogHeader>
-            <DialogTitle>{t("conversations.history.title")}</DialogTitle>
-            <DialogDescription>
-              {t("conversations.history.description")}
-            </DialogDescription>
-          </DialogHeader>
+        <DialogHeader>
+          <DialogTitle>{t("conversations.history.title")}</DialogTitle>
+          <DialogDescription>
+            {t("conversations.history.description")}
+          </DialogDescription>
+        </DialogHeader>
 
+        <div className="-mx-4 no-scrollbar max-h-[50vh] overflow-y-auto px-4">
           {entries.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               {t("conversations.history.empty")}

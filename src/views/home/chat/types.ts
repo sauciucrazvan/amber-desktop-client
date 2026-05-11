@@ -1,3 +1,10 @@
+export type MessageReactionDetails = {
+  emoji: string;
+  count: number;
+  user_ids: number[];
+  first_added_at?: string | null;
+};
+
 export type MessageItem = {
   id: string;
   conversation_id: string;
@@ -29,6 +36,7 @@ export type MessageItem = {
   edited_at: string | null;
   seen: boolean;
   reactions?: Record<string, number>;
+  reaction_details?: MessageReactionDetails[];
 };
 
 export type AccountMe = {

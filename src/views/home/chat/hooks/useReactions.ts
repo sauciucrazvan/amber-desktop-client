@@ -48,7 +48,11 @@ export function useReactions({
         setMessages((current) =>
           current.map((msg) =>
             msg.id === messageId
-              ? { ...msg, reactions: updatedMessage.reactions }
+              ? {
+                  ...msg,
+                  reactions: updatedMessage.reactions,
+                  reaction_details: updatedMessage.reaction_details,
+                }
               : msg,
           ),
         );
@@ -81,7 +85,11 @@ export function useReactions({
         setMessages((current) =>
           current.map((msg) =>
             msg.id === messageId
-              ? { ...msg, reactions: updatedMessage.reactions }
+              ? {
+                  ...msg,
+                  reactions: updatedMessage.reactions,
+                  reaction_details: updatedMessage.reaction_details,
+                }
               : msg,
           ),
         );

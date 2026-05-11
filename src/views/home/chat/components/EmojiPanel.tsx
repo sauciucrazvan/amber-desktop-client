@@ -17,6 +17,8 @@ import { Smile } from "lucide-react";
 type EmojiPanelProps = {
   onEmojiSelect: (emoji: string) => void;
   customTrigger?: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
 
 const categoryEmojiById: Record<string, string> = {
@@ -57,9 +59,11 @@ const emojiData = emojiMartData as EmojiMartData;
 export default function EmojiPanel({
   onEmojiSelect,
   customTrigger,
+  open,
+  onOpenChange,
 }: EmojiPanelProps) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState<
     (typeof categoryOrder)[number]
@@ -124,10 +128,23 @@ export default function EmojiPanel({
 
   const handleEmojiClick = (emoji: string) => {
     onEmojiSelect(emoji);
+    if (open === undefined) {
+      setInternalOpen(false);
+    }
+    onOpenChange?.(false);
+  };
+
+  const isOpen = open ?? internalOpen;
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (open === undefined) {
+      setInternalOpen(nextOpen);
+    }
+    onOpenChange?.(nextOpen);
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         {customTrigger || (
           <Button
@@ -167,7 +184,7 @@ export default function EmojiPanel({
                     key={`${categoryName}-${emoji}`}
                     type="button"
                     variant="ghost"
-                    className="h-10 w-10 p-0 text-lg"
+                    className="h-10 w-10 p-0 text-lg cursor-pointer"
                     onClick={() => handleEmojiClick(emoji)}
                     aria-label={t("emoji.panel.insert", { emoji })}
                   >
@@ -190,7 +207,7 @@ export default function EmojiPanel({
                 <TabsTrigger
                   key={category.categoryId}
                   value={category.categoryId}
-                  className="h-10 w-10 flex-none rounded-md px-0 text-lg"
+                  className="h-10 w-10 flex-none rounded-md px-0 text-lg cursor-pointer"
                   aria-label={category.name}
                   title={category.name}
                 >
@@ -214,7 +231,7 @@ export default function EmojiPanel({
                           key={`${category.categoryId}-${emoji.id}`}
                           type="button"
                           variant="ghost"
-                          className="h-10 w-10 p-0 text-lg"
+                          className="h-10 w-10 p-0 text-lg cursor-pointer"
                           onClick={() => handleEmojiClick(emoji.emoji)}
                           aria-label={t("emoji.panel.insert", {
                             emoji: emoji.emoji,

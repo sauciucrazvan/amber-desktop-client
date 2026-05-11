@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import type { MessageItem } from "../types";
+import type { MessageItem, MessageReactionDetails } from "../types";
 import MessageEditHistoryDialog from "./MessageEditHistoryDialog";
 import EmojiPanel from "./EmojiPanel";
 
@@ -64,6 +64,7 @@ export default function ChatBubble({
 }: Props) {
   const { t } = useTranslation();
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
 
   const isMine = myUserId !== null && message.sender_id === myUserId;
   const text = message.content?.text ?? "";
@@ -101,6 +102,24 @@ export default function ChatBubble({
           })
         : t(`calls.logs.${logEventName}`, { defaultValue: text })
       : text;
+
+  const reactionDetails: MessageReactionDetails[] = message.reaction_details
+    ? message.reaction_details
+    : Object.entries(message.reactions ?? {}).map(([emoji, count]) => ({
+        emoji,
+        count,
+        user_ids: [],
+      }));
+
+  const closeReactionMenus = () => {
+    setEmojiPickerOpen(false);
+    document.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Escape",
+        bubbles: true,
+      }),
+    );
+  };
 
   return (
     <div
@@ -163,20 +182,41 @@ export default function ChatBubble({
               </div>
             </div>
 
-            {message.reactions && Object.keys(message.reactions).length > 0 && (
+            {reactionDetails.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
-                {Object.entries(message.reactions).map(([emoji, count]) => (
-                  <button
-                    key={emoji}
-                    type="button"
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded bg-muted hover:bg-muted/80 transition-colors cursor-pointer text-xs"
-                    onClick={() => remove_reaction_func?.(emoji)}
-                    title="Click to remove your reaction"
-                  >
-                    <span>{emoji}</span>
-                    <span className="text-muted-foreground">{count}</span>
-                  </button>
-                ))}
+                {reactionDetails.map((reaction) => {
+                  const hasReacted =
+                    myUserId !== null && reaction.user_ids.includes(myUserId);
+
+                  return (
+                    <button
+                      key={reaction.emoji}
+                      type="button"
+                      className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs transition-colors cursor-pointer ${
+                        hasReacted
+                          ? "border-primary/40 bg-primary/10"
+                          : "border-border bg-background hover:bg-muted"
+                      }`}
+                      onClick={() => {
+                        if (hasReacted) {
+                          remove_reaction_func?.(reaction.emoji);
+                          return;
+                        }
+                        add_reaction_func?.(reaction.emoji);
+                      }}
+                      title={
+                        hasReacted
+                          ? "Click to remove your reaction"
+                          : "Click to react"
+                      }
+                    >
+                      <span>{reaction.emoji}</span>
+                      <span className="text-muted-foreground">
+                        {reaction.count}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </ContextMenuTrigger>
@@ -186,7 +226,10 @@ export default function ChatBubble({
                 <button
                   type="button"
                   className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => add_reaction_func?.("👍")}
+                  onClick={() => {
+                    add_reaction_func?.("👍");
+                    closeReactionMenus();
+                  }}
                   title="Like"
                 >
                   👍
@@ -194,7 +237,10 @@ export default function ChatBubble({
                 <button
                   type="button"
                   className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => add_reaction_func?.("❤️")}
+                  onClick={() => {
+                    add_reaction_func?.("❤️");
+                    closeReactionMenus();
+                  }}
                   title="Love"
                 >
                   ❤️
@@ -202,7 +248,10 @@ export default function ChatBubble({
                 <button
                   type="button"
                   className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => add_reaction_func?.("😊")}
+                  onClick={() => {
+                    add_reaction_func?.("😊");
+                    closeReactionMenus();
+                  }}
                   title="Smile"
                 >
                   😊
@@ -210,7 +259,10 @@ export default function ChatBubble({
                 <button
                   type="button"
                   className="text-xl hover:scale-110 transition-transform cursor-pointer"
-                  onClick={() => add_reaction_func?.("😂")}
+                  onClick={() => {
+                    add_reaction_func?.("😂");
+                    closeReactionMenus();
+                  }}
                   title="Laugh"
                 >
                   😂
@@ -218,7 +270,10 @@ export default function ChatBubble({
                 <EmojiPanel
                   onEmojiSelect={(emoji) => {
                     add_reaction_func?.(emoji);
+                    closeReactionMenus();
                   }}
+                  open={emojiPickerOpen}
+                  onOpenChange={setEmojiPickerOpen}
                   customTrigger={
                     <button
                       type="button"

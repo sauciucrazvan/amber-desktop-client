@@ -200,9 +200,11 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
                     {t("stats.last_active", "Last active")}
                   </span>
                   <span>
-                    {user.last_active_at
-                      ? formatRelativeTime(t, user.last_active_at)
-                      : "—"}
+                    {user.online
+                      ? t("common.now", "now")
+                      : user.last_active_at
+                        ? formatRelativeTime(t, user.last_active_at)
+                        : "—"}
                   </span>
                 </div>
               </section>

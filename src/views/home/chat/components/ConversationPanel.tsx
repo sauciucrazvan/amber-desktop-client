@@ -226,27 +226,33 @@ export default function ConversationPanel() {
                       {activeChat.otherUser.full_name}
                     </h2>
                     <div className="relative h-4 truncate text-xs text-muted-foreground">
-                      <span
-                        className={cn(
-                          "absolute inset-0 transition-opacity duration-500",
-                          showLastActivity && lastActiveLabel
-                            ? "opacity-0"
-                            : "opacity-100",
-                        )}
-                      >
-                        @{activeChat.otherUser.username}
-                      </span>
-                      <span
-                        className={cn(
-                          "absolute inset-0 transition-opacity duration-500",
-                          showLastActivity && lastActiveLabel
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      >
-                        {t("stats.last_active", "Last active")}{" "}
-                        {lastActiveLabel}
-                      </span>
+                      {isOnline ? (
+                        <span>{t("common.now", "now")}</span>
+                      ) : (
+                        <>
+                          <span
+                            className={cn(
+                              "absolute inset-0 transition-opacity duration-500",
+                              showLastActivity && lastActiveLabel
+                                ? "opacity-0"
+                                : "opacity-100",
+                            )}
+                          >
+                            @{activeChat.otherUser.username}
+                          </span>
+                          <span
+                            className={cn(
+                              "absolute inset-0 transition-opacity duration-500",
+                              showLastActivity && lastActiveLabel
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          >
+                            {t("stats.last_active", "Last active")}{" "}
+                            {lastActiveLabel}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
                 </button>

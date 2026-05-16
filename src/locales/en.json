@@ -34,6 +34,7 @@
     "incorrectCredentials": "Incorrect username or password.",
     "greeting": "Welcome back!",
     "account_disabled": "This account has been deleted.",
+    "locked": "Too many failed attempts, please try again later.",
     "recovery": {
       "title": "Recover your password",
       "description": "You can make a request every 30 minutes.",

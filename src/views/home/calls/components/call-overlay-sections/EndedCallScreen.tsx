@@ -1,20 +1,12 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { PeerHeader } from "./PeerHeader";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import type { EndedCallScreenProps } from "./types";
-import { Timer } from "lucide-react";
+import { PhoneOff, Timer } from "lucide-react";
 import UserAvatar from "@/components/common/user-avatar";
 
 export function EndedCallScreen({
   peerDisplayName,
   peerFallback,
-  peerOnline,
   peerAvatar,
   endedTitle,
   durationLabel,
@@ -29,7 +21,15 @@ export function EndedCallScreen({
           <div className="flex flex-col items-center justify-center gap-0">
             <h1 className="text-lg font-semibold">{peerDisplayName}</h1>
             <div className="inline-flex items-center gap-1 text-muted-foreground text-sm">
-              <Timer size="12" /> {durationLabel}
+              {isRejected ? (
+                <>
+                  <PhoneOff size="12" /> {endedTitle}
+                </>
+              ) : (
+                <>
+                  <Timer size="12" /> {durationLabel}
+                </>
+              )}
             </div>
           </div>
 

@@ -7,7 +7,6 @@ import UserAvatar from "@/components/common/user-avatar";
 export function IncomingCallScreen({
   peerDisplayName,
   peerFallback,
-  peerOnline,
   peerAvatar,
   incomingBadgeLabel,
   incomingCallMode,

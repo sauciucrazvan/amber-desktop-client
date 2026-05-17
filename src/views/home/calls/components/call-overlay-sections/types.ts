@@ -3,7 +3,6 @@ import type { CallMode } from "../../types";
 export type PeerHeaderProps = {
   peerDisplayName: string;
   peerFallback: string;
-  peerOnline?: boolean;
   peerAvatar?: string | null;
 };
 

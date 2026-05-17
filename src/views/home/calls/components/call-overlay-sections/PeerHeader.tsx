@@ -9,20 +9,20 @@ export function PeerHeader({
   peerAvatar,
 }: PeerHeaderProps) {
   return (
-    <div className="mx-auto flex w-full max-w-xs items-center justify-center gap-3 text-left">
+    <CardHeader className="flex flex-col items-center justify-center gap-4">
+      <div className="flex flex-col items-center justify-center gap-0">
+        <h1 className="text-lg font-semibold">{peerDisplayName}</h1>
+        <div className="inline-flex items-center gap-1 text-muted-foreground text-sm animate-pulse">
+          <PhoneCall size="12" /> {waitingLabel}
+        </div>
+      </div>
+
       <UserAvatar
         full_name={peerDisplayName}
         username={peerFallback}
-        isOnline={peerOnline}
         avatarUrl={peerAvatar}
-        size="md"
-      />
-      <div className="min-w-0">
-        <CardTitle className="truncate text-base font-semibold">
-          {peerDisplayName}
-        </CardTitle>
-        <CardDescription className="truncate">@{peerFallback}</CardDescription>
-      </div>
-    </div>
+        size="xxl"
+      ></UserAvatar>
+    </CardHeader>
   );
 }

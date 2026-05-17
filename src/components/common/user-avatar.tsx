@@ -1,7 +1,7 @@
 import { cn, initialsFromName, stringToColor } from "@/lib/utils";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
+type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 
 interface UserAvatarProps {
   full_name?: string | null;
@@ -18,6 +18,7 @@ const avatarSizeClasses: Record<AvatarSize, string> = {
   md: "size-10",
   lg: "size-12",
   xl: "size-16",
+  xxl: "size-24",
 };
 
 const avatarTextSizeClasses: Record<AvatarSize, string> = {
@@ -26,6 +27,7 @@ const avatarTextSizeClasses: Record<AvatarSize, string> = {
   md: "text-base text-white",
   lg: "text-lg text-white",
   xl: "text-xl text-white",
+  xxl: "text-xl text-white",
 };
 
 const avatarBadgeSizeClasses: Record<AvatarSize, string> = {
@@ -34,6 +36,7 @@ const avatarBadgeSizeClasses: Record<AvatarSize, string> = {
   md: "size-2",
   lg: "size-2.5",
   xl: "size-2.75",
+  xxl: "size-4",
 };
 
 export default function UserAvatar({

@@ -109,6 +109,8 @@
     },
     "privacy": {
       "title": "Politica de confidențialitate",
+      "missedFrom": "Missed call from {{actor}}",
+      "missedNoAnswer": "{{actor}} did not answer the call",
       "description": "Te rugăm să revizuiești modul în care Amber gestionează și protejează datele tale.",
       "content": "Colectăm doar informațiile necesare pentru funcționarea Amber, precum date de cont și date de utilizare necesare funcțiilor de bază. Îți protejăm datele și nu vindem informații personale."
     }

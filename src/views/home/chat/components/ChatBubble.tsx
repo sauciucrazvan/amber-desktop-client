@@ -91,6 +91,12 @@ export default function ChatBubble({
     logEventName,
   );
   const logActor = actorFromPayload || actorFromLegacyText;
+  const actorUserId =
+    typeof message.content?.actor_user_id === "number"
+      ? message.content.actor_user_id
+      : message.sender_id;
+  const isViewerActor = myUserId !== null && actorUserId === myUserId;
+  const otherDisplayName = otherUserName?.trim() || t("calls.unknown");
 
   const supportsActorInterpolation =
     logEventName === "initiated" ||
@@ -100,12 +106,22 @@ export default function ChatBubble({
 
   const logText =
     isLogMessage && logEventName
-      ? supportsActorInterpolation && logActor
-        ? t(`calls.logs.${logEventName}WithActor`, {
-            actor: logActor,
-            defaultValue: text,
-          })
-        : t(`calls.logs.${logEventName}`, { defaultValue: text })
+      ? logEventName === "missed"
+        ? isViewerActor
+          ? t("calls.logs.missedNoAnswer", {
+              actor: otherDisplayName,
+              defaultValue: text,
+            })
+          : t("calls.logs.missedFrom", {
+              actor: logActor || otherDisplayName,
+              defaultValue: text,
+            })
+        : supportsActorInterpolation && logActor
+          ? t(`calls.logs.${logEventName}WithActor`, {
+              actor: logActor,
+              defaultValue: text,
+            })
+          : t(`calls.logs.${logEventName}`, { defaultValue: text })
       : text;
 
   const reactionDetails: MessageReactionDetails[] = message.reaction_details

@@ -507,6 +507,8 @@
       "rejected": "Rejected the call",
       "rejectedWithActor": "{{actor}} rejected the call",
       "missed": "Missed call",
+      "missedFrom": "Missed call from {{actor}}",
+      "missedNoAnswer": "{{actor}} did not answer the call",
       "finished": "Finished the call",
       "finishedWithActor": "{{actor}} finished the call"
     },

@@ -46,7 +46,6 @@ export default function CallOverlay() {
         <OutgoingCallScreen
           peerDisplayName={peerDisplayName}
           peerFallback={peerFallback}
-          peerOnline={peer?.online}
           peerAvatar={peer?.avatar_url}
           outgoingBadge={t("calls.badge.outgoing")}
           waitingLabel={t("calls.outgoing.waiting")}
@@ -59,7 +58,6 @@ export default function CallOverlay() {
         <IncomingCallScreen
           peerDisplayName={peerDisplayName}
           peerFallback={peerFallback}
-          peerOnline={peer?.online}
           peerAvatar={peer?.avatar_url}
           incomingBadgeLabel={
             callMode === "audio"
@@ -88,7 +86,6 @@ export default function CallOverlay() {
         <EndedCallScreen
           peerDisplayName={peerDisplayName}
           peerFallback={peerFallback}
-          peerOnline={peer?.online}
           peerAvatar={peer?.avatar_url}
           endedTitle={endedTitle}
           durationLabel={t("calls.ended.duration", {

@@ -24,6 +24,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import EmojiPanel from "../home/chat/components/EmojiPanel";
 
 interface MyProfileProps {
   trigger: ReactNode;
@@ -204,6 +205,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                       <p className="text-xs font-medium text-muted-foreground">
                         {t("profile.bio.title")}
                       </p>
+
                       <Tooltip>
                         <TooltipTrigger>
                           <Button
@@ -235,6 +237,17 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                           maxLength={100}
                         />
                         <div className="w-full flex items-center justify-end gap-2">
+                          <div
+                            onWheel={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            className="relative"
+                          >
+                            <EmojiPanel
+                              onEmojiSelect={(emoji) =>
+                                setBioDraft((current) => current + emoji)
+                              }
+                            />
+                          </div>
                           <Button
                             type="button"
                             variant="outline"

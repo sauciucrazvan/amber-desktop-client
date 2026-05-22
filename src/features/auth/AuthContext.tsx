@@ -17,7 +17,7 @@ import {
   setStoredTokens,
   type StoredTokens,
   isTokenExpiringSoon,
-} from "@/auth/tokenStorage";
+} from "@/features/auth/tokenStorage";
 
 type TokenResponse = {
   access_token: string;
@@ -548,3 +548,4 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }
+

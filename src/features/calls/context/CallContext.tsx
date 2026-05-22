@@ -2,7 +2,7 @@ import {
   useAuth,
   WS_MESSAGE_EVENT_NAME,
   WS_SEND_EVENT_NAME,
-} from "@/auth/AuthContext";
+} from "@/features/auth/AuthContext";
 /* eslint-disable react-refresh/only-export-components */
 import React, {
   createContext,
@@ -1291,3 +1291,4 @@ export function useCalls() {
 
   return context;
 }
+

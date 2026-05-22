@@ -7,7 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import ErrorBox from "@/components/common/error-box";
 import Contact from "@/components/common/contact";
 import type { TFunction } from "i18next";
-import type { ActiveChat } from "@/views/home/chat";
+import type { ActiveChat } from "@/features/chat";
 import type { ContactListItem } from "../types";
 import VerifyNotice from "./VerifyNotice";
 

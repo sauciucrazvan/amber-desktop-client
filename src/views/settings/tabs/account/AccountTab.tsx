@@ -1,5 +1,5 @@
-import { useAuth } from "@/auth/AuthContext";
-import { useAccount } from "@/account/AccountContext";
+import { useAuth } from "@/features/auth/AuthContext";
+import { useAccount } from "@/features/account/AccountContext";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { useTranslation } from "react-i18next";
 import UserAvatar from "@/components/common/user-avatar";
@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import RequestData from "./dialogs/RequestData";
 import SignOut from "./dialogs/SignOut";
-import BlockedAccounts from "@/views/dialogs/BlockedAccounts";
+import BlockedAccounts from "./dialogs/BlockedAccounts";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { ChangeEvent, useState } from "react";
 import { apiUrl } from "@/config";
@@ -345,3 +345,4 @@ export default function AccountTab() {
     </div>
   );
 }
+

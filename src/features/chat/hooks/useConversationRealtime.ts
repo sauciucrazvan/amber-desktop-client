@@ -2,7 +2,7 @@ import {
   WS_MESSAGE_EVENT_NAME,
   WS_STATUS_EVENT_NAME,
   type SharedWsStatusPayload,
-} from "@/auth/AuthContext";
+} from "@/features/auth/AuthContext";
 import { useEffect, useRef } from "react";
 import type { MessageItem } from "../types";
 
@@ -257,3 +257,4 @@ export function useConversationRealtime({
     setMessages,
   ]);
 }
+

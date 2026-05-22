@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import ErrorBox from "@/components/common/error-box";
 import { Button } from "@/components/ui/button";
 import {
@@ -340,3 +340,4 @@ export default function ChangeEmail({ children }: Props) {
     </>
   );
 }
+

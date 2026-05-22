@@ -30,7 +30,7 @@ import { Info, Paintbrush, SettingsIcon, User, Video } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AppearanceTab from "./tabs/AppearanceTab";
-import AccountTab from "./tabs/AccountTab";
+import AccountTab from "./tabs/account/AccountTab";
 import GeneralTab from "./tabs/GeneralTab";
 import AboutTab from "./tabs/AboutTab";
 import DevicesTab from "./tabs/DevicesTab";

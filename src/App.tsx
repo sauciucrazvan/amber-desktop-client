@@ -4,15 +4,15 @@ import {
   AuthProvider,
   WS_STATUS_EVENT_NAME,
   type SharedWsStatusPayload,
-} from "./auth/AuthContext";
-import { AccountProvider } from "./account/AccountContext";
+} from "./features/auth/AuthContext";
+import { AccountProvider } from "./features/account/AccountContext";
 import { Toaster } from "./components/ui/sonner";
 import { Progress } from "./components/ui/progress";
 import Titlebar from "./components/common/Titlebar";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { CallOverlay, CallProvider } from "./views/home/calls";
+import { CallOverlay, CallProvider } from "./features/calls";
 
 type UpdaterStatus = {
   status: string;
@@ -163,3 +163,4 @@ export default function App() {
     </ThemeProvider>
   );
 }
+

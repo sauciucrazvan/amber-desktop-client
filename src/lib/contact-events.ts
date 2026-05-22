@@ -1,4 +1,4 @@
-import { WS_MESSAGE_EVENT_NAME } from "@/auth/AuthContext";
+import { WS_MESSAGE_EVENT_NAME } from "@/features/auth/AuthContext";
 
 export type ContactsWsEventPayload = {
   type: "contacts";
@@ -17,3 +17,4 @@ export function dispatchContactsEvent(payload: ContactsWsEventPayload) {
     }),
   );
 }
+

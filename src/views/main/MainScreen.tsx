@@ -1,9 +1,9 @@
 import AppSidebar from "@/components/common/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import GetStarted from "./dialogs/GetStarted";
-import { ChatProvider, ConversationPanel, useChat } from "./chat";
+import { ChatProvider, ConversationPanel, useChat } from "@/features/chat";
 
-function HomepageContent() {
+function MainScreenContent() {
   const { activeChat } = useChat();
   const amberLogoSrc = `${import.meta.env.BASE_URL}amber.png`;
 
@@ -40,10 +40,10 @@ function HomepageContent() {
   );
 }
 
-export default function Homepage() {
+export default function MainScreen() {
   return (
     <ChatProvider>
-      <HomepageContent />
+      <MainScreenContent />
     </ChatProvider>
   );
 }

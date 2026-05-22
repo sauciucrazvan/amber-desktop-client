@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Spinner } from "@/components/ui/spinner";
@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import UserAvatar from "@/components/common/user-avatar";
 import UserProfile from "@/views/dialogs/UserProfile";
-import { useCalls } from "@/views/home/calls";
+import { useCalls } from "@/features/calls";
 import { Edit2, Phone, Reply, Send, Video, X } from "lucide-react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -562,3 +562,4 @@ export default function ConversationPanel() {
     </section>
   );
 }
+

@@ -1,5 +1,5 @@
-import { useAuth } from "@/auth/AuthContext";
-import { useAccount } from "@/account/AccountContext";
+import { useAuth } from "@/features/auth/AuthContext";
+import { useAccount } from "@/features/account/AccountContext";
 import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,14 +17,14 @@ import { Pencil, Upload } from "lucide-react";
 import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import ChangeName from "../settings/tabs/dialogs/ChangeName";
-import type { AccountMe } from "@/account/AccountContext";
+import ChangeName from "../settings/tabs/account/dialogs/ChangeName";
+import type { AccountMe } from "@/features/account/AccountContext";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import EmojiPanel from "../home/chat/components/EmojiPanel";
+import EmojiPanel from "@/features/chat/components/EmojiPanel";
 
 interface MyProfileProps {
   trigger: ReactNode;
@@ -339,3 +339,4 @@ export default function MyProfile({ trigger }: MyProfileProps) {
     </>
   );
 }
+

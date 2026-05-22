@@ -1,6 +1,6 @@
 import { apiUrl } from "@/config";
-import { WS_SEND_EVENT_NAME } from "@/auth/AuthContext";
-import { useAccount } from "@/account/AccountContext";
+import { WS_SEND_EVENT_NAME } from "@/features/auth/AuthContext";
+import { useAccount } from "@/features/account/AccountContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TFunction } from "i18next";
 import { toast } from "sonner";
@@ -490,3 +490,4 @@ export function useConversationData({
     replaceMessageById,
   };
 }
+

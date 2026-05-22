@@ -10,14 +10,14 @@ import type { TFunction } from "i18next";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { apiUrl } from "@/config";
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import { mutate } from "swr";
 import { cn } from "@/lib/utils";
 import { ComponentPropsWithoutRef, useState } from "react";
 import UserProfile from "@/views/dialogs/UserProfile";
 import UserAvatar from "./user-avatar";
 import { dispatchContactsEvent } from "@/lib/contact-events";
-import { useChat } from "@/views/home/chat";
+import { useChat } from "@/features/chat";
 import { ConfirmationDialog } from "../ui/confirmation-dialog";
 
 type ContactProps = {
@@ -283,3 +283,4 @@ export default function Contact({
     </>
   );
 }
+

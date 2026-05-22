@@ -3,8 +3,8 @@ import { apiUrl } from "@/config";
 import {
   PRESENCE_EVENT_NAME,
   type PresenceEventPayload,
-} from "@/auth/AuthContext";
-import { useAuth } from "@/auth/AuthContext";
+} from "@/features/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import {
   createContext,
   ReactNode,
@@ -134,3 +134,4 @@ export function useChat() {
   if (!ctx) throw new Error("useChat must be used within ChatProvider");
   return ctx;
 }
+

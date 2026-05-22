@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import UserAvatar from "@/components/common/user-avatar";
 import {
   Dialog,
@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import { dispatchContactsEvent } from "@/lib/contact-events";
 import { Spinner } from "@/components/ui/spinner";
-import { useChat } from "../home/chat";
+import { useChat } from "@/features/chat";
 import { Button } from "@/components/ui/button";
 import { formatRelativeTime } from "@/lib/utils";
 
@@ -259,3 +259,4 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     </>
   );
 }
+

@@ -3,8 +3,8 @@ import {
   PRESENCE_EVENT_NAME,
   WS_MESSAGE_EVENT_NAME,
   type PresenceEventPayload,
-} from "@/auth/AuthContext";
-import { useAccount } from "@/account/AccountContext";
+} from "@/features/auth/AuthContext";
+import { useAccount } from "@/features/account/AccountContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { toast } from "sonner";
@@ -408,3 +408,4 @@ export function useAppSidebarData({
     clearUnseenCount,
   };
 }
+

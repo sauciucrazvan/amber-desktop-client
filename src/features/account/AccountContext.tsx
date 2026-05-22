@@ -9,7 +9,7 @@ import {
 } from "react";
 /* eslint-disable react-refresh/only-export-components */
 import { apiUrl } from "@/config";
-import { useAuth, WS_MESSAGE_EVENT_NAME } from "@/auth/AuthContext";
+import { useAuth, WS_MESSAGE_EVENT_NAME } from "@/features/auth/AuthContext";
 
 export type AccountMe = {
   id: number;
@@ -177,3 +177,4 @@ export function useAccount() {
   if (!ctx) throw new Error("useAccount must be used within AccountProvider");
   return ctx;
 }
+

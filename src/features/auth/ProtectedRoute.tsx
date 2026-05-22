@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Route, type RouteProps } from "wouter";
 import { useLocation } from "wouter";
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 
 type RouteComponentProps = React.ComponentProps<
   NonNullable<RouteProps["component"]>
@@ -29,3 +29,4 @@ export default function ProtectedRoute({
     />
   );
 }
+

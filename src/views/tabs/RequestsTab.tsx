@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import ErrorBox from "@/components/common/error-box";
 import UserAvatar from "@/components/common/user-avatar";
 import { Button } from "@/components/ui/button";
@@ -271,3 +271,4 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
     </>
   );
 }
+

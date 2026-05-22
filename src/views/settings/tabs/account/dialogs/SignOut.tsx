@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -66,3 +66,4 @@ export default function SignOut({ children }: Props) {
     </Dialog>
   );
 }
+

@@ -385,7 +385,8 @@
   },
   "account": {
     "verify": {
-      "notice": "Verify your account to unlock full features."
+      "notice": "Verify your account to unlock full features.",
+      "now": "Verify now"
     }
   },
   "homepage": {

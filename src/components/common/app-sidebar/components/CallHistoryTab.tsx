@@ -6,18 +6,11 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Spinner } from "@/components/ui/spinner";
-import type { TFunction } from "i18next";
-import type { CallHistoryItem, ContactListItem } from "../types";
 import { formatRelativeTime } from "../../../../lib/utils";
-
-type CallHistoryTabProps = {
-  t: TFunction;
-  callHistory: CallHistoryItem[];
-  callHistoryError: unknown;
-  isCallHistoryLoading: boolean;
-  openingChatUserId: number | null;
-  onOpenDirectChat: (contact: ContactListItem["user"]) => Promise<void>;
-};
+import { useTranslation } from "react-i18next";
+import { useChat } from "@/features/chat";
+import { useAppSidebarDataContext } from "../hooks/useAppSidebarDataContext";
+import type { TFunction } from "i18next";
 
 function formatDuration(totalSeconds?: number) {
   const seconds = Math.max(0, totalSeconds ?? 0);
@@ -32,14 +25,16 @@ function getCallReasonLabel(t: TFunction, reason: string) {
   });
 }
 
-export default function CallHistoryTab({
-  t,
-  callHistory,
-  callHistoryError,
-  isCallHistoryLoading,
-  openingChatUserId,
-  onOpenDirectChat,
-}: CallHistoryTabProps) {
+export default function CallHistoryTab() {
+  const { t } = useTranslation();
+  const { openingChatUserId } = useChat();
+  const {
+    callHistory,
+    callHistoryError,
+    isCallHistoryLoading,
+    handleOpenDirectChat,
+  } = useAppSidebarDataContext();
+
   if (isCallHistoryLoading) {
     return (
       <div className="flex flex-1 items-center justify-center">
@@ -89,7 +84,7 @@ export default function CallHistoryTab({
                     type="button"
                     className="w-full text-left rounded-md px-2 py-1.5 hover:bg-muted/40 transition cursor-pointer"
                     onClick={() =>
-                      onOpenDirectChat({
+                      handleOpenDirectChat({
                         id: call.peer.id,
                         username: call.peer.username,
                         full_name: call.peer.display_name || call.peer.username,

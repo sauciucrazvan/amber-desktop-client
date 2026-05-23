@@ -1,5 +1,9 @@
 export { useResizableSidebar } from "./hooks/useResizableSidebar";
 export { useAppSidebarData } from "./hooks/useAppSidebarData";
+export {
+  AppSidebarDataProvider,
+  useAppSidebarDataContext,
+} from "./hooks/useAppSidebarDataContext";
 
 export { default as SidebarRail } from "./components/SidebarRail";
 export { default as ContactsTabContent } from "./components/ContactsTab";

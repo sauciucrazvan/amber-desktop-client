@@ -1,32 +1,23 @@
-import { Button } from "@/components/ui/button";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
 import { BadgeAlert } from "lucide-react";
-import type { TFunction } from "i18next";
+import { useTranslation } from "react-i18next";
 
-type VerifyNoticeProps = {
-  t: TFunction;
-  className?: string;
-};
+export default function VerifyNotice() {
+  const { t } = useTranslation();
 
-export default function VerifyNotice({ t, className }: VerifyNoticeProps) {
   return (
-    <div className={className ?? "rounded-md border bg-muted/40 px-3 py-2"}>
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-xs text-muted-foreground">
-          {t(
-            "account.verify.notice",
-            "Verify your account to unlock full features.",
-          )}
-        </p>
-        <VerifyAccount>
-          <Button
-            variant="outline"
-            className="cursor-pointer text-yellow-500 h-full"
-          >
-            <BadgeAlert />
-          </Button>
-        </VerifyAccount>
-      </div>
+    <div className="bg-sidebar text-sm flex items-center gap-1">
+      <p className="text-muted-foreground">
+        {t(
+          "account.verify.notice",
+          "Verify your account to unlock full features.",
+        )}
+      </p>
+      <VerifyAccount>
+        <a className="cursor-pointer text-yellow-500 hover:underline hover:text-yellow-600 transition ease-in-out duration-300">
+          {t("account.verify.now")}
+        </a>
+      </VerifyAccount>
     </div>
   );
 }

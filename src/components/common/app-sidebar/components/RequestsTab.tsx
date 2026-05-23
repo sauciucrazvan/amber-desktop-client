@@ -36,11 +36,7 @@ async function readErrorMessage(res: Response) {
   return `Request failed (${res.status})`;
 }
 
-type ContactRequestsProps = {
-  notice?: ReactNode;
-};
-
-export default function ContactRequests({ notice }: ContactRequestsProps) {
+export default function ContactRequests() {
   const [actionUserId, setActionUserId] = useState<number | null>(null);
 
   function groupRequestsByDate(
@@ -182,7 +178,6 @@ export default function ContactRequests({ notice }: ContactRequestsProps) {
       <h2 className="text-lg font-semibold mb-4">
         {t("contacts.requests.title")}
       </h2>
-      {notice && <div className="mb-4">{notice}</div>}
       {requestsError ? (
         <ErrorBox>{requestsErrorMessage}</ErrorBox>
       ) : groupedRequests.length > 0 ? (

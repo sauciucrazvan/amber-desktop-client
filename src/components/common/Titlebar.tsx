@@ -1,5 +1,7 @@
 import { Minus, Square, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useAccount } from "@/features/account/AccountContext";
+import VerifyNotice from "./app-sidebar/components/VerifyNotice";
 
 type PlatformName = NodeJS.Platform;
 
@@ -11,7 +13,11 @@ function inferPlatform(): PlatformName {
 }
 
 export default function Titlebar() {
+  const { account } = useAccount();
+
   const [platform, setPlatform] = useState<PlatformName>(() => inferPlatform());
+
+  const showVerifyNotice = account?.verified === false;
 
   useEffect(() => {
     let isMounted = true;
@@ -65,12 +71,20 @@ export default function Titlebar() {
     <header className="bg-sidebar text-sidebar-foreground flex h-10 shrink-0 items-center px-2 select-none [-webkit-app-region:drag]">
       {controlsOnLeft ? controls : null}
 
-      <img
-        src={`${import.meta.env.BASE_URL}amber.png`}
-        alt="Amber logo"
-        className="size-5"
-        draggable={false}
-      />
+      <div className="inline-flex items-center gap-6">
+        <img
+          src={`${import.meta.env.BASE_URL}amber.png`}
+          alt="Amber logo"
+          className="size-5"
+          draggable={false}
+        />
+
+        {showVerifyNotice ? (
+          <div className="[-webkit-app-region:no-drag]">
+            <VerifyNotice />
+          </div>
+        ) : null}
+      </div>
 
       <div className="ml-auto">{controlsOnLeft ? null : controls}</div>
     </header>

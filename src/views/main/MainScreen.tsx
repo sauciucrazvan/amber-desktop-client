@@ -13,29 +13,33 @@ function MainScreenContent() {
 
   return (
     <SidebarProvider>
-      {sidebarSide == "left" ? <AppSidebar /> : null}
-      <main className="min-w-0 flex-1 overflow-hidden border-t">
-        {activeChat ? (
-          <ConversationPanel />
-        ) : (
-          <>
-            <section className="flex flex-row items-center justify-center h-[75%] w-full gap-2 text-muted-foreground">
-              <GetStarted />
-            </section>
-            <section className="w-full inline-flex items-center justify-center">
-              <img
-                src={amberLogoSrc}
-                alt="Amber logo"
-                height={64}
-                width={64}
-                draggable={false}
-                className="grayscale-100 opacity-25"
-              />
-            </section>
-          </>
-        )}
-      </main>
-      {sidebarSide == "left" ? null : <AppSidebar />}
+      <div className="flex min-h-0 flex-1 flex-col w-full">
+        <div className="flex min-h-0 flex-1">
+          {sidebarSide == "left" && <AppSidebar />}
+          <main className="min-w-0 flex-1 overflow-hidden border-t">
+            {activeChat ? (
+              <ConversationPanel />
+            ) : (
+              <>
+                <section className="flex flex-row items-center justify-center h-[75%] w-full gap-2 text-muted-foreground">
+                  <GetStarted />
+                </section>
+                <section className="w-full inline-flex items-center justify-center">
+                  <img
+                    src={amberLogoSrc}
+                    alt="Amber logo"
+                    height={64}
+                    width={64}
+                    draggable={false}
+                    className="grayscale-100 opacity-25"
+                  />
+                </section>
+              </>
+            )}
+          </main>
+          {sidebarSide == "right" && <AppSidebar />}
+        </div>
+      </div>
     </SidebarProvider>
   );
 }

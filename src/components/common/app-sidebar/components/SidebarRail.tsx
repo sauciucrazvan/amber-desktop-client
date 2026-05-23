@@ -13,30 +13,26 @@ import {
   UserRoundPlus,
   Settings as SettingsIcon,
 } from "lucide-react";
-import type { TFunction } from "i18next";
-import type { AccountMe } from "../types";
 import { Button } from "@/components/ui/button";
 import AddContact from "@/views/dialogs/AddContact";
 import Settings from "@/views/settings/Settings";
 import { Separator } from "@/components/ui/separator";
+import { useAppSidebarDataContext } from "../hooks/useAppSidebarDataContext";
+import { useTranslation } from "react-i18next";
 
 type SidebarRailProps = {
   railPaddingClass: string;
   tooltipSide: "left" | "right";
-  requestCount: number;
-  account: AccountMe | null;
-  isAccountLoading: boolean;
-  t: TFunction;
 };
 
 export default function SidebarRail({
   railPaddingClass,
   tooltipSide,
-  requestCount,
-  account,
-  isAccountLoading,
-  t,
 }: SidebarRailProps) {
+  const { t } = useTranslation();
+  const { requestCount, account, isAccountLoading } =
+    useAppSidebarDataContext();
+
   return (
     <div className={`flex h-full w-12 flex-col ${railPaddingClass}`}>
       <div className="flex flex-col gap-2 justify-center items-center pt-1">

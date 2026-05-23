@@ -22,15 +22,9 @@ export default function TermsView({ children }: Props) {
     .map((line, idx) => <div key={idx}>{line}</div>);
 
   const content = (
-    <>
-      <DialogHeader>
-        <DialogTitle>{t("legal.terms.title")}</DialogTitle>
-        <DialogDescription>{t("legal.terms.description")}</DialogDescription>
-      </DialogHeader>
-      <div className="text-sm text-muted-foreground leading-relaxed">
-        {contentLines}
-      </div>
-    </>
+    <div className="text-sm text-muted-foreground leading-relaxed">
+      {contentLines}
+    </div>
   );
 
   if (!children) {
@@ -51,7 +45,11 @@ export default function TermsView({ children }: Props) {
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="w-[calc(100vw-2rem)] max-h-[85vh] overflow-hidden sm:max-w-125 flex flex-col gap-4 p-0">
-        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 py-6">
+        <DialogHeader className="px-6 pt-6">
+          <DialogTitle>{t("legal.terms.title")}</DialogTitle>
+          <DialogDescription>{t("legal.terms.description")}</DialogDescription>
+        </DialogHeader>
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-6 pb-6">
           {content}
         </div>
       </DialogContent>

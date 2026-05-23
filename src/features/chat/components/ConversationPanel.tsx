@@ -523,6 +523,7 @@ export default function ConversationPanel() {
               onEmojiSelect={(emoji) =>
                 setMessageText((current) => current + emoji)
               }
+              closeOnSelect={false}
             />
           </ButtonGroup>
 
@@ -562,4 +563,3 @@ export default function ConversationPanel() {
     </section>
   );
 }
-

@@ -25,6 +25,7 @@ type EmojiPanelProps = {
   triggerTooltip?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  closeOnSelect?: boolean;
 };
 
 const categoryEmojiById: Record<string, string> = {
@@ -68,6 +69,7 @@ export default function EmojiPanel({
   triggerTooltip,
   open,
   onOpenChange,
+  closeOnSelect = true,
 }: EmojiPanelProps) {
   const { t } = useTranslation();
   const [internalOpen, setInternalOpen] = useState(false);
@@ -135,10 +137,12 @@ export default function EmojiPanel({
 
   const handleEmojiClick = (emoji: string) => {
     onEmojiSelect(emoji);
-    if (open === undefined) {
-      setInternalOpen(false);
+    if (closeOnSelect) {
+      if (open === undefined) {
+        setInternalOpen(false);
+      }
+      onOpenChange?.(false);
     }
-    onOpenChange?.(false);
   };
 
   const isOpen = open ?? internalOpen;

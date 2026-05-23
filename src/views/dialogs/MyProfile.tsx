@@ -246,6 +246,7 @@ export default function MyProfile({ trigger }: MyProfileProps) {
                               onEmojiSelect={(emoji) =>
                                 setBioDraft((current) => current + emoji)
                               }
+                              closeOnSelect={false}
                             />
                           </div>
                           <Button
@@ -339,4 +340,3 @@ export default function MyProfile({ trigger }: MyProfileProps) {
     </>
   );
 }
-

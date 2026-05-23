@@ -140,6 +140,10 @@
           "it": "Italian"
         }
       },
+      "system": {
+        "title": "System",
+        "description": "How the application works"
+      },
       "tray": {
         "title": "Minimize to tray",
         "description": "When disabled, closing the app will quit instead of hiding it."

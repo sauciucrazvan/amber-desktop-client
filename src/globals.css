@@ -128,11 +128,7 @@
   }
 
   :root {
-    --scrollbar-track: color-mix(
-      in oklch,
-      var(--background) 92%,
-      var(--foreground) 8%
-    );
+    --scrollbar-track: transparent;
     --scrollbar-thumb: color-mix(in oklch, var(--foreground) 22%, transparent);
     --scrollbar-thumb-hover: color-mix(
       in oklch,
@@ -156,14 +152,14 @@
   }
 
   *::-webkit-scrollbar-track {
-    background-color: var(--scrollbar-track);
+    background-color: transparent;
   }
 
   *::-webkit-scrollbar-thumb {
     background-color: var(--border);
     background-color: var(--scrollbar-thumb);
     border-radius: 9999px;
-    border: 2px solid var(--scrollbar-track);
+    border: 2px solid transparent;
   }
 
   *::-webkit-scrollbar-thumb:hover {

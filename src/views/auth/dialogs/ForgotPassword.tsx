@@ -19,6 +19,7 @@ import { apiUrl } from "@/config";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import ErrorBox from "@/components/common/error-box";
 
 export default function ForgotPassword() {
   const [open, setOpen] = useState(false);
@@ -203,7 +204,7 @@ export default function ForgotPassword() {
               </>
             )}
 
-            {error && <p className="text-red-500">{t(error)}</p>}
+            {error && <ErrorBox>{t(error)}</ErrorBox>}
 
             <section className="w-full inline-flex items-center justify-between gap-1">
               <div className="inline-flex items-center gap-1 w-full text-2xl cursor-default text-muted-foreground">

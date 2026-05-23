@@ -1,12 +1,12 @@
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import type { TFunction } from "i18next";
 import type { ActiveChat } from "@/features/chat";
-import RequestsTab from "@/views/tabs/RequestsTab";
-import CallHistoryTabContent from "./CallHistoryTabContent";
-import ContactsTabContent from "./ContactsTabContent";
+import RequestsTab from "@/components/common/app-sidebar/components/RequestsTab";
+import CallHistoryTab from "./CallHistoryTab";
 import SidebarRail from "./SidebarRail";
 import VerifyNotice from "./VerifyNotice";
 import type { AccountMe, CallHistoryItem, ContactListItem } from "../types";
+import ContactsTab from "./ContactsTab";
 
 type AppSidebarTabsProps = {
   t: TFunction;
@@ -71,7 +71,7 @@ export default function AppSidebarTabs({
         value="contacts"
         className={`min-h-0 flex-1 overflow-hidden ${panelChromeClass} bg-background p-0 flex flex-col`}
       >
-        <ContactsTabContent
+        <ContactsTab
           t={t}
           contacts={contacts}
           contactsError={contactsError}
@@ -105,7 +105,7 @@ export default function AppSidebarTabs({
         value="call-history"
         className={`min-h-0 flex-1 overflow-hidden ${panelChromeClass} bg-background p-0 flex flex-col`}
       >
-        <CallHistoryTabContent
+        <CallHistoryTab
           t={t}
           callHistory={callHistory!}
           callHistoryError={callHistoryError}

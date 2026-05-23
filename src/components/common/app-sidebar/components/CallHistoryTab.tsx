@@ -10,7 +10,7 @@ import type { TFunction } from "i18next";
 import type { CallHistoryItem, ContactListItem } from "../types";
 import { formatRelativeTime } from "../../../../lib/utils";
 
-type CallHistoryTabContentProps = {
+type CallHistoryTabProps = {
   t: TFunction;
   callHistory: CallHistoryItem[];
   callHistoryError: unknown;
@@ -32,14 +32,14 @@ function getCallReasonLabel(t: TFunction, reason: string) {
   });
 }
 
-export default function CallHistoryTabContent({
+export default function CallHistoryTab({
   t,
   callHistory,
   callHistoryError,
   isCallHistoryLoading,
   openingChatUserId,
   onOpenDirectChat,
-}: CallHistoryTabContentProps) {
+}: CallHistoryTabProps) {
   if (isCallHistoryLoading) {
     return (
       <div className="flex flex-1 items-center justify-center">

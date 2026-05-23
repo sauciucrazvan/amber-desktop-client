@@ -11,7 +11,7 @@ import type { ActiveChat } from "@/features/chat";
 import type { ContactListItem } from "../types";
 import VerifyNotice from "./VerifyNotice";
 
-type ContactsTabContentProps = {
+type ContactsTabProps = {
   t: TFunction;
   contacts?: ContactListItem[];
   contactsError: unknown;
@@ -24,7 +24,7 @@ type ContactsTabContentProps = {
   onOpenDirectChat: (contact: ContactListItem["user"]) => Promise<void>;
 };
 
-export default function ContactsTabContent({
+export default function ContactsTab({
   t,
   contacts,
   contactsError,
@@ -35,7 +35,7 @@ export default function ContactsTabContent({
   myUserId,
   conversationUnseenCountByUserId,
   onOpenDirectChat,
-}: ContactsTabContentProps) {
+}: ContactsTabProps) {
   if (isContactsLoading) {
     return (
       <div className="flex flex-1 items-center justify-center">

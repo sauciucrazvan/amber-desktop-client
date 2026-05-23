@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { apiUrl } from "@/config";
 import { Check, X } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";

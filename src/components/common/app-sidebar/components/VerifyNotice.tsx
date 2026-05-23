@@ -1,5 +1,4 @@
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
-import { BadgeAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function VerifyNotice() {

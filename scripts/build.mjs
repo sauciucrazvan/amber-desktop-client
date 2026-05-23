@@ -8,6 +8,7 @@ const rootDir = path.resolve(__dirname, "..");
 
 const DEFAULT_GITHUB_OWNER = "sauciucrazvan";
 const DEFAULT_GITHUB_REPO = "amber-desktop-client";
+const BUILD_TAG = `[\x1b[34mbuild\x1b[0m]`;
 
 function parseDotEnv(content) {
   const entries = {};
@@ -79,7 +80,7 @@ function run(command, args, extraEnv = {}) {
     ? [process.env.npm_execpath, ...args].filter(Boolean)
     : args;
 
-  console.log(`[build] running: ${command} ${args.join(" ")}`);
+  console.log(`${BUILD_TAG} running: ${command} ${args.join(" ")}`);
 
   const result = spawnSync(runner, runnerArgs, {
     cwd: rootDir,
@@ -92,13 +93,13 @@ function run(command, args, extraEnv = {}) {
   });
 
   if (result.error) {
-    console.error(`[build] failed to start: ${command}`, result.error);
+    console.error(`${BUILD_TAG} failed to start: ${command}`, result.error);
     process.exit(1);
   }
 
   if (result.status !== 0) {
     console.error(
-      `[build] command failed (${result.status}): ${command} ${args.join(" ")}`,
+      `${BUILD_TAG} command failed (${result.status}): ${command} ${args.join(" ")}`,
     );
     process.exit(result.status ?? 1);
   }
@@ -139,34 +140,16 @@ function parseBuildOptions(argv) {
     win: false,
     linuxTargets: ["AppImage"],
     winTargets: [...defaultWinTargets],
-    forceMsi: false,
-    publish: false,
-    publishProvider: undefined,
-    publishUrl: undefined,
     githubOwner: undefined,
     githubRepo: undefined,
     githubReleaseType: "release",
-    includeGitReleaseNotes: false,
     gitReleaseBase: undefined,
     gitReleaseLimit: 30,
-  };
-
-  const hasTruthyNpmConfig = (key) => {
-    const raw = process.env[`npm_config_${key}`];
-    if (!raw) return false;
-    const normalized = String(raw).trim().toLowerCase();
-    return normalized === "true" || normalized === "1" || normalized === "yes";
   };
 
   for (const arg of argv) {
     // Support accidental `npm run build - --win` style invocation where `-` reaches this script.
     if (arg === "-" || arg === "--") {
-      continue;
-    }
-
-    if (arg === "--all") {
-      options.linux = true;
-      options.win = true;
       continue;
     }
 
@@ -180,57 +163,13 @@ function parseBuildOptions(argv) {
       continue;
     }
 
-    if (arg.startsWith("--linux-targets=")) {
-      const value = arg.slice("--linux-targets=".length);
-      options.linuxTargets = value
-        .split(",")
-        .map((entry) => entry.trim())
-        .filter(Boolean);
-      options.linux = true;
-      continue;
-    }
-
-    if (arg.startsWith("--win-targets=")) {
-      const value = arg.slice("--win-targets=".length);
-      options.winTargets = value
-        .split(",")
-        .map((entry) => entry.trim())
-        .filter(Boolean);
-      options.win = true;
-      continue;
-    }
-
-    if (arg === "--force-msi") {
-      options.forceMsi = true;
-      continue;
-    }
-
-    if (arg === "--publish") {
-      options.publish = true;
-      continue;
-    }
-
-    if (arg.startsWith("--publish-provider=")) {
-      options.publishProvider = arg.slice("--publish-provider=".length).trim();
-      options.publish = true;
-      continue;
-    }
-
-    if (arg.startsWith("--publish-url=")) {
-      options.publishUrl = arg.slice("--publish-url=".length).trim();
-      options.publish = true;
-      continue;
-    }
-
     if (arg.startsWith("--github-owner=")) {
       options.githubOwner = arg.slice("--github-owner=".length).trim();
-      options.publish = true;
       continue;
     }
 
     if (arg.startsWith("--github-repo=")) {
       options.githubRepo = arg.slice("--github-repo=".length).trim();
-      options.publish = true;
       continue;
     }
 
@@ -238,18 +177,11 @@ function parseBuildOptions(argv) {
       options.githubReleaseType = arg
         .slice("--github-release-type=".length)
         .trim();
-      options.publish = true;
-      continue;
-    }
-
-    if (arg === "--git-release-notes") {
-      options.includeGitReleaseNotes = true;
       continue;
     }
 
     if (arg.startsWith("--git-release-base=")) {
       options.gitReleaseBase = arg.slice("--git-release-base=".length).trim();
-      options.includeGitReleaseNotes = true;
       continue;
     }
 
@@ -259,67 +191,13 @@ function parseBuildOptions(argv) {
       if (Number.isFinite(parsed) && parsed > 0) {
         options.gitReleaseLimit = parsed;
       }
-      options.includeGitReleaseNotes = true;
       continue;
-    }
-
-    if (arg === "--help" || arg === "-h") {
-      console.log(
-        `Usage: node scripts/build.mjs [options]\n\nOptions:\n  --all                       Build both Linux and Windows artifacts\n  --linux                     Build Linux artifact(s)\n  --win | --windows           Build Windows artifact(s)\n  --linux-targets=a,b         Override Linux targets (default: AppImage)\n  --win-targets=a,b           Override Windows targets (default: nsis)\n  --force-msi                 Legacy flag (msi is replaced with nsis)\n  --publish                   Publish after build\n  --publish-provider=name     Publish provider: github or generic\n  --publish-url=url           Generic publish base URL\n  --github-owner=name         GitHub owner/org for releases\n  --github-repo=name          GitHub repository for releases\n  --github-release-type=kind  GitHub release type (default: release)\n  --git-release-notes         Add git commit list to GitHub release notes\n  --git-release-base=ref      Use commit/tag ref as release notes base\n  --git-release-limit=n       Max commits included in notes (default: 30)\n`,
-      );
-      process.exit(0);
-    }
-  }
-
-  if (!options.linux && !options.win) {
-    if (hasTruthyNpmConfig("all")) {
-      options.linux = true;
-      options.win = true;
-    } else if (hasTruthyNpmConfig("linux")) {
-      options.linux = true;
-    } else if (hasTruthyNpmConfig("win") || hasTruthyNpmConfig("windows")) {
-      options.win = true;
     }
   }
 
   if (!options.linux && !options.win) {
     options.linux = true;
     options.win = true;
-  }
-
-  if (options.linuxTargets.length === 0) {
-    options.linuxTargets = ["AppImage"];
-  }
-
-  if (options.winTargets.length === 0) {
-    options.winTargets = [...defaultWinTargets];
-  }
-
-  const hasMsiTarget = options.winTargets.some(
-    (target) => target.toLowerCase() === "msi",
-  );
-
-  if (hasMsiTarget) {
-    console.warn(
-      "[build] msi target is disabled for this project. Switching to nsis.",
-    );
-    const nextTargets = options.winTargets
-      .filter((target) => target.toLowerCase() !== "msi")
-      .concat("nsis");
-
-    options.winTargets = Array.from(
-      new Set(nextTargets.map((target) => target.toLowerCase())),
-    );
-  }
-
-  if (!options.publishProvider) {
-    options.publishProvider = process.env.AMBER_PUBLISH_PROVIDER?.trim();
-  }
-
-  if (!options.publishUrl) {
-    options.publishUrl =
-      process.env.AMBER_PUBLISH_URL?.trim() ||
-      process.env.AMBER_UPDATER_URL?.trim();
   }
 
   if (!options.githubOwner) {
@@ -344,21 +222,8 @@ function parseBuildOptions(argv) {
     options.gitReleaseBase = process.env.AMBER_RELEASE_NOTES_BASE?.trim();
   }
 
-  if (!options.includeGitReleaseNotes) {
-    const envFlag = process.env.AMBER_GIT_RELEASE_NOTES?.trim().toLowerCase();
-    options.includeGitReleaseNotes =
-      envFlag === "1" || envFlag === "true" || envFlag === "yes";
-  }
-
   if (!options.gitReleaseLimit || options.gitReleaseLimit < 1) {
     options.gitReleaseLimit = 30;
-  }
-
-  if (options.publish && !options.publishProvider) {
-    console.error(
-      "[build] publish requested, but no publish provider was set. Use --publish-provider=github|generic or AMBER_PUBLISH_PROVIDER.",
-    );
-    process.exit(1);
   }
 
   return options;
@@ -459,7 +324,7 @@ async function getPreviousReleaseTagFromGithub(options, currentTagName) {
     releases = await response.json();
   } catch (error) {
     console.warn(
-      `[build] could not query GitHub releases for base tag selection: ${error?.message || error}`,
+      `${BUILD_TAG} could not query GitHub releases for base tag selection: ${error?.message || error}`,
     );
     return undefined;
   }
@@ -562,7 +427,7 @@ async function getGithubCommitLines(options, baseRef, limit) {
     payload = await response.json();
   } catch (error) {
     console.warn(
-      `[build] could not query GitHub compare API for commit mentions: ${error?.message || error}`,
+      `${BUILD_TAG} could not query GitHub compare API for commit mentions: ${error?.message || error}`,
     );
     return undefined;
   }
@@ -619,7 +484,7 @@ async function buildGitReleaseNotes(options, buildVersion) {
   const baseRef = await resolveReleaseBaseRef(options, currentTagName);
   if (!baseRef) {
     console.warn(
-      "[build] no previous release tag found for git release notes; skipping release notes. Use --git-release-base=<ref> if needed.",
+      `${BUILD_TAG} no previous release tag found for git release notes; skipping release notes. Use --git-release-base=<ref> if needed.`,
     );
     return undefined;
   }
@@ -635,7 +500,7 @@ async function buildGitReleaseNotes(options, buildVersion) {
 
   if (!commits) {
     console.warn(
-      "[build] could not generate git release notes; continuing without commit list.",
+      `${BUILD_TAG} could not generate git release notes; continuing without commit list.`,
     );
     return undefined;
   }
@@ -649,61 +514,28 @@ async function buildGitReleaseNotes(options, buildVersion) {
 }
 
 async function getReleaseNotesPayload(options, buildVersion) {
-  if (!options.publish) return undefined;
-  if (options.publishProvider?.toLowerCase() !== "github") return undefined;
-  if (!options.includeGitReleaseNotes) return undefined;
-
   return buildGitReleaseNotes(options, buildVersion);
 }
 
 function getPublishArgs(options) {
-  if (!options.publish) return [];
-
-  const provider = options.publishProvider?.toLowerCase();
-  if (provider === "generic") {
-    if (!options.publishUrl) {
-      console.error(
-        "[build] generic publish requires --publish-url or AMBER_PUBLISH_URL/AMBER_UPDATER_URL.",
-      );
-      process.exit(1);
-    }
-
-    return [
-      "--publish",
-      "always",
-      "--config.publish.provider=generic",
-      `--config.publish.url=${options.publishUrl}`,
-    ];
+  if (!options.githubOwner || !options.githubRepo) {
+    console.error(
+      `${BUILD_TAG} github publish requires owner and repo via --github-owner/--github-repo or AMBER_GH_OWNER/AMBER_GH_REPO.`,
+    );
+    process.exit(1);
   }
 
-  if (provider === "github") {
-    if (!options.githubOwner || !options.githubRepo) {
-      console.error(
-        "[build] github publish requires owner and repo via --github-owner/--github-repo or AMBER_GH_OWNER/AMBER_GH_REPO.",
-      );
-      process.exit(1);
-    }
-
-    return [
-      "--publish",
-      "always",
-      "--config.publish.provider=github",
-      `--config.publish.owner=${options.githubOwner}`,
-      `--config.publish.repo=${options.githubRepo}`,
-      `--config.publish.releaseType=${options.githubReleaseType || "release"}`,
-    ];
-  }
-
-  console.error(
-    `[build] unsupported publish provider: ${options.publishProvider}. Use github or generic.`,
-  );
-  process.exit(1);
+  return [
+    "--publish",
+    "always",
+    "--config.publish.provider=github",
+    `--config.publish.owner=${options.githubOwner}`,
+    `--config.publish.repo=${options.githubRepo}`,
+    `--config.publish.releaseType=${options.githubReleaseType || "release"}`,
+  ];
 }
 
 function getReleaseInfoArgs(options, buildVersion, releaseNotesPayload) {
-  if (!options.publish) return [];
-  if (options.publishProvider?.toLowerCase() !== "github") return [];
-  if (!options.includeGitReleaseNotes) return [];
   if (!releaseNotesPayload?.content) return [];
 
   const releaseNotesFilePath = path.join(
@@ -713,7 +545,7 @@ function getReleaseInfoArgs(options, buildVersion, releaseNotesPayload) {
   writeFileSync(releaseNotesFilePath, releaseNotesPayload.content, "utf8");
 
   console.log(
-    `[build] github release notes base: ${releaseNotesPayload.baseRef}; file: ${releaseNotesFilePath}`,
+    `${BUILD_TAG} github release notes base: ${releaseNotesPayload.baseRef}; file: ${releaseNotesFilePath}`,
   );
 
   return [
@@ -749,14 +581,12 @@ async function updateGithubReleaseBody(
   buildVersion,
   releaseNotesPayload,
 ) {
-  if (!options.publish) return;
-  if (options.publishProvider?.toLowerCase() !== "github") return;
   if (!releaseNotesPayload?.content) return;
 
   const token = getGithubReleaseToken();
   if (!token) {
     console.warn(
-      "[build] skipping GitHub release body update: GH_TOKEN/GITHUB_TOKEN/GITHUB_RELEASE_TOKEN is not set.",
+      `${BUILD_TAG} skipping GitHub release body update: GH_TOKEN/GITHUB_TOKEN/GITHUB_RELEASE_TOKEN is not set.`,
     );
     return;
   }
@@ -783,7 +613,7 @@ async function updateGithubReleaseBody(
         }
 
         console.warn(
-          `[build] could not fetch GitHub release for tag ${tagName}: ${error?.message || error}`,
+          `${BUILD_TAG} could not fetch GitHub release for tag ${tagName}: ${error?.message || error}`,
         );
         return;
       }
@@ -805,7 +635,7 @@ async function updateGithubReleaseBody(
         ? await getReleaseResponse.text()
         : "no response";
       console.warn(
-        `[build] could not fetch GitHub release for tag ${tagName}: ${getReleaseResponse?.status || "n/a"} ${detail}`,
+        `${BUILD_TAG} could not fetch GitHub release for tag ${tagName}: ${getReleaseResponse?.status || "n/a"} ${detail}`,
       );
       return;
     }
@@ -815,7 +645,7 @@ async function updateGithubReleaseBody(
 
     if (!releaseId) {
       console.warn(
-        `[build] GitHub release for tag ${tagName} has no id; skipping body update.`,
+        `${BUILD_TAG} GitHub release for tag ${tagName} has no id; skipping body update.`,
       );
       return;
     }
@@ -835,15 +665,15 @@ async function updateGithubReleaseBody(
     if (!patchResponse.ok) {
       const detail = await patchResponse.text();
       console.warn(
-        `[build] failed to update GitHub release body for ${tagName}: ${patchResponse.status} ${detail}`,
+        `${BUILD_TAG} failed to update GitHub release body for ${tagName}: ${patchResponse.status} ${detail}`,
       );
       return;
     }
 
-    console.log(`[build] GitHub release body updated for ${tagName}.`);
+    console.log(`${BUILD_TAG} GitHub release body updated for ${tagName}.`);
   } catch (error) {
     console.warn(
-      `[build] skipping GitHub release body update due to network/API error: ${error?.message || error}`,
+      `${BUILD_TAG} skipping GitHub release body update due to network/API error: ${error?.message || error}`,
     );
   }
 }
@@ -885,9 +715,9 @@ async function main() {
 
   writeFileSync(buildInfoPath, buildInfoContent, "utf8");
 
-  console.log(`[build] ${buildLabel}`);
-  console.log(`[build] version: ${buildVersion}`);
-  console.log(`[build] id: ${buildId}`);
+  console.log(`${BUILD_TAG} ${buildLabel}`);
+  console.log(`${BUILD_TAG} version: ${buildVersion}`);
+  console.log(`${BUILD_TAG} id: ${buildId}`);
 
   run("npm", ["exec", "tsc"]);
   run("npm", ["exec", "vite", "build"]);
@@ -932,6 +762,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("[build] unexpected error", error);
+  console.error(`${BUILD_TAG} unexpected error`, error);
   process.exit(1);
 });

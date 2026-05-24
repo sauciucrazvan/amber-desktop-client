@@ -156,11 +156,13 @@ export default function EmojiPanel({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      {triggerTooltip ? (
+      {customTrigger ? (
+        <PopoverTrigger asChild>{customTrigger}</PopoverTrigger>
+      ) : (
         <Tooltip>
           <TooltipTrigger asChild>
-            <PopoverTrigger asChild>
-              {customTrigger || (
+            <div>
+              <PopoverTrigger asChild>
                 <Button
                   type="button"
                   variant="outline"
@@ -168,25 +170,12 @@ export default function EmojiPanel({
                 >
                   <Smile className="size-4" />
                 </Button>
-              )}
-            </PopoverTrigger>
+              </PopoverTrigger>
+            </div>
           </TooltipTrigger>
-          <TooltipContent>
-            <p>{triggerTooltip}</p>
-          </TooltipContent>
+
+          <TooltipContent>{t("emoji.panel.title")}</TooltipContent>
         </Tooltip>
-      ) : (
-        <PopoverTrigger asChild>
-          {customTrigger || (
-            <Button
-              type="button"
-              variant="outline"
-              className="shrink-0 cursor-pointer"
-            >
-              <Smile className="size-4" />
-            </Button>
-          )}
-        </PopoverTrigger>
       )}
 
       <PopoverContent className="w-80 p-0" align="center">

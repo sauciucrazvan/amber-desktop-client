@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,62 +78,75 @@ export default function EmojiPanel({
     (typeof categoryOrder)[number]
   >((categoryOrder[0] ?? "people") as (typeof categoryOrder)[number]);
 
-  const emojiCategories = categoryOrder
-    .map((categoryId) => {
-      const category = emojiData.categories.find(({ id }) => id === categoryId);
-      if (!category) return null;
+  const emojiCategories = useMemo(() => {
+    return categoryOrder
+      .map((categoryId) => {
+        const category = emojiData.categories.find(
+          ({ id }) => id === categoryId,
+        );
 
-      const translationKey = categoryToTranslationKey[categoryId];
-      const emojis = category.emojis
-        .map((emojiId) => ({
-          id: emojiId,
-          emoji:
-            emojiData.emojis[emojiId]?.skins?.[0]?.native ??
-            emojiData.emojis[emojiId]?.skins?.[0]?.unified ??
-            emojiId,
-          name: emojiData.emojis[emojiId]?.name ?? emojiId,
-          keywords: emojiData.emojis[emojiId]?.keywords ?? [],
-          emoticons: emojiData.emojis[emojiId]?.emoticons ?? [],
-        }))
-        .filter((emoji) => emoji.emoji);
+        if (!category) return null;
 
-      return {
-        id: category.id,
-        categoryId,
-        name: t(`emoji.categories.${translationKey}`),
-        icon: categoryEmojiById[categoryId] ?? "🙂",
-        emojis,
-      };
-    })
-    .filter(
-      (category): category is NonNullable<typeof category> => category !== null,
-    );
+        const translationKey = categoryToTranslationKey[categoryId];
 
-  const normalizedQuery = searchQuery.trim().toLowerCase();
+        const emojis = category.emojis
+          .map((emojiId) => {
+            const emojiInfo = emojiData.emojis[emojiId];
+
+            if (!emojiInfo) return null;
+
+            const emoji =
+              emojiInfo.skins?.[0]?.native ??
+              emojiInfo.skins?.[0]?.unified ??
+              emojiId;
+
+            const name = emojiInfo.name ?? emojiId;
+            const keywords = emojiInfo.keywords ?? [];
+            const emoticons = emojiInfo.emoticons ?? [];
+
+            return {
+              id: emojiId,
+              emoji,
+              name,
+              keywords,
+              emoticons,
+              searchText: [emojiId, name, emoji, ...keywords, ...emoticons]
+                .join(" ")
+                .toLowerCase(),
+            };
+          })
+          .filter(Boolean);
+
+        return {
+          id: category.id,
+          categoryId,
+          name: t(`emoji.categories.${translationKey}`),
+          icon: categoryEmojiById[categoryId] ?? "🙂",
+          emojis,
+        };
+      })
+      .filter(
+        (category): category is NonNullable<typeof category> =>
+          category !== null,
+      );
+  }, [t]);
+
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+  const normalizedQuery = deferredSearchQuery.trim().toLowerCase();
   const isSearching = normalizedQuery.length > 0;
 
-  const filteredEmojis = isSearching
-    ? emojiCategories.flatMap((category) =>
-        category.emojis
-          .filter((emoji) => {
-            const haystack = [
-              emoji.id,
-              emoji.name,
-              emoji.emoji,
-              ...emoji.keywords,
-              ...emoji.emoticons,
-            ]
-              .join(" ")
-              .toLowerCase();
+  const filteredEmojis = useMemo(() => {
+    if (!isSearching) return [];
 
-            return haystack.includes(normalizedQuery);
-          })
-          .map((emoji) => ({
-            categoryName: category.name,
-            emoji: emoji.emoji,
-          })),
-      )
-    : [];
+    return emojiCategories.flatMap((category) =>
+      category.emojis
+        .filter((emoji) => emoji!.searchText.includes(normalizedQuery))
+        .map((emoji) => ({
+          categoryName: category.name,
+          emoji: emoji!.emoji,
+        })),
+    );
+  }, [emojiCategories, normalizedQuery, isSearching]);
 
   const handleEmojiClick = (emoji: string) => {
     onEmojiSelect(emoji);
@@ -249,16 +262,16 @@ export default function EmojiPanel({
                     <div className="grid grid-cols-5 gap-2">
                       {category.emojis.map((emoji) => (
                         <Button
-                          key={`${category.categoryId}-${emoji.id}`}
+                          key={`${category.categoryId}-${emoji!.id}`}
                           type="button"
                           variant="ghost"
                           className="h-10 w-10 p-0 text-lg cursor-pointer"
-                          onClick={() => handleEmojiClick(emoji.emoji)}
+                          onClick={() => handleEmojiClick(emoji!.emoji)}
                           aria-label={t("emoji.panel.insert", {
-                            emoji: emoji.emoji,
+                            emoji: emoji!.emoji,
                           })}
                         >
-                          {emoji.emoji}
+                          {emoji!.emoji}
                         </Button>
                       ))}
                     </div>

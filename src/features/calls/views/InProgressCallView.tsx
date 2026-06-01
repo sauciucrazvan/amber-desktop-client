@@ -251,6 +251,50 @@ export default function InProgressCallView() {
             </Button>
             <Button
               size="icon"
+              variant={microphoneEnabled ? "secondary" : "outline"}
+              className="h-7 w-7 cursor-pointer rounded-full"
+              title={
+                microphoneEnabled
+                  ? t("calls.actions.mute")
+                  : t("calls.actions.unmute")
+              }
+              aria-label={
+                microphoneEnabled
+                  ? t("calls.actions.mute")
+                  : t("calls.actions.unmute")
+              }
+              onClick={toggleMicrophone}
+            >
+              {microphoneEnabled ? (
+                <Mic className="h-3.5 w-3.5" />
+              ) : (
+                <MicOff className="h-3.5 w-3.5" />
+              )}
+            </Button>
+            <Button
+              size="icon"
+              variant={cameraEnabled ? "secondary" : "outline"}
+              className="h-7 w-7 cursor-pointer rounded-full"
+              title={
+                cameraEnabled
+                  ? t("calls.actions.cameraOn")
+                  : t("calls.actions.cameraOff")
+              }
+              aria-label={
+                cameraEnabled
+                  ? t("calls.actions.cameraOn")
+                  : t("calls.actions.cameraOff")
+              }
+              onClick={toggleCamera}
+            >
+              {cameraEnabled ? (
+                <Video className="h-3.5 w-3.5" />
+              ) : (
+                <VideoOff className="h-3.5 w-3.5" />
+              )}
+            </Button>
+            <Button
+              size="icon"
               variant="destructive"
               className="h-7 w-7 cursor-pointer rounded-full"
               onClick={handleEndCall}

@@ -259,4 +259,3 @@ export default function UserProfile({ username, trigger }: UserProfileProps) {
     </>
   );
 }
-

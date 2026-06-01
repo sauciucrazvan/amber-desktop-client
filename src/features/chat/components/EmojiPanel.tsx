@@ -66,7 +66,6 @@ const emojiData = emojiMartData as EmojiMartData;
 export default function EmojiPanel({
   onEmojiSelect,
   customTrigger,
-  triggerTooltip,
   open,
   onOpenChange,
   closeOnSelect = true,

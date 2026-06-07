@@ -24,22 +24,22 @@ interface Props {
 export default function AddContact({ children }: Props) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [username, setUsername] = useState("");
-  const [submittedUsername, setSubmittedUsername] = useState("");
+  const [identifier, setIdentifier] = useState("");
+  const [submittedIdentifier, setSubmittedIdentifier] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const { t } = useTranslation();
   const { accessToken, isAuthenticated } = useAuth();
 
   const onSubmit = async () => {
-    const requestedUsername = username.trim();
+    const requestedIdentifier = identifier.trim();
 
     setError(null);
     setIsSubmitting(true);
-    setSubmittedUsername(requestedUsername);
+    setSubmittedIdentifier(requestedIdentifier);
 
     try {
-      if (requestedUsername === "") {
+      if (requestedIdentifier === "") {
         return;
       }
 
@@ -50,7 +50,7 @@ export default function AddContact({ children }: Props) {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          username: requestedUsername,
+          identifier: requestedIdentifier,
         }),
       });
 
@@ -67,10 +67,10 @@ export default function AddContact({ children }: Props) {
 
       setOpen(false);
       toast.success(
-        t("contacts.requested").replace("{{user}}", requestedUsername),
+        t("contacts.requested").replace("{{user}}", requestedIdentifier),
       );
-      setUsername("");
-      setSubmittedUsername("");
+      setIdentifier("");
+      setSubmittedIdentifier("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "An error occured");
     } finally {
@@ -98,9 +98,9 @@ export default function AddContact({ children }: Props) {
           <Field>
             <ButtonGroup>
               <Input
-                placeholder={t("contacts.add.username")}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder={t("contacts.add.identifier")}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 disabled={isSubmitting}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" && !isSubmitting) {
@@ -121,7 +121,7 @@ export default function AddContact({ children }: Props) {
 
           {error && (
             <ErrorBox>
-              <Trans i18nKey={error} values={{ user: submittedUsername }} />
+              <Trans i18nKey={error} values={{ user: submittedIdentifier }} />
             </ErrorBox>
           )}
         </DialogContent>
@@ -129,4 +129,3 @@ export default function AddContact({ children }: Props) {
     </>
   );
 }
-

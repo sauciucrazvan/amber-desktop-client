@@ -337,7 +337,7 @@
     "profile": "Profile",
     "block": "Block",
     "remove": "Remove",
-    "invalid_user": "Couldn't find @{{user}}.",
+    "invalid_user": "Couldn't find a user for {{user}}.",
     "not_found": "Could not find contact.",
     "removed": "Successfully removed contact.",
     "yourself": "You cannot perform this action on yourself.",
@@ -366,9 +366,9 @@
     },
     "add": {
       "title": "Add Friends",
-      "description": "You can add friends with their Amber username.",
+      "description": "You can add friends with their Amber username or email address.",
       "action": "Add",
-      "username": "Username"
+      "identifier": "Username or email"
     },
     "requests": {
       "title": "Requests",

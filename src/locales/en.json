@@ -371,7 +371,7 @@
       "identifier": "Username or email"
     },
     "requests": {
-      "title": "Requests",
+      "title": "Inbox",
       "description": "Accept or decline any friendship requests you've received.",
       "none": "No requests received at the moment.",
       "accept": "Accept",
@@ -485,7 +485,7 @@
       "duration": "Call duration: {{duration}}"
     },
     "history": {
-      "title": "Call history",
+      "title": "Calls",
       "empty": "No calls yet",
       "failedLoading": "Failed loading call history",
       "relative": {

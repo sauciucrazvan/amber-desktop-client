@@ -259,7 +259,7 @@ export default function ContactRequests() {
           </div>
         </div>
       ) : (
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           {t("contacts.requests.none")}
         </p>
       )}

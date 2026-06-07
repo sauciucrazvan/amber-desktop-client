@@ -41,6 +41,11 @@ type AuthScreenHeroProps = {
   maxWidthClass: string;
 };
 
+interface ApiErrorItem {
+  error: string;
+  field: string;
+}
+
 function AuthScreenHero({ maxWidthClass }: AuthScreenHeroProps) {
   const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
 
@@ -158,12 +163,15 @@ function AuthScreenRegisterForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [fallbackError, setFallbackError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async () => {
-    setError(null);
+    setFallbackError(null);
+    setFieldErrors({});
     setIsSubmitting(true);
+
     try {
       await register({
         username,
@@ -173,8 +181,44 @@ function AuthScreenRegisterForm() {
       });
       setLocation("/");
       toast.success(t("register.greeting"));
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Registration failed");
+    } catch (e: any) {
+      let errorsArray: ApiErrorItem[] | undefined = undefined;
+
+      if (e?.body && typeof e.body === "object") {
+        errorsArray = e.body?.detail?.errors || e.body?.errors;
+      } else if (e?.response?.data && typeof e.response.data === "object") {
+        errorsArray =
+          e.response.data?.detail?.errors || e.response.data?.errors;
+      } else if (e?.detail?.errors) {
+        errorsArray = e.detail.errors;
+      } else if (e?.errors) {
+        errorsArray = e.errors;
+      }
+
+      if (!errorsArray && typeof e?.body === "string") {
+        try {
+          const parsed = JSON.parse(e.body);
+          errorsArray = parsed?.detail?.errors || parsed?.errors;
+        } catch (_) {}
+      }
+      if (!errorsArray && typeof e?.response?.data === "string") {
+        try {
+          const parsed = JSON.parse(e.response.data);
+          errorsArray = parsed?.detail?.errors || parsed?.errors;
+        } catch (_) {}
+      }
+
+      if (errorsArray && Array.isArray(errorsArray)) {
+        const mappedErrors: Record<string, string> = {};
+        errorsArray.forEach((err) => {
+          mappedErrors[err.field] = err.error;
+        });
+        setFieldErrors(mappedErrors);
+      } else {
+        setFallbackError(
+          e instanceof Error ? e.message : "Registration failed",
+        );
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -188,73 +232,152 @@ function AuthScreenRegisterForm() {
       <p className="text-muted-foreground text-sm">{t("register.subtitle")}</p>
 
       <div className="w-75 mt-4 flex flex-col gap-2">
-        <InputGroup>
-          <InputGroupInput
-            id="username"
-            placeholder={t("register.usernamePlaceholder")}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+        <div
+          data-invalid={fieldErrors.username ? true : undefined}
+          className="flex flex-col gap-1"
+        >
+          {fieldErrors.username && (
+            <label
+              htmlFor="username"
+              className="text-destructive text-xs font-normal leading-none tracking-wide pl-0.5 mb-0.5"
+            >
+              {t(fieldErrors.username)}
+            </label>
+          )}
+          <InputGroup>
+            <InputGroupInput
+              id="username"
+              placeholder={t("register.usernamePlaceholder")}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              aria-invalid={fieldErrors.username ? true : undefined}
+              className={
+                fieldErrors.username
+                  ? "border-destructive focus-visible:ring-destructive"
+                  : ""
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSubmit();
+                }
+              }}
+            />
+            <InputGroupAddon>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <InputGroupButton
+                    variant="ghost"
+                    aria-label={t("common.help")}
+                    size="icon-xs"
+                  >
+                    <AtSign />
+                  </InputGroupButton>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("register.usernameHint")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </InputGroupAddon>
+          </InputGroup>
+        </div>
+
+        <div
+          data-invalid={fieldErrors.full_name ? true : undefined}
+          className="flex flex-col gap-1"
+        >
+          {fieldErrors.full_name && (
+            <label
+              htmlFor="full_name"
+              className="text-destructive text-xs font-normal leading-none tracking-wide pl-0.5 mb-0.5"
+            >
+              {t(fieldErrors.full_name)}
+            </label>
+          )}
+          <Input
+            id="full_name"
+            placeholder={t("register.fullnamePlaceholder")}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            aria-invalid={fieldErrors.full_name ? true : undefined}
+            className={
+              fieldErrors.full_name
+                ? "border-destructive focus-visible:ring-destructive"
+                : ""
+            }
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 onSubmit();
               }
             }}
           />
-          <InputGroupAddon>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <InputGroupButton
-                  variant="ghost"
-                  aria-label={t("common.help")}
-                  size="icon-xs"
-                >
-                  <AtSign />
-                </InputGroupButton>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{t("register.usernameHint")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </InputGroupAddon>
-        </InputGroup>
+        </div>
 
-        <Input
-          placeholder={t("register.fullnamePlaceholder")}
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onSubmit();
+        <div
+          data-invalid={fieldErrors.email ? true : undefined}
+          className="flex flex-col gap-1"
+        >
+          {fieldErrors.email && (
+            <label
+              htmlFor="email"
+              className="text-destructive text-xs font-normal leading-none tracking-wide pl-0.5 mb-0.5"
+            >
+              {t(fieldErrors.email)}
+            </label>
+          )}
+          <Input
+            id="email"
+            placeholder={t("register.emailPlaceholder")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-invalid={fieldErrors.email ? true : undefined}
+            className={
+              fieldErrors.email
+                ? "border-destructive focus-visible:ring-destructive"
+                : ""
             }
-          }}
-        />
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                onSubmit();
+              }
+            }}
+          />
+        </div>
 
-        <Input
-          placeholder={t("register.emailPlaceholder")}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onSubmit();
+        <div
+          data-invalid={fieldErrors.password ? true : undefined}
+          className="flex flex-col gap-1"
+        >
+          {fieldErrors.password && (
+            <label
+              htmlFor="password"
+              className="text-destructive text-xs font-normal leading-none tracking-wide pl-0.5 mb-0.5"
+            >
+              {t(fieldErrors.password)}
+            </label>
+          )}
+          <Input
+            id="password"
+            placeholder={t("register.passwordPlaceholder")}
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={fieldErrors.password ? true : undefined}
+            className={
+              fieldErrors.password
+                ? "border-destructive focus-visible:ring-destructive"
+                : ""
             }
-          }}
-        />
-
-        <Input
-          placeholder={t("register.passwordPlaceholder")}
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              onSubmit();
-            }
-          }}
-        />
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                onSubmit();
+              }
+            }}
+          />
+        </div>
       </div>
 
       <div className="flex flex-col items-center justify-center gap-4 mt-4 w-75">
-        {error ? <ErrorBox>{t(error)}</ErrorBox> : null}
+        {fallbackError ? <ErrorBox>{t(fallbackError)}</ErrorBox> : null}
 
         <Button
           className="cursor-pointer"
@@ -333,4 +456,3 @@ export default function AuthScreen({ mode }: AuthScreenProps) {
     </section>
   );
 }
-

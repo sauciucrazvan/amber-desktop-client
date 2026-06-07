@@ -197,7 +197,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const registerMutation = useSWRMutation<
     unknown,
-    Error,
+    any,
     string,
     RegisterRequest
   >(apiUrl("/auth/v1/register"), async (url, { arg }) => {
@@ -212,7 +212,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }),
     });
 
-    if (!res.ok) throw new Error(await readErrorMessage(res));
+    if (!res.ok) {
+      let bodyData: any = null;
+      try {
+        bodyData = await res.json();
+      } catch (_) {}
+
+      const errorInstance = new Error(`Request failed (${res.status})`) as any;
+      errorInstance.status = res.status;
+      errorInstance.body = bodyData;
+      throw errorInstance;
+    }
     return res.json();
   });
 
@@ -548,4 +558,3 @@ export function useAuth() {
   if (!ctx) throw new Error("useAuth must be used within AuthProvider");
   return ctx;
 }
-

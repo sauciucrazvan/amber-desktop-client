@@ -22,6 +22,7 @@ export type AccountMe = {
   verified: boolean | null;
   registered_at?: string | null;
   last_active_at?: string | null;
+  privacy_settings?: Record<string, boolean> | null;
 };
 
 type AccountWsPayload = {
@@ -53,6 +54,7 @@ function parseAccount(raw: unknown): AccountMe | null {
     verified?: unknown;
     registered_at?: unknown;
     last_active_at?: unknown;
+    privacy_settings?: unknown;
   };
 
   if (typeof payload.id !== "number") return null;
@@ -75,6 +77,10 @@ function parseAccount(raw: unknown): AccountMe | null {
     last_active_at:
       typeof payload.last_active_at === "string"
         ? payload.last_active_at
+        : null,
+    privacy_settings:
+      payload.privacy_settings && typeof payload.privacy_settings === "object"
+        ? (payload.privacy_settings as Record<string, boolean>)
         : null,
   };
 }
@@ -177,4 +183,3 @@ export function useAccount() {
   if (!ctx) throw new Error("useAccount must be used within AccountProvider");
   return ctx;
 }
-

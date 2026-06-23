@@ -289,6 +289,9 @@
           "description": "Are you sure you want to use this image as your avatar?",
           "upload": "Upload"
         }
+      },
+      "privacy": {
+        "allow_add_by_email": "Allow users to add me by email."
       }
     },
     "about": {

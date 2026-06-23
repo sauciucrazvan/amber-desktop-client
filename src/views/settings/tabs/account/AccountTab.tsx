@@ -19,7 +19,7 @@ import RequestData from "./dialogs/RequestData";
 import SignOut from "./dialogs/SignOut";
 import BlockedAccounts from "./dialogs/BlockedAccounts";
 import VerifyAccount from "@/views/dialogs/VerifyAccount";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { apiUrl } from "@/config";
 import { toast } from "sonner";
 import { Separator } from "@/components/ui/separator";
@@ -27,10 +27,11 @@ import ChangeEmail from "./dialogs/ChangeEmail";
 import ChangeName from "./dialogs/ChangeName";
 import ChangePassword from "./dialogs/ChangePassword";
 import DeleteAccount from "./dialogs/DeleteAccount";
+import { Switch } from "@/components/ui/switch";
 
 export default function AccountTab() {
   const { isAuthenticated, authFetch } = useAuth();
-  const { account, error, isLoading } = useAccount();
+  const { account, error, isLoading, refreshAccount } = useAccount();
   const { t } = useTranslation();
 
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -38,6 +39,15 @@ export default function AccountTab() {
     null,
   );
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [allowAddByEmail, setAllowAddByEmail] = useState(
+    account?.privacy_settings?.allow_add_by_email ?? true,
+  );
+
+  useEffect(() => {
+    if (account?.privacy_settings?.allow_add_by_email !== undefined) {
+      setAllowAddByEmail(account.privacy_settings.allow_add_by_email);
+    }
+  }, [account]);
 
   if (!isAuthenticated) return <>Unauthorized.</>;
 
@@ -102,6 +112,28 @@ export default function AccountTab() {
       );
     } finally {
       setIsUploadingAvatar(false);
+    }
+  };
+
+  const handleAllowAddByEmailToggle = async (newValue: boolean) => {
+    setAllowAddByEmail(newValue);
+
+    try {
+      const res = await authFetch(apiUrl("/account/v1/settings/privacy"), {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          setting: "allow_add_by_email",
+          value: newValue,
+        }),
+      });
+
+      if (!res.ok) throw new Error();
+    } catch {
+      setAllowAddByEmail(!newValue);
+      toast.error(t("settings.account.privacy.error"));
+    } finally {
+      await refreshAccount();
     }
   };
 
@@ -314,6 +346,24 @@ export default function AccountTab() {
               <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
           </RequestData>
+
+          <Separator className="my-1" />
+
+          <div className="flex items-center justify-between rounded-lg px-2.5 py-2">
+            <div className="min-w-0 flex items-center gap-2">
+              <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                <Mail className="h-3.5 w-3.5" />
+              </div>
+              <p className="truncate text-xs font-medium">
+                {t("settings.account.privacy.allow_add_by_email")}
+              </p>
+            </div>
+            <Switch
+              checked={allowAddByEmail}
+              onCheckedChange={handleAllowAddByEmailToggle}
+              // disabled={isLoading}
+            />
+          </div>
         </div>
       </section>
 
@@ -345,4 +395,3 @@ export default function AccountTab() {
     </div>
   );
 }
-

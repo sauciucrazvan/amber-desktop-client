@@ -223,7 +223,7 @@
       },
       "data": {
         "title": "Request Personal Data",
-        "description": "Request all the data we have about you",
+        "description": "Request all the data we have about you. It will be sent as an attachment to your email.",
         "action": "Request",
         "too_soon": "You can request your data every week.",
         "toast": "Your requested data has been sent to your email. Please check your inbox (spam too!)"
@@ -272,7 +272,7 @@
       },
       "general": {
         "title": "General settings",
-        "description": "Privacy, safety, and data management."
+        "description": "Blocked contacts and authentication options."
       },
       "actions": {
         "title": "Actions"

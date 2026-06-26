@@ -330,9 +330,23 @@ export default function AccountTab() {
               <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
             </div>
           </SignOut>
+        </div>
+      </section>
 
-          <Separator className="my-1" />
+      <section className="space-y-2">
+        <div className="px-1">
+          <h3 className="text-sm font-medium">
+            {t("settings.account.privacy.title", "Privacy settings")}
+          </h3>
+          <p className="text-xs text-muted-foreground">
+            {t(
+              "settings.account.privacy.description",
+              "Privacy, safety, and data management.",
+            )}
+          </p>
+        </div>
 
+        <div>
           <RequestData>
             <div className={rowClassName}>
               <div className="min-w-0 flex items-center gap-2">

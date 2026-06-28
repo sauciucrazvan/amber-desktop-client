@@ -14,6 +14,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Separator } from "@/components/ui/separator";
+import { AppWindow, Play } from "lucide-react";
 
 type AppSettingsPayload = {
   allowTray?: boolean;
@@ -76,7 +77,7 @@ export default function GeneralTab() {
   }, []);
 
   return (
-    <div className="flex min-h-0 h-full w-full flex-col">
+    <div className="space-y-5 pr-1 pb-6">
       <div className="flex flex-row items-center justify-between gap-1 mt-2">
         <div>
           <h3 className="text-sm font-semibold text-primary">
@@ -109,68 +110,82 @@ export default function GeneralTab() {
         </Select>
       </div>
 
-      <Separator className="mt-4" />
-
-      <div className="mt-2">
-        <h1 className="text-sm font-semibold">
-          {t("settings.general.system.title", "System")}
-        </h1>
-        <p className="text-muted-foreground text-xs">
-          {t(
-            "settings.general.system.description",
-            "How the application works",
-          )}
-        </p>
-      </div>
-
-      <div className="flex flex-row items-center justify-start gap-3 mt-2">
-        <Switch
-          checked={allowTray}
-          className="cursor-pointer"
-          onCheckedChange={(checked) => {
-            const nextValue = checked === true;
-            setAllowTray(nextValue);
-            window.ipcRenderer?.invoke("settings:set", {
-              allowTray: nextValue,
-            });
-          }}
-        />
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.general.tray.title")}
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {t("settings.general.tray.description")}
-          </p>
-        </div>
-      </div>
-
-      <div className="flex flex-row items-center justify-start gap-3 mt-2">
-        <Switch
-          checked={startOnBoot}
-          className="cursor-pointer"
-          onCheckedChange={(checked) => {
-            const nextValue = checked === true;
-            setStartOnBoot(nextValue);
-            window.ipcRenderer?.invoke("settings:set", {
-              startOnBoot: nextValue,
-            });
-          }}
-        />
-        <div>
-          <h3 className="text-md text-primary">
-            {t("settings.general.startOnBoot.title", "Start on boot")}
+      <section className="space-y-2">
+        <div className="px-1">
+          <h3 className="text-sm font-medium">
+            {t("settings.general.system.title", "System")}
           </h3>
           <p className="text-xs text-muted-foreground">
             {t(
-              "settings.general.startOnBoot.description",
-              "Launch Amber automatically when you sign in.",
+              "settings.general.system.description",
+              "How the application works",
             )}
           </p>
         </div>
-      </div>
 
-      <div className="mt-auto w-full pt-4 text-left text-xs text-muted-foreground">
+        <div>
+          <div className="flex items-center justify-between rounded-lg px-2.5 py-2">
+            <div className="min-w-0 flex items-center gap-2">
+              <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                <AppWindow className="h-3.5 w-3.5" />
+              </div>
+              <div className="flex flex-col">
+                <h3 className="truncate text-xs font-medium">
+                  {t("settings.general.tray.title")}
+                </h3>
+                <p className="truncate text-xs font-normal text-muted-foreground">
+                  {t("settings.general.tray.description")}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={allowTray}
+              className="cursor-pointer"
+              onCheckedChange={(checked) => {
+                const nextValue = checked === true;
+                setAllowTray(nextValue);
+                window.ipcRenderer?.invoke("settings:set", {
+                  allowTray: nextValue,
+                });
+              }}
+            />
+          </div>
+
+          <Separator className="my-1" />
+
+          <div className="flex items-center justify-between rounded-lg px-2.5 py-2">
+            <div className="min-w-0 flex items-center gap-2">
+              <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
+                <Play className="h-3.5 w-3.5" />
+              </div>
+              <div className="flex flex-col">
+                <h3 className="truncate text-xs font-medium">
+                  {t("settings.general.startOnBoot.title", "Start on boot")}
+                </h3>
+                <p className="truncate text-xs font-normal text-muted-foreground">
+                  {t(
+                    "settings.general.startOnBoot.description",
+                    "Launch Amber automatically when you sign in.",
+                  )}
+                </p>
+              </div>
+            </div>
+            <Switch
+              checked={startOnBoot}
+              className="cursor-pointer"
+              onCheckedChange={(checked) => {
+                const nextValue = checked === true;
+                setStartOnBoot(nextValue);
+                window.ipcRenderer?.invoke("settings:set", {
+                  startOnBoot: nextValue,
+                });
+              }}
+            />
+          </div>
+        </div>
+      </section>
+
+      <div className="pt-4 px-1 text-left text-xs text-muted-foreground mt-auto">
         <a
           className="hover:text-primary underline-offset-4 hover:underline"
           href="#"

@@ -1,4 +1,4 @@
-export const BUILD_ID = "20260623-2036";
-export const BUILD_VERSION = "26.6.23-h2036";
-export const BUILD_LABEL = "Built on June 23rd, 2026 at 20:36 PM";
-export const BUILD_ISO = "2026-06-23T17:36:57.822Z";
+export const BUILD_ID = "20260628-2129";
+export const BUILD_VERSION = "26.6.28-h2129";
+export const BUILD_LABEL = "Built on June 28th, 2026 at 21:29 PM";
+export const BUILD_ISO = "2026-06-28T18:29:04.608Z";

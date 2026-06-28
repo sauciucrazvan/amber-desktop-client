@@ -291,7 +291,10 @@
         }
       },
       "privacy": {
-        "allow_add_by_email": "Allow users to add me by email."
+        "allow_add_by_email": {
+          "title": "Let people find you",
+          "subtitle": "Allow others to add you using your email address."
+        }
       }
     },
     "about": {

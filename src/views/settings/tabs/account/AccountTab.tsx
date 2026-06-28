@@ -368,9 +368,14 @@ export default function AccountTab() {
               <div className="grid h-6 w-6 place-items-center rounded-md bg-primary/10 text-primary">
                 <Mail className="h-3.5 w-3.5" />
               </div>
-              <p className="truncate text-xs font-medium">
-                {t("settings.account.privacy.allow_add_by_email")}
-              </p>
+              <div className="flex flex-col">
+                <h3 className="truncate text-xs font-medium">
+                  {t("settings.account.privacy.allow_add_by_email.title")}
+                </h3>
+                <p className="truncate text-xs font-normal text-muted-foreground">
+                  {t("settings.account.privacy.allow_add_by_email.subtitle")}
+                </p>
+              </div>
             </div>
             <Switch
               checked={allowAddByEmail}

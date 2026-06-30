@@ -15,6 +15,11 @@ import {
   Reply,
   Trash2,
   ChevronRight,
+  FileText,
+  FileArchive,
+  FileCode,
+  File as FileIcon,
+  Download,
 } from "lucide-react";
 import {
   Tooltip,
@@ -41,6 +46,43 @@ function extractActorFromLegacyCallLogText(text: string, eventName: string) {
 
   const actor = text.slice(0, text.length - suffix.length).trim();
   return actor;
+}
+
+function formatBytes(bytes?: number): string {
+  if (!bytes) return "0 B";
+  const k = 1024;
+  const sizes = ["B", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+}
+
+function getFileIcon(contentType?: string) {
+  const type = contentType?.toLowerCase() || "";
+  if (
+    type.includes("zip") ||
+    type.includes("rar") ||
+    type.includes("tar") ||
+    type.includes("gzip")
+  ) {
+    return <FileArchive className="h-8 w-8 text-amber-500 shrink-0" />;
+  }
+  if (
+    type.includes("text") ||
+    type.includes("pdf") ||
+    type.includes("document") ||
+    type.includes("sheet")
+  ) {
+    return <FileText className="h-8 w-8 text-blue-500 shrink-0" />;
+  }
+  if (
+    type.includes("javascript") ||
+    type.includes("json") ||
+    type.includes("html") ||
+    type.includes("css")
+  ) {
+    return <FileCode className="h-8 w-8 text-emerald-500 shrink-0" />;
+  }
+  return <FileIcon className="h-8 w-8 text-muted-foreground shrink-0" />;
 }
 
 interface Props {
@@ -76,6 +118,14 @@ export default function ChatBubble({
 
   const isTextMessage = message.type === "text";
   const isLogMessage = message.type === "log";
+  const isFileMessage = message.type === "file";
+
+  const fileUrl = message.content?.url ?? "";
+  const fileName = message.content?.filename ?? "file";
+  const fileType = message.content?.content_type ?? "";
+  const fileSize = message.content?.size;
+  const isImageFile = fileType.startsWith("image/");
+
   const logEvent =
     typeof message.content?.event === "string" ? message.content.event : "";
   const logEventName = logEvent.startsWith("call.")
@@ -158,7 +208,7 @@ export default function ChatBubble({
         </div>
       )}
 
-      {isTextMessage && (
+      {(isTextMessage || isFileMessage) && (
         <ContextMenu key={message.id}>
           <ContextMenuTrigger
             className={`flex min-w-0 flex-col text-sm max-w-[75%] rounded-md border px-3 py-2 ${isMine ? "bg-muted" : "bg-background"}`}
@@ -177,21 +227,65 @@ export default function ChatBubble({
                     : otherUserName}
                 </p>
                 <p className="text-sm">
-                  {message.content.reply_to.content.text}
+                  {message.content.reply_to.type === "file"
+                    ? `📎 ${message.content.reply_to.content.filename || "File"}`
+                    : message.content.reply_to.content.text}
                 </p>
               </button>
             )}
 
-            <div className="inline-flex min-w-0 items-center gap-1">
-              <div className="min-w-0 whitespace-pre-wrap break-all wrap-anywhere select-text">
-                {text}
-              </div>
+            <div className="flex flex-col min-w-0 w-full gap-1">
+              {isFileMessage && (
+                <div className="mb-1 max-w-full min-w-[240px]">
+                  {isImageFile ? (
+                    <div className="relative rounded overflow-hidden border bg-black/5 max-h-[320px] flex items-center justify-center">
+                      <img
+                        src={fileUrl}
+                        alt={fileName}
+                        className="object-contain max-w-full max-h-[320px] w-auto h-auto"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between gap-3 p-2.5 rounded-lg border bg-background/50 backdrop-blur-sm">
+                      <div className="flex items-center gap-3 min-w-0">
+                        {getFileIcon(fileType)}
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-medium truncate text-sm text-foreground">
+                            {fileName}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {formatBytes(fileSize)}
+                          </span>
+                        </div>
+                      </div>
+                      <a
+                        href={fileUrl}
+                        download={fileName}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 hover:bg-muted rounded-md text-muted-foreground hover:text-foreground transition-colors shrink-0 cursor-pointer"
+                      >
+                        <Download className="h-4 w-4" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {isTextMessage && (
+                <div className="min-w-0 whitespace-pre-wrap break-all wrap-anywhere select-text">
+                  {text}
+                </div>
+              )}
 
               <div className="mt-1 self-end inline-flex items-center gap-0.5 text-xs text-muted-foreground">
-                <MessageEditHistoryDialog
-                  editedAt={message.edited_at}
-                  history={message.content?.history}
-                />
+                {isTextMessage && (
+                  <MessageEditHistoryDialog
+                    editedAt={message.edited_at}
+                    history={message.content?.history}
+                  />
+                )}
 
                 {formatHHmm(new Date(message.created_at))}
 
@@ -346,12 +440,14 @@ export default function ChatBubble({
 
               {isMine && (
                 <>
-                  <ContextMenuItem
-                    className="cursor-pointer"
-                    onClick={() => edit_func(message.id)}
-                  >
-                    <Pencil /> {t("conversations.actions.edit")}
-                  </ContextMenuItem>
+                  {isTextMessage && (
+                    <ContextMenuItem
+                      className="cursor-pointer"
+                      onClick={() => edit_func(message.id)}
+                    >
+                      <Pencil /> {t("conversations.actions.edit")}
+                    </ContextMenuItem>
+                  )}
 
                   <ContextMenuSeparator />
 

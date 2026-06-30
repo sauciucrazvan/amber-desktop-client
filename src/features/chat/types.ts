@@ -12,6 +12,10 @@ export type MessageItem = {
   seq: number;
   type: string;
   content: {
+    url: string;
+    filename: string;
+    content_type: string;
+    size: any;
     text?: string;
     event?: string;
     call_id?: string;
@@ -24,9 +28,11 @@ export type MessageItem = {
       date?: string;
     }>;
     reply_to?: {
+      type: string;
       id: string;
       sender_id: number;
       content: {
+        filename: string;
         text?: string | undefined;
       };
       created_at: string;
